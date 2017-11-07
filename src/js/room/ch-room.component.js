@@ -1,7 +1,7 @@
 (function() {
     'use strict';
     
-    angular.module("itaca-ui").component("chRoom", {
+    angular.module("chroma.components").component("chRoom", {
     	transclude: true,
     	bindings: {
     		room: "<",

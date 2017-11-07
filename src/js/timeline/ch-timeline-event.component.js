@@ -1,7 +1,7 @@
 (function(){
 	'use strict';
 	
-	angular.module("itaca-ui").component("chTimelineEvent", {
+	angular.module("chroma.components").component("chTimelineEvent", {
 		require: {
 			chTimelineCtrl: '^chTimeline'
 		},

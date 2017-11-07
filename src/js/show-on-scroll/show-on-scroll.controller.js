@@ -1,7 +1,7 @@
 (function() {
 	'use strict';
 	
-	angular.module("itaca-ui").component("chShowOnScroll", {
+	angular.module("chroma.components").component("chShowOnScroll", {
 		transclude: true,
 		bindings: {
     		offset: "@?",

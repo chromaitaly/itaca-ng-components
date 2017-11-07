@@ -1,7 +1,7 @@
 (function() {
     'use strict';
     
-    angular.module("itaca-ui").component("chGallery", {
+    angular.module("chroma.components").component("chGallery", {
     	require: {
 		},
     	bindings: {
@@ -29,7 +29,7 @@
 				    "</md-grid-tile>" +
 				"</md-grid-list>" +
 			"</div>" +
-			"<div ng-if=\"!$ctrl.gallery.length\" ng-click=\"openGallery($event)\" aria-lable=\"open gallery\" class=\"clickable\">" +
+			"<div ng-if=\"!$ctrl.gallery.length\">" +
 				"<img src=\"/resources/public/img/no-gallery-image.png\" class=\"full-width\">" +
 			"</div>"
     });
@@ -63,7 +63,6 @@
     		ctrl.maxCols = ctrl.gallery.length;
     		
     		if(ctrl.cols){
-    			
     			// creo l'array di colonne e ne calcolo il totale
     			ctrl.colsArray = [];
     			ctrl.totalCols = 0;
@@ -73,7 +72,7 @@
     				ctrl.colsArray.push(parsed);
     			});
     			
-    			// prendo il numero più grande
+    			// prendo il minimo comune multiplo
     			ctrl.maxCols = NumberUtils.lcmArray(ctrl.colsArray);
     			
     			//se il numero della prima riga è minore del numero 

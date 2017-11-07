@@ -1,17 +1,25 @@
 {
-  "name": "chroma-components",
-  "authors": [
-    "scoletti <simone.coletti@chromaitaly.com>"
-  ],
-  "description": "Various AngularJS components, like date-range, people-picker, timeline, review, ecc",
-  "main": "dist/chroma-components.min.js",
-  "license": "MIT",
-  "homepage": "www.chromaitaly.com",
-  "ignore": [
-    "**/.*",
-    "node_modules",
-    "bower_components",
-    "test",
-    "tests"
-  ]
+	"name": "chroma-components",
+	"author": {
+		"name": "Chroma Italy Hotels srl",
+		"email": "ast-dev@chromaitaly.com",
+		"url": "http://www.chromaitaly.com"
+	},
+	"contributors": [
+		{
+			"name": "Simone Coletti",
+			"email": "simone.coletti@chromaitaly.com"
+		}
+	],
+	"description": "Various AngularJS components, like date-range, people-picker, timeline, review, ecc",
+	"main": "dist/chroma-components.min.js",
+	"license": "MIT",
+	"homepage": "www.chromaitaly.com",
+	"ignore": [
+		"**/.*",
+		"node_modules",
+		"bower_components",
+		"test",
+		"tests"
+	]
 }

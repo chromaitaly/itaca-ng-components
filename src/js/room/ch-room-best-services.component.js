@@ -1,7 +1,7 @@
 (function() {
     'use strict';
     
-    angular.module("itaca-ui").component("chRoomBestServices", {
+    angular.module("chroma.components").component("chRoomBestServices", {
     	require: {
     		chRoomCtrl: '^chRoom',
 		},

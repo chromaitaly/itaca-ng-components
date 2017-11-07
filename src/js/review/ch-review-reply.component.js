@@ -1,7 +1,7 @@
 (function() {
 	'use strict';
 	
-	angular.module("itaca-ui").component("chReviewReply", {
+	angular.module("chroma.components").component("chReviewReply", {
 		transclude: true,
 		require: {
 			chReviewCtrl: '^chReview'

@@ -1,7 +1,7 @@
 (function() {
 	'use strict';
 	
-	angular.module("itaca-ui").component("chReview", {
+	angular.module("chroma.components").component("chReview", {
 		transclude: true,
 		bindings: {
     		review: "<",

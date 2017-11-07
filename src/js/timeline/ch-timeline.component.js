@@ -1,7 +1,7 @@
 (function() {
 	'use strict';
 	
-	angular.module("itaca-ui").component("chTimeline", {
+	angular.module("chroma.components").component("chTimeline", {
 		transclude: true,
 		bindings: {
 			align: '@',

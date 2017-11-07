@@ -1,7 +1,7 @@
 (function() {
 	'use strict';
 	
-	angular.module("itaca-ui").component("chIconSelect", {
+	angular.module("chroma.components").component("chIconSelect", {
 		transclude: true,
 		require: {
 			ngModelCtrl: 'ngModel'

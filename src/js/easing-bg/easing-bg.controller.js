@@ -1,7 +1,7 @@
 (function() {
 	'use strict';
 	
-	angular.module("itaca-ui").component("chEasingBg", {
+	angular.module("chroma.components").component("chEasingBg", {
 		transclude: true,
 		bindings: {
     		bgClass: "@?",
@@ -18,7 +18,7 @@
 			"</div>"
 	});
 	
-	 /* @ngInject */
+	/* @ngInject */
 	function EasingBgCtrl($scope, $element, $window) {
 		var ctrl = this;
     	
