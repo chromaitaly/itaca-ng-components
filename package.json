@@ -1,0 +1,16 @@
+{
+  "name": "chroma-components",
+  "version": "1.0.0",
+  "description": "Various AngularJS components, like date-range, people-picker, timeline, review, ecc.",
+  "main": "Gruntfile.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://scoletti@bitbucket.org/scoletti/chroma-components.git"
+  },
+  "author": "Simone Coletti <simone.coletti@chromaitaly.com>",
+  "license": "MIT",
+  "homepage": "https://bitbucket.org/scoletti/chroma-components#readme"
+}
