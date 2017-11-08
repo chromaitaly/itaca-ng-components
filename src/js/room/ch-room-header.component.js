@@ -80,6 +80,6 @@
     			Navigator.scrollToAnchor('av-'+ctrl.chRoomCtrl.$$index+'-rates');
     		}
     	};
-    };
+    }
     
 })();

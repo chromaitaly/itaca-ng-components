@@ -20,7 +20,5 @@
     	this.$onInit = function(){
     		ctrl.$$index = NumberUtils.uniqueNumber();  
     	};
-    	
-    };
-    
+    }
 })();

@@ -1,5 +1,5 @@
 /*****************************************************************/
-/** chroma-components v1.0.0 07-11-2017	**/
+/** chroma-components v1.0.0 08-11-2017	**/
 /** chroma-components, logos and all images are registered     	**/
 /** trademarks of Chroma Italy Hotels srl.                     	**/
 /** All rights reserved.                                     	**/
@@ -10,6 +10,104 @@
 (function() {
     "use strict";
     angular.module("chroma.components", [ "ngMaterial", "chroma.services", "chroma.utils" ]);
+})();
+
+(function() {
+    "use strict";
+    DownloadButtonCtrl.$inject = [ "$scope", "$http", "$timeout", "$log", "Dialog" ];
+    angular.module("chroma.components").component("chDownloadButton", {
+        bindings: {
+            url: "<",
+            btnClass: "@",
+            label: "@",
+            labelClass: "@",
+            iconClass: "@",
+            downloadingLabel: "@",
+            downloadingClass: "@",
+            downloadReadyLabel: "@",
+            downloadLabel: "@",
+            maxRetry: "<?",
+            retryDelay: "<?",
+            onError: "&?"
+        },
+        controller: DownloadButtonCtrl,
+        template: '<span class="no-padding no-margin">' + '<md-button class="{{$ctrl.btnClass}}" ng-click="$ctrl.$download($event)" aria-label="{{$ctrl.label}}" ng-disabled="$ctrl.$$downloading">' + '<span ng-if="!$ctrl.$$downloading" class="layout-row layout-align-center-center">' + '<md-icon ng-show="$ctrl.iconClass" class="material-icons {{$ctrl.iconClass}}"></md-icon>' + '<span style="margin-left: 5px" class="{{$ctrl.labelClass}}">{{$ctrl.label}}</span>' + "</span>" + '<span ng-if="$ctrl.$$downloading" class="layout-row layout-align-center-center">' + '<md-progress-circular class="{{$ctrl.downloadingClass}}" md-mode="indeterminate" md-diameter="20"></md-progress-circular>' + '<span style="margin-left: 5px" class="{{$ctrl.labelClass}}">{{$ctrl.downloadingLabel || $ctrl.label}}</span>' + "</span>" + "</md-button>" + '<a class="ch-download-button-link" download target="_blank"></a>' + "</span>"
+    });
+    function DownloadButtonCtrl($scope, $http, $timeout, $log, Dialog) {
+        var ctrl = this;
+        this.$onInit = function() {
+            ctrl.btnClass = ctrl.btnClass || "md-raised md-primary";
+            ctrl.downloadingClass = ctrl.downloadingClass || "md-accent md-hue-2";
+            ctrl.maxRetry = ctrl.maxRetry || 1;
+            ctrl.retryDelay = ctrl.retryDelay || 5e3;
+        };
+        this.$download = function(ev) {
+            ctrl.$$attempt = 1;
+            ctrl.$doDownload(ev);
+        };
+        this.$doDownload = function(ev) {
+            ctrl.$$downloading = true;
+            var finallyFn = function() {
+                ctrl.$$attempt++;
+            };
+            $http.get(ctrl.url).then(function(response) {
+                if (!response.data.file) {
+                    ctrl.$manageRetry(true);
+                } else {
+                    if (bowser.ios) {
+                        var data = {
+                            file: response.data.file,
+                            filename: response.data.filename,
+                            contentType: response.data.contentType,
+                            title: ctrl.downloadReadyLabel,
+                            downloadLabel: ctrl.downloadLabel
+                        };
+                        Dialog.downloadFile(ev, data);
+                    } else {
+                        var linkEl = ctrl.$getLinkEl();
+                        linkEl.href = "data:" + (response.data.contentType || "application/octet-stream") + ";base64," + encodeURI(response.data.file);
+                        linkEl.setAttribute("download", response.data.filename);
+                        if (document.createEvent) {
+                            var eventObj = new MouseEvent("click", {
+                                view: window,
+                                bubbles: true,
+                                cancelable: true
+                            });
+                            linkEl.dispatchEvent(eventObj);
+                        } else {
+                            linkEl.fireEvent("click");
+                        }
+                    }
+                    ctrl.$$downloading = false;
+                }
+            }, function(response) {
+                if (response.status == 412 || !ctrl.$manageRetry(response.status == 507)) {
+                    $log.error("Error downloading file: " + response.data && response.data.message ? response.data.message : "");
+                    ctrl.onError && ctrl.onError({
+                        response: response
+                    });
+                    ctrl.$$downloading = false;
+                }
+            }).finally(finallyFn, finallyFn);
+        };
+        this.$manageRetry = function(longWait) {
+            if (ctrl.$$attempt < ctrl.maxRetry) {
+                $timeout(ctrl.$doDownload, longWait ? ctrl.retryDelay : 1e3);
+                return true;
+            }
+            return false;
+        };
+        this.$getLinkEl = function() {
+            var linkEl = element[0].querySelector(".ch-download-button-link");
+            if (linkEl == null) {
+                linkEl = document.createElement("a");
+                linkEl.setAttribute("target", "_blank");
+                linkEl.className = "ch-download-button-link";
+                element[0].appendChild(linkEl);
+            }
+            return linkEl;
+        };
+    }
 })();
 
 (function() {
@@ -212,6 +310,220 @@
         };
     }
 })();
+
+(function() {
+    "use strict";
+    HotelMapInfoWindowCtrl.$inject = [ "$scope" ];
+    angular.module("chroma.components").component("chHotelMapInfoWindow", {
+        require: {
+            chHotelMapCtrl: "^chHotelMap",
+            ngMapCtrl: "ngMap"
+        },
+        bindings: {
+            hotel: "<",
+            showGallery: "<?",
+            markerType: "@",
+            onHotelClick: "&?"
+        },
+        controller: HotelMapInfoWindowCtrl,
+        template: '<info-window id="hotel-iw">' + '<div ng-non-bindable style="max-width: 300px;">' + '<div ng-if="$ctrl.showGallery" style="width: 100; max-height: 200px" ng-init="config.noTop = true">' + '<div flex ng-controller="slideGalleryCtrl" ng-init="bindGallery($ctrl.hotel.gallery); overrideConfig({autoplay: 0});">' + '<div class="relative">' + '<div class="img-top-bar">' + '<div class="img-top-left-cont layout-row">' + '<div class="md-subhead row-mini" ng-if="$ctrl.hotel.recommended">' + '<small class="label gradient-yellow">' + '<md-icon class="mdi mdi-thumb-up md-14 text-white"></md-icon>&nbsp;' + '<span translate="common.recommended"></span>' + "</small>" + "</div>" + "<div flex></div>" + '<span ng-if="$ctrl.hotel" ng-controller="favoriteCtrl" ng-init="init($ctrl.hotel)">' + '<md-button class="md-icon-button bg-opaque-5" ng-click="setFavorite()" aria-label="Like hotel">' + '<md-icon ng-show="!$ctrl.hotel.favorite" class="mdi mdi-heart-outline text-white md-24"></md-icon>' + '<md-icon ng-show="$ctrl.hotel.favorite" class="mdi mdi-heart text-danger md-24" ng-class="{\'animated rubberBand\': $ctrl.hotel.favorite}"></md-icon>' + '<md-tooltip><span translate="common.favorite.set"></span></md-tooltip>' + "</md-button>" + "</span>" + "</div>" + "</div>" + '<div ng-show="loading" flex layout layout-align="center center">' + '<md-progress-circular class="md-primary ch-progress" md-mode="indeterminate" md-diameter="40"></md-progress-circular>' + "</div>" + '<img ng-if="!gallery.length && !loading" class="main-image" ng-attr-alt="{{$ctrl.hotel.name}}" src="/resources/public/img/header.jpg">' + '<ks-swiper-container class="button-mini" ng-if="gallery.length && galleryConfig.storageUrl && !loading"' + 'override-parameters="{' + "grabCursor: galleryConfig.navButtons," + "keyboardControl: galleryConfig.keyboardControl," + "onSlideChangeStart: loadImageTags," + "centeredSlides: galleryConfig.centered," + "autoplayDisableOnInteraction: galleryConfig.autoplayDisableOnInteraction," + "preloadImages: !galleryConfig.lazyLoading," + "lazyLoading: galleryConfig.lazyLoading," + "lazyLoadingInPrevNext: galleryConfig.lazyLoading," + "pagination: false," + "watchSlidesVisibility: galleryConfig.lazyLoading && (galleryConfig.slidesPerView == 'auto' || galleryConfig.slidesPerView > 1)}\"" + 'container-cls="index-0 bg-gray-base"' + 'wrapper-cls="layout-row layout-align-start-center"' + 'pagination-cls="swiper-pagination-white"' + 'slides-per-view="galleryConfig.slidesPerView"' + 'slides-per-column="galleryConfig.slidesPerColumn"' + 'centered="galleryConfig.centered"' + 'autoplay="galleryConfig.autoplay"' + 'direction="{{galleryConfig.direction}}"' + 'show-nav-buttons="galleryConfig.navButtons"' + 'pagination-is-active="galleryConfig.pagination"' + 'pagination-clickable="galleryConfig.paginationClickable"' + 'initial-slide="galleryConfig.initialSlide"' + 'space-between="galleryConfig.spaceBetween"' + 'loop="galleryConfig.loop">' + '<ks-swiper-slide slider-cls="no-bg" ng-class="{\'text-center\': galleryConfig.centered}" ng-repeat="image in gallery track by $index">' + "<div ng-if=\"!galleryConfig.lazyLoading\" class=\"main-image\" ng-style=\"{'background-image': 'url('+galleryConfig.storageUrl + image.path+')'}\"></div>" + '<div ng-if="galleryConfig.lazyLoading" ng-attr-data-background="{{galleryConfig.storageUrl}}{{image.path}}" class="main-image swiper-lazy">' + '<div class="swiper-lazy-preloader swiper-lazy-preloader-white"></div>' + "</div>" + "</ks-swiper-slide>" + "</ks-swiper-container>" + "</div>" + "</div>" + "</div>" + '<div layout="column" class="md-padding no-padding-left no-padding-right no-padding-bottom text-left">' + "<div layout>" + "<div flex>" + "<div md-truncate>" + '<span class="md-subhead">{{$ctrl.hotel.name}}</span>' + "</div>" + "<div layout>" + "<div flex>" + '<div><small class="label label-inline-block gradient-gray text-white text-wrap"><span translate="hotel.type.{{$ctrl.hotel.type}}"></span></small></div>' + '<div class="md-body-1 text-gray-light">' + "<span>{{$ctrl.hotel.addressInfo.district}}</span>,&nbsp;<strong>{{$ctrl.hotel.addressInfo.city}}</strong>" + "</div>" + '<div class="md-body-1 text-gray-light">' + '<md-icon class="mdi mdi-map-marker md-14"></md-icon>&nbsp;<small><em>{{$ctrl.hotel.addressInfo.address}},&nbsp;{{$ctrl.hotel.addressInfo.zipcode}}</em></small>' + "</div>" + "</div>" + "<div ng-if=\"$ctrl.markerType == 'price'\">" + '<md-button ng-if="$ctrl.hotel.price" class="only-border border-success text-success no-margin-top no-margin-right">' + '<div class="row-mini text-left">' + '<div layout="column">' + "<small>" + '<span class="text-initial" translate="common.from"></span>' + '<i ng-if="$ctrl.hotel.price.amount.initialAmount > 0 && $ctrl.hotel.price.amount.initialAmount > $ctrl.hotel.price.amount.finalAmount">&nbsp;<del>{{$ctrl.hotel.price.amount.initialAmount|chCurrency}}</del></i>' + "</small>" + '<span class="md-subhead row-mini"><strong>{{($ctrl.hotel.price.amount.finalAmount|chCurrency)}}</strong></span>' + '<small ng-if="$ctrl.hotel.nights > 0" class="text-lowercase">' + '<span translate="common.for"></span>&nbsp;{{$ctrl.hotel.nights}}&nbsp;' + '<span ng-show="$ctrl.hotel.nights == 1" translate="common.night"></span>' + '<span ng-show="$ctrl.hotel.nights > 1" translate="common.nights"></span>' + "</small>" + "</div>" + "</div>" + "</md-button>" + '<div ng-if="!$ctrl.hotel.price" layout="column" class="text-warn">' + '<md-icon class="mdi mdi-emoticon-sad md-32 text-warn"></md-icon>' + '<strong translate="reservation.availability.missed"></strong>' + "</div>" + "</div>" + "</div>" + "</div>" + "</div>" + "<div ng-if=\"$ctrl.markerType == 'price'\">" + '<div layout layout-padding layout-wrap class="no-padding-right no-padding-left no-padding-bottom" ng-if="$ctrl.hotel.price && $ctrl.hotel.roomsCounter.actual >= 1">' + '<div flex-xs="100" flex-gt-xs layout layout-align="start center" class="text-success no-padding-left">' + '<strong><em translate="reservation.availability.ok.simple"></em></strong>' + "</div>" + '<div flex-xs="100" flex layout="column" class="no-padding">' + '<md-button class="bg-success no-margin-left no-margin-right" ng-click="$ctrl.$hotelClick()" aria-label="Book now">' + '<span translate="common.book"></span>' + "</md-button>" + "</div>" + "</div>" + '<div layout layout-padding layout-wrap class="no-padding-right no-padding-left no-padding-bottom" ng-if="!$ctrl.hotel.price || $ctrl.hotel.roomsCounter.actual <= 0">' + '<div flex-xs="100" flex-gt-xs layout layout-align="start center" class="text-warn no-padding-left">' + '<strong><em translate="reservation.availability.missed.full"></em></strong>' + "</div>" + '<div flex-xs="100" flex layout="column" class="no-padding">' + '<md-button class="bg-warn no-margin-left no-margin-right" ng-click="$ctrl.$hotelClick()" aria-label="Search other dates">' + '<span translate="reservation.view.other.period"></span>' + "</md-button>" + "</div>" + "</div>" + "</div>" + "</div>" + "</div>" + "</info-window>"
+    });
+    function HotelMapInfoWindowCtrl($scope) {
+        var ctrl = this;
+        this.$onInit = function() {};
+        this.$hotelClick = function(ev) {
+            ctrl.onHotelClick && ctrl.onHotelClick({
+                $event: ev,
+                hotel: ctrl.hotel
+            });
+        };
+    }
+})();
+
+(function() {
+    "use strict";
+    HotelMapMarkerCtrl.$inject = [ "$scope" ];
+    angular.module("chroma.components").component("chHotelMapMarker", {
+        require: {
+            chHotelMapCtrl: "^chHotelMap",
+            ngMapCtrl: "ngMap"
+        },
+        bindings: {
+            hotel: "<",
+            markerType: "@"
+        },
+        controller: HotelMapMarkerCtrl,
+        template: '<div ng-if="$ctrl.hotel" ng-switch="$ctrl.markerType">' + '<div ng-switch-when="pointer">' + '<marker class="clickable" id="mk_{{$ctrl.hotel.id}}" ng-if="$ctrl.$$position" position="[{{$ctrl.$$position.lat()}}, {{$ctrl.$$position.lng()}}]" icon="{{$ctrl.markerIcon}}" on-mouseover="$ctrl.$showDetails($ctrl.hotel);"></marker>' + "</div>" + "<div ng-switch-default>" + '<custom-marker id="cmk_{{$ctrl.hotel.id}}" ng-if="$ctrl.$$position" position="[{{$ctrl.$$position.lat()}}, {{$ctrl.$$position.lng()}}]"' + 'on-click="$ctrl.$showDetails($ctrl.hotel, true)" on-mouseover="$ctrl.$setSelected($ctrl.hotel, true)" on-mouseout="$ctrl.$setSelected($ctrl.hotel, false)">' + '<div class="clickable" ng-class="{\'animated bounce\': $ctrl.hotel.selected && $ctrl.hotel.selectEffect}">' + "<div class=\"ch-marker-inner md-caption\" ng-class=\"{'bg-primary': $ctrl.markerType == 'name' || $ctrl.hotel.selected," + "'bg-primary-light': $ctrl.markerType == 'price' && !$ctrl.hotel.selected && $ctrl.hotel.price ," + "'bg-gray-light': $ctrl.markerType == 'price' && !$ctrl.hotel.selected && !$ctrl.hotel.price}\" ng-switch=\"$ctrl.markerType\">" + '<span ng-switch-when="price">' + '<div ng-if="$ctrl.hotel.price">' + "<span>{{($ctrl.hotel.price.amount.finalAmount|chCurrency)}}</span>" + "</div>" + '<div ng-if="!$ctrl.hotel.price">' + '<md-icon class="mdi mdi-emoticon-sad md-18 text-white"></md-icon>' + "</div>" + "</span>" + "<strong ng-switch-default>{{$ctrl.hotel.name}}</strong>" + "</div>" + "<div class=\"arrow-down arrow-sm\" ng-class=\"{'border-primary': $ctrl.markerType == 'name' || $ctrl.hotel.selected," + "'border-primary-light': $ctrl.markerType == 'price' && !$ctrl.hotel.selected && $ctrl.hotel.price ," + "'border-gray-light': $ctrl.markerType == 'price' && !$ctrl.hotel.selected && !$ctrl.hotel.price}\"></div>" + "</div>" + "</custom-marker>" + "</div>" + "</div>"
+    });
+    function HotelMapMarkerCtrl($scope) {
+        var ctrl = this;
+        var geocoder = new google.maps.Geocoder();
+        this.$onInit = function() {
+            ctrl.$getMarkerPosition();
+        };
+        this.$getMarkerPosition = function() {
+            if (!ctrl.hotel) {
+                return;
+            }
+            var fullAddress = ctrl.hotel.addressInfo.address + ", " + ctrl.hotel.addressInfo.city + ", " + ctrl.hotel.addressInfo.zipcode;
+            geocoder.geocode({
+                address: fullAddress
+            }, function(results, status) {
+                if (status == google.maps.GeocoderStatus.OK) {
+                    ctrl.$$position = results[0].geometry.location;
+                } else {
+                    console.error("Error geocoding hotel '" + ctrl.hotel.name + "' (address: " + fullAddress + "): " + status);
+                }
+            });
+        };
+        this.$setSelected = function(hotel, selected) {
+            if (hotel) {
+                hotel.selectEffect = false;
+                hotel.selected = _.isBoolean(selected) ? selected : true;
+            }
+        };
+        this.$showDetails = function(hotel, isCustomMarker) {
+            if (!ctrl.chHotelMapCtrl.$$currHotel || ctrl.chHotelMapCtrl.$$currHotel.id != hotel.id) {
+                ctrl.$hideDetails(ev, ctrl.chHotelMapCtrl.$$currHotel);
+                ctrl.setSelected(hotel, true);
+                ctrl.chHotelMapCtrl.$$currHotel = hotel;
+            }
+            ctrl.chHotelMapCtrl.map.showInfoWindow("hotel-iw", isCustomMarker ? "cmk_" + hotel.id : "mk_" + hotel.id);
+        };
+        this.$hideDetails = function(hotel) {
+            ctrl.$setSelected(hotel, false);
+            ctrl.chHotelMapCtrl.map.hideInfoWindow("hotel-iw");
+        };
+    }
+})();
+
+(function() {
+    "use strict";
+    HotelMapCtrl.$inject = [ "$scope", "$element", "$timeout" ];
+    angular.module("chroma.components").component("chHotelMap", {
+        bindings: {
+            hotels: "<?",
+            hotel: "<?",
+            address: "<?",
+            showGallery: "<?",
+            markerType: "@",
+            searchParams: "<?",
+            disableUi: "<?",
+            disableScrollwheel: "<?",
+            mapClass: "@",
+            onHotelClick: "&?"
+        },
+        controller: HotelMapCtrl,
+        template: '<ng-map class="{{$ctrl.mapClass}}" ng-style="$ctrl.$$mapStyle" default-style="false" zoom-to-inlude-markers="true" disable-default-ui="{{$ctrl.disableUi}}" ' + 'center="[{{$ctrl.$$center.lat}}, {{$ctrl.$$center.lng}}]" map-initialized="$ctrl.$initMap(map)" zoom="14" clickable-icons="false" trigger-resize="true" scrollwheel="{{!$ctrl.disableScrollwheel}}">' + '<div ng-if="$ctrl.hotel">' + '<ch-hotel-map-marker hotel="$ctrl.hotel" marker-type="$ctrl.markerType"></ch-hotel-map-marker>' + "</div>" + '<div ng-if="$ctrl.hotels" ng-repeat="hotel in $ctrl.hotels">' + '<ch-hotel-map-marker hotel="hotel" marker-type="$ctrl.markerType"></ch-hotel-map-marker>' + "</div>" + '<ch-hotel-map-info-window hotel="$ctrl.$$currHotel" marker-type="$ctrl.markerType" show-gallery="$ctrl.showGallery" on-hotel-click="$ctrl.onHotelClick"></ch-hotel-map-info-window>' + "</ng-map>"
+    });
+    function HotelMapCtrl($scope, $element, $timeout) {
+        var ctrl = this;
+        var geocoder = new google.maps.Geocoder();
+        this.$onInit = function() {
+            scope.markerIcon = "/resources/public/img/map-marker.01.png";
+            ctrl.showGallery = _.isBoolean(scope.showGallery) ? scope.showGallery : false;
+            ctrl.disableUi = _.isBoolean(scope.disableUi) ? scope.disableUi : false;
+            ctrl.markerType = _.includes([ "pointer", "price", "name" ], _.toLower(scope.markerType)) ? _.toLower(scope.markerType) : "pointer";
+            ctrl.mapClass = scope.mapClass || "flex";
+            ctrl.disableScrollwheel = _.isBoolean(scope.disableScrollwheel) ? scope.disableScrollwheel : false;
+            ctrl.$initLocations();
+        };
+        this.$initLocations = function() {
+            if (!ctrl.hotel && !ctrl.hotels && !ctrl.address) {
+                throw new Error("You must pass an Hotel Object or Array of Hotel Objects or address at least");
+            }
+            if (ctrl.hotel && !angular.isObject(ctrl.hotel)) {
+                throw new Error("You must pass an Hotel Object in 'hotel' parameter");
+            }
+            if (ctrl.hotels && !angular.isArray(ctrl.hotels)) {
+                throw new Error("You must pass an Array of Hotel Objects in 'hotels' parameter");
+            }
+            ctrl.$$centerObj = new google.maps.LatLng(0, 0);
+            ctrl.$$center = ctrl.$$centerObj.toJSON();
+        };
+        this.$initMap = function(map) {
+            ctrl.$$map = map;
+            ctrl.$getCenter(map);
+            ctrl.$initWatches();
+            google.maps.event.trigger(map, "resize");
+        };
+        this.$getCenter = function(map) {
+            if (!map) {
+                return;
+            }
+            if (_.isEmpty(ctrl.hotels) && _.isNil(ctrl.hotel)) {
+                if (_.isNil(ctrl.address)) {
+                    ctrl.$$centerObj = new google.maps.LatLng(0, 0);
+                    ctrl.$updateCenter(map);
+                } else {
+                    geocoder.geocode({
+                        address: ctrl.address
+                    }, function(results, status) {
+                        if (status == google.maps.GeocoderStatus.OK) {
+                            ctrl.$$centerObj = results[0].geometry.location;
+                        } else {
+                            console.error("Error geocoding address: " + ctrl.address + ": " + status);
+                            ctrl.$$centerObj = new google.maps.LatLng(0, 0);
+                        }
+                        ctrl.$updateCenter(map);
+                    });
+                }
+            } else {
+                var totalLat = 0, totalLng = 0;
+                _.forEach(map.markers, function(marker) {
+                    totalLat += marker.position.lat();
+                    totalLng += marker.position.lng();
+                });
+                _.forEach(map.customMarkers, function(marker) {
+                    totalLat += marker.position.lat();
+                    totalLng += marker.position.lng();
+                });
+                var divider = _.size(map.markers) + _.size(map.customMarkers);
+                ctrl.$$centerObj = divider ? new google.maps.LatLng({
+                    lat: totalLat / divider,
+                    lng: totalLng / divider
+                }) : new google.maps.LatLng(0, 0);
+                crl.$updateCenter(map);
+            }
+        };
+        this.$updateCenter = function(map) {
+            $timeout(function() {
+                if (_.isNil(ctrl.$$centerObj)) {
+                    ctrl.$$centerObj = new google.maps.LatLng(0, 0);
+                }
+                _.assign(ctrl.$$center, scope.$$centerObj.toJSON());
+                google.maps.event.trigger(map, "resize");
+            }, 1e3);
+        };
+        this.$initWatches = function() {
+            scope.$watchCollection(function() {
+                return ctrl.$$map.markers;
+            }, function(newVal, oldVal) {
+                ctrl.$getCenter(ctrl.$$map);
+            });
+            scope.$watchCollection(function() {
+                return ctrl.$$map.customMarkers;
+            }, function(newVal, oldVal) {
+                ctrl.$getCenter(ctrl.$$map);
+            });
+        };
+        $scope.$watch(function() {
+            var parent = $element.parent()[0];
+            var paddingTop = parent.style.paddingTop || 0;
+            var paddingBottom = parent.style.paddingBottom || 0;
+            return parent.offsetHeight - paddingTop - paddingBottom;
+        }, function(newVal, oldVal) {
+            ctrl.$$mapStyle = {
+                height: newVal + "px",
+                width: "100%"
+            };
+            if (ctrl.$$map) {
+                google.maps.event.trigger(ctrl.$$map, "resize");
+                ctrl.$getCenter(ctrl.$$map);
+            }
+        });
+    }
+});
 
 (function() {
     "use strict";
@@ -1002,7 +1314,7 @@
             $translate([ ctrl.chRoomCtrl.room.roomType.nameKey, "room.category." + ctrl.chRoomCtrl.room.category ]).then(function(translations) {
                 var title = translations[ctrl.chRoomCtrl.room.roomType.nameKey] + " <small>(" + translations["room.category." + ctrl.chRoomCtrl.room.category].toUpperCase() + ")</small>";
                 Dialog.showGallery(ev, title, _.sortBy(ctrl.chRoomCtrl.room.gallery, [ function(o) {
-                    return +Boolean(o.cover);
+                    return Boolean(o.cover);
                 } ]), {
                     storageUrl: ctrl.chRoomCtrl.storageUrl
                 });
@@ -1081,7 +1393,7 @@
             $translate([ ctrl.chRoomCtrl.room.roomType.nameKey, "room.category." + ctrl.chRoomCtrl.room.category ]).then(function(translations) {
                 var title = translations[ctrl.chRoomCtrl.room.roomType.nameKey] + " <small>(" + translations["room.category." + ctrl.chRoomCtrl.room.category].toUpperCase() + ")</small>";
                 Dialog.showGallery(ev, title, _.sortBy(ctrl.chRoomCtrl.room.gallery, [ function(o) {
-                    return +Boolean(o.cover);
+                    return Boolean(o.cover);
                 } ]), {
                     storageUrl: ctrl.chRoomCtrl.storageUrl
                 });
@@ -1391,6 +1703,34 @@
 
 (function() {
     "use strict";
+    TimeLeftCtrl.$inject = [ "$scope" ];
+    angular.module("chroma.components").component("chTimeLeft", {
+        bindings: {
+            start: "<?",
+            end: "<?"
+        },
+        controller: TimeLeftCtrl,
+        template: '<span ng-bind="$ctrl.$$timeLeft"></span>'
+    });
+    function TimeLeftCtrl($scope) {
+        var ctrl = this;
+        this.$onInit = function() {
+            $scope.$watchGroup([ function() {
+                return ctrl.start;
+            }, function() {
+                return ctrl.end;
+            } ], ctrl.$calculateDiff);
+        };
+        this.$calculateDiff = function() {
+            var start = ctrl.start ? moment(ctrl.start) : moment();
+            var end = ctrl.start ? moment(ctrl.end) : moment();
+            ctrl.$$timeLeft = start.to(end);
+        };
+    }
+})();
+
+(function() {
+    "use strict";
     EventCtrl.$inject = [ "$scope", "$element", "$mdMedia" ];
     angular.module("chroma.components").component("chTimelineEvent", {
         require: {
@@ -1513,6 +1853,61 @@
                     e.align = newVal;
                 });
             });
+        };
+    }
+})();
+
+(function() {
+    "use strict";
+    TruncateCtrl.$inject = [ "$scope", "truncateFilter" ];
+    angular.module("chroma.components").component("chTruncate", {
+        bindings: {
+            text: "@",
+            maxLength: "<?",
+            suffix: "@",
+            hideTooltip: "<?"
+        },
+        controller: TruncateCtrl,
+        template: "<span>" + '<span>{{$ctrl.$$truncated}}</span><md-tooltip ng-if="$ctrl.$$showTooltip">{{$ctrl.text}}</md-tooltip>' + "</span>"
+    });
+    function TruncateCtrl($scope, truncateFilter) {
+        var ctrl = this;
+        ctrl.$onInit = function() {
+            $scope.$watchGroup([ function() {
+                return ctrl.text;
+            }, function() {
+                return ctrl.maxLength;
+            } ], ctrl.$truncate);
+        };
+        ctrl.$truncate = function() {
+            ctrl.$$showTooltip = !ctrl.hideTooltip && ctrl.text.length > ctrl.maxLength;
+            ctrl.$$truncated = truncateFilter(ctrl.text, ctrl.maxLength, ctrl.suffix);
+        };
+    }
+})();
+
+(function() {
+    "use strict";
+    VerticalTextCtrl.$inject = [ "$scope" ];
+    angular.module("chroma.components").component("chVerticalText", {
+        bindings: {
+            text: "<"
+        },
+        controller: VerticalTextCtrl,
+        template: "<div>" + '<p ng-repeat="char in $ctrl.$$textArr">{{char}}</p>' + "</div>"
+    });
+    function VerticalTextCtrl($scope) {
+        var ctrl = this;
+        this.$onInit = function() {
+            ctrl.$initWatches();
+        };
+        this.$prepareText = function() {
+            ctrl.$$textArr = _.split(ctrl.text, "");
+        };
+        this.$initWatches = function() {
+            $scope.$watch(function() {
+                return ctrl.text;
+            }, ctr.$prepareText);
         };
     }
 })();

@@ -57,7 +57,7 @@
     		_.forEach(ctrl.availability.totalRates, function(rate){
     			if (!_.isEmpty(rate.promotions)) {
     				promotions = _.concat(promotions, rate.promotions);
-    			};
+    			}
     		});
     		
     		ctrl.chRoomCtrl.bestPromo = ReservationUtils.bestPromotion(promotions);
@@ -71,7 +71,6 @@
     	this.isOnArrival = function(){
     		ctrl.chRoomCtrl.onArrival = ctrl.availability.onArrival;
     	};
-    	
-    };
+    }
     
 })();

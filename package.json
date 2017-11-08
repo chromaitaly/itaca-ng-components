@@ -2,7 +2,7 @@
 	"name": "chroma-components",
 	"version": "1.0.0",
 	"description": "Various AngularJS components, like date-range, people-picker, timeline, review, etc.",
-	"main": "dist/chroma-components.min.js",
+	"main": "dist/chroma-components.js",
 	"repository": {
 		"type": "git",
 		"url": "git+https://scoletti@bitbucket.org/scoletti/chroma-components.git"

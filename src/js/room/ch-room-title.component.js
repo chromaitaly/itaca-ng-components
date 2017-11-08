@@ -48,6 +48,6 @@
     	
     	this.$onInit = function(){
     	};
-    };
+    }
     
 })();

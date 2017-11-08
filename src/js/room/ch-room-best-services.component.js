@@ -28,5 +28,5 @@
     	this.$onInit = function(){
     		ctrl.services = _.isArray(ctrl.services) ? ctrl.services : ctrl.chRoomCtrl.popularServices;
     	};
-    };
+    }
 })();

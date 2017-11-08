@@ -73,7 +73,7 @@
     		if(!isSmokingRoom){
     			ctrl.chRoomCtrl.popularServices.push({type: 'NO-SMOKING', icon: "mdi mdi-smoking-off md-24", labelKey: "service.type.inroom.NO-SMOKING"});
     		}
-    	}
+    	};
     	
     	this.getIncludedServices = function() {
     		ctrl.includedServices = _.filter(ctrl.chRoomCtrl.room.services, ['bookability', 'INCLUDED']);
@@ -90,6 +90,6 @@
     			Navigator.scrollToAnchor('av-'+ctrl.chRoomCtrl.$$index);
     		}
     	};
-    };
+    }
     
 })();

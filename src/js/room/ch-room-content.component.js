@@ -20,6 +20,5 @@
     	this.$onInit = function(){
     	};
     	
-    };
-    
+    }    
 })();

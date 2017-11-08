@@ -59,6 +59,6 @@
     	
     	this.$onInit = function(){
     	};
-    };
+    }
     
 })();
