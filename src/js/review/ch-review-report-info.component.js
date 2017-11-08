@@ -8,10 +8,10 @@
 		},
 		controller: ReviewReportInfoCtrl,
 		template:
-			"<div flex layout-padding ng-if=\"$ctrl.review.reportType\">" +
-				"<div class=\"no-padding-bottom no-padding-right\">" +
+			"<div class=\"no-padding flex\" ng-if=\"$ctrl.review.reportType\">" +
+				"<div>" +
 					"<md-icon class=\"mdi md-18 mdi-flag-variant text-danger\"></md-icon>" +
-					"<span translate=\"review.reporting.label\"></span>" +
+					"<small translate=\"review.reporting.label\"></small>" +
 				"</div>" +
 			"</div>"
 	});

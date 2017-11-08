@@ -36,11 +36,11 @@
 			    			"<small class=\"font-10 text-gray-light row-1\"><span translate=\"common.written.by.female\"></span>:</small>" +
 			    			"<strong class=\"md-subhead\">"+
 			    				"<span ng-if=\"!$ctrl.review.reviewSettings.anonymous && ($ctrl.review.createdBy || $ctrl.review.reservation.guest)\">" +
-					    			"<span ng-if=\"!$ctrl.review.reviewSettings.showRealName || !$ctrl.review.createdBy.nickname\">" +
+					    			"<span ng-if=\"!$ctrl.review.reviewSettings || $ctrl.review.reviewSettings.showRealName || !$ctrl.review.createdBy.nickname\">" +
 					    				"<span ng-if=\"$ctrl.review.createdBy\">{{::$ctrl.review.createdBy.name}}&nbsp;{{::$ctrl.review.createdBy.surname}}</span>" +
 					    				"<span ng-if=\"!$ctrl.review.createdBy && $ctrl.review.reservation.guest\">{{::$ctrl.review.reservation.guest.name}}&nbsp;{{::$ctrl.review.reservation.guest.surname}}</span>" +
 				    				"</span>" +
-				    				"<span ng-if=\"!$ctrl.review.reviewSettings.showRealName && $ctrl.review.createdBy.nickname\">" +
+				    				"<span ng-if=\"$ctrl.review.reviewSettings && !$ctrl.review.reviewSettings.showRealName && $ctrl.review.createdBy.nickname\">" +
 					    				"<span ng-if=\"$ctrl.review.createdBy\">{{::$ctrl.review.createdBy.nickname}}</span>" +
 					    				"<span ng-if=\"!$ctrl.review.createdBy && $ctrl.review.reservation.guest\">{{::$ctrl.review.reservation.guest.nickname}}</span>" +
 				    				"</span>" +
