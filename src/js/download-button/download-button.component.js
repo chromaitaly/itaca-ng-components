@@ -33,7 +33,7 @@
 			"</span>"
 	});
 			
-	/* @ngInject */		
+	/* @ngInject */
 	function DownloadButtonCtrl($scope, $http, $timeout, $log, Dialog) {
 		var ctrl = this;	
 		

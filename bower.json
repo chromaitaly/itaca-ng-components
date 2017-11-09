@@ -29,6 +29,7 @@
 		"angular-messages": "~1.6.6",
 		"angular-material": "~1.1.5",
 		"lodash": "latest",
+		"angular-filter": "latest",
 		"chroma-utils" : "1.0.0",
 		"chroma-services" : "1.0.0"
 	}
