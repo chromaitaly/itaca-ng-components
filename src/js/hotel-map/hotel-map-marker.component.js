@@ -4,7 +4,6 @@
 	angular.module("chroma.components").component("chHotelMapMarker", {
 		require: {
 			chHotelMapCtrl: '^chHotelMap',
-			ngMapCtrl: "ngMap"
 		},
 		bindings: {
 			hotel: "<",
@@ -14,7 +13,7 @@
 		template:
 			'<div ng-if="$ctrl.hotel" ng-switch=\"$ctrl.markerType\">' +
 				'<div ng-switch-when="pointer">' +
-					'<marker class="clickable" id="mk_{{$ctrl.hotel.id}}" ng-if="$ctrl.$$position" position="[{{$ctrl.$$position.lat()}}, {{$ctrl.$$position.lng()}}]" icon="{{$ctrl.markerIcon}}" on-mouseover="$ctrl.$showDetails($ctrl.hotel);"></marker>' +
+					'<marker class="clickable" id="mk_{{$ctrl.hotel.id}}" ng-if="$ctrl.$$position" position="[{{$ctrl.$$position.lat()}}, {{$ctrl.$$position.lng()}}]" icon="{{$ctrl.$$markerIcon}}" on-mouseover="$ctrl.$showDetails($ctrl.hotel);"></marker>' +
 				'</div>' + 
 				'<div ng-switch-default>' +
 		    		'<custom-marker id="cmk_{{$ctrl.hotel.id}}" ng-if="$ctrl.$$position" position="[{{$ctrl.$$position.lat()}}, {{$ctrl.$$position.lng()}}]"' +
@@ -46,9 +45,8 @@
 	function HotelMapMarkerCtrl($scope) {
 		var ctrl = this;
 		
-		var geocoder = new google.maps.Geocoder();
-		
 		this.$onInit = function() {
+			ctrl.$$markerIcon = "/resources/public/img/map-marker.01.png";
 			ctrl.$getMarkerPosition();
 		};
 		
@@ -59,7 +57,7 @@
     		
 	  	  	var fullAddress = ctrl.hotel.addressInfo.address +', '+ ctrl.hotel.addressInfo.city +', '+ ctrl.hotel.addressInfo.zipcode;
 
-	  	  	geocoder.geocode({'address': fullAddress}, function(results, status) {
+	  	  	ctrl.chHotelMapCtrl.$$geocoder.geocode({'address': fullAddress}, function(results, status) {
 	  	  		if (status == google.maps.GeocoderStatus.OK) {
 	  	  			ctrl.$$position = results[0].geometry.location;
 

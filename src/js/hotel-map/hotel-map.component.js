@@ -32,11 +32,9 @@
 	 function HotelMapCtrl($scope, $element, $timeout) {
 		 var ctrl = this;
 		 
-		 var geocoder = new google.maps.Geocoder();
+		 this.$$geocoder = new google.maps.Geocoder();
 		 
 		 this.$onInit = function() {
-			 scope.markerIcon = "/resources/public/img/map-marker.01.png";
-	     	   
 			 // mostrare galleria?
 			 ctrl.showGallery = _.isBoolean(scope.showGallery) ? scope.showGallery : false;	    	
 			 // mostro i comandi di google 
@@ -90,7 +88,7 @@
 					ctrl.$updateCenter(map);
 					
 				 } else {
-					geocoder.geocode({'address': ctrl.address}, function(results, status) {
+					$$geocoder.geocode({'address': ctrl.address}, function(results, status) {
 			  	  		if (status == google.maps.GeocoderStatus.OK) {
 			  	  			ctrl.$$centerObj = results[0].geometry.location;
 			

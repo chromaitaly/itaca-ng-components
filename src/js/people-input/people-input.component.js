@@ -39,6 +39,8 @@
 			ctrl.mdNoAsterisk = _.isNil(ctrl.mdNoAsterisk) ? false : ctrl.mdNoAsterisk;
 			
 			ctrl.$$data = {people: ctrl.people};
+			
+			ctrl.$initWhatches();
 		};
 		
 		this.$observeOriginal = function() {
@@ -55,8 +57,13 @@
 		};
 		
 		this.$initWhatches = function() {
-			$scope.$watchCollection("people", ctrl.$observeOriginal);
-			$scope.$watchCollection("data.people", ctrl.$observeWorking);
+			$scope.$watchCollection(function() {
+				return ctrl.people;
+			}, ctrl.$observeOriginal);
+			
+			$scope.$watchCollection(function(){ 
+				return ctrl.$$data.people;
+			}, ctrl.$observeWorking);
 		};
 	}
 })();

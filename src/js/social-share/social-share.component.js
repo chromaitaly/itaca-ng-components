@@ -15,29 +15,29 @@
 		template: 
 			"<div class=\"layout-padding no-padding-top\" ng-cloak>" +
 				"<div hide-gt-sm class=\"layout-align-center-center layout-row layout-wrap\">" +
-					"<md-button class=\"auto-height button-mini md-button\" aria-label=\"whatsapp\"" +
+					"<a class=\"auto-height button-mini md-button\" aria-label=\"whatsapp\"" +
 				      "socialshare" +
 				       "socialshare-provider=\"whatsapp\"" +
 				       "socialshare-url=\"{{$ctrl.$$url}}\"" +
 				       "socialshare-text=\"{{$ctrl.text}}\">" +
 				       "<md-icon class=\"mdi mdi-whatsapp {{$ctrl.iconSize}} material-icons text-whatsapp\"></md-icon>" +
 				       "<div class=\"font-12 row-mini text-initial text-wrap\">Whatsapp</div>" +
-				    "</md-button>" +
-				     "<md-button class=\"auto-height button-mini md-button\" aria-label=\"sms\"" +
+				    "</a>" +
+				     "<a class=\"auto-height button-mini md-button\" aria-label=\"sms\"" +
 				       "socialshare" +
 				       "socialshare-provider=\"sms\"" +
 				       "socialshare-text=\"{{$ctrl.text}}\"" +
 				       "socialshare-url=\"{{$ctrl.$$url}}\">" +
 				       "<md-icon class=\"mdi mdi-message-text {{$ctrl.iconSize}} material-icons text-primary\"></md-icon>" +
 				       "<div class=\"font-12 row-mini text-initial text-wrap\">SMS</div>" +
-				    "</md-button>" +
-					"<md-button class=\"auto-height button-mini md-button\" aria-label=\"facebook messenger\"" +
+				    "</a>" +
+					"<a class=\"auto-height button-mini md-button\" aria-label=\"facebook messenger\"" +
 						"socialshare" +
 						"socialshare-provider=\"facebook-messenger\"" +
 						"socialshare-url=\"{{$ctrl.$$url}}\">" +
 						"<md-icon class=\"mdi mdi-facebook-messenger {{$ctrl.iconSize}} material-icons text-messenger\"></md-icon>" +
 						"<div class=\"font-12 row-mini text-initial text-wrap\">Messenger</div>" +
-					"</md-button>" +
+					"</a>" +
 				"</div>" +
 				"<md-divider hide-gt-sm></md-divider>" +
 				"<div class=\"layout-align-center-center layout-row layout-wrap\">" +

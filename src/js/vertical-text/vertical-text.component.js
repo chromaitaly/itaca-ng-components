@@ -12,23 +12,23 @@
 			"</div>"
 	});
 	
-	 /* @ngInject */
-	 function VerticalTextCtrl($scope) {
-		 var ctrl = this;
+	/* @ngInject */
+	function VerticalTextCtrl($scope) {
+		var ctrl = this;
 		 
-		 this.$onInit = function() {
-			 ctrl.$initWatches();
-		 };
+		this.$onInit = function() {
+			ctrl.$initWatches();
+		};
 		 
-		 this.$prepareText = function() {
-			 ctrl.$$textArr = _.split(ctrl.text, "");
-		 };
+		this.$prepareText = function() {
+			ctrl.$$textArr = _.split(ctrl.text, "");
+		};
 		 
-		 this.$initWatches = function() {
+		this.$initWatches = function() {
 			$scope.$watch(function() {
 				return ctrl.text;
 			
 			}, ctr.$prepareText); 
-		 };
-	 }
+		};
+	}
 })();
