@@ -1,9 +1,9 @@
 (function() {
     'use strict';
     
-    angular.module("chroma.components", ["ngMaterial", "chroma.services", "chroma.utils", "pascalprecht.translate", "tmh.dynamicLocale"]);
+    angular.module("itaca.components", ["ngMaterial", "itaca.services", "itaca.utils", "pascalprecht.translate", "tmh.dynamicLocale"]);
     
-    angular.module("chroma.components").config(function($windowProvider, $translateProvider, tmhDynamicLocaleProvider) {
+    angular.module("itaca.components").config(function($windowProvider, $translateProvider, tmhDynamicLocaleProvider) {
     	var defaultLocale = ($windowProvider.$get().navigator.language || $windowProvider.$get().navigator.userLanguage).split("-")[0].toLowerCase();
 
     	$translateProvider.useLoader('i18nLoader');

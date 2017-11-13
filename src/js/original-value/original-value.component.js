@@ -1,7 +1,7 @@
 (function() {
 	'use strict';
 	
-	angular.module("chroma.components").component('chOriginalValue', {
+	angular.module("itaca.components").component('chOriginalValue', {
 		require: {
 			ngModelCtrl: 'ngModel',
 		},

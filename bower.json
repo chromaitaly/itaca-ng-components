@@ -1,6 +1,8 @@
 {
-	"name": "chroma-components",
+	"name": "itaca-ng-components",
 	"version": "1.0.0",
+	"description": "Various AngularJS components, like date-range, people-picker, timeline, review, ecc",
+	"main": "dist/itaca-ng-components.js",
 	"author": {
 		"name": "Chroma Italy Hotels srl",
 		"email": "ast-dev@chromaitaly.com",
@@ -12,10 +14,8 @@
 			"email": "simone.coletti@chromaitaly.com"
 		}
 	],
-	"description": "Various AngularJS components, like date-range, people-picker, timeline, review, ecc",
-	"main": "dist/chroma-components.js",
 	"license": "MIT",
-	"homepage": "www.chromaitaly.com",
+	"homepage": "https://bitbucket.org/scoletti/itaca-ng-components#readme",
 	"ignore": [
 		"node_modules",
 		"bower_components",
@@ -35,7 +35,7 @@
 		"angular-dynamic-locale": "~0.1.32",
 		"lodash": "latest",
 		"angular-filter": "latest",
-		"chroma-utils" : "1.0.0",
-		"chroma-services" : "1.0.0"
+		"chroma-utils": "1.0.0",
+		"chroma-services": "1.0.0"
 	}
 }

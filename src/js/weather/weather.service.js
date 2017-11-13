@@ -1,7 +1,7 @@
 (function() {
 	'use strict';
 	
-	angular.module("chroma.components").provider('Weather', WeatherProvider);
+	angular.module("itaca.components").provider('Weather', WeatherProvider);
 	
 	function WeatherProvider() {
 		var $$appId = "";

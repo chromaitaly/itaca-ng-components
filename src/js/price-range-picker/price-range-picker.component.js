@@ -1,7 +1,7 @@
 (function() {
 	'use strict';
 	
-	angular.module("chroma.components").component("chPriceRangePicker", {
+	angular.module("itaca.components").component("chPriceRangePicker", {
         bindings: {
         	min: "=?",
     		max: "=?",
@@ -17,7 +17,7 @@
 	    	hasClose: "<?",
     		ngDisabled: "<?" 
         },
-        controller: PriceRangePickerCtrl
+        controller: PriceRangePickerCtrl,
         template: 
         	"<ng-form name=\"chPriceRangeForm\" class=\"flex no-padding layout-column\">" +
 		  		"<md-button class=\"ch-price-range-button flex minimal-button text-initial {{$ctrl.buttonClass}}\" ng-click=\"$ctrl.$openPanel($event)\" aria-label=\"Change price range\" ng-disabled=\"$ctrl.ngDisabled\">" +
@@ -75,7 +75,7 @@
 			    	(ctrl.hasBackdrop || ctrl.disableBodyScroll) && ctrl.$toggleBodyScroll(true);
 			    }
 			 };
-		}
+		};
 		
 		this.$toggleBodyScroll = function(block) {
 			angular.element(document.body).css({overflow: block ? "hidden" : "auto"});

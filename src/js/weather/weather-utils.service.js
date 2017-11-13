@@ -1,7 +1,7 @@
 (function() {
 	'use strict';
 	
-	angular.module("chroma.utils").factory('WeatherUtils', WeatherUtilsFactory);
+	angular.module("itaca.components").factory('WeatherUtils', WeatherUtilsFactory);
 	
 	/* @ngInject */
 	function WeatherUtilsFactory() {		

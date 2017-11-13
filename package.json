@@ -1,11 +1,11 @@
 {
-	"name": "chroma-components",
+	"name": "itaca-ng-components",
 	"version": "1.0.0",
 	"description": "Various AngularJS components, like date-range, people-picker, timeline, review, etc.",
-	"main": "dist/chroma-components.js",
+	"main": "dist/itaca-ng-components.js",
 	"repository": {
 		"type": "git",
-		"url": "git+https://scoletti@bitbucket.org/scoletti/chroma-components.git"
+		"url": "git+https://scoletti@bitbucket.org/scoletti/itaca-ng-components.git"
 	},
 	"author": {
 		"name": "Chroma Italy Hotels srl",
@@ -22,7 +22,7 @@
 		}
 	],
 	"license": "MIT",
-	"homepage": "https://bitbucket.org/scoletti/chroma-components#readme",
+	"homepage": "https://bitbucket.org/scoletti/itaca-ng-components#readme",
 	"browserslist": [
 		"> 1%",
 		"last 3 versions"
@@ -39,6 +39,7 @@
 		"grunt-contrib-htmlmin": "latest",
 		"grunt-contrib-jshint": "latest",
 		"grunt-contrib-less": "latest",
+		"grunt-less-imports": "latest",
 		"grunt-contrib-uglify": "latest",
 		"grunt-ng-annotate": "latest",
 		"grunt-postcss": "^0.9.0",

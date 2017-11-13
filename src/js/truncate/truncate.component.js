@@ -1,7 +1,7 @@
 (function() {
 	'use strict';
 	
-	angular.module("chroma.components").component('chTruncate', {
+	angular.module("itaca.components").component('chTruncate', {
 		bindings: {
 			text: "@",
 			maxLength: "<?",

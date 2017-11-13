@@ -1,7 +1,7 @@
 (function() {
 	'use strict';
 	
-	angular.module("chroma.components").component("chReviewsSummaryDetails", {
+	angular.module("itaca.components").component("chReviewsSummaryDetails", {
 		require: {
 			chReviewsSummaryCtrl: '^chReviewsSummary'
 		},

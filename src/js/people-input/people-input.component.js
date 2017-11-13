@@ -4,7 +4,7 @@
 (function() {
 	'use strict';
 	
-	angular.module("chroma.components").component('chPeopleInput', {
+	angular.module("itaca.components").component('chPeopleInput', {
         bindings: {
         	containerClass: "@",
         	inputLabel: "@",

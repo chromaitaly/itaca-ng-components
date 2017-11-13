@@ -4,7 +4,7 @@
 (function() {
 	'use strict';
 	
-	angular.module("chroma.components").component('chCard', {
+	angular.module("itaca.components").component('chCard', {
 		transclude: true,
 		bindings: {
 			bgUrl: "@",

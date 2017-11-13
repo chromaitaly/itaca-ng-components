@@ -1,7 +1,7 @@
 (function(){
 	'use strict';
 	
-	angular.module("chroma.components").component("chHotelMapMarker", {
+	angular.module("itaca.components").component("chHotelMapMarker", {
 		require: {
 			chHotelMapCtrl: '^chHotelMap',
 		},

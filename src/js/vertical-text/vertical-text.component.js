@@ -1,7 +1,7 @@
 (function() {
 	'use strict';
 	
-	angular.module("chroma.components").component("chVerticalText", {
+	angular.module("itaca.components").component("chVerticalText", {
 		bindings: {
 			text: '<',
     	},

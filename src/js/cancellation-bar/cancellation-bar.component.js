@@ -4,7 +4,7 @@
 (function() {
 	'use strict';
 	
-	angular.module("chroma.components").component('chCancellationBar', {
+	angular.module("itaca.components").component('chCancellationBar', {
         bindings: {
         	creationDate: "<",
         	checkinDate: "<",

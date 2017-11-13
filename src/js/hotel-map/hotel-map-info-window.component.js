@@ -1,7 +1,7 @@
 (function(){
 	'use strict';
 	
-	angular.module("chroma.components").component("chHotelMapInfoWindow", {
+	angular.module("itaca.components").component("chHotelMapInfoWindow", {
 		require: {
 			chHotelMapCtrl: '^chHotelMap',
 			ngMapCtrl: "ngMap"

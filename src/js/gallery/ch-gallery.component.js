@@ -1,7 +1,7 @@
 (function() {
     'use strict';
     
-    angular.module("chroma.components").component("chGallery", {
+    angular.module("itaca.components").component("chGallery", {
     	require: {
 		},
     	bindings: {

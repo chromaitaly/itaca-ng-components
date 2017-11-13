@@ -1,0 +1,168 @@
+.ch-timeline {
+	position: relative;
+	overflow: hidden;
+}
+.ch-timeline > div:first-child {
+	position: relative;
+	z-index: 1;
+}
+
+.ch-timeline bar {
+	position: absolute;
+	top: 24px;
+	bottom: 42px;
+    height: auto;
+    width: 2px;
+    background: rgba(0, 0, 0, 0.07);
+    position: absolute;
+    z-index: 0;
+    margin-top: 0;
+    margin-left: -2px;
+}
+
+.ch-timeline-center.ch-timeline-odd bar {
+	bottom: 104px !important;
+}
+
+.ch-timeline bar::after {
+    content: '';
+    width: 2px;
+    height: 40px;
+    position: absolute;
+    bottom: -42px;
+    left: 0;
+    background: linear-gradient(to top, transparent 50%, rgba(0, 0, 0, 0.07) 50%);
+    background-size: 10px 6px, 100% 2px;
+}
+
+
+.ch-timeline-left bar {
+	right: 35px !important;
+	bottom: 72px !important;
+}
+
+.ch-timeline-right bar {
+	left: 35px !important;
+	bottom: 72px !important;
+}
+
+
+.ch-timeline-event {
+	-webkit-transition: 400ms cubic-bezier(0.250, 0.250, 0.750, 0.750) all;
+    -moz-transition: 400ms cubic-bezier(0.250, 0.250, 0.750, 0.750) all;
+    -ms-transition: 400ms cubic-bezier(0.250, 0.250, 0.750, 0.750) all;
+    -o-transition: 400ms cubic-bezier(0.250, 0.250, 0.750, 0.750) all;
+    transition: 400ms cubic-bezier(0.250, 0.250, 0.750, 0.750) all;
+}
+
+.ch-timeline-event:after {
+    content: '';
+    width: 100px;
+    height: 2px;
+    background: rgba(0, 0, 0, 0.07);
+    position: absolute;
+    z-index: -1;
+}
+
+.ch-timeline-event-content {
+	width: ~"calc(100% - 56px)";
+    position: relative;
+    border-radius: 2px;
+    z-index:3;
+}
+
+/* centrali alternati a destra*/
+.ch-timeline-center .ch-timeline-event:nth-child(odd) .ch-timeline-event-content {
+	width: ~"calc(100% - 28px)" !important;
+    float: left;
+    min-height: 140px;
+}
+
+.ch-timeline-center .ch-timeline-event:nth-child(odd) .ch-timeline-event-icon{
+    right: -24px;
+    top: 24px;
+}
+
+.ch-timeline-center .ch-timeline-event:nth-child(odd):after {
+	right: 0;
+    top: 48px;
+}
+
+/* centrali alternati a sinistra*/
+.ch-timeline-center .ch-timeline-event:nth-child(even) .ch-timeline-event-content {
+	width: ~"calc(100% - 28px)" !important;
+    float: right;
+    min-height: 140px;
+}
+
+.ch-timeline-center .ch-timeline-event:nth-child(even) .ch-timeline-event-icon {
+    left: -24px;
+    top: 82px;
+}
+
+.ch-timeline-center .ch-timeline-event:nth-child(even):after {
+	left: 0;
+    top: 106px;
+}
+
+/* tutto a destra */
+.ch-timeline-right .ch-timeline-event .ch-timeline-event-content {
+ 	float: right !important;
+ 	min-height: auto;
+ }
+ 
+.ch-timeline-right .ch-timeline-event .ch-timeline-event-icon {
+    left: 10px  !important;
+    right: initial !important;
+    top: 20px !important;
+ }
+ 
+.ch-timeline-right .ch-timeline-event:after {
+    left: 24px !important;
+    right: initial !important;
+    top: 44px !important;
+}
+ 
+ /* tutto a sinistra */
+.ch-timeline-left .ch-timeline-event .ch-timeline-event-content {
+ 	 float: left !important;
+ 	 min-height: auto;
+}
+ 
+.ch-timeline-left .ch-timeline-event .ch-timeline-event-icon {
+    right: 10px  !important;
+    left: initial !important;
+    top: 20px !important;
+}
+
+.ch-timeline-left .ch-timeline-event:after {
+    right: 24px !important;
+    left: initial !important;
+    top: 44px !important;
+}
+
+
+.ch-timeline-event-icon {
+	position: absolute;
+    border-radius: 24px;
+    height: 48px;
+    width: 48px;
+    background: #ccc;
+    display: inline-block;
+    line-height: 48px;
+    text-align: center;
+    padding: 0;
+    z-index:3;
+}
+
+.ch-timeline-event-icon > div {
+	padding-top: 6px;
+}
+
+.ch-timeline.no-icon bar, .ch-timeline.no-icon .ch-timeline-event-icon, .ch-timeline.no-icon .ch-timeline-event:after  {
+	display: none !important
+}
+
+.ch-timeline.no-icon .ch-timeline-event-content {
+	width: 100% !important;
+}

@@ -4,10 +4,10 @@
 (function() {
 	'use strict';
 	
-	angular.module("chroma.components").component('chDatePicker', {
+	angular.module("itaca.components").component('chDatePicker', {
         require: {
         	ngModelCtrl: 'ngModel' 
-        }
+        },
         bindings: {
         	buttonClass: "@",
         	wrapperClass: "@",

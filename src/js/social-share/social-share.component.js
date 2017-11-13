@@ -1,7 +1,7 @@
 (function() {
 	'use strict';
 	
-	angular.module("chroma.components").component('chSocialShare', {
+	angular.module("itaca.components").component('chSocialShare', {
 		bindings: {
 			iconSize: "<?",
 			title: "@",

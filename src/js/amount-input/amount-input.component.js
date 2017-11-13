@@ -1,7 +1,7 @@
 (function() {
 	'use strict';
 	
-	angular.module("chroma.components").component('chAmountInput', {
+	angular.module("itaca.components").component('chAmountInput', {
 		require: {
 			ngModelCtrl: 'ngModel',
 		},

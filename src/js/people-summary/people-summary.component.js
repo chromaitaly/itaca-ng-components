@@ -4,7 +4,7 @@
 (function() {
 	'use strict';
 	
-	angular.module("chroma.components").component('chPeopleSummary', {
+	angular.module("itaca.components").component('chPeopleSummary', {
         bindings: {
         	people: "<",
         	extraPeople: "<?",
@@ -56,6 +56,6 @@
 			$scope.$watchCollection(function() {
 				return ctrl.noDetails;
 			}, ctrl.$updateSummary);
-		}
+		};
 	}
 })();

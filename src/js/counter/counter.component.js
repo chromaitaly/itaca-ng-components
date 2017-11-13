@@ -1,7 +1,7 @@
 (function() {
 	'use strict';
 	
-	angular.module("chroma.components").component("chCounter", {
+	angular.module("itaca.components").component("chCounter", {
 		transclude: true,
 		require: {
 			ngModelCtrl: "ngModel"
@@ -126,7 +126,7 @@
     		return ctrl.ngDisabled ? ctrl.ngDisabled : ctrl.plusDisabled ? ctrl.plusDisabled : (angular.isNumber(ctrl.max) && ctrl.count >= ctrl.max);
     	};
     	
-    	this.$updateModel(){
+    	this.$updateModel = function(){
 			ctrl.ngModelCtrl.$setViewValue(ctrl.count);
     	};
     	

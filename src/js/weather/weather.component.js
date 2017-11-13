@@ -1,7 +1,7 @@
 (function() {
 	'use strict';
 	
-	angular.module("chroma.components").component('chWeather', {
+	angular.module("itaca.components").component('chWeather', {
 		bindings: {
 			city: "@",
 			country: "@"
@@ -52,7 +52,7 @@
 			}, function(error) {
 				$log.error(error);
 				ctrl.$reset();
-			})
+			});
 			
 //			$http({
 //				method: 'GET',

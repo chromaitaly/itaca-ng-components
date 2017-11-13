@@ -1,7 +1,7 @@
 (function() {
 	'use strict';
 	
-	angular.module("chroma.components").component('chArrayInputOption', {
+	angular.module("itaca.components").component('chArrayInputOption', {
 	  	require: {
 	  		chArrayInputCtrl: '^chArrayInput'
 	  	},

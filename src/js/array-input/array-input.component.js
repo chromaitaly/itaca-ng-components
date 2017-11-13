@@ -1,7 +1,7 @@
 (function() {
 	'use strict';
 	
-	angular.module("chroma.components").component('chArrayInput', {
+	angular.module("itaca.components").component('chArrayInput', {
 		require: {
 			ngModelCtrl: 'ngModel'
 		},

@@ -1,0 +1,86 @@
+.ch-cancellation-bar-container {
+	width: 100%;
+	min-height: 90px;
+	position: relative;
+	margin: 8px 0;
+}
+.ch-cancellation-bar-container .progress-bar {
+    height: 30px;
+    background: #DDD;
+    /*overflow: hidden;*/
+    position: relative;
+}
+.ch-cancellation-bar-container .bar {
+	position: absolute;
+	height: 30px;
+	top:0;
+	left:0;
+	width: 100%;
+}
+
+.ch-cancellation-bar-container .limit-label {
+    position: absolute;
+    top: 37px;
+    font-size: 10px;
+    z-index: 1;
+    width: 60px;
+    margin-left: -30px;
+    text-align: center;
+    color: @color-success;
+    font-weight: bold;
+}
+
+.ch-cancellation-bar-container .limit-label.limit-label-full {
+	margin-left: -60px !important;
+	text-align: right !important;
+}
+
+.ch-cancellation-bar-container .limit-label.limit-label-full::before {
+	margin-left: 30px !important;
+}
+
+.ch-cancellation-bar-container .limit-label.limit-label-empty {
+	margin-left: 0px !important;
+	text-align: left !important;
+}
+
+.ch-cancellation-bar-container .limit-label.limit-label-empty::before {
+	margin-left: -30px !important;
+}
+
+.ch-cancellation-bar-container .limit-label::before {
+    position: absolute;
+    width: 2px;
+    height: 35px;
+    background: @color-success-dark;
+    top: -37px;
+    left: 50%;
+    content: '';
+}
+
+.ch-cancellation-bar-container .summary-label {
+	font-size: 12px;
+    text-align: center;
+    margin-bottom: 20px;
+}
+
+.ch-cancellation-bar-container .today-label {
+    position: absolute;
+    bottom: 37px;
+    font-size: 10px;
+    z-index: 1;
+    width: 60px;
+    margin-left:-30px;
+    text-align: center;
+    font-weight: bold;
+}
+
+.ch-cancellation-bar-container .today-label::before {
+    position: absolute;
+    width: 2px;
+    height: 35px;
+    background: #333;
+    bottom: -37px;
+    left: 50%;
+    content: '';
+}

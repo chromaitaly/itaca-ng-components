@@ -1,7 +1,7 @@
 (function() {
 	'use strict';
 	
-	angular.module("chroma.components").component("chEasingBg", {
+	angular.module("itaca.components").component("chEasingBg", {
 		transclude: true,
 		bindings: {
     		bgClass: "@?",

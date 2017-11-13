@@ -4,7 +4,7 @@
 (function() {
 	'use strict';
 	
-	angular.module("chroma.components").component('chDateRangePicker', {
+	angular.module("itaca.components").component('chDateRangePicker', {
         bindings: {
         	buttonClass: "@",
         	wrapperClass: "@",
@@ -157,7 +157,7 @@
 			
 			// init diff
 			ctrl.calculateDiff();
-		}
+		};
 		
 		this.$$toggleBodyScroll = function(block) {
 			angular.element(document.body).css({overflow: block ? "hidden" : "auto"});
@@ -198,7 +198,7 @@
 				 return;
 			 }
 			 
-			 ctrl.start = ctrl.$getDate(ctrl.$$data.start)
+			 ctrl.start = ctrl.$getDate(ctrl.$$data.start);
 			 ctrl.startMinDate = ctrl.$getDate(ctrl.$$data.startMinDate);
 			 ctrl.startMaxDate = ctrl.$getDate(ctrl.$$data.startMaxDate);
 			 ctrl.end = ctrl.$getDate(ctrl.$$data.end);

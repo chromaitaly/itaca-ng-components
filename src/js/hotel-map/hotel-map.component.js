@@ -1,7 +1,7 @@
 (function() {
 	'use strict';
 	
-	angular.module("chroma.components").component("chHotelMap", {
+	angular.module("itaca.components").component("chHotelMap", {
 		bindings: {
 			hotels: "<?",
 	    	hotel: "<?",

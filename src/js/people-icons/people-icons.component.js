@@ -4,7 +4,7 @@
 (function() {
 	'use strict';
 	
-	angular.module("chroma.components").component.directive('chPeopleIcons', {
+	angular.module("itaca.components").component.directive('chPeopleIcons', {
         bindings: {
         	people: "<",
         	max: "<?",

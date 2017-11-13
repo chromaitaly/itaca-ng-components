@@ -4,7 +4,7 @@
 (function() {
 	'use strict';
 	
-	angular.module("chroma.components").component("chTimeLeft", {
+	angular.module("itaca.components").component("chTimeLeft", {
 		bindings: {
 			start: "<?",
         	end: "<?"

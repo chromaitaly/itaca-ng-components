@@ -1,7 +1,7 @@
 (function() {
 	'use strict';
 	
-	angular.module("chroma.components").component('chPeoplePicker', {
+	angular.module("itaca.components").component('chPeoplePicker', {
 		bindings: {
 			buttonClass: "@",
         	wrapperClass: "@",

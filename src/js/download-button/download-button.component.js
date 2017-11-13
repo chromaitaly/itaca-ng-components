@@ -1,7 +1,7 @@
 (function() {
 	'use strict';
 	
-	angular.module("chroma.components").component('chDownloadButton', {
+	angular.module("itaca.components").component('chDownloadButton', {
 		bindings: {
 			url: "<",
 			btnClass: "@",

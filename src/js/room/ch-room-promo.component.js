@@ -1,7 +1,7 @@
 (function() {
     'use strict';
     
-    angular.module("chroma.components").component("chRoomPromo", {
+    angular.module("itaca.components").component("chRoomPromo", {
     	require: {
     		chRoomCtrl: '^chRoom',
 		},

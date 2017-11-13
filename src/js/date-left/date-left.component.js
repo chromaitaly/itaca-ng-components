@@ -1,12 +1,15 @@
 /**
  * date counter left
  */
-myApp.directive('chDateLeft',{
+(function() {
+	'use strict';
+	
+	angular.module("itaca.components").component('chDateLeft', {
         bindings: {
         	start: "<?",
         	end: "<?"
         },
-        controller: DateCounterCtrl
+        controller: DateCounterCtrl,
         template: '<span>{{$ctrl.$$dateLeft}}</span>',
 	 });
 

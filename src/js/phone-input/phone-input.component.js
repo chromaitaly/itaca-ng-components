@@ -1,7 +1,10 @@
 (function() {
 	'use strict';
 	
-	angular.module("chroma.components").component('chPhoneInput', {
+	angular.module("itaca.components").component('chPhoneInput', {
+		require: {
+			ngModelCtrl: 'ngModel',
+		},
 		bindings: {
 			ngModel: "=",
 			inputName: "@",
@@ -17,9 +20,7 @@
 			prefixErrorMessages: "<",
 			noAsterisk: "<"
 		},
-		require: {
-			ngModelCtrl: 'ngModel',
-		},
+		controller: PhoneInputCtrl,
 		template: 
 	    	"<ng-form name=\"chPhoneInputForm\" ng-class=\"{\'text-gray-light cursor-disabled\': $ctrl.ngDisabled}\" layout>" +
 		    	"<div>"+
@@ -58,7 +59,7 @@
 	});
 	
 	/* @ngInject */
-	function($scope, $log, REGEXP, PhoneList) {
+	function PhoneInputCtrl($scope, $log, REGEXP, PhoneList) {
 	   var ctrl = this;
 	   
 	   this.$onInit = function() {
@@ -124,6 +125,6 @@
 			}, function(newVal, oldVal) {
 			   ctrl.$updateModel();
 			});
-		}
+		};
    }
 })();
