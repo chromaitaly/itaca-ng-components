@@ -1,0 +1,31 @@
+.ch-loading-modal {
+	width: 100%; 
+	height: 100%;
+  	position: fixed;
+  	top: 0; 
+  	left: 0;
+ 	background: rgba(255,255,255,.7);
+  	z-index: 999999;
+}
+
+md-progress-circular.ch-progress  {
+	background: url('../img/favicon-194x194.png') center center no-repeat;
+}
+
+md-progress-circular.ch-progress-white  {
+	background: url('../img/favicon-totalwhite.png') center center no-repeat;
+}
+
+md-progress-circular.ch-progress,
+md-progress-circular.ch-progress-white {
+	background-size: 65% !important;
+}
+
+md-progress-circular.ch-progress svg path,
+md-progress-circular.ch-progress-white svg path {
+	stroke-width: 4% !important;
+}
+
+md-progress-circular.ch-progress-white svg path {
+	stroke: @color-white !important;
+}
