@@ -1,12 +1,41 @@
-/*****************************************************************/
-/** itaca-ng-components v1.0.0 13-11-2017	**/
-/** itaca-ng-components, logos and all images are registered     	**/
-/** trademarks of Chroma Italy Hotels srl.                     	**/
-/** All rights reserved.                                     	**/
-/** Registration code: 21-11-2016/011058        	**/
-/** 						                                 	**/
-/**                               Chroma Italy Hotels srl ® 2017	**/
-/*****************************************************************/
+/*******************************************************************************
+********************************************************************************
+********************************************************************************
+***	   itaca-ng-components														 
+***    Copyright (C) 2016   Chroma Italy Hotels srl	 
+***                                                                          
+***    This program is free software: you can redistribute it and/or modify  
+***    it under the terms of the GNU General Public License as published by  
+***    the Free Software Foundation, either version 3 of the License, or     
+***    (at your option) any later version.                                   
+***                                                                          
+***    This program is distributed in the hope that it will be useful,       
+***    but WITHOUT ANY WARRANTY; without even the implied warranty of        
+***    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the         
+***    GNU General Public License for more details.                          
+***                                                                          
+***    You should have received a copy of the GNU General Public License     
+***    along with this program.  If not, see <http://www.gnu.org/licenses/>. 
+********************************************************************************
+********************************************************************************
+*******************************************************************************/
+(function() {
+    "use strict";
+    angular.module("itaca.components", [ "ngMaterial", "itaca.services", "itaca.utils", "pascalprecht.translate", "tmh.dynamicLocale" ]);
+    angular.module("itaca.components").config([ "$windowProvider", "$translateProvider", "tmhDynamicLocaleProvider", function($windowProvider, $translateProvider, tmhDynamicLocaleProvider) {
+        var defaultLocale = ($windowProvider.$get().navigator.language || $windowProvider.$get().navigator.userLanguage).split("-")[0].toLowerCase();
+        $translateProvider.useLoader("i18nLoader");
+        $translateProvider.preferredLanguage(defaultLocale);
+        $translateProvider.useCookieStorage();
+        $translateProvider.useMissingTranslationHandlerLog();
+        $translateSanitizationProvider.addStrategy("sce", "sceStrategy");
+        $translateProvider.useSanitizeValueStrategy("sce");
+        tmhDynamicLocaleProvider.localeLocationPattern("/resources/public/js/i18n/angular-locale_{{locale}}.js");
+        tmhDynamicLocaleProvider.useCookieStorage();
+        tmhDynamicLocaleProvider.defaultLocale(defaultLocale);
+    } ]);
+})();
+
 (function() {
     "use strict";
     AmountInputCtrl.$inject = [ "$scope", "REGEXP", "$translate", "NumberUtils", "Locale" ];
@@ -373,23 +402,6 @@
             });
         };
     }
-})();
-
-(function() {
-    "use strict";
-    angular.module("itaca.components", [ "ngMaterial", "chroma.services", "chroma.utils", "pascalprecht.translate", "tmh.dynamicLocale" ]);
-    angular.module("itaca.components").config([ "$windowProvider", "$translateProvider", "tmhDynamicLocaleProvider", function($windowProvider, $translateProvider, tmhDynamicLocaleProvider) {
-        var defaultLocale = ($windowProvider.$get().navigator.language || $windowProvider.$get().navigator.userLanguage).split("-")[0].toLowerCase();
-        $translateProvider.useLoader("i18nLoader");
-        $translateProvider.preferredLanguage(defaultLocale);
-        $translateProvider.useCookieStorage();
-        $translateProvider.useMissingTranslationHandlerLog();
-        $translateSanitizationProvider.addStrategy("sce", "sceStrategy");
-        $translateProvider.useSanitizeValueStrategy("sce");
-        tmhDynamicLocaleProvider.localeLocationPattern("/resources/public/js/i18n/angular-locale_{{locale}}.js");
-        tmhDynamicLocaleProvider.useCookieStorage();
-        tmhDynamicLocaleProvider.defaultLocale(defaultLocale);
-    } ]);
 })();
 
 (function() {
@@ -1417,6 +1429,72 @@
                 } else {
                     ctrl.$select();
                 }
+            });
+        };
+    }
+})();
+
+(function() {
+    "use strict";
+    LoadingModalCtrl.$inject = [ "$scope" ];
+    angular.module("itaca.components").component("chLoadingModal", {
+        bindings: {
+            message: "<",
+            messageKey: "<",
+            progressDiameter: "@",
+            contClass: "@"
+        },
+        controller: LoadingModalCtrl,
+        template: '<div flex layout="column" layout-padding layout-align="center center" class="ch-loading-modal {{$ctrl.contClass}}">' + "<div>" + '<md-progress-circular class="md-primary ch-progress" md-mode="indeterminate" md-diameter="{{$ctrl.progressDiameter}}"></md-progress-circular>' + "</div>" + '<div ng-if="$ctrl.message || $ctrl.messageKey" class="text-center">' + '<span ng-if="$ctrl.message" ng-bind="$ctrl.message"></span>' + '<span ng-if="!$ctrl.message && $ctrl.messageKey" translate="{{$ctrl.messageKey}}"></span>' + "</div>" + "</div>"
+    });
+    function LoadingModalCtrl($scope) {
+        var ctrl = this;
+        this.$onInit = function() {
+            ctrl.progressDiameter = ctrl.progressDiameter || 80;
+        };
+    }
+})();
+
+(function() {
+    "use strict";
+    LoadingProgressCtrl.$inject = [ "$scope", "$element" ];
+    angular.module("itaca.components").component("chLoadingProgress", {
+        bindings: {
+            message: "<",
+            messageKey: "<",
+            errorMessage: "<",
+            errorMessageKey: "<",
+            progressDiameter: "@",
+            contClass: "@",
+            hideSiblings: "<"
+        },
+        controller: LoadingProgressCtrl,
+        template: '<div flex="100" layout="column" layout-align="center center" class="{{$ctrl.contClass}}">' + '<div ng-if="!$ctrl.errorMessage && !$ctrl.errorMessageKey" flex layout="column" layout-padding layout-align="center center">' + "<div>" + '<md-progress-circular class="ch-progress-white" md-mode="indeterminate" md-diameter="{{$ctrl.progressDiameter}}"></md-progress-circular>' + "</div>" + '<div ng-if="$ctrl.message || $ctrl.messageKey" class="text-center">' + '<span ng-if="$ctrl.message" ng-bind="$ctrl.message"></span>' + '<span ng-if="!$ctrl.message && $ctrl.messageKey" translate="{{$ctrl.messageKey}}"></span>' + "</div>" + "</div>" + '<div ng-if="$ctrl.errorMessage || $ctrl.errorMessageKey" flex layout="column" layout-padding layout-align="center center">' + "<div>" + '<md-icon class="mdi mdi-alert-circle-outline md-70 text-white"></md-icon>' + "</div>" + '<div class="md-display-2">Oops...</div>' + "<div>" + '<span ng-if="$ctrl.errorMessage" ng-bind="$ctrl.errorMessage"></span>' + '<span ng-if="!$ctrl.errorMessage && $ctrl.errorMessageKey" translate="{{$ctrl.errorMessageKey}}"></span>' + "</div>" + "</div>" + "</div>"
+    });
+    function LoadingProgressCtrl($scope, $element) {
+        var ctrl = this;
+        this.$postLink = function() {
+            ctrl.$hideSiblings(ctrl.hideSiblings);
+        };
+        this.$onInit = function() {
+            ctrl.contClass = ctrl.contClass || "bg-primary text-white md-title";
+            ctrl.progressDiameter = ctrl.progressDiameter || 150;
+            ctrl.$initWatches();
+        };
+        this.$onDestroy = function() {
+            ctrl.$hideSiblings(false);
+        };
+        this.$hideSiblings = function(hide) {
+            var children = $element.parent().children();
+            hide ? children.addClass("ng-hide") : children.removeClass("ng-hide");
+            $element.removeClass("ng-hide");
+        };
+        this.$initWatches = function() {
+            $scope.$watch(function() {
+                return ctrl.hideElement;
+            }, function(newVal, oldVal) {
+                ctrl.$toggleEl(oldVal, true);
+                ctrl.$toggleEl(newVal);
             });
         };
     }
@@ -3250,7 +3328,7 @@
 
 (function() {
     "use strict";
-    angular.module("chroma.utils").factory("WeatherUtils", WeatherUtilsFactory);
+    angular.module("itaca.components").factory("WeatherUtils", WeatherUtilsFactory);
     function WeatherUtilsFactory() {
         var $$service = {};
         $$service.getInfo = function(iconId) {
