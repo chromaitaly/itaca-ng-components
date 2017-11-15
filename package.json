@@ -1,6 +1,6 @@
 {
 	"name": "itaca-ng-components",
-	"version": "1.0.0",
+	"version": "0.0.1",
 	"description": "Various AngularJS components, like date-range, people-picker, timeline, review and many more.",
 	"main": "dist/itaca-ng-components.js",
 	"repository": {
