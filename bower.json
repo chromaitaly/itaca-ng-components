@@ -1,7 +1,7 @@
 {
 	"name": "itaca-ng-components",
 	"version": "1.0.0",
-	"description": "Various AngularJS components, like date-range, people-picker, timeline, review, ecc",
+	"description": "Various AngularJS components, like date-range, people-picker, timeline, review and many more.",
 	"main": "dist/itaca-ng-components.js",
 	"author": {
 		"name": "Chroma Italy Hotels srl",
@@ -36,7 +36,7 @@
 		"angular-dynamic-locale": "~0.1.32",
 		"lodash": "latest",
 		"angular-filter": "latest",
-		"chroma-utils": "1.0.0",
-		"chroma-services": "1.0.0"
+		"itaca-ng-utils": "latest",
+		"itaca-ng-services": "latest"
 	}
 }
