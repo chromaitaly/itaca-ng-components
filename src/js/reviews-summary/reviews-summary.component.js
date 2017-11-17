@@ -29,6 +29,9 @@
 				ctrl.summary = {totalReviews: 0, gar: null, reviewsScoreMap: scoreMap};
 			}
 			
+			// ordinamento
+			ctrl.summary.reviewsScoreMap = _.orderBy(ctrl.summary.reviewsScoreMap, ["key"], ["desc"]);
+			
 			// genero il titolo in base allo score
     		ctrl.summary.garLabel = ReviewsUtils.generateScoreLabel(Math.floor(ctrl.summary.gar));
 		};
