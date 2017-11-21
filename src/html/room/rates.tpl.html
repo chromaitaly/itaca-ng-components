@@ -1,0 +1,7 @@
+<div id="{{'ch-room-' + $ctrl.chRoomCtrl.$$index + '-rates'}}" ng-show="$ctrl.chRoomCtrl.showRates" ng-class="{'animated fadeIn': $ctrl.chRoomCtrl.showRates}">
+	<div class="no-margin" layout="column">
+		<md-list>
+			<ch-room-rate ng-repeat="rate in $ctrl.availability.totalRates track by $index" rate="rate"></ch-room-rate>
+		</md-list>
+	</div>
+</div>

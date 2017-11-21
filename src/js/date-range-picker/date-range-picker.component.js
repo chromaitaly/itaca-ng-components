@@ -23,7 +23,7 @@
     		endMinDate: "<?",
     		endMaxDate: "<?",
     		endErrorMessages: "<?",
-    		maxRange: "<",
+    		maxRange: "<?",
     		useUtc: "<?",
     		showDiff: "<?",
     		showDiffInCalendar: "<?",
