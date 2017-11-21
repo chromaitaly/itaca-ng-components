@@ -44,6 +44,7 @@
 		"grunt-contrib-uglify": "latest",
 		"grunt-ng-annotate": "latest",
 		"grunt-postcss": "^0.9.0",
+		"grunt-html2js": "latest",
 		"jit-grunt": "latest",
 		"jshint-stylish": "latest",
 		"pixrem": "^4.0.1",

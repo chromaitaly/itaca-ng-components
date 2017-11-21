@@ -19,13 +19,13 @@
         },
         controller: PriceRangePickerCtrl,
         template: 
-        	"<ng-form name=\"chPriceRangeForm\" class=\"flex no-padding layout-column\">" +
-		  		"<md-button class=\"ch-price-range-button flex minimal-button text-initial {{$ctrl.buttonClass}}\" ng-click=\"$ctrl.$openPanel($event)\" aria-label=\"Change price range\" ng-disabled=\"$ctrl.ngDisabled\">" +
+        	"<ng-form name=\"chPriceRangePickerForm\" class=\"flex no-padding layout-column\">" +
+		  		"<md-button class=\"ch-price-range-picker-button flex minimal-button text-initial {{$ctrl.buttonClass}}\" ng-click=\"$ctrl.$openPanel($event)\" aria-label=\"Change price range\" ng-disabled=\"$ctrl.ngDisabled\">" +
 		  			"<div class=\"{{$ctrl.wrapperClass}}\">" +
 		  				"<div ng-show=\"$ctrl.max\" class=\"text-wrap row-mini\">" +
 							"<strong ng-show=\"$ctrl.min\">{{$ctrl.min|chCurrency}}&nbsp;-&nbsp;</strong>" + 
 							"<span ng-show=\"!$ctrl.min\"><span translate=\"common.up.to\"></span>&nbsp;</span>" +
-							"<strong>{{$ctrl.max|chCurrency}}</strong>&nbsp;<span ng-if=\"$ctrl.type == \"nightly\"\" class=\"text-lowercase\" translate=\"service.type.payment.NIGHTLY\"></span>" +
+							"<strong>{{$ctrl.max|chCurrency}}</strong>&nbsp;<span ng-if=\"$ctrl.type == 'nightly'\" class=\"text-lowercase\" translate=\"service.type.payment.NIGHTLY\"></span>" +
 						"</div>" +
 						"<div ng-show=\"!$ctrl.max\">" +
 							"<span translate=\"filter.by\"></span>&nbsp;<span class=\"text-lowercase\" translate=\"common.price\"></span>" +
@@ -53,7 +53,7 @@
 				attachTo: angular.element(document.body),
 			    controller: "priceSliderCtrl",
 			    controllerAs: "ctrl",
-			    templateUrl: "/reservation-price-slider.part",
+			    templateUrl: "/tpls/reservation-price-slider.part",
 			    position: position,
 			    clickOutsideToClose: true,
 			    disableParentScroll: ctrl.disableParentScroll,

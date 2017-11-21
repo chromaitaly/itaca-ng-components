@@ -10,16 +10,7 @@
     	},
 		controller: RoomInfoCtrl,
 		transclude: true,
-		template: 
-			"<div ng-show=\"$ctrl.chRoomCtrl.showRoomInfo\" ng-class=\"{'animated fadeIn': $ctrl.chRoomCtrl.showRoomInfo}\">" +
-				"<ng-transclude></ng-transclude>" +
-				"<div class=\"text-center\">" +
-					"<md-button class=\"row-mini button-mini auto-height text-gray-light text-initial\" ng-click=\"$ctrl.toggleInfo()\" aria-label=\"close\">" +
-						"<md-icon class=\"mdi mdi-chevron-up text-gray-light md-18 material-icon\"></md-icon>" +
-						"<span translate=\"common.hide\"></span>" +
-					"</md-button>" +
-				"</div>" +
-			"</div>"
+		templateUrl: "/tpls/room/room-info.tpl"			
     });
     
     /* @ngInject */

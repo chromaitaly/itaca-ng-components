@@ -6,7 +6,6 @@
     	bindings: {
     		room: "<",
     		storageUrl: "<?",
-    		availability: "<?",
     		nights: "<?"
     	},
 		controller: RoomCtrl,

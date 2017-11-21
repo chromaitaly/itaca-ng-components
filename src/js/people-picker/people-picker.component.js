@@ -32,7 +32,7 @@
 		controller: PeoplePickerCtrl,
 		template: 
 			"<ng-form name=\"chPeoplePickerForm\" class=\"flex no-padding layout-column\">" +
-			  	"<md-button class=\"ch-people-counter-button flex layout-padding no-padding minimal-button text-lowercase text-center {{$ctrl.buttonClass}}\" aria-label=\"Change people\" ng-disabled=\"$ctrl.ngDisabled\" ng-click=\"$ctrl.$openPanel($event)\">" +
+			  	"<md-button class=\"ch-people-picker-button flex layout-padding no-padding minimal-button text-lowercase text-center {{$ctrl.buttonClass}}\" aria-label=\"Change people\" ng-disabled=\"$ctrl.ngDisabled\" ng-click=\"$ctrl.$openPanel($event)\">" +
 			  		"<div class=\"{{$ctrl.wrapperClass}}\">" +
 			  			"<div ng-if=\"$ctrl.label\" class=\"md-padding\">" +
 							"<div class=\"{{$ctrl.labelClass}} text-initial text-wrap row-1\" ng-class=\"{\"text-small\": $ctrl.$$hasPeople}\"><span ng-bind-html=\"$ctrl.label\"></span></div>" +

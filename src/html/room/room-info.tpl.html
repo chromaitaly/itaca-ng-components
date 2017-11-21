@@ -1,0 +1,274 @@
+<div id="{{'ch-room-' + $ctrl.chRoomCtrl.$$index + '-info'}}" ng-show="$ctrl.chRoomCtrl.$$showInfo" ng-class="{'animated fadeIn': $ctrl.chRoomCtrl.$$showInfo}">
+	<div class="md-padding no-padding-bottom text-gray-light">
+		<div ng-show="$ctrl.chRoomCtrl.room.maxOtherBeds > 0" class="md-padding no-padding-bottom text-blue-sea text-center">
+	  		<md-icon class="mdi mdi-hotel animated tada infinite text-blue-sea md-24"></md-icon>&nbsp;
+	      	<span translate="reservation.room.extra.beds.bookable"></span>
+			<span ng-if="$ctrl.chRoomCtrl.$$hasFreeBeds" class="text-uppercase" translate="common.for.free"></span>
+			<span ng-if="!$ctrl.chRoomCtrl.$$hasFreeBeds" class="text-lowercase" translate="common.for.fee"></span>
+		</div>
+		<div class="layout layout-wrap">
+			<div class="layout-column flex">
+				<!-- PRINCIPAL -->
+				<div layout layout-wrap class="bg-white layout-padding layout-row layout-wrap layout-align-space-around md-whiteframe-1dp">
+					<div class="flex-gt-xs flex-xs-100 no-padding no-margin text-center">
+						<ch-people-icons people="$ctrl.chRoomCtrl.room.people" 
+  							max="$ctrl.chRoomCtrl.room.guestsCount.standard" 
+  							extra-people="$ctrl.chRoomCtrl.room.extraPeople" 
+  							extra-max="$ctrl.chRoomCtrl.room.guestsCount.extra"
+  							hideTooltip="!$ctrl.$mdMedia('gt-sm')"
+  							size="big" theme="dark" hide-extra-people="true">
+  						</ch-people-icons>
+  					</div>
+  					<md-divider hide-xs></md-divider>
+  					<div class="flex-gt-xs flex-xs-100 no-padding no-margin text-center">
+  						<div>	
+							<md-icon class="mdi mdi-hotel md-48"></md-icon>
+						</div>
+  						<div class="text-small">
+  							<span>{{::$ctrl.chRoomCtrl.room.beds.length}}</span>
+  							<span ng-if="$ctrl.chRoomCtrl.room.beds.length == 1">
+  								<span translate="bed.{{::$ctrl.chRoomCtrl.room.beds[0].type}}"></span>
+  							</span>
+   							<span ng-if="$ctrl.chRoomCtrl.room.beds.length != 1" translate="bed.beds.principal"></span>
+  						</div>
+  					</div>
+  					<md-divider hide-xs></md-divider>
+  					<div class="flex-gt-xs flex-xs-100 no-padding no-margin text-center">
+	   					<div style="height: 48px; line-height: 58px;"><span class="md-title">{{::$ctrl.chRoomCtrl.room.metres}} m²</span></div>
+	   					<div class="text-small"><span translate="room.size"></span></div>
+	   				</div>
+				</div>
+				<!-- SECONDARY -->
+				<div ng-if="$ctrl.chRoomCtrl.room.guestsCount.extra > 0" layout layout-wrap class="bg-white layout-padding layout-row layout-wrap layout-align-space-around md-whiteframe-1dp" style="margin-top: 10px">
+					<div class="flex-gt-xs flex-xs-100 no-padding no-margin text-center">
+						<ch-people-icons people="$ctrl.chRoomCtrl.room.people" 
+							max="$ctrl.chRoomCtrl.room.guestsCount.standard" 
+	  						extra-people="$ctrl.chRoomCtrl.room.extraPeople"
+	  						extra-max="$ctrl.chRoomCtrl.room.guestsCount.extra"
+	  						hideTooltip="!$ctrl.$mdMedia('gt-sm')"
+	  						size="big" theme="dark" hide-people="true">
+	  					</ch-people-icons>
+	 				</div>				    					
+	 				<md-divider hide-xs></md-divider>
+	 				<div class="flex-gt-xs flex-xs-100 no-padding no-margin text-center">
+	 					<div>	
+							<md-icon class="mdi mdi-hotel md-48"></md-icon>
+						</div>
+		 				<div class="text-small">
+		 					<span>{{::$ctrl.chRoomCtrl.room.maxOtherBeds}}</span>
+		 					<span ng-if="$ctrl.chRoomCtrl.room.maxOtherBeds == 1" translate="bed.otherbed"></span>
+		      				<span ng-if="$ctrl.chRoomCtrl.room.maxOtherBeds != 1" translate="bed.otherbeds"></span>
+		 				</div>
+		 			</div>
+	 				<md-divider hide-xs></md-divider>
+	  				<div class="flex-gt-xs flex-xs-100 no-padding no-margin text-center">
+	  					<div style="height: 48px;line-height: 58px;"><span class="md-title">{{::$ctrl.chRoomCtrl.room.bathMetres}} m²</span></div>
+	   					<div class="text-small"><span translate="room.bath.size"></span></div>
+	   				</div>
+	  			</div>
+	 		</div>
+		</div>
+		<h4 class="md-subhead no-margin-bottom"><strong translate="room.description"></strong></h4>
+		<div class="layout layout-wrap">
+			<div flex>
+	           	<span ng-if="$ctrl.chRoomCtrl.room.description[$ctrl.chRoomCtrl.currentLang]">
+		        	<span hm-read-more hm-text="{{$ctrl.chRoomCtrl.room.description[$ctrl.chRoomCtrl.currentLang]}}"
+		        		 hm-limit="50" hm-more-text="{{'common.read.more'|translate}}"
+						 hm-less-text="{{'common.read.less'|translate}}" 
+						 hm-link-class="clickable text-primary">
+					</span>
+				</span>
+	         	<span ng-if="!$ctrl.chRoomCtrl.room.description[$ctrl.chRoomCtrl.currentLang]">
+	         		<span translate="{{::$ctrl.chRoomCtrl.room.roomType.descriptionKey}}"></span>
+	         	</span>
+			</div>
+		</div>
+	   	<div layout="column" ng-if="$ctrl.chRoomCtrl.room.metres">
+			<h4 class="md-subhead no-margin-bottom"><strong translate="room.size"></strong></h4>
+			<div layout>
+				<strong translate="room.room"></strong>:&nbsp;
+				<span>{{::$ctrl.chRoomCtrl.room.metres}} mq</span>&nbsp;
+				<span>({{::($ctrl.chRoomCtrl.room.metres * 10.764 |  number:2)}} sq ft.)</span>          			
+			</div>
+			<div layout>
+				<strong translate="service.type.BATHROOM"></strong>:&nbsp;
+				<span>{{::$ctrl.chRoomCtrl.room.bathMetres}} mq</span>&nbsp;
+				<span>({{::($ctrl.chRoomCtrl.room.bathMetres * 10.764 |  number:2)}} sq ft.)</span>          			
+			</div>
+		</div>
+		<div layout="column">
+			<strong ng-if="$ctrl.chRoomCtrl.room.bathIncluded" class="md-subhead no-margin-bottom"><span translate="room.bath.included"></span></strong>
+			<strong ng-if="!$ctrl.chRoomCtrl.room.bathIncluded" class="md-subhead no-margin-bottom"><span translate="room.bath.not.included"></span></strong>
+		</div>
+		<div layout="column" ng-if="$ctrl.chRoomCtrl.room.beds && $ctrl.chRoomCtrl.room.beds.length > 0">
+			<h4 class="md-subhead no-margin-bottom">
+				<strong ng-if="$ctrl.chRoomCtrl.room.beds.length == 1" translate="bed.bed.principal"></strong>
+				<strong ng-if="$ctrl.chRoomCtrl.room.beds.length != 1" translate="bed.beds.principal"></strong>
+			</h4>
+			<span ng-repeat="bed in $ctrl.chRoomCtrl.room.beds track by $index">
+				<span>{{::bed.count}}&nbsp;x&nbsp;</span><span ng-if="bed.type" translate="bed.{{::bed.type}}"></span><span ng-if="!$last">,&nbsp;</span>
+			</span>
+		</div>
+		<div layout="column" ng-if="$ctrl.chRoomCtrl.room.otherBeds && $ctrl.chRoomCtrl.room.otherBeds.length > 0">
+			<h4 class="md-subhead no-margin-bottom"><strong translate="bed.otherbeds"></strong></h4>
+			<div class="text-small">
+				<span ng-if="$ctrl.chRoomCtrl.room.maxOtherBeds > 1">
+					<span class="layout-padding no-padding-left" translate="reservation.info.max.otherBeds" translate-value-count="{{::$ctrl.chRoomCtrl.room.maxOtherBeds}}"></span>
+				</span>
+				<span ng-if="$ctrl.chRoomCtrl.room.maxOtherBeds == 1">
+					<span class="layout-padding no-padding-left" translate="reservation.info.max.otherBed"></span>
+				</span>
+				<span class="text-lowercase" translate="common.choice.between"></span>:
+			</div>
+			<md-list class="no-padding-bottom">
+				<md-list-item ng-repeat="otherBed in $ctrl.chRoomCtrl.room.otherBeds track by $index">
+					<div class="layout flex layout-padding no-padding">
+						<div class="layout-column flex layout-padding-sm no-padding layout-align-center-start">
+							<div class="no-padding-left">
+								<span>{{otherBed.count}}&nbsp;x&nbsp;</span>
+								<strong translate="bed.{{otherBed.type}}"></strong>&nbsp;
+								<span class="text-lowercase">
+									<span translate="bed.max.person"></span>&nbsp;
+									<span>{{otherBed.maxPerson}}</span>&nbsp;
+									<span ng-if="otherBed.maxPerson > 1" translate="people.people"></span>
+									<span ng-if="otherBed.maxPerson <= 1" translate="people.person"></span>
+									<span translate="bed.per.bed"></span>
+								</span>
+							</div>
+							<div class="no-padding text-gray-light text-lowercase">
+								<small ng-if="otherBed.people.adults">
+									<span><span translate="people.adults"></span>&nbsp;(<span class="text-lowercase" translate="common.max"></span>&nbsp;{{otherBed.people.adults}}):</span>
+									<span ng-if="otherBed.adultsPrice">{{otherBed.adultsPrice|currency:'€'}}</span>
+									<span ng-if="!otherBed.adultsPrice" translate="common.free"></span>
+								</small>
+								<small ng-if="otherBed.people.boys">
+									<span ng-if="otherBed.people.adults">&nbsp;-</span>
+									<span><span translate="people.boys"></span>&nbsp;(<span class="text-lowercase" translate="common.max"></span>&nbsp;{{otherBed.people.boys}}):</span>
+									<span ng-if="otherBed.boysPrice">{{otherBed.boysPrice|currency:'€'}}</span>
+									<span ng-if="!otherBed.boysPrice" translate="common.free"></span>
+								</small>
+								<small ng-if="otherBed.people.children">
+									<span ng-if="otherBed.people.adults || otherBed.people.boys">&nbsp;-</span>
+									<span><span translate="people.children"></span>&nbsp;(<span class="text-lowercase" translate="common.max"></span>&nbsp;{{otherBed.people.children}}):</span>
+									<span ng-if="otherBed.childrenPrice">{{otherBed.childrenPrice|currency:'€'}}</span>
+									<span ng-if="!otherBed.childrenPrice" translate="common.free"></span>
+								</small>
+								<small ng-if="otherBed.people.kids">
+									<span ng-if="otherBed.people.adults || otherBed.people.boys || otherBed.people.children">&nbsp;-</span>
+									<span><span translate="people.kids"></span>&nbsp;(<span class="text-lowercase" translate="common.max"></span>&nbsp;{{otherBed.people.kids}}):</span>
+									<span ng-if="otherBed.kidsPrice">{{otherBed.kidsPrice|currency:'€'}}</span>
+									<span ng-if="!otherBed.kidsPrice" translate="common.free"></span>
+								</small>
+							</div>
+							<div class="no-padding-top no-padding-left text-gray-light text-italic" ng-switch="otherBed.frequency">
+								<small translate="common.price.is.intend"></small>
+								<small class="text-lowercase" ng-switch-when="DAILY|NIGHTLY" ng-switch-when-separator="|">&nbsp;<span translate="service.type.payment.NIGHTLY"></span></small>
+								<small class="text-lowercase" ng-switch-when="LUMP_SUM">&nbsp;<span translate="service.type.payment.LUMP_SUM"></span></small>
+							</div>
+						</div>
+					</div>
+				</md-list-item>
+			</md-list>
+		</div>
+		<div layout="column">
+			<h4 class="md-subhead no-margin-bottom"><strong translate="reservation.guest.info"></strong></h4>
+			<div class="md-padding no-padding-left"> 
+				<div class="md-padding no-padding-left no-padding-top"><span translate="room.people.host"></span></div> 
+				<ul><li> 
+					<strong>{{$ctrl.chRoomCtrl.room.guestsCount.standard}}&nbsp;</strong> 
+					<strong class="text-lowercase" ng-if="$ctrl.chRoomCtrl.room.guestsCount.standard == 1" translate="people.person.beds"></strong> 
+					<strong class="text-lowercase" ng-if="$ctrl.chRoomCtrl.room.guestsCount.standard != 1" translate="people.people.beds"></strong> 
+					<span class="text-lowercase">&nbsp;(<span ng-if="$ctrl.chRoomCtrl.room.people.boys || $ctrl.chRoomCtrl.room.people.children || $ctrl.chRoomCtrl.room.people.kids"><span translate="common.choice.between"></span>&nbsp;</span><ch-people-summary class="text-lowercase" people="$ctrl.chRoomCtrl.room.people"></ch-people-summary>)</span> 
+				</li></ul> 
+				<ul ng-if="$ctrl.chRoomCtrl.room.guestsCount.extra"><li> 
+					<strong>{{$ctrl.chRoomCtrl.room.guestsCount.extra}}&nbsp;</strong> 
+					<strong class="text-lowercase" ng-if="$ctrl.chRoomCtrl.room.guestsCount.extra == 1" translate="people.person.extra.beds"></strong> 
+					<strong class="text-lowercase" ng-if="$ctrl.chRoomCtrl.room.guestsCount.extra != 1" translate="people.people.extra.beds"></strong> 
+					<span class="text-lowercase">&nbsp;(<span ng-if="$ctrl.chRoomCtrl.room.extraPeople.boys || $ctrl.chRoomCtrl.room.extraPeople.children || $ctrl.chRoomCtrl.room.extraPeople.kids"><span translate="common.choice.between"></span>&nbsp;</span><ch-people-summary class="text-lowercase" people="$ctrl.chRoomCtrl.room.extraPeople"></ch-people-summary>)</span> 
+				</li></ul> 
+				<div ng-if="$ctrl.chRoomCtrl.room.people.boys || $ctrl.chRoomCtrl.room.people.children || $ctrl.chRoomCtrl.room.people.kids || $ctrl.chRoomCtrl.room.extraPeople.boys || $ctrl.chRoomCtrl.room.extraPeople.children || $ctrl.chRoomCtrl.room.extraPeople.kids" class="md-padding no-padding-left no-padding-bottom"><em translate="error.room.guest.not.selected"></em></div> 
+			</div>
+			<div>
+				<h5 class="md-body-2 md-margin no-margin-bottom no-margin-left no-margin-top text-gray-light"><strong translate="people.adults"></strong></h5>
+				<div><i translate="people.adults.policy" translate-value-age="{{::(18)}}"></i></div>
+				<div>
+					<span translate="common.capacity.max"></span>:&nbsp;
+					<span>{{::$ctrl.chRoomCtrl.room.people.adults}}</span>
+				</div>
+			</div>
+			<div ng-switch="$ctrl.chRoomCtrl.room.people.boys">
+	   			<h5 class="md-body-2 md-margin no-margin-bottom no-margin-left text-gray-light">
+	   				<strong translate="people.boys"></strong>
+	   			</h5>
+				<div><i translate="people.boys.policy" translate-values="{min: 13, max: 17}"></i></div>
+				<div>
+					<span translate="common.capacity.max"></span>:&nbsp;
+					<i ng-switch-when="0" translate="common.none.male"></i>
+					<span ng-switch-default>{{::$ctrl.chRoomCtrl.room.people.boys}}</span>
+				</div>
+			</div>
+			<div ng-switch="$ctrl.chRoomCtrl.room.people.children">
+				<h5 class="md-body-2 md-margin no-margin-bottom no-margin-left text-gray-light"><strong translate="people.children"></strong></h5>
+				<div><i translate="people.children.policy" translate-values="{min: 3, max: 12}"></i></div>
+				<div>
+					<span translate="common.capacity.max"></span>:&nbsp;
+					<i ng-switch-when="0" translate="common.none.male"></i>
+					<span ng-switch-default>{{::$ctrl.chRoomCtrl.room.people.children}}</span>
+				</div>
+			</div>
+			<div ng-switch="$ctrl.chRoomCtrl.room.people.kids">
+				<h5 class="md-body-2 md-margin no-margin-bottom no-margin-left text-gray-light"><strong translate="people.kids"></strong></h5>
+				<div><i translate="people.kids.policy" translate-values="{min: 0, max: 2}"></i></div>
+				<div>
+					<span translate="common.capacity.max"></span>:&nbsp;
+					<i ng-switch-when="0" translate="common.none.male"></i>
+					<span ng-switch-default>{{::$ctrl.chRoomCtrl.room.people.kids}}</span>
+				</div>
+			</div>
+		</div>
+		<div layout="column" ng-if="::($ctrl.chRoomCtrl.$$includedServices && $ctrl.chRoomCtrl.$$includedServices.length > 0)">
+			<h4 class="md-subhead no-margin-bottom"><strong translate="room.facilities"></strong></h4>
+			<div layout layout-wrap>
+				<div class="flex-gt-sm-50 flex-100" ng-repeat="service in ::$ctrl.chRoomCtrl.$$includedServices track by service.id" ng-switch="service.type.nameKey">
+					<md-icon class="mdi mdi-check md-18 text-success"></md-icon>
+					<span translate="{{::service.type.nameKey}}"></span>
+				</div>
+			</div>
+		</div>							          		
+		<div layout="column" ng-if="::($ctrl.chRoomCtrl.$$bookableServices && $ctrl.chRoomCtrl.$$bookableServices.length > 0)">
+			<h4 class="md-subhead no-margin-bottom"><strong translate="common.service.on.demand"></strong></h4>
+			<div layout layout-wrap>
+				<div class="flex-gt-sm-50 flex-100" ng-repeat="service in ::$ctrl.chRoomCtrl.$$bookableServices track by service.id" ng-switch="service.paymentType">
+					<md-icon class="mdi mdi-check md-18 text-success"></md-icon>
+					<span translate="{{::service.type.nameKey}}"></span>
+					<span ng-switch-when="FREE">(<span translate="payment.free"></span>)</span>
+					<span ng-switch-default class="text-lowercase">
+						<small ng-repeat="paymentOpt in ::service.paymentOptions track by $index">
+							<span ng-if="paymentOpt.size == 'PER_ADULT' || paymentOpt.size == 'SINGLE'">
+								(<span>{{paymentOpt.amount.finalAmount|chCurrency}}</span>
+								<span ng-if="service.frequency == 'DAILY'">/<span translate="date.day"></span></span>
+								<span ng-if="service.frequency == 'MONTHLY'">/<span translate="date.month"></span></span>
+								<span ng-if="service.frequency == 'YEARLY'">/<span translate="date.year"></span></span>									          							
+								<span ng-if="paymentOpt.size == 'PER_ADULT'">/<span translate="people.person"></span></span>)
+							</span>
+						</small>
+					</span>
+				</div>
+			</div>							          		
+		</div>
+		<div layout layout-xs="column" layout-padding layout-align="center center" class="no-padding-bottom">
+			<md-button class="row-mini button-mini auto-height text-initial" ng-click="$ctrl.$toggleRates(true)" aria-label="Open room rates">
+				<strong class="text-center text-success" ng-clas="{'no-padding': !$ctrl.$mdMedia('gt-sm')}">
+		   			<span><span translate="reservation.dont.miss.room"></span>.&nbsp;</span>
+		   			<span translate="reservation.book.now.holiday"></span>
+				</strong>
+			</md-button>
+		</div>
+	</div>
+	<div class="text-center">
+		<md-button class="row-mini button-mini auto-height text-gray-light text-initial" ng-click="$ctrl.$toggleInfo(false)" aria-label="Close room info">
+			<md-icon class="mdi mdi-chevron-up text-gray-light md-18 material-icon"></md-icon>
+			<span translate="common.hide"></span>
+		</md-button>
+	</div>
+</div>

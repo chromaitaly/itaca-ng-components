@@ -23,7 +23,7 @@
     		endMinDate: "<?",
     		endMaxDate: "<?",
     		endErrorMessages: "<?",
-    		maxRange: "<",
+    		maxRange: "<?",
     		useUtc: "<?",
     		showDiff: "<?",
     		showDiffInCalendar: "<?",
@@ -39,7 +39,7 @@
         controller: DateRangePickerCtrl,
         template: 
         	"<ng-form name=\"chDateRangeForm\" class=\"flex no-padding layout-column\">" +
-			  	"<md-button class=\"ch-date-range-button flex minimal-button text-lowercase text-center {{$ctrl.buttonClass}}\" ng-click=\"$ctrl.$openPanel($event)\" aria-label=\"Change period\" ng-disabled=\"$ctrl.ngDisabled\">" +
+			  	"<md-button class=\"ch-date-range-picker-button flex minimal-button text-lowercase text-center {{$ctrl.buttonClass}}\" ng-click=\"$ctrl.$openPanel($event)\" aria-label=\"Change period\" ng-disabled=\"$ctrl.ngDisabled\">" +
 			  		"<div class=\"{{$ctrl.wrapperClass}}\">" +
 				  		"<div ng-if=\"$ctrl.label || $ctrl.placeholder\" class=\"md-padding\">" +
 				  			"<div class=\"{{$ctrl.labelClass}} text-initial text-wrap row-1\" ng-class=\"{\"text-small\": $ctrl.start || $ctrl.end}\">"+
@@ -122,7 +122,7 @@
 			//mostro un layout piu grande
 			ctrl.largeTemplate = ctrl.largeTemplate || false;
 			
-			var targetEl = $element[0].querySelector(".ch-date-range-button");
+			var targetEl = $element[0].querySelector(".ch-date-range-picker-button");
 			
 			var position = $mdPanel.newPanelPosition()
 		        .relativeTo(angular.element(targetEl))
