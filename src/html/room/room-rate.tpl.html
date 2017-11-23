@@ -60,22 +60,22 @@
 					</div>													
 				</div>
 			</div>
-	
+
 			<div layout layout-align="end center"  ng-class="{'no-padding-top': !$ctrl.$mdMedia('gt-sm')}">	
-				<div ng-if="!$ctrl.rate.selected || $ctrl.rate.selected <= 0" class="layout-column flex">																							
+				<div ng-if="!$ctrl.rate.count || $ctrl.rate.count <= 0" class="layout-column flex">																							
 					<md-button class="border-radius only-border" ng-class="{'border-warn text-warn': $ctrl.$$totalCounter.actual > 0 && $ctrl.$$counter.actual > 0 && $ctrl.rate.type == 'STANDARD' && $ctrl.rate.cancellationPolicy.flexible, 'border-success text-success': $ctrl.$$totalCounter.actual > 0 && $ctrl.$$counter.actual > 0 && $ctrl.rate.type == 'STANDARD' && !$ctrl.rate.cancellationPolicy.flexible, 
-							'border-blue-sea text-blue-sea': $ctrl.$$totalCounter.actual > 0 && $ctrl.$$counter.actual > 0 && $ctrl.rate.type == 'NOT_REFUNDABLE', 'text-gray-medium': $ctrl.$$totalCounter.actual <= 0 || $ctrl.$$counter.actual <= 0}" aria-label="Add room" ng-disabled="$ctrl.$$totalCounter.actual <= 0 || $ctrl.$$counter.actual <= 0" ng-click="$ctrl.$addRate()">
+							'border-blue-sea text-blue-sea': $ctrl.$$totalCounter.actual > 0 && $ctrl.$$counter.actual > 0 && $ctrl.rate.type == 'NOT_REFUNDABLE', 'text-gray-medium': $ctrl.$$totalCounter.actual <= 0 || $ctrl.$$counter.actual <= 0}" aria-label="Add room" ng-disabled="$ctrl.$$totalCounter.actual <= 0 || $ctrl.$$counter.actual <= 0" ng-click="$ctrl.$selectRate()">
 	          			<span translate="common.select"></span>
 	          		</md-button>
 				</div>
-			  	<div ng-if="$ctrl.rate.selected && $ctrl.rate.selected > 0" flex>
+			  	<div ng-if="$ctrl.rate.count && $ctrl.rate.count > 0" flex>
 			  		<div class="layout-align-center-center layout-align-gt-sm-end-center layout-row">
 			  			<small class="text-bold text-gray-light" ng-if="$ctrl.$$totalCounter.actual > 0 && $ctrl.$$counter.actual > 0" translate="room.add.other.one"></small>
 			  			<small class="text-bold text-success text-center" ng-class="{'text-warn': $ctrl.rate.type == 'STANDARD' && $ctrl.rate.cancellationPolicy.flexible, 'text-success': $ctrl.rate.type == 'STANDARD' && !$ctrl.rate.cancellationPolicy.flexible, 
 			  				'text-blue-sea': $ctrl.rate.type == 'NOT_REFUNDABLE'}" ng-if="$ctrl.$$totalCounter.actual <= 0 || $ctrl.$$counter.actual <= 0" translate="room.last.rate.selected"></small>
 			  		</div>
 			  		<div class="layout-align-center-center layout-align-gt-sm-end-center layout-row">
-			  			<ch-counter ng-model="$ctrl.rate.selected" 
+			  			<ch-counter ng-model="$ctrl.rate.count" 
 			  				min="0" 
 			  				btn-class="md-icon-button only-border" 
 			  				btn-active-class="{{$ctrl.rate.type == 'STANDARD' ? $ctrl.rate.cancellationPolicy.flexible ? 'border-warn' : 'border-success' : 'border-blue-sea'}}"
@@ -340,8 +340,8 @@
       			<strong translate="reservation.rates.daily.details"></strong>
       		</h4>
       		
-      		<div layout layout-wrap>
-      			<div ng-repeat="dailyRate in $ctrl.rate.dailyRates track by $index" layout="column" layout-padding layout-align="start center">
+      		<div layout layout-wrap layout-padding-sm>
+      			<div ng-repeat="dailyRate in $ctrl.rate.dailyRates track by $index" layout="column" layout-padding-sm layout-align="start center">
       				<strong class="no-padding-bottom">{{dailyRate.date|date:"shortDate"}}</strong>
       				<div class="no-padding-bottom row-mini" layout="column" layout-align="center center">
 						<div ng-if="dailyRate.promotion" ng-switch="dailyRate.promotion.promotionType">
@@ -367,7 +367,7 @@
        		<div th:replace="public/partials/hotel/common/policy/rate-policy"></div>
        	</div>
        	
-       	<md-button class="hide-gt-sm text-gray-light button-mini" ng-click="$ctrl.$toggleInfo(false)" aria-label="Hide info">
+       	<md-button class="text-gray-light auto-height row-mini" ng-click="$ctrl.$toggleInfo(false)" aria-label="Hide info">
        		<md-icon class="mdi mdi-chevron-up text-gray-light md-18"></md-icon>
        		<small translate="common.hide"></small>
        	</md-button>
