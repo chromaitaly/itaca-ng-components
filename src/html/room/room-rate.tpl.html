@@ -129,10 +129,14 @@
 	<div id="{{'ch-room-' + $ctrl.chRoomCtrl.$$index + '-rates-' + $ctrl.$$index}}" ng-show="$ctrl.$$showInfo" 
 		layout="column" layout-padding ng-class="{'animated fadeIn': $ctrl.$$showInfo}" class="text-gray-light text-small">
 		<div>
-			<h4 class="md-body-1 no-margin-bottom"><strong translate="common.payment"></strong></h4>
-						          		
       		<!-- PAYMENT INFO -->
-			<div th:replace="public/partials/hotel/common/policy/rate-payment-policy"></div>
+      		<div class="md-margin no-margin-top no-margin-left no-margin-right">
+      			<ch-payment-policy-info
+      				rate-type="$ctrl.rate.type"
+   					cancellation-policy="$ctrl.rate.cancellationPolicy"
+   					city="$ctrl.chRoomCtrl.city"
+   					offset="$ctrl.chRoomCtrl.offset"></ch-payment-policy-info>
+      		</div>
      		
    			<div layout="column">
       			<span>
@@ -149,23 +153,23 @@
       			</span>
    			</div>
    		
-   			<div ng-if="$ctrl.rate.type == 'STANDARD' && $ctrl.$$promotion.paymentMethod[0].onArrival" class="bg-success text-white layout-margin">
+   			<div ng-if="$ctrl.rate.type == 'STANDARD' && $ctrl.$$promotion.onArrival" class="bg-success text-white layout-margin">
    				<md-icon class="mdi mdi-hospital-building md-18 text-white"></md-icon>
    				<span translate="reservation.policy.payment.onArrival"></span>
    			</div>
      		
-			<div ng-if="hotel.paymentSettings" layout="column" class="md-padding no-padding-left">
+			<div ng-if="$ctrl.paymentSettings" layout="column" class="md-padding no-padding-left">
 				<strong><span translate="payment.methods.accepted"></span>:</strong>
       		
 	       		<span ng-if="$ctrl.$$promotion.paymentMethod.length" 
 	       			ng-repeat="paymentMethod in $ctrl.$$promotion.paymentMethod track by $index" ng-switch="paymentMethod.type"
 	       			class="layout-margin ng-scope layout-wrap layout-row layout-align-start-center">
-	       			<span ng-switch-when="PAYPAL" ng-if="hotel.paymentSettings.paypal" class="no-margin-left">
+	       			<span ng-switch-when="PAYPAL" ng-if="$ctrl.paymentSettings.paypal" class="no-margin-left">
 	       				<md-icon class="pf pf-paypal md-18"></md-icon>
 	       				<md-tooltip><span translate="payment.type.PAYPAL"></span></md-tooltip>
 	       			</span>
-	       			<span ng-switch-when="CREDIT_CARD" ng-if="hotel.paymentSettings.creditCards.length">
-	       				<span ng-repeat="type in hotel.paymentSettings.creditCards track by $index" ng-switch="type.circuit">
+	       			<span ng-switch-when="CREDIT_CARD" ng-if="$ctrl.paymentSettings.creditCards.length">
+	       				<span ng-repeat="type in $ctrl.paymentSettings.creditCards track by $index" ng-switch="type.circuit">
 	       					<span ng-switch-when="VISA" class="layout-margin no-margin-left">
 	        					<md-icon class="pf pf-visa md-18"></md-icon>
 	        					<md-tooltip><span translate="payment.type.carrier.VISA"></span></md-tooltip>
@@ -204,8 +208,8 @@
 	        				</span>
 	        			</span>
 	       			</span>
-	       			<span ng-switch-when="OTHER_CARD" ng-if="hotel.paymentSettings.otherCards.length">
-	       				<span ng-repeat="type in hotel.paymentSettings.otherCards track by $index" ng-switch="type.circuit">
+	       			<span ng-switch-when="OTHER_CARD" ng-if="$ctrl.paymentSettings.otherCards.length">
+	       				<span ng-repeat="type in $ctrl.paymentSettings.otherCards track by $index" ng-switch="type.circuit">
 							<span ng-switch-when="VISA_ELECTRON" class="layout-margin no-margin-left">
         						<md-icon class="pf pf-visa-electron md-18"></md-icon>
 	        					<md-tooltip><span translate="payment.type.carrier.VISA_ELECTRON"></span></md-tooltip>
@@ -247,12 +251,12 @@
 	       		</span>
       		
 	       		<span ng-if="!$ctrl.$$promotion.paymentMethod" class="layout-margin ng-scope layout-wrap layout-row layout-align-start-center">
-	       			<span ng-if="hotel.paymentSettings.paypal" class="layout-margin no-margin-left">
+	       			<span ng-if="$ctrl.paymentSettings.paypal" class="layout-margin no-margin-left">
 	       				<md-icon class="pf pf-paypal md-18"></md-icon>
 	       				<md-tooltip><span translate="payment.type.PAYPAL"></span></md-tooltip>
 	       			</span>
-	       			<span ng-if="hotel.paymentSettings.creditCards.length"  class="no-margin">
-	       				<span ng-repeat="type in hotel.paymentSettings.creditCards track by $index" ng-switch="type.circuit">
+	       			<span ng-if="$ctrl.paymentSettings.creditCards.length"  class="no-margin">
+	       				<span ng-repeat="type in $ctrl.paymentSettings.creditCards track by $index" ng-switch="type.circuit">
 	        				<span ng-switch-when="VISA" class="layout-margin no-margin-left">
 	        					<md-icon class="pf pf-visa md-18"></md-icon>
 	        					<md-tooltip><span translate="payment.type.carrier.VISA"></span></md-tooltip>
@@ -291,8 +295,8 @@
 	        				</span>
 	        			</span>
 	       			</span>
-	       			<span ng-if="hotel.paymentSettings.otherCards.length" class="no-margin">
-	       				<span ng-repeat="type in hotel.paymentSettings.otherCards track by $index" ng-switch="type.circuit">
+	       			<span ng-if="$ctrl.paymentSettings.otherCards.length" class="no-margin">
+	       				<span ng-repeat="type in $ctrl.paymentSettings.otherCards track by $index" ng-switch="type.circuit">
 	        				<span ng-switch-when="VISA_ELECTRON" class="layout-margin no-margin-left">
 	        					<md-icon class="pf pf-visa-electron md-18"></md-icon>
 	        					<md-tooltip><span translate="payment.type.carrier.VISA_ELECTRON"></span></md-tooltip>
@@ -362,9 +366,19 @@
       	</div>
      	
    		<div class="no-padding">
-   			<h4 class="layout-padding md-body-1 no-margin no-padding-bottom no-padding-left"><strong translate="common.cancellation"></strong></h4>
-		<!-- POLICY -->
-       		<div th:replace="public/partials/hotel/common/policy/rate-policy"></div>
+			<!-- POLICY -->
+			<div class="md-margin no-margin-top no-margin-left no-margin-right">
+      			<ch-cancellation-policy-info
+      				rate-type="$ctrl.rate.type"
+   					cancellation-policy="$ctrl.rate.cancellationPolicy"
+   					city="$ctrl.chRoomCtrl.city"
+   					offset="$ctrl.chRoomCtrl.offset"
+   					title="{{$ctrl.rate.cancellationPolicy.cancellation.deposit ? ('reservation.deposit.conditions'|translate) : null}}"></ch-cancellation-policy-info>
+   					
+   				<!-- mostro solo se la policy di cancellazione non prevede deposito (se c'è, è tutto specificato nelle condizioni di cancellazione) -->	
+				<ch-no-show-policy-info ng-if="$ctrl.rate.cancellationPolicy && !$ctrl.rate.cancellationPolicy.cancellation.deposit"
+   					no-show-policy="$ctrl.rate.noShowPolicy"></ch-no-show-policy-info>
+      		</div>
        	</div>
        	
        	<md-button class="text-gray-light auto-height row-mini" ng-click="$ctrl.$toggleInfo(false)" aria-label="Hide info">
