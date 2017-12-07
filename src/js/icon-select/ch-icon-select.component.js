@@ -40,7 +40,7 @@
     		ctrl.optionClass = ctrl.optionClass || "flex md-raised";
     		ctrl.$select();
     		
-    		ctrl.$initWatches();
+    		ctrl.$initWatchers();
     	};
     	
     	this.$select = function(val) {
@@ -72,7 +72,7 @@
     		ctrl.$cancelPreview();
     	};
     	
-    	this.$initWatches = function() {
+    	this.$initWatchers = function() {
     		$scope.$watchCollection(function(){
     			return ctrl.$$previewOpt;
     		

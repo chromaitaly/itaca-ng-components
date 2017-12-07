@@ -1,0 +1,268 @@
+<div class="relative" id="ch-room-edit_{{$ctrl.$$index}}">
+	<div ng-if="$ctrl.title || $ctrl.onRemove" class="layout-row layout-padding-sm">
+		<div ng-if="$ctrl.title" class="text-primary md-subhead">
+			<span ng-bind="$ctrl.title"></span>
+		</div>
+		
+		<div flex></div>
+		
+		<div ng-if="$ctrl.onRemove">
+			<md-button class="md-icon-button" ng-click="$ctrl.$removeRoom($event)" aria-label="Remove room">
+				<md-icon class="mdi mdi-close md-24"></md-icon>
+				<md-tooltip><span translate="common.remove"></span></md-tooltip>
+			</md-button>
+		</div>
+	</div>
+
+	<div class="layout-gt-sm-row layout-padding no-padding layout-wrap">
+		<div class="square-room-image no-padding-left">
+			<img class="no-padding-left clickable" ng-src="{{$ctrl.$$roomImage}}" lazy-image alt="Room cover image" ng-click="$ctrl.$openGallery($event)">
+			<md-tooltip><span translate="photo.photos.view.all"></span></md-tooltip>
+		</div>
+		
+		<div flex>
+			<div layout layout-wrap>
+				<div flex>
+					<h3 class="no-margin md-title" translate="{{$ctrl.room.type.roomType.nameKey}}"></h3>
+				
+					<div class="row-mini text-gray-light">
+		     			<small flex>
+			            	<span ng-if="$ctrl.room.type.description[$ctrl.localeIso]">{{$ctrl.room.type.description[$ctrl.localeIso]}}</span>
+		           			<span ng-if="!$ctrl.room.type.description[$ctrl.localeIso]"><span translate="{{$ctrl.room.type.roomType.descriptionKey}}"></span></span>
+		           		</small>
+		     		</div>
+		     				
+		     		<div>
+						<span class="md-caption">
+							<span><span translate="room.category"></span>:&nbsp;</span>
+							<span class="text-normal text-uppercase" translate="room.category.{{$ctrl.room.type.category}}"></span>
+						</span>
+					</div>
+							
+					<div>
+						<span class="md-caption text-lowercase">
+							<span>{{$ctrl.$$guestsCount.total}}</span>
+							<span ng-if="$ctrl.$$guestsCount.total != 1" translate="people.people"></span>
+							<span ng-if="$ctrl.$$guestsCount.total == 1" translate="people.person"></span>
+						</span>
+					</div>
+	    		</div>
+	    		
+			    <div>
+					<div class="layout-row layout-wrap layout-align-gt-sm-end-center flex-xs-100 flex-sm-100" ng-class="{'layout-align-center-start': $ctrl.$$promotion, 'layout-align-center-center': !$ctrl.$$promotion}">
+					
+						<div class="layout-column" ng-class="{'text-center': !$ctrl.$mdMedia('gt-sm'), 'text-right': $ctrl.$mdMedia('gt-sm')}">
+							<div ng-if="$ctrl.$$promotion" ng-switch="$ctrl.$$promotion.promotionType">
+								<span ng-switch-when="STANDARD" class="label label-xs bg-info"><ch-truncate text="{{$ctrl.$$promotion.name[$ctrl.localeIso]}}" max-length="20" suffix="..."></ch-truncate>&nbsp;<span ng-if="$ctrl.$$promotion.discount.type=='PERCENTAGE'">-{{$ctrl.$$promotion.discount.finalAmount}}%</span><span ng-if="$ctrl.$$promotion.discount.type=='PRICE'">-{{$ctrl.$$promotion.discount.finalAmount|chCurrency}}</span></span>
+					      		<span ng-switch-when="MINIMUM_STAY" class="label label-xs bg-primary-light"><span translate="promotions.promotion.label.minstay.nights" translate-value-count="{{$ctrl.$$promotion.minStay}}"></span>&nbsp;<span ng-if="$ctrl.$$promotion.discount.type=='PERCENTAGE'">-{{$ctrl.$$promotion.discount.finalAmount}}%</span><span ng-if="$ctrl.$$promotion.discount.type=='PRICE'">-{{$ctrl.$$promotion.discount.finalAmount|chCurrency}}</span></span>
+					      		<span ng-switch-when="BOOK_TODAY" class="label label-xs bg-primary"><span translate="promotions.promotion.label.only.today"></span>!&nbsp;<span ng-if="$ctrl.$$promotion.discount.type=='PERCENTAGE'">-{{$ctrl.$$promotion.discount.finalAmount}}%</span><span ng-if="$ctrl.$$promotion.discount.type=='PRICE'">-{{$ctrl.$$promotion.discount.finalAmount|chCurrency}}</span></span>
+					      		<span ng-switch-when="EARLY_BOOKING" class="label label-xs bg-success"><span translate="promotions.early"></span>&nbsp;<span ng-if="$ctrl.$$promotion.discount.type=='PERCENTAGE'">-{{$ctrl.$$promotion.discount.finalAmount}}%</span><span ng-if="$ctrl.$$promotion.discount.type=='PRICE'">-{{$ctrl.$$promotion.discount.finalAmount|chCurrency}}</span></span>
+					      		<span ng-switch-when="LAST_MINUTE" class="label label-xs bg-blue-sea"><span translate="promotions.last.minute"></span>&nbsp;<span ng-if="$ctrl.$$promotion.discount.type=='PERCENTAGE'">-{{$ctrl.$$promotion.discount.finalAmount}}%</span><span ng-if="$ctrl.$$promotion.discount.type=='PRICE'">-{{$ctrl.$$promotion.discount.finalAmount|chCurrency}}</span></span>
+					      		<span ng-switch-when="LAST_SECOND" class="label label-xs bg-warn"><span translate="promotions.last.second"></span>&nbsp;<span ng-if="$ctrl.$$promotion.discount.type=='PERCENTAGE'">-{{$ctrl.$$promotion.discount.finalAmount}}%</span><span ng-if="$ctrl.$$promotion.discount.type=='PRICE'">-{{$ctrl.$$promotion.discount.finalAmount|chCurrency}}</span></span>
+							</div>
+							
+							<div layout="column" layout-align="center end" ng-class="{'md-padding': !$ctrl.$mdMedia('gt-sm')}">						
+								<small ng-if="$ctrl.room.totalPrice.initialAmount > 0 && $ctrl.room.totalPrice.initialAmount > $ctrl.room.totalPrice.finalAmount">
+					        		<i><del>{{$ctrl.room.totalPrice.initialAmount|chCurrency}}</del></i>&nbsp;&nbsp;
+					        	</small>
+					        	
+								<h3 class="no-margin md-headline">{{$ctrl.room.totalPrice.finalAmount|chCurrency}}</h3>
+							</div>
+							
+							<div class="text-center layout-column flex-50">
+								<div ng-switch="$ctrl.room.totalRate.type">
+		     						<span ng-switch-when="STANDARD">
+		     							<span ng-if="$ctrl.room.totalRate.cancellationPolicy.flexible" class="label bg-warn" translate="reservation.rate.flexible"></span>
+		     							<span ng-if="!$ctrl.room.totalRate.cancellationPolicy.flexible" class="label bg-success" translate="reservation.cancellation.free"></span>
+		     						</span>
+		     						<span ng-switch-when="NOT_REFUNDABLE" class="label" translate="ratesheet.rate.type.notRefundable.abbr"></span>
+		     					</div>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+				
+			<div ng-if="$ctrl.room.totalRate.$$bestHotelRate" class="layout-row layout-wrap layout-align-start-center layout-padding border-radius border-success text-success only-border md-body-2 margin-auto-20">
+				<span class="no-padding">
+					<md-icon class="mdi mdi-thumb-up-outline md-24 text-success"></md-icon>&nbsp;
+					<span translate="room.best.hotel.rate"></span>
+				</span>
+			</div>
+			
+<!-- 			<div ng-if="!$ctrl.showConfig" class="layout-row layout-wrap layout-align-start-center layout-padding border-radius border-success text-success only-border md-body-2 margin-auto-20"> -->
+<!-- 				<span class="no-padding"> -->
+<!-- 					<md-icon class="mdi mdi-thumb-up-outline md-24 text-success"></md-icon>&nbsp; -->
+<!-- 					<span translate="room.last.hotel.rate.selected"></span> -->
+<!-- 				</span> -->
+<!-- 			</div> -->
+			
+			<div ng-if="!$ctrl.room.totalRate.$$bestHotelRate" class="layout-row layout-wrap layout-align-start-center layout-padding border-radius border-blue-sea text-blue-sea only-border md-body-2 margin-auto-20">
+				<span class="no-padding">
+					<md-icon class="mdi mdi-thumb-up-outline md-24 text-blue-sea"></md-icon>&nbsp;
+					<span translate="room.best.lovely.choise"></span>
+				</span>
+			</div>
+			
+		</div>
+	</div>
+	
+	<div ng-if="!$ctrl.showConfig">
+		<div layout="column" ng-class="{'md-padding': $ctrl.$mdMedia('gt-sm')}">
+			<div class="font-14 text-blue-sea text-center">
+				<span translate="room.config.now.question"></span>
+			</div>
+			
+			<md-button class="bg-blue-sea text-wrap button-small" ng-click="$ctrl.$toggleRoomConfig(true)" aria-label="Config room">
+				<span><span translate="room.config.now"></span>!</span>
+				<md-icon class="mdi mdi-chevron-down md-24 text-white animated infinite bounce"></md-icon>
+			</md-button>
+		</div>
+	</div>
+	
+	<div ng-show="$ctrl.showConfig">
+		<div class="layout-column flex-100 layout-align-center-center" ng-class="{'margin-20-no-x-sides': $ctrl.$mdMedia('gt-sm')}">
+			<div class="md-title text-center">
+				<span translate="reservation.rooms.config.title"></span>
+			</div>
+		</div>
+	
+		<div layout="column" class="no-padding">
+			<ch-room-edit-guests
+				people="$ctrl.room.people"
+				max-people="$ctrl.room.type.people"
+				max-count="$ctrl.room.type.guestsCount.standard"
+				limits="{adults: {min: 1}}"
+				age-ranges="{adults: {min: 18}, boys: {min: 13, max: 17}, children: {min: 3, max: 16}, kids: {min: 0, max: 2}}"
+				on-change="$ctrl.$onPeopleChange($people)">
+			</ch-room-edit-guests>
+		</div>
+		
+		<div layout="column" class="no-padding">
+			<ch-room-edit-beds
+				beds="$ctrl.room.beds"
+				max-beds="$ctrl.room.type.beds"
+				max-count="$ctrl.room.type.bedCount"
+				people="$ctrl.room.people"
+				people-availability="$ctrl.$$peopleAvailability"
+				on-add=""
+				on-remove=""
+				on-change="">
+			</ch-room-edit-beds>
+		</div>
+		
+		<div ng-if="$ctrl.room.type.otherBeds.length" layout="column" class="no-padding">
+			<ng-form name="otherBeds">
+				<div class="layout-row layout-wrap" ng-class="{'margin-20-no-x-sides': $ctrl.$mdMedia('gt-sm')}">
+					<div class="layout-column flex-100">
+						<div class="md-subhead md-margin text-blue-sea layout-align-start-center layout-row layout-wrap">
+							<md-icon class="mdi mdi-plus md-18 text-blue-sea no-margin"></md-icon>
+							<md-icon class="mdi mdi-hotel md-32 text-blue-sea no-margin"></md-icon>
+							<span ng-show="$ctrl.room.otherBeds.length" translate="bed.beds.list.title"></span>
+							<span ng-show="!$ctrl.room.otherBeds.length" translate="bed.beds.list.title.other"></span>
+						
+							<md-button ng-show="!$ctrl.room.otherBeds.length" class="button-small text-blue-sea" aria-label="Show/Hide extra beds" ng-click="$ctrl.$toggleExtraBeds()">
+								<small ng-if="!$ctrl.$$showExtraBeds">
+									<md-icon class="mdi mdi-plus md-18 text-blue-sea"></md-icon>
+									<span translate="common.add"></span>
+								</small>
+								<small ng-if="$ctrl.$$showExtraBeds">
+									<md-icon class="mdi mdi-chevron-up md-18 text-blue-sea"></md-icon>
+									<span translate="common.hide"></span>
+								</small>
+							</md-button>
+						</div>
+						<md-divider></md-divider>
+					</div>
+					
+					<div class="layout-column flex-100">
+						<div class="md-padding no-padding-top no-padding-bottom text-gray-light text-italic">
+							<md-icon class="mdi mdi-information-outline md-14"></md-icon>
+							<small ng-if="$ctrl.room.otherBeds.length">
+								<span translate="bed.this.operation"></span>&nbsp;
+								<span>{{$ctrl.$$guestsCount.extra}}</span>&nbsp;
+								<span ng-if="($ctrl.room.type.guestsCount.extra - $ctrl.$$guestsCount.extra) == 1" translate="people.person"></span>
+								<span ng-if="($ctrl.room.type.guestsCount.extra - $ctrl.$$guestsCount.extra) > 1" translate="people.people"></span>&nbsp;
+								<span class="text-lowercase" translate="room.room.in.yours"></span>
+							</small>
+							<small ng-if="!$ctrl.room.otherBeds.length">
+								<span translate="bed.beds.add.more"></span>&nbsp;
+								<span>{{$ctrl.room.type.maxOtherBeds - $ctrl.room.otherBeds.length}}</span>&nbsp;
+								<span class="text-lowercase">
+									<span ng-if="($ctrl.room.type.maxOtherBeds - $ctrl.room.otherBeds.length) == 1" translate="bed.bed"></span>
+									<span ng-if="($ctrl.room.type.maxOtherBeds - $ctrl.room.otherBeds.length) > 1" translate="bed.beds"></span>&nbsp;
+									<span translate="reservation.total.night"></span>&nbsp;
+									<span>{{$ctrl.room.type.guestsCount.extra - $ctrl.$$guestsCount.extra}}</span>&nbsp;
+									<span ng-if="($ctrl.room.type.guestsCount.extra - $ctrl.$$guestsCount.extra) == 1" translate="people.person"></span>
+									<span ng-if="($ctrl.room.type.guestsCount.extra - $ctrl.$$guestsCount.extra) > 1" translate="people.people"></span>
+								</span>
+							</small>
+						</div>
+					</div>
+				</div>	
+				
+				<div flex="100" ng-if="$ctrl.$$showExtraBeds" id="ch-room-edit-{{$ctrl.$$index}}-config-extra-beds">
+					<ch-room-edit-beds
+						beds="$ctrl.room.otherBeds"
+						max-beds="$ctrl.room.type.otherBeds"
+						max-count="$ctrl.room.type.maxOtherBeds"
+						people="$ctrl.room.extraPeople"
+						can-edit-people="true"
+						on-add=""
+						on-remove=""
+						on-change="">
+					</ch-room-edit-beds>
+					
+					<div ng-if="$ctrl.room.otherBeds.length == $ctrl.room.type.maxOtherBeds" class="text-center">
+						<md-icon class="mdi mdi-thumb-up-outline text-success"></md-icon>
+						<span translate="bed.all.added.success.message" class="text-success"></span>
+					</div>
+					
+					<div ng-if="$ctrl.room.otherBeds.length < $ctrl.room.type.maxOtherBeds" class="flex-100 layout-row layout-align-start-center md-padding no-padding-top no-padding-bottom">
+						<div>
+							<span translate="bed.beds.list.title.other"></span>
+						</div>
+							
+						<md-button class="button-small text-blue-sea" aria-label="edit beds" ng-click="$ctrl.$toggleExtraBeds()">
+							<small>
+								<md-icon class="mdi mdi-plus md-18 text-blue-sea"></md-icon>
+								<span translate="common.add"></span>
+							</small>
+						</md-button>
+					</div>
+					<div ng-if="room.otherBeds.length && (room.type.maxOtherBeds - room.otherBeds.length) > 0" class="md-padding no-padding-top no-padding-bottom text-gray-light text-italic">
+						<md-icon class="mdi mdi-information-outline md-14"></md-icon>
+						<small>
+							<span translate="bed.beds.add.more"></span>
+							<span>{{room.type.maxOtherBeds - room.otherBeds.length}}</span>
+							<span ng-if="(room.type.maxOtherBeds - room.otherBeds.length) == 1" translate="bed.bed"></span>
+							<span ng-if="(room.type.maxOtherBeds - room.otherBeds.length) > 1" translate="bed.beds"></span>
+							<span translate="reservation.total.night"></span>
+							<span>{{room.type.guestsCount.extra - room.guestsCount.extra}}</span>
+							<span ng-if="(room.type.guestsCount.extra - room.guestsCount.extra) == 1" translate="people.person"></span>
+							<span ng-if="(room.type.guestsCount.extra - room.guestsCount.extra) > 1" translate="people.people"></span>
+						</small>
+					</div>
+				</div>
+			</ng-form>
+	<!-- 						<div th:replace="public/partials/hotel/content/book/rooms/beds/beds-config"></div> -->
+		</div>
+		
+		<div layout="column" class="no-padding">
+<!-- 						<div th:replace="public/partials/hotel/content/book/rooms/services/services-config"></div> -->
+		</div>
+		
+		<div layout="column" class="no-padding">
+<!-- 						<div th:replace="public/partials/hotel/content/book/rooms/guests/guests-details"></div> -->
+		</div>
+		
+		<div layout="column" ng-class="{'md-padding': $ctrl.$mdMedia('gt-sm')}">
+			<md-button class="text-blue-sea text-small" ng-click="$ctrl.$toggleRoomConfig(false)" aria-label="Close room config">
+				<span><span translate="common.close"></span></span>
+				<md-icon class="mdi mdi-chevron-up md-18 text-blue-sea"></md-icon>
+			</md-button>
+		</div>
+	</div>
+
+	<md-divider class="layout-margin no-margin-left no-margin-right" ng-show="!$last"></md-divider>
+</div>

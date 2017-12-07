@@ -35,7 +35,7 @@
 								"<ch-truncate text=\"{{$ctrl.promotion.name[$ctrl.$$currentLang.iso]}}\" max-length=\"20\"  suffix=\"...\"></ch-truncate>&nbsp;<span ng-if=\"$ctrl.promotion.discount.type==\"PERCENTAGE\"\">-{{$ctrl.promotion.discount.finalAmount}}%</span><span ng-if=\"$ctrl.promotion.discount.type==\"PRICE\"\">-{{$ctrl.promotion.discount.finalAmount|chCurrency}}</span>"+
 						"</span>"+
 			      		"<span ng-switch-when=\"MINIMUM_STAY\" class=\"label label-xs bg-primary-light\">"+
-			      				"<span translate=\"promotions.promotion.label.minstay.nigths\" translate-value-count=\"{{$ctrl.promotion.days}}\"></span>&nbsp;<span ng-if=\"$ctrl.promotion.discount.type==\"PERCENTAGE\"\">-{{$ctrl.promotion.discount.finalAmount}}%</span><span ng-if=\"$ctrl.promotion.discount.type==\"PRICE\"\">-{{$ctrl.promotion.discount.finalAmount|chCurrency}}</span>"+
+			      				"<span translate=\"promotions.promotion.label.minstay.nights\" translate-value-count=\"{{$ctrl.promotion.days}}\"></span>&nbsp;<span ng-if=\"$ctrl.promotion.discount.type==\"PERCENTAGE\"\">-{{$ctrl.promotion.discount.finalAmount}}%</span><span ng-if=\"$ctrl.promotion.discount.type==\"PRICE\"\">-{{$ctrl.promotion.discount.finalAmount|chCurrency}}</span>"+
 			      				"</span>"+
 			      		"<span ng-switch-when=\"BOOK_TODAY\" class=\"label label-xs bg-danger\">"+
 			      				"<span translate-once=\"promotions.promotion.label.only.today\"></span>!&nbsp;<span ng-if=\"$ctrl.promotion.discount.type==\"PERCENTAGE\"\">-{{$ctrl.promotion.discount.finalAmount}}%</span><span ng-if=\"$ctrl.promotion.discount.type==\"PRICE\"\">-{{$ctrl.promotion.discount.finalAmount|chCurrency}}</span>"+
@@ -138,7 +138,7 @@
 				}
 			}
 			
-			ctrl.$initWatches();
+			ctrl.$initWatchers();
 	   };
 	   
 	   this.$refreshPrice = function(){
@@ -173,7 +173,7 @@
 		   } 
 	   };
 	   
-	   this.$initWatches = function() {
+	   this.$initWatchers = function() {
 		   $scope.$watch(function(){
 			   return ctrl.ngModel.finalAmount;
 			   

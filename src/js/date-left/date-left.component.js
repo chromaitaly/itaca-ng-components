@@ -18,7 +18,7 @@
 		var ctrl = this;
 		
 		this.$onInit = function() {
-			ctrl.$initWatches();
+			ctrl.$initWatchers();
 		};
 		
 		this.$calculateDiff = function(){
@@ -28,7 +28,7 @@
 			ctrl.$$dateLeft = start.to(end);
 		};
 		
-		this.$initWatches = function() {
+		this.$initWatchers = function() {
 			$scope.$watchGroup([function() {
 				return ctrl.start;
 			

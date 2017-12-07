@@ -47,7 +47,7 @@
 			}
 			
 			ctrl.$initSummary();
-			ctrl.$initWatches();
+			ctrl.$initWatchers();
 		};
 		
 		this.$initSummary = function() {
@@ -58,7 +58,7 @@
     		ctrl.summary = ctrl.chReviewsSummaryCtrl.summary;
 		};
 		
-		this.$initWatches = function() {
+		this.$initWatchers = function() {
 			$scope.$watch(function() {
 				return ctrl.count;
 				

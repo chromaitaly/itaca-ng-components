@@ -43,7 +43,7 @@
     		
     		ctrl.$getUserAvatar();
     		ctrl.$initLikes();
-    		ctrl.$initWatches();
+    		ctrl.$initWatchers();
     	};
     	
     	this.$initLikes = function() {
@@ -73,7 +73,7 @@
     		ctrl.review.reviewSettings.showRealName = _.isBoolean(ctrl.review.reviewSettings.showRealName) ? ctrl.review.reviewSettings.showRealName : true; 
     	};
     	
-    	this.$initWatches = function() {
+    	this.$initWatchers = function() {
     		$scope.$watchCollection(function() {
     			return ctrl.review.likes;
     			

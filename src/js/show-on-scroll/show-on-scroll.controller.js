@@ -31,7 +31,7 @@
     			ctrl.hideClass = ctrl.hideClass ? "zoomOut" : "";
     		}
     		
-    		ctrl.$initWatches();
+    		ctrl.$initWatchers();
     	};
     	
     	this.$postLink = function() {
@@ -93,7 +93,7 @@
     	   	$scope.$apply();
     	};
     	
-    	this.$initWatches = function() {
+    	this.$initWatchers = function() {
     		$scope.$watch(function() {
     			return ctrl.ngDisabled;
     			

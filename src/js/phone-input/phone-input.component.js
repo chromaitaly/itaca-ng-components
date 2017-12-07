@@ -74,7 +74,7 @@
 		   ctrl.$decompilePhone();
 		   ctrl.$loadPrefixes();
 		   
-		   ctrl.$initWatches();
+		   ctrl.$initWatchers();
 	   };
 	   
 	   this.$loadPrefixes = function() {
@@ -118,7 +118,7 @@
 			ctrl.ngModel = ctrl.$$phone && ctrl.$$phone.prefix && ctrl.$$phone.prefix.dial_code ? PhoneList.compile(ctrl.$$phone.prefix.dial_code, ctrl.$$phone.number) : ctrl.ngModel;
 		};
 		
-		this.$initWatches = function() {
+		this.$initWatchers = function() {
 			$scope.$watchCollection(function(){ 
 				return ctrl.$$phone;
 				

@@ -17,14 +17,14 @@
 		var ctrl = this;
 		 
 		this.$onInit = function() {
-			ctrl.$initWatches();
+			ctrl.$initWatchers();
 		};
 		 
 		this.$prepareText = function() {
 			ctrl.$$textArr = _.split(ctrl.text, "");
 		};
 		 
-		this.$initWatches = function() {
+		this.$initWatchers = function() {
 			$scope.$watch(function() {
 				return ctrl.text;
 			

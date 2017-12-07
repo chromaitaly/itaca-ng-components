@@ -70,7 +70,7 @@
     		ctrl.$getCenter(map);
     		
     		// init watches
-    		ctrl.$initWatches();
+    		ctrl.$initWatchers();
     		
 	    	google.maps.event.trigger(map, 'resize');
 		 };
@@ -136,7 +136,7 @@
 			 }, 1000);
 		 };
 		 
-		 this.$initWatches = function() {
+		 this.$initWatchers = function() {
 			 scope.$watchCollection(function() {
     			return ctrl.$$map.markers;
 			

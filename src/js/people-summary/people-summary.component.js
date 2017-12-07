@@ -19,7 +19,7 @@
 		var ctrl = this;
 		
 		this.$onInit = function() {
-			ctrl.$initWatches();
+			ctrl.$initWatchers();
 		};
 		
 		this.$updateSummary = function() {
@@ -44,7 +44,7 @@
 			}
 		};
 		
-		this.$initWatches = function() {		
+		this.$initWatchers = function() {		
 			$scope.$watchCollection(function() {
 				return ctrl.people;
 			}, ctrl.$updateSummary);

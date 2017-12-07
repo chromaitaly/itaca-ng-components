@@ -48,7 +48,7 @@
 			ctrl.contClass = ctrl.contClass || "bg-primary text-white md-title";
 			ctrl.progressDiameter = ctrl.progressDiameter || 150;
 			
-			ctrl.$initWatches();
+			ctrl.$initWatchers();
 		};
 		
 		this.$onDestroy = function() {
@@ -64,7 +64,7 @@
 			$element.removeClass("ng-hide");
 		};
 		
-		this.$initWatches = function() {
+		this.$initWatchers = function() {
 			$scope.$watch(function() {
 				return ctrl.hideElement;
 			

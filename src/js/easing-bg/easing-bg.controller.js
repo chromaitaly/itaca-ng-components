@@ -34,7 +34,7 @@
     		ctrl.$$transStyle = {"z-index": "1"};
     		ctrl.$$baseBgStyle = "position: absolute; z-index: -1; height: 100%; width: 100%; top: 0; left: 0;";
     		
-    		ctrl.$initWatches();
+    		ctrl.$initWatchers();
     	};
     	
     	this.$postLink = function() {
@@ -88,7 +88,7 @@
     	   	$scope.$apply();
     	};
     	
-    	this.$initWatches = function() {
+    	this.$initWatchers = function() {
     		$scope.$watch(function() {
     			return ctrl.ngDisabled;
     			

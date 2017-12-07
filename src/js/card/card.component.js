@@ -125,7 +125,7 @@
 			ctrl.showAvatar = _.isBoolean(ctrl.showAvatar) ? ctrl.showAvatar : false;
 			//	ctrl.imgContClass = ctrl.imgContClass || "menu-user-avatar menu-user-avatar-big";
 			
-			ctrl.$initWatches();
+			ctrl.$initWatchers();
 		};
 		
 		this.$goTo = function(){
@@ -165,7 +165,7 @@
 			}
 		};
 		
-		this.$initWatches = function() {
+		this.$initWatchers = function() {
 			$scope.$watch(function() {
 				return ctrl.imgUrl;
 			

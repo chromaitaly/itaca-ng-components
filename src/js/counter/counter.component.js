@@ -30,23 +30,23 @@
     	},
 		controller: CounterCtrl,
 		template: 
-        	"<div class=\"layout-column {{$ctrl.wrapperClass}}\" ng-class=\"{\"flex\": $ctrl.flexible}\" ng-style=\"{\"display\": $ctrl.flexible ? \"inherit\" : \"inline-block\"}\" style=\"min-width: 150px;\">" +
-        		"<div class=\"{{$ctrl.labelContClass}} layout-padding no-padding\">" +
-	        		"<div ng-if=\"$ctrl.label && ($ctrl.labelDirection == \"left\" || $ctrl.labelDirection == \"top\")\" class=\"layout-row layout-align-center-center {{$ctrl.labelClass}}\">" +
+			"<div class=\"layout-column {{$ctrl.wrapperClass}}\" ng-class=\"{'flex': $ctrl.flexible}\" ng-style=\"{'display': $ctrl.flexible ? 'inherit' : 'inline-block'}\" style=\"min-width: 150px;\">" +
+	    		"<div class=\"{{$ctrl.labelContClass}} layout-padding no-padding\">" +
+	        		"<div ng-if=\"$ctrl.label && ($ctrl.labelDirection == 'left' || $ctrl.labelDirection == 'top')\" class=\"layout-row layout-align-center-center {{$ctrl.labelClass}}\">" +
 	        			"<span ng-bind-html=\"$ctrl.label\"></span>" +
 	        		"</div>" +
 		        	"<div class=\"layout-row layout-align-center-center flex\">" +
-						"<md-button class=\"{{$ctrl.btnClass}} no-margin\" ng-class=\"!$ctrl.$isDecreaseDisabled() ? $ctrl.btnActiveClass : \"\"\" aria-label=\"Minus\" ng-disabled=\"$ctrl.$isDecreaseDisabled()\" ng-click=\"$ctrl.$decrease()\">" +
-				  			"<md-icon class=\"material-icons mdi mdi-minus md-18 {{$ctrl.iconClass}}\" ng-class=\"!$ctrl.$isDecreaseDisabled() ? $ctrl.iconActiveClass : \"\"\"></md-icon>" +
+						"<md-button class=\"{{$ctrl.btnClass}} no-margin\" ng-class=\"!$ctrl.$$decreaseDisabled ? $ctrl.btnActiveClass : ''\" aria-label=\"Minus\" ng-disabled=\"$ctrl.$$decreaseDisabled\" ng-click=\"$ctrl.$decrease()\">" +
+				  			"<md-icon class=\"material-icons mdi mdi-minus md-18 {{$ctrl.iconClass}}\" ng-class=\"!$ctrl.$$decreaseDisabled ? $ctrl.iconActiveClass : ''\"></md-icon>" +
 				  		"</md-button>" +
-				  		"<div class=\"layout-column layout-padding layout-align-center-center\" ng-class=\"{\"flex\": $ctrl.flexible}\">" +
+				  		"<div class=\"layout-column layout-padding layout-align-center-center\" ng-class=\"{'flex': $ctrl.flexible}\">" +
 				  			"<span class=\"{{$ctrl.countClass}} border-gray-lighter border-radius\">{{$ctrl.count || 0}}</span>" +
 				  		"</div>" +
-				  		"<md-button class=\"{{$ctrl.btnClass}} no-margin\" ng-class=\"!$ctrl.$isIncreaseDisabled() ? $ctrl.btnActiveClass : \"\"\" aria-label=\"Plus\" ng-disabled=\"$ctrl.$isIncreaseDisabled()\" ng-click=\"$ctrl.$increase()\">" +
-				  			"<md-icon class=\"material-icons mdi mdi-plus md-18 {{$ctrl.iconClass}}\" ng-class=\"!$ctrl.$isIncreaseDisabled() ? $ctrl.iconActiveClass : \"\"\"></md-icon>" +
+				  		"<md-button class=\"{{$ctrl.btnClass}} no-margin\" ng-class=\"!$ctrl.$$increaseDisabled ? $ctrl.btnActiveClass : ''\" aria-label=\"Plus\" ng-disabled=\"$ctrl.$$increaseDisabled\" ng-click=\"$ctrl.$increase()\">" +
+				  			"<md-icon class=\"material-icons mdi mdi-plus md-18 {{$ctrl.iconClass}}\" ng-class=\"!$ctrl.$$increaseDisabled ? $ctrl.iconActiveClass : ''\"></md-icon>" +
 				  		"</md-button>" +
 				  	"</div>" +
-				  	"<div ng-if=\"$ctrl.label && ($ctrl.labelDirection == \"right\" || $ctrl.labelDirection == \"bottom\")\" class=\"layout-row layout-align-center-center {{$ctrl.labelClass}}\">" +
+				  	"<div ng-if=\"$ctrl.label && ($ctrl.labelDirection == 'right' || $ctrl.labelDirection == 'bottom')\" class=\"layout-row layout-align-center-center {{$ctrl.labelClass}}\">" +
 				  		"<span ng-bind-html=\"$ctrl.label\"></span>" +
 	        		"</div>" +
 			  	"</div>" + 
@@ -60,7 +60,7 @@
 	});
        
 	/* @ngInject */
-    function CounterCtrl($ctrl, $element, $attrs) {
+    function CounterCtrl($scope, $element, $attrs) {
     	var ctrl = this;
     	
     	this.$onInit = function() {
@@ -71,7 +71,9 @@
         	ctrl.count = angular.isNumber(ctrl.count) ? ctrl.count : 0;
         	ctrl.step = angular.isNumber(ctrl.step) ? ctrl.step : 1;
         	
-        	ctrl.$initWatches();
+        	ctrl.$isDecreaseDisabled();
+        	ctrl.$isIncreaseDisabled();
+        	ctrl.$initWatchers();
     	};
     	
     	this.$observeFlexible = function() {
@@ -92,6 +94,8 @@
     		if (angular.isNumber(ctrl.min) && ctrl.count < ctrl.min) {
         		ctrl.count = ctrl.min;
         	}
+    		
+    		ctrl.$isDecreaseDisabled();
     	};
     	
     	this.$observeMax = function() {
@@ -100,6 +104,8 @@
     		if (angular.isNumber(ctrl.max) && ctrl.count > ctrl.max) {
         		ctrl.count = ctrl.max;
         	}
+    		
+    		ctrl.$isIncreaseDisabled();
     	};
     	
     	this.$decrease = function(){
@@ -119,23 +125,35 @@
     	};
     	
     	this.$isDecreaseDisabled = function() {
-    		return ctrl.ngDisabled ? ctrl.ngDisabled : ctrl.minusDisabled ? ctrl.minusDisabled : (angular.isNumber(ctrl.min) && ctrl.count <= ctrl.min);
+    		ctrl.$$decreaseDisabled = ctrl.ngDisabled ? ctrl.ngDisabled : ctrl.minusDisabled ? ctrl.minusDisabled : (angular.isNumber(ctrl.min) && ctrl.count <= ctrl.min);
+    		return ctrl.$$decreaseDisabled;
     	};
     	
     	this.$isIncreaseDisabled = function() {
-    		return ctrl.ngDisabled ? ctrl.ngDisabled : ctrl.plusDisabled ? ctrl.plusDisabled : (angular.isNumber(ctrl.max) && ctrl.count >= ctrl.max);
+    		ctrl.$$increaseDisabled = ctrl.ngDisabled ? ctrl.ngDisabled : ctrl.plusDisabled ? ctrl.plusDisabled : (angular.isNumber(ctrl.max) && ctrl.count >= ctrl.max);
+    		return ctrl.$$increaseDisabled;
     	};
     	
     	this.$updateModel = function(){
 			ctrl.ngModelCtrl.$setViewValue(ctrl.count);
     	};
     	
-    	this.$initWatches = function() {
-	    	$scope.$watch("flexible", ctrl.$observeFlexible);
-	    	$scope.$watch("labelDirection", ctrl.$observeLabelDirection);
-	    	$scope.$watch("min", ctrl.$observeMin);        	
-	    	$scope.$watch("max", ctrl.$observeMax);
+    	this.$initWatchers = function() {
+	    	$scope.$watch(function() {
+	    		return ctrl.flexible;
+	    	}, ctrl.$observeFlexible);
+	    	
+	    	$scope.$watch(function() {
+	    		return ctrl.labelDirection;
+	    	}, ctrl.$observeLabelDirection);
+	    	
+	    	$scope.$watch(function() {
+	    		return ctrl.min;
+	    	}, ctrl.$observeMin);  
+	    	
+	    	$scope.$watch(function() {
+	    		return ctrl.max;
+	    	}, ctrl.$observeMax);
     	};
     }
-    	
 })();

@@ -31,7 +31,7 @@
 								"<span translate=\"common.offer.special\"></span>&nbsp;<span ng-if=\"$ctrl.chRoomCtrl.bestPromo.discount.type=='PERCENTAGE'\">-{{$ctrl.chRoomCtrl.bestPromo.discount.finalAmount}}%</span><span ng-if=\"$ctrl.chRoomCtrl.bestPromo.discount.type=='PRICE'\">-{{$ctrl.chRoomCtrl.bestPromo.discount.finalAmount|chCurrency}}</span>" +
 							"</span>"+
 				      		"<span ng-switch-when=\"MINIMUM_STAY\">" +
-				      			"<span translate=\"promotions.promotion.label.minstay.nigths\" translate-value-count=\"{{$ctrl.chRoomCtrl.bestPromo.minStay}}\"></span>&nbsp;<span ng-if=\"$ctrl.chRoomCtrl.bestPromo.discount.type=='PERCENTAGE'\">-{{$ctrl.chRoomCtrl.bestPromo.discount.finalAmount}}%</span><span ng-if=\"$ctrl.chRoomCtrl.bestPromo.discount.type=='PRICE'\">-{{$ctrl.chRoomCtrl.bestPromo.discount.finalAmount|chCurrency}}</span>" +
+				      			"<span translate=\"promotions.promotion.label.minstay.nights\" translate-value-count=\"{{$ctrl.chRoomCtrl.bestPromo.minStay}}\"></span>&nbsp;<span ng-if=\"$ctrl.chRoomCtrl.bestPromo.discount.type=='PERCENTAGE'\">-{{$ctrl.chRoomCtrl.bestPromo.discount.finalAmount}}%</span><span ng-if=\"$ctrl.chRoomCtrl.bestPromo.discount.type=='PRICE'\">-{{$ctrl.chRoomCtrl.bestPromo.discount.finalAmount|chCurrency}}</span>" +
 				      		"</span>"+
 				      		"<span ng-switch-when=\"BOOK_TODAY\">" +
 				      			"<span translate=\"promotions.promotion.label.only.today\"></span>!&nbsp;<span ng-if=\"$ctrl.chRoomCtrl.bestPromo.discount.type=='PERCENTAGE'\">-{{$ctrl.chRoomCtrl.bestPromo.discount.finalAmount}}%</span><span ng-if=\"$ctrl.chRoomCtrl.bestPromo.discount.type=='PRICE'\">-{{$ctrl.chRoomCtrl.bestPromo.discount.finalAmount|chCurrency}}</span>" +

@@ -256,7 +256,7 @@
 		this.$onInit = function() {
 			ctrl.reservation = ctrl.reservation || {};
 			ctrl.step = !_.isNil(ctrl.step) ? parseInt(ctrl.step) : 1;
-			ctrl.$initWatches();
+			ctrl.$initWatchers();
 		};
 		
 		this.$next = function() {
@@ -288,7 +288,7 @@
 			ctrl.onSearch && ctrl.onSearch({checkin: ctrl.reservation.checkin, checkout: ctrl.reservation.checkout, nights: ctrl.reservation.nights, people: ctrl.reservation.people});
 		};
 		
-		this.$initWatches = function() {
+		this.$initWatchers = function() {
 			$scope.$watchGroup([function() {
 				return ctrl.reservation.checkin;
 			}, function() {

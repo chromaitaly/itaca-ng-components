@@ -37,7 +37,7 @@
 			$translate([ctrl.chRoomCtrl.room.roomType.nameKey, "room.category." + ctrl.chRoomCtrl.room.category]).then(function(translations) {
 				var title = translations[ctrl.chRoomCtrl.room.roomType.nameKey] + " <small>(" + translations["room.category." + ctrl.chRoomCtrl.room.category].toUpperCase() + ")</small>";
 				
-				Dialog.showGallery(ev, title, _.sortBy(ctrl.chRoomCtrl.room.gallery, [function(o){ return Boolean(o.cover);}]), {storageUrl: ctrl.chRoomCtrl.storageUrl});
+				Dialog.showGallery(ev, title, _.sortBy(ctrl.chRoomCtrl.room.gallery, [function(o){ return +Boolean(o.cover);}]), {storageUrl: ctrl.chRoomCtrl.storageUrl});
 			});
     	};
     }

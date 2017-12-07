@@ -1,0 +1,72 @@
+<div>
+	<div class="layout-row layout-wrap md-margin no-margin-x-sides">
+		<div class="layout-column flex-100">
+			<div class="md-subhead md-margin text-blue-sea">
+				<md-icon class="mdi mdi-account-multiple md-32 text-blue-sea no-margin"></md-icon>
+				<span translate="bed.sleep.here.room"></span>
+			</div>
+			<md-divider></md-divider>
+		</div>
+		
+		<div class="layout-column flex-100" ng-if="$ctrl.maxCount > 1">
+			<div class="md-padding no-padding-top no-padding-bottom text-gray-light text-italic">
+				<md-icon class="mdi mdi-information-outline md-14"></md-icon>
+				<small>
+					<span ng-if="$ctrl.maxCount != $ctrl.$$guestsCount.standard"><span translate="people.people.add.more"></span>.&nbsp;</span>
+					<span ng-if="$ctrl.maxCount == $ctrl.$$guestsCount.standard"><span translate="people.people.edit"></span>.&nbsp;</span>
+					<span translate="common.edit.no.extra.cost"></span>
+				</small>
+			</div>
+		</div>
+		
+		
+		<md-list class="layout-column flex-100" ng-show="!$ctrl.$$showDetails">
+			<md-list-item ng-if="$ctrl.maxCount > 1" class="layout-row layout-wrap layout-padding layout-align-center-center no-padding-top no-padding-bottom no-padding-right">
+				<div class="flex">
+					<ch-people-summary people="$ctrl.people"></ch-people-summary>
+				</div>
+				<div class="no-padding-right">
+					<md-button class="button-small no-margin text-blue-sea" ng-click="$ctrl.$toggleDetails(true)" aria-label="Edit guests">
+						<small>
+							<md-icon class="mdi mdi-pencil md-18 text-blue-sea"></md-icon>
+							<span translate="common.edit"></span>
+						</small>
+					</md-button>
+				</div>
+			</md-list-item>
+			<md-list-item ng-if="$ctrl.maxCount == 1" class="layout-row layout-wrap layout-padding layout-align-center-center no-padding-top no-padding-bottom no-padding-right">
+				<div class="flex">
+					<span><span translate="people.people.only.inroom"></span>&nbsp;</span>
+					<ch-people-summary people="$ctrl.people"></ch-people-summary>
+				</div>
+			</md-list-item>
+		</md-list>
+	
+		<div class="layout-column flex-100" ng-class="{'layout-align-center-center': !$mdMedia('gt-sm')}" ng-show="$ctrl.$$showDetails">
+			<div class="layout layout-wrap layout-align-center-center">
+				<div class="flex-50 flex-gt-sm-25 layout-column layout-align-center-center">
+					<ch-counter label="{{$ctrl.$$adultsHint}}" count-class="bg-white only-border" ng-model="$ctrl.people.adults" min="$ctrl.limits.adults.min" max="$ctrl.limits.adults.max"></ch-counter>
+				</div>
+				<div class="flex-50 flex-gt-sm-25 layout-column layout-align-center-center">
+					<ch-counter label="{{$ctrl.$$boysHint}}" count-class="bg-white only-border" ng-model="$ctrl.people.boys" min="$ctrl.limits.boys.min" max="$ctrl.limits.boys.max"></ch-counter>
+				</div>
+				<div class="flex-50 flex-gt-sm-25 layout-column layout-align-center-center">
+					<ch-counter label="{{$ctrl.$$childrenHints}}" count-class="bg-white only-border" ng-model="$ctrl.people.children" min="$ctrl.limits.children.min" max="$ctrl.limits.children.max"></ch-counter>
+				</div>
+				<div class="flex-50 flex-gt-sm-25 layout-column layout-align-center-center layout-padding">
+					<ch-counter label="{{$ctrl.$$kidsHints}}" count-class="bg-white only-border" ng-model="$ctrl.people.kids" min="$ctrl.limits.kids.min" max="$ctrl.limits.kids.max"></ch-counter>
+				</div>
+			</div>
+			<div ng-if="$ctrl.$$guestsCount.standard >= $ctrl.maxCount" class="md-padding no-padding-bottom no-padding-top">
+				<span class="bg-info label label-inline-block text-wrap text-center" translate="people.max.room"></span>
+			</div>
+			
+			<div class="text-right" ng-class="{'layout-column': !$mdMedia('gt-sm')}">
+				<md-button class="bg-success text-white md-raised" ng-click="$ctrl.$toggleDetails()" aria-label="Confirm guests">
+					<md-icon class="mdi mdi-check md-24 text-white"></md-icon>
+					<span translate="common.confirm"></span>
+				</md-button>
+			</div>
+		</div>
+	</div>
+</div>

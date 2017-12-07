@@ -111,7 +111,7 @@
 	    		 ctrl.$$panelConfig.zIndex = ctrl.zIndex;
 	    	 }
 	    	
-	    	ctrl.$initWatches();
+	    	ctrl.$initWatchers();
 		};
 		
 		this.$toggleBodyScroll = function(block) {
@@ -152,7 +152,7 @@
     		}
     	};
     	 
-    	this.$initWatches = function() {
+    	this.$initWatchers = function() {
 	    	 $scope.$watchCollection(function() {
 	    		 return ctrl.people;
 	    		 
