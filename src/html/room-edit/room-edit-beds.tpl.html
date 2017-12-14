@@ -1,66 +1,33 @@
 <div>
-	<div class="layout-row layout-wrap" ng-if="!$ctrl.$$showDetails">
-		<div class="layout-column flex-100">
-			<div class="md-subhead md-margin text-blue-sea">
-				<md-icon class="mdi mdi-hotel md-32 text-blue-sea no-margin"></md-icon>
-				<span flex>
-					<ch-people-summary people="$ctrl.people"></ch-people-summary>
-					<span class="text-lowercase">
-						&nbsp;
-						<span ng-if="$ctrl.$$guestsCount.standard == 1" translate="people.person.will.sleep"></span>
-						<span ng-if="$ctrl.$$guestsCount.standard > 1" translate="people.people.will.sleep"></span>
-						&nbsp;
-						<span ng-if="$ctrl.beds.length == 1" translate="bed.bed.follow"></span>
-						<span ng-if="$ctrl.beds.length > 1" translate="bed.beds.follow"></span>
-					</span>
-				</span>
-			</div>
-			<md-divider></md-divider>
-		</div>
-		
-		<div class="layout-column flex-100">
-			<div class="md-padding no-padding-top no-padding-bottom text-gray-light text-italic">
-				<md-icon class="mdi mdi-information-outline md-14"></md-icon>
-				<small ng-if="$ctrl.$$availableBeds.length > $ctrl.beds.length">
-					<span translate="bed.choise.type"></span>
-					<span translate="common.edit.no.extra.cost"></span>
-				</small>
-				<small ng-if="$ctrl.$$availableBeds.length <= $ctrl.beds.length" translate="bed.beds.principal.description"></small>
-			</div>
-		</div>
-		
-		<md-list class="flex-100 layout-column ">
-			<md-list-item class="layout-row layout-wrap layout-padding layout-align-center-center no-padding-top no-padding-right" 
+	<div ng-if="!$ctrl.$$showDetails">
+		<md-list>
+			<md-list-item class="layout-row layout-wrap layout-padding-sm layout-align-center-center no-padding-top no-padding-right" 
 				ng-class="{'no-padding-left': !$ctrl.$mdMedia('gt-sm')}" 
 				ng-repeat="bedSold in $ctrl.beds">
 				<div class="flex">
 					<strong ng-click="$ctrl.$showBedInfo($event, bedSold)" aria-label="Bed info" class="clickable">
 						<span translate="bed.bed"></span>
-						<span translate="bed.{{bedSold.bed.type}}"></span>
+						<span translate="bed.{{bedSold.bed.type}}"></span>&nbsp;
 						<md-icon class="mdi mdi-information-outline md-14"></md-icon>
 					</strong>
 					
 					<div class="text-gray-light text-small">
 						<span translate="bed.{{bedSold.bed.type}}.description"></span>
 					</div>
+					
 					<div class="text-gray-light text-small">
-						<span translate="common.for"></span>&nbsp;
-<!--  							<span>{{bedSold.bed.maxPerson}}&nbsp;</span> -->
-<!--  							<span ng-if="bedSold.bed.maxPerson == 1" class="text-lowercase" translate="people.person"></span> -->
-<!--  							<span ng-if="bedSold.bed.maxPerson > 1" class="text-lowercase" translate="people.people"></span> -->
 						<ch-people-summary people="bedSold.people"></ch-people-summary>
  					</div>
  					
- 					<div ng-if="bedSold.amount" class="no-padding-right md-subhead" ng-class="{'flex text-left': !$ctrl.$mdMedia('gt-sm')}">
+ 					<div ng-if="bedSold.amount" class="md-subhead">
 			        	<span ng-if="bedSold.amount.finalAmount > 0">{{bedSold.amount.finalAmount|chCurrency}}</span>
 			        	<span ng-if="bedSold.amount.finalAmount == 0" class="text-success"><span translate="common.free"></span></span>
 				    </div>
 				</div>
 				
-				<div ng-if="$ctrl.$$availableBeds.length > $ctrl.beds.length" ng-class="{'flex-100 layout-column text-center': !$ctrl.$mdMedia('gt-sm'), 'no-padding-right': $ctrl.$mdMedia('gt-sm')}">
-					<md-button class="button-small no-margin text-small" ng-class="$ctrl.$mdMedia('gt-sm') ? 'text-blue-sea' : 'bg-blue-sea text-white'" 
-						ng-click="$ctrl.$toggleDetails(true)" aria-label="Edit beds">
-						<md-icon class="mdi mdi-pencil md-18" ng-class="$ctrl.$mdMedia('gt-sm') ? 'text-blue-sea' : 'text-white'"></md-icon>
+				<div class="no-padding-right">
+					<md-button class="button-small no-margin text-small text-blue-sea"ng-click="$ctrl.$toggleDetails(true)" aria-label="Edit beds">
+						<md-icon class="mdi mdi-pencil md-18 text-blue-sea"></md-icon>
 						<span translate="common.edit"></span>
 					</md-button>
 				</div>
@@ -70,138 +37,148 @@
 				</div>
 			</md-list-item>
 			
-			<md-list-item class="layout layout-wrap layout-align-center-center am-fade-and-slide-right" ng-class="{'no-padding-left': !$ctrl.$mdMedia('gt-sm')}" 
-				ng-if="$ctrl.beds.length < $ctrl.maxCount">
-				<div class="text-danger">
-					<span translate="bed.beds.principal.not.selected.label"></span>
+			<md-list-item class="layout-row layout-wrap layout-align-center-center am-fade-and-slide-right" ng-class="{'no-padding-left': !$ctrl.$mdMedia('gt-sm')}" 
+				ng-if="$ctrl.$$errors.min" ng-switch on="$ctrl.minCount - $ctrl.beds.length">
+				<div flex class="layout-row layout-align-start-center">
+					<span ng-switch-when="1" translate="error.beds.left.one"></span>
+					<span ng-switch-default translate="error.beds.left" translate-values="{num: $ctrl.minCount - $ctrl.beds.length}"></span>
 				</div>
 				
-				<md-button class="button-small bg-danger" aria-label="Edit beds" ng-click="$ctrl.$toggleDetails(false)">
-					<small translate="common.select.now"></small>
-				</md-button>
+				<div class="layout-row layout-align-end-center">
+					<md-button class="button-small bg-danger" aria-label="Select beds" ng-click="$ctrl.$toggleDetails(true)">
+						<small translate="common.select.now"></small>
+					</md-button>
+				</div>
 			</md-list-item>
 		</md-list>
 	</div>
 	
-	<div class="layout-row layout-wrap margin-20-no-x-sides" ng-if="$ctrl.$$showDetails && $ctrl.$$availableBeds.length">
-		<div class="layout-column flex-100">
-			<div class="md-subhead md-margin text-blue-sea">
-				<md-icon class="mdi mdi-hotel md-32 text-blue-sea no-margin"></md-icon>
-				<span flex translate="bed.beds.principal.list"></span>
-			</div>
-			<md-divider></md-divider>
-		</div>
-		
-		<div class="layout-column flex-100">
-			<div class="md-padding no-padding-top no-padding-bottom text-gray-light text-italic">
-				<md-icon class="mdi mdi-information-outline md-14"></md-icon>
-				<small>
-					<span translate="bed.beds.principal.max.selectable.label1"></span>
-					<span>{{$ctrl.maxCount}}</span>
-					<span class="text-lowercase" ng-if="$ctrl.maxCount > 1" translate="bed.beds.principal"></span>
-					<span class="text-lowercase" ng-if="$ctrl.maxCount == 1" translate="bed.bed.principal"></span>
-					<span class="text-lowercase" translate="bed.beds.principal.max.selectable.label2"></span>
-					<span>.&nbsp;<span translate="common.choice.no.extra.cost"></span>.</span>
-				</small>
-			</div>
-		</div>
-		
-		<md-list class="flex-100 layout-column">
-			<md-list-item class="layout-row layout-wrap layout-padding layout-align-center-center am-fade-and-slide-right no-padding-top no-padding-right" ng-class="{'no-padding-left': !$ctrl.$mdMedia('gt-sm')}" 
+	<div class="md-margin no-margin-x-sides no-margin-top" ng-if="$ctrl.$$showDetails && $ctrl.$$availableBeds.length">
+		<md-list>
+			<md-list-item class="am-fade-and-slide-right no-padding-top no-padding-right" ng-class="{'no-padding-left': !$ctrl.$mdMedia('gt-sm')}" 
 				ng-repeat="bed in $ctrl.$$availableBeds track by $index">
-				<div class="flex flex-order-xs-1 flex-order-sm-1"  ng-if="bed.$$available">
-					<strong ng-click="$ctrl.$showBedInfo($event, bed)" aria-label="Bed info" class="clickable">
-						<span translate="bed.bed"></span>
-						<span translate="bed.{{bed.type}}"></span>
-						<md-icon class="mdi mdi-information-outline md-14"></md-icon>
-					</strong>
-				
-					<div class="text-gray-light text-small">
-						<span translate="bed.{{bed.type}}.description"></span>
+				<div flex>				
+					<div ng-if="!bed.$$editing" layout layout-wrap layout-padding-sm layout-align="center center">
+						<div class="flex flex-order-xs-1 flex-order-sm-1" ng-if="bed.$$available">
+							<strong ng-click="$ctrl.$showBedInfo($event, bed)" aria-label="Bed info" class="clickable">
+								<span translate="bed.bed"></span>&nbsp;
+								<span translate="bed.{{bed.type}}"></span>&nbsp;
+								<md-icon class="mdi mdi-information-outline md-14"></md-icon>
+							</strong>
+						
+							<div class="text-gray-light text-small">
+								<span translate="bed.{{bed.type}}.description"></span>
+							</div>
+							
+							<div class="text-small">
+								<span ng-if="bed.adultsPrice">
+									<span>{{bed.adultsPrice|chCurrency}}</span>
+									<span translate="people.adult"></span>
+									<span ng-if="bed.boysPrice">,&nbsp;</span>
+								</span>
+								<span ng-if="bed.boysPrice">
+									<span>{{bed.boysPrice|chCurrency}}</span>
+									<span translate="people.boy"></span>
+									<span ng-if="bed.childrenPrice">,&nbsp;</span>
+								</span>
+								<span ng-if="bed.childrenPrice">
+									<span>{{bed.childrenPrice|chCurrency}}</span>
+									<span translate="people.child"></span>
+									<span ng-if="bed.kidsPrice">,&nbsp;</span>
+								</span>
+								<span ng-if="bed.kidsPrice">
+									<span>{{bed.kidsPrice|chCurrency}}</span>
+									<span translate="people.kid"></span>
+								</span>
+							</div>
+							
+							<div class="text-gray-light text-small">
+								<span><span translate="common.for"></span>&nbsp;{{bed.maxPerson}}&nbsp;</span>
+								<span ng-if="bed.maxPerson == 1" class="text-lowercase" translate="people.person"></span>
+								<span ng-if="bed.maxPerson > 1" class="text-lowercase" translate="people.people"></span>
+		 					</div>
+		 					
+		 					<div class="text-gray-light text-small">
+								<em ng-if="bed.frequency == 'LUMP_SUM'">
+									<span translate="bed.price.question.info"></span>
+									<span class="text-lowercase" translate="common.entire.stay"></span>
+								</em>
+								<em ng-if="bed.frequency == 'DAILY'" translate="bed.price.question.info.and.night"></em>
+							</div>
+		 					
+							<div class="text-info" ng-if="bed.$$available && bed.$$blocked">
+								<small translate="bed.remove.to.add.other"></small>
+							</div>
+						</div>
+						
+						<div class="flex flex-order-xs-1 flex-order-sm-1" ng-if="!bed.$$available">
+							<strong ng-click="$ctrl.$showBedInfo($event, bed)" aria-label="Bed info" class="clickable">
+								<span translate="bed.bed"></span>
+								<span translate="bed.{{bed.bed.type}}"></span>&nbsp;
+								<md-icon class="mdi mdi-information-outline md-14"></md-icon>
+							</strong>
+							<div class="text-gray-light text-small">
+								<span translate="bed.{{bed.bed.type}}.description"></span>
+							</div>
+							<div class="text-gray-light text-small">
+								<ch-people-summary people="bed.people"></ch-people-summary>
+							</div>
+							
+							<div ng-if="bed.amount" class="md-subhead">
+					        	<span ng-if="bed.amount.finalAmount > 0">{{bed.amount.finalAmount|chCurrency}}</span>
+					        	<span ng-if="bed.amount.finalAmount == 0" class="text-success"><span translate="common.free"></span></span>
+						    </div>
+						</div>
+						
+						<div class="layout-column layout-align-end-center flex-order-xs-2 flex-order-sm-2" ng-class="{'text-center': !$ctrl.$mdMedia('gt-sm')}" 
+							ng-if="!bed.$$available">
+							<div class="text-center">
+								<md-icon class="mdi mdi-checkbox-marked-circle-outline text-success md-18"></md-icon>&nbsp;
+								<small class="text-success" translate="common.booked.male"></small>
+							</div>
+							
+							<md-button ng-if="$ctrl.configBed" show-gt-sm class="button-small text-blue-sea text-small" ng-class="$ctrl.$mdMedia('gt-sm') ? 'auto-height row-1' : 'only-border border-blue-sea'" 
+								ng-click="$ctrl.$editBed(bed)" ng-disabled="$ctrl.$$editingBed" aria-label="Edit bed">
+								<md-icon class="mdi mdi-pencil md-18 text-blue-sea"></md-icon>
+								<span translate="common.edit"></span>
+							</md-button>
+						</div>
+						
+						<div class="no-padding-right flex-order-xs-3 flex-order-sm-3" ng-class="{'flex-100 layout-column text-center': !$ctrl.$mdMedia('gt-sm')}" 
+							ng-if="bed.$$available && !$ctrl.$$editingBed">
+							<md-button class="button-small only-border" aria-label="Select bed" ng-click="$ctrl.$selectBed(bed)" ng-disabled="bed.$$blocked" ng-class="{'border-success text-success': !bed.$$blocked}">
+								<md-icon class="mdi mdi-plus md-18 text-white" ng-class="{'text-success': !bed.$$blocked}"></md-icon>
+								<small translate="common.select"></small>
+							</md-button>
+						</div>
+						
+						<div class="no-padding-right flex-order-xs-3 flex-order-sm-3" ng-class="$ctrl.$mdMedia('gt-sm') ? 'layout-row layout-align-end-center' : 'flex-100 layout-column text-center'" 
+							ng-if="!bed.$$available">
+							<md-button ng-if="$ctrl.configBed" hide-gt-sm class="button-small text-blue-sea text-small" ng-class="$ctrl.$mdMedia('gt-sm') ? 'auto-height row-1' : 'only-border border-blue-sea'" 
+								ng-click="$ctrl.$editBed(bed)" ng-disabled="$ctrl.$$editingBed" aria-label="Edit bed">
+								<md-icon class="mdi mdi-pencil md-18 text-blue-sea"></md-icon>
+								<span translate="common.edit"></span>
+							</md-button>
+					
+							<md-button class="text-small" ng-class="{'no-margin md-icon-button': $ctrl.$mdMedia('gt-sm')}"
+								ng-click="$ctrl.$removeBed(bed)" ng-disabled="$ctrl.beds.length <= $ctrl.minCount || $ctrl.$$editingBed" aria-label="Remove bed">
+								<md-icon class="mdi mdi-close md-18"></md-icon>
+								<span hide-gt-sm translate="common.remove"></span>
+								<md-tooltip hide show-gt-sm><span translate="common.remove"></span></md-tooltip>
+							</md-button>
+						</div>
 					</div>
 					
-					<div class="text-small">
-						<span ng-if="bed.adultsPrice">
-							<span>{{bed.adultsPrice|chCurrency}}</span>
-							<span translate="people.adult"></span>
-							<span ng-if="bed.boysPrice">,&nbsp;</span>
-						</span>
-						<span ng-if="bed.boysPrice">
-							<span>{{bed.boysPrice|chCurrency}}</span>
-							<span translate="people.boy"></span>
-							<span ng-if="bed.childrenPrice">,&nbsp;</span>
-						</span>
-						<span ng-if="bed.childrenPrice">
-							<span>{{bed.childrenPrice|chCurrency}}</span>
-							<span translate="people.child"></span>
-							<span ng-if="bed.kidsPrice">,&nbsp;</span>
-						</span>
-						<span ng-if="bed.kidsPrice">
-							<span>{{bed.kidsPrice|chCurrency}}</span>
-							<span translate="people.kid"></span>
-						</span>
+					<div ng-if="bed.$$editing" layout="column" layout-padding-sm>
+						<ch-bed-sold-edit
+							bed-sold="$ctrl.$$editingBed"
+							nights="$ctrl.chRoomEditCtrl.nights"
+							people-limits="$ctrl.peopleLimits"
+							people-age-ranges="$ctrl.peopleAgeRanges"
+							on-confirm="$ctrl.$confirmBedEdit(bed)"
+							on-cancel="$ctrl.$cancelBedEdit(bed)">
+						</ch-bed-sold-edit>
 					</div>
-					
-					<div class="text-gray-light text-small">
-						<span><span translate="common.for"></span>&nbsp;{{bed.maxPerson}}&nbsp;</span>
-						<span ng-if="bed.maxPerson == 1" class="text-lowercase" translate="people.person"></span>
-						<span ng-if="bed.maxPerson > 1" class="text-lowercase" translate="people.people"></span>
- 					</div>
- 					
- 					<div class="text-gray-light text-small">
-						<em ng-if="bed.frequency == 'LUMP_SUM'">
-							<span translate="bed.price.question.info"></span>
-							<span class="text-lowercase" translate="common.entire.stay"></span>
-						</em>
-						<em ng-if="bed.frequency == 'DAILY'" translate="bed.price.question.info.and.night"></em>
-					</div>
- 					
-					<div class="text-info" ng-if="bed.$$available && bed.$$blocked">
-						<small translate="bed.remove.to.add.other"></small>
-					</div>
-				</div>
-				
-				<div class="flex flex-order-xs-1 flex-order-sm-1" ng-if="!bed.$$available">
-					<strong ng-click="$ctrl.$showBedInfo($event, bed)" aria-label="Bed info" class="clickable">
-						<span translate="bed.bed"></span>
-						<span translate="bed.{{temp.otherBed.bed.type}}"></span>
-						<md-icon class="mdi mdi-information-outline md-14"></md-icon>
-					</strong>
-					<div class="text-gray-light">
-						<small>
-							<span translate="bed.{{temp.otherBed.bed.type}}.description"></span>
-						</small>
-					</div>
-					<div class="text-gray-light">
-						<span>{{otherBedPeopleSummary}}</span>
-					</div>
-				</div>
-				
-				<div ng-if="temp.otherBed.amount && !bed.$$available" class="no-padding-right md-title flex-order-xs-3 flex-order-sm-3" ng-class="{'flex-100 text-right': !$ctrl.$mdMedia('gt-sm')}">
-		        	<span ng-if="temp.otherBed.amount.finalAmount > 0">{{temp.otherBed.amount.finalAmount|chCurrency}}</span>
-		        	<span ng-if="temp.otherBed.amount.finalAmount == 0" class="text-success"><span translate="common.free"></span></span>
-			    </div>
-				
-				<div class="no-padding-right flex-order-xs-3 flex-order-sm-3" ng-class="{'flex-100 layout-column text-center': !$ctrl.$mdMedia('gt-sm')}" ng-if="bed.$$available">
-					<md-button class="button-small" aria-label="add bed" ng-click="$ctrl.$selectBed(bed)" ng-disabled="bed.$$blocked" ng-class="{'bg-success': !bed.$$blocked}">
-						<md-icon class="mdi mdi-plus md-18 text-white" ng-class="{'text-white': !bed.$$blocked}"></md-icon>
-						<small translate="common.select"></small>
-					</md-button>
-				</div>
-				
-				<div class="no-padding layout-align-end-center flex-order-xs-3 flex-order-sm-3" ng-class="{'flex-100 text-center': !$ctrl.$mdMedia('gt-sm')}" 
-					ng-if="!bed.$$available">
-					<div class="text-center">
-						<md-icon class="mdi mdi-checkbox-marked-circle-outline text-success md-18"></md-icon>
-						<small class="text-success" translate="common.booked.male"></small>
-					</div>
-				</div>
-				
-				<div class="no-padding layout-align-end-center flex-order-xs-2 flex-order-sm-2" ng-if="!bed.$$available">
-					<md-button class="md-icon-button no-margin" aria-label="Remove bed" ng-click="$ctrl.removeBed(bed)">
-						<md-icon class="mdi mdi-close md-18"></md-icon>
-						<md-tooltip><span translate="common.remove"></span></md-tooltip>
-					</md-button>
 				</div>
 				
 				<div ng-if="!$last" class="no-margin no-padding">
@@ -210,16 +187,18 @@
 			</md-list-item>
 		</md-list>
 		
-		<div class="flex-100 text-right" ng-class="{'layout-column': !$ctrl.$mdMedia('gt-sm')}">
-			<span class="flex text-danger" ng-if="$ctrl.beds.length < $ctrl.maxCount">
-				<span ng-if="$ctrl.maxCount > 1" translate="bed.beds.principal.not.selected.label.multiple" translate-values="{num: $ctrl.maxCount}"></span>
-				<span ng-if="$ctrl.maxCount == 1" translate="bed.beds.principal.not.selected.label"></span>
-			</span>
+		<div ng-if="!$ctrl.$$editingBed" ng-class="{'layout-column layout-align-center-center': !$ctrl.$mdMedia('gt-sm'), 'layout-row': $ctrl.$mdMedia('gt-sm')}">
+			<div flex class="text-danger layout-row layout-align-start-center" ng-if="$ctrl.$$errors.min" ng-switch on="$ctrl.minCount - $ctrl.beds.length">
+				<span ng-switch-when="1" translate="error.beds.left.one"></span>
+				<span ng-switch-default translate="error.beds.left" translate-values="{num: $ctrl.minCount - $ctrl.beds.length}"></span>
+			</div>
 		
-			<md-button ng-class="{'bg-success': $ctrl.beds.length >= $ctrl.maxCount }" class="md-raised" ng-click="$ctr.confirm()" aria-label="Confirm beds" ng-disabled="$ctrl.beds.length < $ctrl.maxCount">
-				<md-icon class="mdi mdi-check md-24" ng-class="{'text-white': $ctrl.beds.length >= $ctrl.maxCount }"></md-icon>
-				<span translate="common.confirm"></span>
-			</md-button>
+			<div flex class="layout-row layout-align-end-center">
+				<md-button ng-class="{'bg-success': !$ctrl.$$errors.min && !$ctrl.$$errors.max}" class="md-raised" ng-click="$ctrl.$confirm()" aria-label="Confirm beds" ng-disabled="$ctrl.$$errors.min || $ctrl.$$errors.max">
+					<md-icon class="mdi mdi-check md-24" ng-class="{'text-white': !$ctrl.$$errors.min && !$ctrl.$$errors.max}"></md-icon>
+					<span translate="common.confirm"></span>
+				</md-button>
+			</div>
 		</div>
 	</div>
 </div>

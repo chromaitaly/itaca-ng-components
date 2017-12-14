@@ -1,0 +1,100 @@
+<div>
+	<ng-form name="bedSoldEditForm">
+		<div layout>
+			<div flex>
+				<strong>
+					<span translate="bed.bed"></span>
+					<span translate="bed.{{$ctrl.bedSold.bed.type}}"></span>
+				</strong>
+				<div class="text-small">
+					<span ng-if="$ctrl.bedSold.bed.adultsPrice">
+						<span>{{$ctrl.bedSold.bed.adultsPrice|chCurrency}}</span>
+						<span translate="people.adult"></span>
+						<span ng-if="$ctrl.bedSold.bed.boysPrice">,&nbsp;</span>
+					</span>
+					<span ng-if="$ctrl.bedSold.bed.boysPrice">
+						<span>{{$ctrl.bedSold.bed.boysPrice|chCurrency}}</span>
+						<span translate="people.boy"></span>
+						<span ng-if="$ctrl.bedSold.bed.childrenPrice">,&nbsp;</span>
+					</span>
+					<span ng-if="$ctrl.bedSold.bed.childrenPrice">
+						<span>{{$ctrl.bedSold.bed.childrenPrice|chCurrency}}</span>
+						<span translate="people.child"></span>
+						<span ng-if="$ctrl.bedSold.bed.kidsPrice">,&nbsp;</span>
+					</span>
+					<span ng-if="$ctrl.bedSold.bed.kidsPrice">
+						<span>{{$ctrl.bedSold.bed.kidsPrice|chCurrency}}</span>
+						<span translate="people.kid"></span>
+					</span>
+				</div>
+				<div class="text-gray-light">
+					<small>
+						<span><span translate="common.for"></span>&nbsp;{{$ctrl.bedSold.bed.maxPerson}}&nbsp;</span>
+						<span ng-if="$ctrl.bedSold.bed.maxPerson > 1" class="text-lowercase" translate="people.people"></span>
+						<span ng-if="$ctrl.bedSold.bed.maxPerson == 1" class="text-lowercase" translate="people.person"></span>
+					</small>
+				</div>
+				<div class="text-gray-light">
+					<small>
+						<em ng-if="$ctrl.bedSold.bed.frequency == 'LUMP_SUM'">
+							<span translate="bed.price.question.info"></span>
+							<span class="text-lowercase" translate="common.entire.stay"></span>
+						</em>
+						<em ng-if="$ctrl.bedSold.bed.frequency == 'DAILY'" translate="bed.price.question.info.and.night"></em>
+					</small>
+				</div>
+			</div>
+			
+			<div class="layout-row layout-align-center-end">
+				<div class="layout-column layout-align-center-center">
+			        <strong ng-if="$ctrl.$$guestsCount.total > 0 && $ctrl.bedSold.amount" class="md-title">
+			        	<span ng-if="$ctrl.bedSold.amount.finalAmount > 0">{{$ctrl.bedSold.amount.finalAmount|chCurrency}}</span>
+			        	<span ng-if="$ctrl.bedSold.amount.finalAmount == 0" class="text-success" translate="common.free"></span>
+			        </strong>
+			        <span ng-if="$ctrl.$$guestsCount.total <= 0 || !$ctrl.bedSold.amount">-</span>
+			        <small class="text-mini text-gray-light no-padding-bottom">
+						<span ng-if="$ctrl.nights > 1" translate="reservation.price.for.nights" translate-values="{count: $ctrl.nights}"></span>
+		        		<span ng-if="$ctrl.nights == 1" translate="reservation.price.for.one.night"></span>
+					</small>
+			    </div>
+   			</div>
+		</div>
+	
+		<h2 class="md-subhead no-margin-bottom" ng-class="{'text-center': !$ctrl.$mdMedia('gt-sm')}">
+			<i translate="bed.sleep.here"></i>
+		</h2>
+		
+		<div>
+			<ch-people-counters 
+				name="people"
+				ng-model="$ctrl.bedSold.people"
+				max-people="$ctrl.bedSold.bed.people"
+				min="1"
+				max="$ctrl.bedSold.bed.maxPerson"
+				limits="$ctrl.peopleLimits"
+				age-ranges="$ctrl.peopleAgeRanges"
+				on-change="$ctrl.$onPeopleChange($people)">
+			</ch-people-counters>
+		</div>
+		
+		<div ng-show="bedSoldEditForm.people.$dirty" ng-messages="bedSoldEditForm.people.$error" class="md-padding no-padding-top text-danger text-small">
+     		<div ng-message="min"><span translate="error.bed.no.people"></span></div>
+    	</div>
+		
+		<div ng-if="$ctrl.$$guestsCount.total == $ctrl.bedSold.bed.maxPerson" class="md-padding no-padding-top">
+			<span class="label label-inline-block bg-info text-wrap text-center" translate="bed.max.person.selected"></span>
+		</div>
+	 
+		<div layout="column" layout-gt-sm="row" layout-padding-sm layout-align="center center">
+			<md-button ng-click="$ctrl.$cancel()" aria-label="Cancel bed edit">
+				<md-icon class="mdi mdi-close md-24"></md-icon>
+				<span translate="common.cancel"></span>
+			</md-button>
+			
+			<md-button class="bg-success text-white" ng-click="$ctrl.$confirm()" ng-disabled="bedSoldEditForm.$invalid" aria-label="Confirm bed edit">
+				<md-icon class="mdi mdi-check md-24 text-white"></md-icon>
+				<span translate="common.confirm"></span>
+			</md-button>
+		</div>
+	</ng-form>
+</div>

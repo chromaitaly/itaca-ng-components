@@ -58,10 +58,10 @@
 				<div ng-if="$ctrl.reservation.people" class="md-subhead text-wrap row-mini no-padding-bottom">
 					<strong><ch-people-summary people="$ctrl.reservation.people"></ch-people-summary></strong>
 				</div>
-				<div ng-if="$ctrl.step == 2 && ($ctrl.reservation.remainingPeople.adults > 0 || $ctrl.reservation.remainingPeople.boys > 0 || $ctrl.reservation.remainingPeople.children > 0 || $ctrl.reservation.remainingPeople.kids > 0)" 
+				<div ng-if="$ctrl.step == 2 && ($ctrl.$$remainingPeople.adults > 0 || $ctrl.$$remainingPeople.boys > 0 || $ctrl.$$remainingPeople.children > 0 || $ctrl.$$remainingPeople.kids > 0)" 
 					class="text-lowercase text-small text-warn">
 					<md-icon class="mdi mdi-alert md-14 text-warn"></md-icon>
-					<span translate="reservation.people.unsatisfied"></span>:&nbsp;<strong><ch-people-summary people="$ctrl.reservation.remainingPeople"></ch-people-summary></strong>&nbsp;<span translate="reservation.people.unsatisfied.to.arrange"></span>.&nbsp;
+					<span translate="reservation.people.unsatisfied"></span>:&nbsp;<strong><ch-people-summary people="$ctrl.$$remainingPeople"></ch-people-summary></strong>&nbsp;<span translate="reservation.people.unsatisfied.to.arrange"></span>.&nbsp;
 					<span class="text-initial" translate="reservation.people.unsatisfied.add.beds.or.rooms"></span>.
 				</div>
 			</div>

@@ -31,7 +31,7 @@
 		controller: CounterCtrl,
 		template: 
 			"<div class=\"layout-column {{$ctrl.wrapperClass}}\" ng-class=\"{'flex': $ctrl.flexible}\" ng-style=\"{'display': $ctrl.flexible ? 'inherit' : 'inline-block'}\" style=\"min-width: 150px;\">" +
-	    		"<div class=\"{{$ctrl.labelContClass}} layout-padding no-padding\">" +
+	    		"<div class=\"{{$ctrl.labelContClass}} layout-padding-sm no-padding\">" +
 	        		"<div ng-if=\"$ctrl.label && ($ctrl.labelDirection == 'left' || $ctrl.labelDirection == 'top')\" class=\"layout-row layout-align-center-center {{$ctrl.labelClass}}\">" +
 	        			"<span ng-bind-html=\"$ctrl.label\"></span>" +
 	        		"</div>" +
