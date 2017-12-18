@@ -1,0 +1,133 @@
+<div>
+	<div ng-if="!$ctrl.totalServices.length">
+		<span class="text-italic" translate="service.none"></span>
+	</div>
+	
+	<div ng-if="$ctrl.totalServices.length">
+		<md-list class="layout-row layout-wrap">
+			<md-list-item ng-repeat="service in $ctrl.totalServices track by $index" ng-show="$ctrl.$$showAllServices || $index < $ctrl.previewSize" 
+				class="am-fade-and-slide-right flex-100" ng-class="{'flex-gt-sm-50': $ctrl.totalServices.length > 1}">
+			
+				<div ng-if="!service.$$editing" flex layout layout-wrap layout-padding-sm class="no-secondary-container" ng-switch="service.type.nameKey">
+					<div ng-if="$ctrl.$$servicesIcons[service.type.nameKey]">
+						<md-icon class="{{$ctrl.$$servicesIcons[service.type.nameKey]}} md-30 circle-icon md-avatar-icon material-icons" ng-class="service.$$serviceSold ? 'bg-success text-white' : 'bg-gray-lighter text-gray-light'"></md-icon>
+					</div>
+					<div ng-if="!$ctrl.$$servicesIcons[service.type.nameKey]">
+						<md-icon class="mdi mdi-check md-30 circle-icon md-avatar-icon" ng-class="service.$$serviceSold ? 'bg-success text-white' : 'bg-gray-lighter text-gray-light'"></md-icon>
+					</div>	
+					
+					<div class="flex layout-column flex-order-xs-1 flex-order-sm-1" ng-if="!service.$$serviceSold">
+						<strong ng-click="$ctrl.$showServiceInfo($event, service)" aria-label="Show service info" class="clickable">
+							<span ng-if="service.maxCount > 1">{{service.maxCount}}&nbsp;x&nbsp;</span>
+							<span translate="{{service.type.nameKey}}"></span>
+							<md-icon class="mdi mdi-information-outline md-14"></md-icon>
+						</strong>
+						
+						<span ng-switch="service.paymentType" class="text-lowercase text-gray-light text-small">
+							<span ng-switch-when="FREE">
+								<span translate="common.free"></span>
+							</span>
+							<span ng-switch-when="SINGLE">
+								<span>{{service.paymentOptions[0].amount.finalAmount|chCurrency}}</span>&nbsp;
+								<span ng-if="service.frequency == 'DAILY'" class="text-lowercase"><span translate="date.frequency.daily"></span></span>
+	   							<span ng-if="service.frequency == 'MONTHLY'" class="text-lowercase"><span translate="date.frequency.monthly"></span></span>
+	   							<span ng-if="service.frequency == 'YEARLY'" class="text-lowercase"><span translate="date.frequency.yearly"></span></span>
+	   							<span ng-if="service.frequency == 'LUMP_SUM'" class="text-lowercase"><span translate="common.entire.stay"></span></span>
+							</span>
+							<span ng-switch-when="PER_PERSON">
+								<span translate="reservation.starting.from"></span>&nbsp;
+								<span>{{service.$$bestPrice|chCurrency}}</span>&nbsp;
+								<span ng-if="service.frequency == 'DAILY'" class="text-lowercase"><span translate="date.frequency.daily"></span></span>
+   								<span ng-if="service.frequency == 'MONTHLY'" class="text-lowercase"><span translate="date.frequency.monthly"></span></span>
+   								<span ng-if="service.frequency == 'YEARLY'" class="text-lowercase"><span translate="date.frequency.yearly"></span></span>
+   								<span ng-if="service.frequency == 'LUMP_SUM'" class="text-lowercase"><span translate="common.entire.stay"></span></span>
+							</span>
+						</span>
+					</div>
+					
+					<div class="flex layout-column flex-order-xs-1 flex-order-sm-1" ng-if="service.$$serviceSold">
+						<strong ng-click="$ctrl.$showServiceInfo($event, service)" aria-label="Show service info" class="clickable">
+							<span ng-if="service.$$serviceSold.count > 1">{{service.$$serviceSold.count}}&nbsp;x&nbsp;</span>
+							<span translate="{{service.type.nameKey}}"></span>
+							<md-icon class="mdi mdi-information-outline md-14"></md-icon>
+						</strong>
+						
+<!-- 						<div ng-if="service.paymentType == 'PER_PERSON' && service.$$serviceSold.$$removed"> -->
+<!-- 							<small class="text-danger text-wrap" translate="service.unavailable.people"></small> -->
+<!-- 						</div> -->
+						
+						<div ng-if="!service.$$serviceSold.$$removed && service.$$serviceSold.amount" class="md-subhead">
+				        	<span ng-if="service.$$serviceSold.amount.finalAmount > 0">{{service.$$serviceSold.amount.finalAmount|chCurrency}}</span>
+				        	<span ng-if="service.$$serviceSold.amount.finalAmount == 0" class="text-success"><span translate="common.free"></span></span>
+					    </div>
+						
+						<span class="text-lowercase text-gray-light text-small">
+							<span translate="common.free"></span>
+						</span>
+					</div>
+	
+					<div class="flex-order-xs-3 flex-order-sm-3" ng-class="{'flex-100 layout-column text-center': !$ctrl.$mdMedia('gt-sm')}" ng-if="!service.$$serviceSold">
+						<md-button class="button-small only-border" aria-label="Add service" ng-click="$ctrl.$addService(service)" ng-disabled="$ctrl.$$editingService" ng-class="{'border-success text-success': !$ctrl.$$editingService}">
+							<md-icon class="mdi mdi-plus md-18" ng-class="{'text-success': !$ctrl.$$editingService}"></md-icon>
+							<small translate="common.add"></small>
+						</md-button>
+					</div>
+					
+					<div class="layout-align-end-center flex-order-xs-3 flex-order-sm-3" ng-class="{'flex-100 text-center layout-column': !$ctrl.$mdMedia('gt-sm'),'flex layout-column': $ctrl.$mdMedia('gt-sm') && paymentServices.total > 1}" 
+						ng-if="service.$$serviceSold">
+						<div class="text-center">
+							<md-icon class="mdi mdi-checkbox-marked-circle-outline text-success md-18"></md-icon>
+							<small class="text-success" translate="common.booked.male"></small>
+						</div>
+						
+						<md-button ng-if="service.editable" class="button-small auto-height" ng-class="{'row-mini': $ctrl.$mdMedia('gt-sm'), 'text-blue-sea': $ctrl.$mdMedia('gt-sm') && !$ctrl.$$editingService, 'bg-blue-sea text-white': !$ctrl.$mdMedia('gt-sm') && !$ctrl.$$editingService}" 
+							ng-disabled="$ctrl.$$editingService" ng-click="$ctrl.$editService(service, true)" aria-label="Edit service">
+							<md-icon class="mdi mdi-pencil md-18" ng-class="{'text-blue-sea': $ctrl.$mdMedia('gt-sm') && !$ctrl.$$editingService, 'text-white': !$ctrl.$mdMedia('gt-sm') && $ctrl.$$editingService}"></md-icon>
+							<small class="text-initial" translate="common.edit"></small>
+						</md-button>
+						
+						<md-button class="button-small auto-height text-initial text-danger" ng-class="{'row-mini': $ctrl.$mdMedia('gt-sm')}" 
+							ng-disabled="$ctrl.$$editingService" aria-label="Remove service" ng-click="$ctrl.$removeService(service)" ng-if="service.$$serviceSold">
+							<md-icon class="mdi mdi-delete md-18 text-danger"></md-icon>
+							<small translate="common.remove"></small>
+						</md-button>
+					</div>
+				</div>
+				
+				<div ng-if="service.$$editing && $ctrl.$$editingService" layout="column" layout-padding-sm>
+					<ch-service-sold-edit
+						service-sold="$ctrl.$$editingService"
+						nights="$ctrl.nights"
+						people-limits="$ctrl.$$peopleLimits"
+						people-age-ranges="$ctrl.peopleAgeRanges"
+						on-confirm="$ctrl.$confirmServiceEdit($serviceSold)"
+						on-cancel="$ctrl.$cancelServiceEdit($serviceSold)">
+					</ch-service-sold-edit>
+				</div>
+					
+				<md-divider ng-if="!$last" class="md-margin hide-gt-sm"></md-divider>
+			</md-list-item>
+		</md-list>	
+		
+		<div ng-if="($ctrl.totalServices.length - $ctrl.previewSize) > 0" class="flex-100 layout-column">
+			<md-button class="button-mini text-small" ng-click="$ctrl.$toggleAllServices()" aria-label="Show other services">
+				<span ng-if="!$ctrl.$$showAllServices">
+					<span ng-if="($ctrl.totalServices.length - $ctrl.previewSize) <= 1">
+						<span translate="common.show.other"></span>
+						<span>{{($ctrl.totalServices.length - $ctrl.previewSize)}}</span>
+						<span translate="service.services"></span>
+					</span>
+					<span ng-if="($ctrl.totalServices.length - $ctrl.previewSize) > 1">
+						<span translate="common.show.others"></span>
+						<span>{{($ctrl.totalServices.length - $ctrl.previewSize)}}</span>
+						<span translate="service.services"></span>
+					</span>
+				</span>
+				<span ng-if="$ctrl.$$showAllServices">
+					<span translate="reservation.services.hide"></span>
+				</span>
+				<md-icon class="mdi md-18" ng-class="$ctrl.$$showAllServices ? 'mdi-chevron-up' : 'mdi-chevron-down'"></md-icon>
+			</md-button>
+		</div>
+	</div>
+</div>

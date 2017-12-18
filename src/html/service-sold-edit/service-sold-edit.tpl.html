@@ -1,0 +1,170 @@
+<div>
+	<ng-form name="serviceSoldEditForm">
+	    
+	    <div layout layout-wrap layout-padding-sm>	
+		 	<div class="flex-100 flex-gt-sm-30 layout-column">
+		 		<div ng-if="!$ctrl.serviceSold.service.gallery.length">
+		 			<img src="/resources/public/img/no-gallery-image.png" th:src="@{/resources/public/img/no-gallery-image.png}" class="full-width auto-height">
+		 		</div>
+		 		<div ng-if="!$ctrl.serviceSold.service.gallery.length">
+		 			<!-- TODO galleria -->
+		 		</div>
+		 	</div>
+		 		
+		 	<div class="flex-100 flex-gt-sm-70 layout-column">
+		 		<div layout layout-wrap layout-align="start start">
+		 			<div class="layout-column flex">
+					   	<h2 class="md-title no-margin">
+							<md-icon ng-if="$ctrl.$$servicesIcons[$ctrl.serviceSold.service.type.nameKey]" class="{{$ctrl.$$servicesIcons[$ctrl.serviceSold.service.type.nameKey]}} md-30 material-icons"></md-icon>
+							<md-icon ng-if="!$ctrl.$$servicesIcons[$ctrl.serviceSold.service.type.nameKey]" class="mdi mdi-check md-30"></md-icon>&nbsp;
+					    	<span translate="{{$ctrl.serviceSold.service.type.nameKey}}"></span>
+					   	</h2>
+				   	</div>
+				   	<div class="layout-column layout-align-center-center text-center">
+				       <strong ng-if="$ctrl.serviceSold.amount" class="md-headline" ng-class="{'text-striked': $ctrl.serviceSold.$$removed}">
+				        	<span ng-if="$ctrl.serviceSold.amount.finalAmount > 0">{{$ctrl.serviceSold.amount.finalAmount|chCurrency}}</span>
+				        	<span ng-if="$ctrl.serviceSold.amount.finalAmount == 0 && $ctrl.serviceSold.service.paymentType != 'PER_PERSON'" translate="common.free"></span>
+				        </strong>
+				        <small class="text-mini text-gray-light no-padding-bottom">
+							<span ng-if="$ctrl.nights > 1" translate="reservation.price.for.nights" translate-values="{count: $ctrl.nights}"></span>
+			        		<span ng-if="$ctrl.nights == 1" translate="reservation.price.for.one.night"></span>
+						</small>
+				    </div>
+				</div>
+			  	
+		  		<p class="text-gray-light no-margin-bottom" ng-if="$ctrl.serviceSold.service.description[$ctrl.Lang.current.iso]">
+		  			<span>{{$ctrl.serviceSold.service.description[$ctrl.Lang.current.iso]}}</span>
+		  		</p>
+			  		
+				<div class="md-padding no-padding-bottom no-padding-left no-padding-right">
+					<div>
+						<span><span translate="common.price.details"></span>:</span>
+					</div>
+				
+					<div ng-switch="$ctrl.serviceSold.service.paymentType">
+						<div ng-switch-when="FREE">
+							<span class="text-success" translate="common.free"></span>
+						</div>
+						<div ng-switch-when="SINGLE" class="text-gray-light">
+							<span ng-if="$ctrl.$$priceDetails.amount.finalAmount > 0">
+								<span>{{4ctrl.$$priceDetails.amount.finalAmount|chCurrency}}</span>
+							</span>
+							
+							<span ng-if="$ctrl.$$priceDetails.amount.finalAmount <= 0" translate="service.type.payment.free"></span>
+							
+							<div class="text-italic text-gray-light text-lowercase" ng-switch="$ctrl.serviceSold.service.frequency">
+								<span class="text-initial" translate="common.price.is.intend"></span></span>
+								<span ng-switch-when="DAILY">&nbsp;<span translate="date.frequency.daily"></span></span>
+								<span ng-switch-when="MONTHLY">&nbsp;<span translate="date.frequency.monthly"></span></span>
+								<span ng-switch-when="YEARLY">&nbsp;<span translate="date.frequency.yearly"></span></span>
+								<span ng-switch-when="LUMP_SUM">&nbsp;<span translate="common.entire.stay"></span></span>
+							</div>
+						</div>
+						
+						<div ng-switch-when="PER_PERSON"  class="text-gray-light text-lowercase">
+							<span ng-if="$ctrl.$$priceDetails.adults.amount.finalAmount > 0">
+								<span>{{$ctrl.$$priceDetails.adults.amount.finalAmount|chCurrency}}&nbsp;</span>
+								<span class="text-lowercase"><span translate="people.adult.per"></span>&nbsp;,</span>
+							</span>
+							<span ng-if="!$ctrl.$$priceDetails.adults.amount.finalAmount">
+								<span class="text-lowercase"><span translate="people.adults"></span>&nbsp;</span>
+								<span translate="service.type.payment.free"></span>,&nbsp;
+							</span>
+							
+							<span ng-if="$ctrl.$$priceDetails.boys.amount.finalAmount > 0">
+								<span>{{$ctrl.$$priceDetails.boys.amount.finalAmount|chCurrency}}&nbsp;</span>
+								<span class="text-lowercase"><span translate="people.boy.per"></span>&nbsp;,</span>
+							</span>
+							<span ng-if="!$ctrl.$$priceDetails.boys.amount.finalAmount">
+								<span class="text-lowercase"><span translate="people.boys"></span>&nbsp;</span>
+								<span translate="service.type.payment.free"></span>,&nbsp;
+							</span>
+							
+							<span ng-if="$ctrl.$$childrenAmount.amount.finalAmount > 0">
+								<span>{{$ctrl.$$priceDetails.children.amount.finalAmount|chCurrency}}&nbsp;</span>
+								<span class="text-lowercase"><span translate="people.child.per"></span>&nbsp;,</span>
+							</span>
+							<span ng-if="!$ctrl.$$childrenAmount.amount.finalAmount">
+								<span class="text-lowercase"><span translate="people.children"></span>&nbsp;</span>
+								<span translate="service.type.payment.free"></span>,&nbsp;
+							</span>
+							
+							<span ng-if="$ctrl.$$priceDetails.kids.amount.finalAmount > 0">
+								<span>{{$ctrl.$$priceDetails.kids.amount.finalAmount|chCurrency}}&nbsp;</span>
+								<span class="text-lowercase"><span translate="people.kid.per"></span>&nbsp;</span>
+							</span>
+							<span ng-if="!$ctrl.$$priceDetails.kids.amount.finalAmount">
+								<span class="text-lowercase"><span translate="people.kids"></span>&nbsp;</span>
+								<span translate="service.type.payment.free"></span>
+							</span>
+							
+							<div class="text-italic text-gray-light text-lowercase" ng-switch="$ctrl.serviceSold.service.frequency">
+								<span class="text-initial" translate="common.price.is.intend"></span>&nbsp;<span translate="service.type.payment.person"></span>
+								<span ng-switch-when="DAILY">&nbsp;<span translate="date.frequency.daily"></span></span>
+								<span ng-switch-when="MONTHLY">&nbsp;<span translate="date.frequency.monthly"></span></span>
+								<span ng-switch-when="YEARLY">&nbsp;<span translate="date.frequency.yearly"></span></span>
+								<span ng-switch-when="LUMP_SUM">&nbsp;<span translate="common.entire.stay"></span></span>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+			    	
+		<div>
+			<div ng-if="$ctrl.serviceSold.service.paymentType == 'PER_PERSON'">
+				<div class="layout-margin no-margin-left">
+					<em class="md-body-2 text-bold no-margin-left" translate="service.people.question"></em>
+					<div class="no-margin text-gray-light text-italic">
+						<md-icon class="mdi mdi-information-outline md-14"></md-icon>
+						<small translate="service.price.varies.to.people"></small>
+					</div>
+				</div>
+				
+				<div>
+					<ch-people-counters 
+						name="people"
+						ng-model="$ctrl.serviceSold.people"
+						min="1"
+						limits="$ctrl.peopleLimits"
+						age-ranges="$ctrl.peopleAgeRanges"
+						on-change="$ctrl.$onPeopleChange($people)">
+					</ch-people-counters>
+				</div>
+				
+				<div ng-show="serviceSoldEditForm.people.$dirty" ng-messages="serviceSoldEditForm.people.$error" class="md-padding no-padding-top text-danger text-small">
+		     		<div ng-message="min"><span translate="error.service.no.people"></span></div>
+		    	</div>
+			</div>
+			
+			<div ng-if="$ctrl.serviceSold.service.maxCount > 1 || $ctrl.serviceSold.service.maxCount == -1">
+				<ch-counter 
+					flexible="true"
+					count-class="bg-white only-border"
+					field-name="count"
+					label="{{'common.book'|translate}}" 
+					label-direction="left" 
+					ng-model="$ctrl.serviceSold.count" 
+					max="$ctrl.serviceSold.service.maxCount" 
+					min="1"></ch-counter>
+					
+				<div ng-show="serviceSoldEditForm.count.$dirty" ng-messages="serviceSoldEditForm.count.$error" class="md-padding no-padding-top text-danger text-small">
+		     		<div ng-message="min"><span translate="error.service.min" translate-value-count="1"></span></div>
+		     		<div ng-message="max"><span translate="error.service.max" translate-value-count="{{$ctrl.serviceSold.service.maxCount}}"></span></div>
+		    	</div>
+			</div>
+	   </div>
+	   
+	   <div layout="column" layout-gt-sm="row" layout-padding-sm layout-align="center center">
+			<md-button ng-click="$ctrl.$cancel()" aria-label="Cancel service edit">
+				<md-icon class="mdi mdi-close md-24"></md-icon>
+				<span translate="common.cancel"></span>
+			</md-button>
+		
+			<md-button class="bg-success text-white" ng-click="$ctrl.$confirm()" ng-disabled="serviceSoldEditForm.$invalid" aria-label="Confirm service edit">
+				<md-icon class="mdi mdi-check md-24 text-white"></md-icon>
+				<span translate="common.confirm"></span>
+			</md-button>
+		</div>
+	</ng-form>
+</div>

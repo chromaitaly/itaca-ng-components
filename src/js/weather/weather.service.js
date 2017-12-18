@@ -19,7 +19,7 @@
 		var $$service = this;
 		
 		this.$$appId = appId;
-		this.API = $resource("https://api.openweathermap.org/data/2.5/$$weather");
+		this.API = $resource("https://api.openweathermap.org/data/2.5/weather");
 			
 		this.get = function(city, country) {
 			var deferred = $q.defer();

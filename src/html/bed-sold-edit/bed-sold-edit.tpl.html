@@ -6,6 +6,11 @@
 					<span translate="bed.bed"></span>
 					<span translate="bed.{{$ctrl.bedSold.bed.type}}"></span>
 				</strong>
+				
+				<div class="text-gray-light text-small">
+					<span translate="bed.{{$ctrl.bedSold.bed.type}}.description"></span>
+				</div>
+				
 				<div class="text-small">
 					<span ng-if="$ctrl.bedSold.bed.adultsPrice">
 						<span>{{$ctrl.bedSold.bed.adultsPrice|chCurrency}}</span>

@@ -1,50 +1,48 @@
 <div>
-	<div class="md-margin no-margin-x-sides">
-		<md-list class="layout-column flex-100" ng-show="!$ctrl.$$showDetails">
-			<md-list-item ng-if="$ctrl.maxCount > 1" class="layout-row layout-wrap layout-padding layout-align-center-center no-padding-top no-padding-bottom no-padding-right">
-				<div flex>
-					<ch-people-summary people="$ctrl.people"></ch-people-summary>
-				</div>
-				<div class="no-padding-right">
-					<md-button class="button-small no-margin text-blue-sea" ng-click="$ctrl.$toggleDetails(true)" aria-label="Edit guests">
-						<small>
-							<md-icon class="mdi mdi-pencil md-18 text-blue-sea"></md-icon>
-							<span translate="common.edit"></span>
-						</small>
-					</md-button>
-				</div>
-			</md-list-item>
-			<md-list-item ng-if="$ctrl.maxCount == 1" class="layout-row layout-wrap layout-padding layout-align-center-center no-padding-top no-padding-bottom no-padding-right">
-				<div class="flex">
-					<span><span translate="people.people.only.inroom"></span>&nbsp;</span>
-					<ch-people-summary people="$ctrl.people"></ch-people-summary>
-				</div>
-			</md-list-item>
-		</md-list>
-	
-		<div class="layout-column flex-100" ng-class="{'layout-align-center-center': !$mdMedia('gt-sm')}" ng-show="$ctrl.$$showDetails">
-			<div>
-				<ch-people-counters 
-					ng-model="$ctrl.people"
-					max-people="$ctrl.maxPeople"
-					min="1"
-					max="$ctrl.maxCount"
-					limits="$ctrl.limits"
-					age-ranges="$ctrl.ageRanges"
-					on-change="$ctrl.$onChange($people)">
-				</ch-people-counters>
+	<md-list ng-show="!$ctrl.$$showDetails">
+		<md-list-item ng-if="$ctrl.maxCount > 1" class="layout-row layout-wrap layout-padding layout-align-center-center no-padding-top no-padding-bottom no-padding-right">
+			<div flex>
+				<ch-people-summary people="$ctrl.people"></ch-people-summary>
 			</div>
-				
-			<div ng-if="$ctrl.$$guestsCount.standard >= $ctrl.maxCount" class="md-padding no-padding-bottom no-padding-top">
-				<span class="bg-info label label-inline-block text-wrap text-center" translate="people.max.room"></span>
-			</div>
-			
-			<div class="text-right" ng-class="{'layout-column': !$mdMedia('gt-sm')}">
-				<md-button class="bg-success text-white md-raised" ng-click="$ctrl.$toggleDetails()" aria-label="Confirm guests">
-					<md-icon class="mdi mdi-check md-24 text-white"></md-icon>
-					<span translate="common.confirm"></span>
+			<div class="no-padding-right">
+				<md-button class="button-small no-margin text-blue-sea" ng-click="$ctrl.$toggleDetails(true)" aria-label="Edit guests">
+					<small>
+						<md-icon class="mdi mdi-pencil md-18 text-blue-sea"></md-icon>
+						<span translate="common.edit"></span>
+					</small>
 				</md-button>
 			</div>
+		</md-list-item>
+		<md-list-item ng-if="$ctrl.maxCount == 1" class="layout-row layout-wrap layout-padding layout-align-center-center no-padding-top no-padding-bottom no-padding-right">
+			<div class="flex">
+				<span><span translate="people.people.only.inroom"></span>&nbsp;</span>
+				<ch-people-summary people="$ctrl.people"></ch-people-summary>
+			</div>
+		</md-list-item>
+	</md-list>
+
+	<div class="layout-column" ng-class="{'layout-align-center-center': !$mdMedia('gt-sm')}" ng-show="$ctrl.$$showDetails">
+		<div>
+			<ch-people-counters 
+				ng-model="$ctrl.people"
+				max-people="$ctrl.maxPeople"
+				min="1"
+				max="$ctrl.maxCount"
+				limits="$ctrl.limits"
+				age-ranges="$ctrl.ageRanges"
+				on-change="$ctrl.$calculatePeopleCount($people)">
+			</ch-people-counters>
+		</div>
+			
+		<div ng-if="$ctrl.$$guestsCount.standard >= $ctrl.maxCount" class="md-padding no-padding-bottom no-padding-top">
+			<span class="bg-info label label-inline-block text-wrap text-center" translate="people.max.room"></span>
+		</div>
+		
+		<div class="text-right" ng-class="{'layout-column': !$mdMedia('gt-sm')}">
+			<md-button class="bg-success text-white md-raised" ng-click="$ctrl.$toggleDetails()" aria-label="Confirm guests">
+				<md-icon class="mdi mdi-check md-24 text-white"></md-icon>
+				<span translate="common.confirm"></span>
+			</md-button>
 		</div>
 	</div>
 </div>

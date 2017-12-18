@@ -121,13 +121,13 @@
 	</div>
 	
 	<div ng-if="$ctrl.showConfig">
-		<div class="layout-column flex-100 layout-align-center-center" ng-class="{'margin-20-no-x-sides': $ctrl.$mdMedia('gt-sm')}">
+		<div class="layout-column flex-100 layout-align-center-center margin-20-no-x-sides">
 			<div class="md-title text-center">
 				<span translate="reservation.rooms.config.title"></span>
 			</div>
 		</div>
 	
-		<div layout="column" class="no-padding">
+		<div layout="column" class="margin-20-no-x-sides no-margin-top">
 			<div>
 				<div class="md-subhead md-margin text-blue-sea">
 					<md-icon class="mdi mdi-account-multiple md-32 text-blue-sea no-margin"></md-icon>&nbsp;
@@ -156,7 +156,7 @@
 			</ch-room-edit-people>
 		</div>
 		
-		<div layout="column" class="no-padding">
+		<div layout="column" class="margin-20-no-x-sides no-margin-top">
 			<div ng-if="!$ctrl.$bedsConfig">
 				<div class="md-subhead md-margin text-blue-sea">
 					<md-icon class="mdi mdi-hotel md-32 text-blue-sea no-margin"></md-icon>&nbsp;
@@ -208,99 +208,195 @@
 				</div>
 			</div>
 		
-			<ch-room-edit-beds
-				beds="$ctrl.room.beds"
-				max-beds="$ctrl.room.type.beds"
-				min-count="1"
-				max-count="$ctrl.room.type.bedCount"
-				people-availability="$ctrl.$$peopleAvailability"
-				on-toggle-config="$ctrl.$onToggleBedsConfig($open)"
-				on-add="$ctrl.$onBedAdd($bed)"
-				on-remove="$ctrl.$onBedRemove($bed)"
-				on-change="$ctrl.$onBedChange($bed)">
-			</ch-room-edit-beds>
+			<div>
+				<ch-room-edit-beds
+					room="$ctrl.room"
+					nights="$ctrl.nights"
+					beds="$ctrl.room.beds"
+					total-beds="$ctrl.room.type.beds"
+					min-count="1"
+					max-count="$ctrl.room.type.bedCount"
+					people-availability="$ctrl.$$peopleAvailability"
+					on-toggle-config="$ctrl.$onToggleBedsConfig($open)"
+					on-add="$ctrl.$onBedAdd($bed)"
+					on-remove="$ctrl.$onBedRemove($bed)"
+					on-change="$ctrl.$onBedChange($bed)">
+				</ch-room-edit-beds>
+			</div>
 		</div>
 		
-		<div ng-if="$ctrl.room.type.otherBeds.length" layout="column" class="no-padding">
-			<ng-form name="otherBeds">
-				<div ng-if="!$ctrl.$extraBedsConfig"  ng-class="{'margin-20-no-x-sides': $ctrl.$mdMedia('gt-sm')}">
-					<div class="md-subhead md-margin text-blue-sea">
-						<md-icon class="mdi mdi-plus md-18 text-blue-sea no-margin"></md-icon>
-						<md-icon class="mdi mdi-hotel md-32 text-blue-sea no-margin"></md-icon>&nbsp;
-						<span ng-show="$ctrl.room.otherBeds.length" translate="bed.beds.list.title"></span>
-						<span ng-show="!$ctrl.room.otherBeds.length" translate="bed.beds.list.title.other"></span>
-					
-						<md-button ng-show="!$ctrl.room.otherBeds.length" class="button-small no-margin-top no-margin-bottom text-blue-sea" aria-label="Show/Hide extra beds" ng-click="$ctrl.$toggleExtraBeds()">
-							<small ng-if="!$ctrl.$$showExtraBeds">
-								<md-icon class="mdi mdi-plus md-18 text-blue-sea"></md-icon>
-								<span translate="common.add"></span>
-							</small>
-							<small ng-if="$ctrl.$$showExtraBeds">
-								<md-icon class="mdi mdi-chevron-up md-18 text-blue-sea"></md-icon>
-								<span translate="common.hide"></span>
-							</small>
-						</md-button>
-					</div>
-					
-					<md-divider></md-divider>
-					
-					<div class="md-padding no-padding-top no-padding-bottom text-gray-light text-italic">
-						<md-icon class="mdi mdi-information-outline md-14"></md-icon>&nbsp;
-						<small ng-if="$ctrl.room.otherBeds.length">
-							<span translate="bed.this.operation"></span>&nbsp;
-							<span>{{$ctrl.$$guestsCount.extra}}</span>&nbsp;
-							<span class="text-lowercase">
-								<span ng-if="($ctrl.room.type.guestsCount.extra - $ctrl.$$guestsCount.extra) == 1" translate="people.person"></span>
-								<span ng-if="($ctrl.room.type.guestsCount.extra - $ctrl.$$guestsCount.extra) != 1" translate="people.people"></span>&nbsp;
-								<span translate="room.room.in.yours"></span>
-							</span>
-						</small>
-						<small ng-if="!$ctrl.room.otherBeds.length">
-							<span translate="bed.beds.add.more"></span>&nbsp;
-							<span>{{$ctrl.room.type.maxOtherBeds - $ctrl.room.otherBeds.length}}</span>&nbsp;
-							<span class="text-lowercase">
-								<span ng-if="($ctrl.room.type.maxOtherBeds - $ctrl.room.otherBeds.length) == 1" translate="bed.bed"></span>
-								<span ng-if="($ctrl.room.type.maxOtherBeds - $ctrl.room.otherBeds.length) != 1" translate="bed.beds"></span>&nbsp;
-								<span translate="reservation.total.night"></span>&nbsp;
-								<span>{{$ctrl.room.type.guestsCount.extra - $ctrl.$$guestsCount.extra}}</span>&nbsp;
-								<span ng-if="($ctrl.room.type.guestsCount.extra - $ctrl.$$guestsCount.extra) == 1" translate="people.person"></span>
-								<span ng-if="($ctrl.room.type.guestsCount.extra - $ctrl.$$guestsCount.extra) != 1" translate="people.people"></span>
-							</span>
-						</small>
-					</div>
-				</div>	
+		<div ng-if="$ctrl.room.type.otherBeds.length" layout="column" class="margin-20-no-x-sides no-margin-top">
+			<div ng-if="!$ctrl.$extraBedsConfig">
+				<div class="md-subhead md-margin text-blue-sea">
+					<md-icon class="mdi mdi-plus md-18 text-blue-sea no-margin"></md-icon>
+					<md-icon class="mdi mdi-hotel md-32 text-blue-sea no-margin"></md-icon>&nbsp;
+					<span ng-show="$ctrl.room.otherBeds.length" translate="bed.beds.list.title"></span>
+					<span ng-show="!$ctrl.room.otherBeds.length" translate="bed.beds.list.title.other"></span>
 				
-				<div flex="100" ng-if="$ctrl.$$showExtraBeds" id="ch-room-edit-{{$ctrl.$$index}}-config-extra-beds">
-					<ch-room-edit-beds
-						beds="$ctrl.room.otherBeds"
-						max-beds="$ctrl.room.type.otherBeds"
-						max-count="$ctrl.room.type.maxOtherBeds"
-						config-bed="true"
-						people-age-ranges="$ctrl.peopleAgeRanges"
-						on-toggle-config="$ctrl.$onToggleExtraBedsConfig($open)"
-						on-add="$ctrl.$onExtraBedAdd($bed)"
-						on-remove="$ctrl.$onExtraBedRemove($bed)"
-						on-change="$ctrl.$onExtraBedChange($bed)">
-					</ch-room-edit-beds>
-					
-					<div ng-if="$ctrl.room.otherBeds.length == $ctrl.room.type.maxOtherBeds" class="text-center">
-						<md-icon class="mdi mdi-thumb-up-outline text-success"></md-icon>&nbsp;
-						<span translate="bed.all.added.success.message" class="text-success"></span>
+					<md-button ng-show="!$ctrl.room.otherBeds.length" class="button-small no-margin-top no-margin-bottom text-blue-sea" aria-label="Show/Hide extra beds" ng-click="$ctrl.$toggleExtraBeds()">
+						<small ng-if="!$ctrl.$$showExtraBeds">
+							<md-icon class="mdi mdi-plus md-18 text-blue-sea"></md-icon>
+							<span translate="common.add"></span>
+						</small>
+						<small ng-if="$ctrl.$$showExtraBeds">
+							<md-icon class="mdi mdi-chevron-up md-18 text-blue-sea"></md-icon>
+							<span translate="common.hide"></span>
+						</small>
+					</md-button>
+				</div>
+				
+				<md-divider></md-divider>
+				
+				<div class="md-padding no-padding-top no-padding-bottom text-gray-light text-italic">
+					<md-icon class="mdi mdi-information-outline md-14"></md-icon>&nbsp;
+					<small ng-if="$ctrl.room.otherBeds.length">
+						<span translate="bed.this.operation"></span>&nbsp;
+						<span>{{$ctrl.$$guestsCount.extra}}</span>&nbsp;
+						<span class="text-lowercase">
+							<span ng-if="($ctrl.room.type.guestsCount.extra - $ctrl.$$guestsCount.extra) == 1" translate="people.person"></span>
+							<span ng-if="($ctrl.room.type.guestsCount.extra - $ctrl.$$guestsCount.extra) != 1" translate="people.people"></span>&nbsp;
+							<span translate="room.room.in.yours"></span>
+						</span>
+					</small>
+					<small ng-if="!$ctrl.room.otherBeds.length">
+						<span translate="bed.beds.add.more"></span>&nbsp;
+						<span>{{$ctrl.room.type.maxOtherBeds - $ctrl.room.otherBeds.length}}</span>&nbsp;
+						<span class="text-lowercase">
+							<span ng-if="($ctrl.room.type.maxOtherBeds - $ctrl.room.otherBeds.length) == 1" translate="bed.bed"></span>
+							<span ng-if="($ctrl.room.type.maxOtherBeds - $ctrl.room.otherBeds.length) != 1" translate="bed.beds"></span>&nbsp;
+							<span translate="reservation.total.night"></span>&nbsp;
+							<span>{{$ctrl.room.type.guestsCount.extra - $ctrl.$$guestsCount.extra}}</span>&nbsp;
+							<span ng-if="($ctrl.room.type.guestsCount.extra - $ctrl.$$guestsCount.extra) == 1" translate="people.person"></span>
+							<span ng-if="($ctrl.room.type.guestsCount.extra - $ctrl.$$guestsCount.extra) != 1" translate="people.people"></span>
+						</span>
+					</small>
+				</div>
+			</div>	
+			
+			<div ng-if="$ctrl.$$showExtraBeds" id="ch-room-edit-{{$ctrl.$$index}}-config-extra-beds">
+				<ch-room-edit-beds
+					room="$ctrl.room"
+					nights="$ctrl.nights"
+					beds="$ctrl.room.otherBeds"
+					total-beds="$ctrl.room.type.otherBeds"
+					max-count="$ctrl.room.type.maxOtherBeds"
+					config-bed="true"
+					people-age-ranges="$ctrl.peopleAgeRanges"
+					on-toggle-config="$ctrl.$onToggleExtraBedsConfig($open)"
+					on-add="$ctrl.$onExtraBedAdd($bed)"
+					on-remove="$ctrl.$onExtraBedRemove($bed)"
+					on-change="$ctrl.$onExtraBedChange($bed)">
+				</ch-room-edit-beds>
+				
+				<div ng-if="$ctrl.room.otherBeds.length == $ctrl.room.type.maxOtherBeds" class="text-center">
+					<md-icon class="mdi mdi-thumb-up-outline text-success"></md-icon>&nbsp;
+					<span translate="bed.all.added.success.message" class="text-success"></span>
+				</div>
+			</div>
+		</div>
+		
+		<div ng-if="$ctrl.$$includedServices.length" layout="column" class="margin-20-no-x-sides no-margin-top">
+			<div>
+				<div class="md-subhead md-margin text-blue-sea">
+					<md-icon class="mdi mdi-checkbox-multiple-marked-circle-outline md-32 text-blue-sea no-margin"></md-icon>&nbsp;
+					<span translate="room.facilities"></span>
+				</div>
+				
+				<md-divider></md-divider>
+				
+				<div class="md-padding text-gray-light">
+					<span translate="room.facilities.text"></span>&nbsp;
+					<md-button class="no-margin button-small text-blue-sea" ng-click="$ctrl.$toggleIncludedServices()" aria-label="Show/Hide room facilities">
+						<small>
+							<span ng-if="!$ctrl.$$showIncluedServices" translate="common.show"></span>
+							<span ng-if="$ctrl.$$showIncluedServices" translate="common.hide"></span>&nbsp;
+							<md-icon class="mdi text-blue-sea" ng-class="$ctrl.$$showIncluedServices ? 'mdi-chevron-up' : 'mdi-chevron-down'"></md-icon>
+						</small>
+					</md-button>
+				</div>
+			</div>
+			
+			<div ng-if="$ctrl.$$showIncluedServices" class="layout-column flex-100  md-padding no-padding-top">
+				<div layout layout-wrap layout-padding-sm>
+					<div ng-repeat="service in $ctrl.$$includedServices track by $index" class="flex-100 flex-gt-sm-50">
+						<md-icon ng-if="$ctrl.$$servicesIcons[service.type.nameKey]" class="{{$ctrl.$$servicesIcons[service.type.nameKey]}} text-success material-icons"></md-icon>
+						<md-icon ng-if="!$ctrl.$$servicesIcons[service.type.nameKey]" class="mdi mdi-check text-success material-icons"></md-icon>&nbsp;
+						<span translate="{{service.type.nameKey}}"></span>
 					</div>
 				</div>
-			</ng-form>
-	<!-- 						<div th:replace="public/partials/hotel/content/book/rooms/beds/beds-config"></div> -->
+			</div>	
 		</div>
 		
-		<div layout="column" class="no-padding">
+		<div ng-if="$ctrl.$$freeServices.length" layout="column" class="margin-20-no-x-sides no-margin-top">
+			<div>
+				<div class="md-subhead md-margin text-blue-sea">
+					<md-icon class="mdi mdi-gift md-32 text-blue-sea no-margin"></md-icon>&nbsp;
+					<span translate="service.services.free.text"></span>
+				</div>
+				
+				<md-divider></md-divider>
+				
+				<div class="md-padding no-padding-top no-padding-bottom text-gray-light text-italic">
+					<md-icon class="mdi mdi-information-outline md-14"></md-icon>&nbsp;
+					<small translate="service.services.free.info"></small>
+				</div>
+			</div>
+		
+			<div>
+				<ch-room-edit-services
+					room="$ctrl.room"
+					nights="$ctrl.nights"
+					services="$ctrl.room.services"
+					total-services="$ctrl.$$freeServices"
+					preview-size="4"
+					people="$ctrl.room.people"
+					people-age-ranges="$ctrl.peopleAgeRanges"
+					on-add="$ctrl.$onServiceAdd($service)"
+					on-remove="$ctrl.$onServiceRemove($service)"
+					on-change="$ctrl.$onServiceChange($service)">
+				</ch-room-edit-services>
+			</div>
 <!-- 						<div th:replace="public/partials/hotel/content/book/rooms/services/services-config"></div> -->
 		</div>
 		
-		<div layout="column" class="no-padding">
+		<div ng-if="$ctrl.$$paymentServices.length" layout="column" class="margin-20-no-x-sides no-margin-top">
+			<div>
+				<div class="md-subhead md-margin text-blue-sea">
+					<md-icon class="mdi mdi-currency-usd md-32 text-blue-sea no-margin"></md-icon>&nbsp;
+					<span translate="service.services.popular.text"></span>
+				</div>
+				
+				<md-divider></md-divider>
+			
+				<div class="md-padding no-padding-top no-padding-bottom text-gray-light text-italic">
+					<md-icon class="mdi mdi-information-outline md-14"></md-icon>&nbsp;
+					<small translate="service.services.popular.info"></small>
+				</div>
+			</div>
+			
+			<div>
+				<ch-room-edit-services
+					room="$ctrl.room"
+					nights="$ctrl.nights"
+					services="$ctrl.room.services"
+					total-services="$ctrl.$$paymentServices"
+					preview-size="4"
+					people="$ctrl.room.people"
+					people-age-ranges="$ctrl.peopleAgeRanges"
+					on-add="$ctrl.$onServiceAdd($service)"
+					on-remove="$ctrl.$onServiceRemove($service)"
+					on-change="$ctrl.$onServiceChange($service)">
+				</ch-room-edit-services>
+			</div>
+		
+<!-- 						<div th:replace="public/partials/hotel/content/book/rooms/services/services-config"></div> -->
+		</div>
+		
+		<div layout="column" class="margin-20-no-x-sides no-margin-top">
 <!-- 						<div th:replace="public/partials/hotel/content/book/rooms/guests/guests-details"></div> -->
 		</div>
 		
-		<div layout="column" class="md-padding no-padding-bottom">
+		<div layout="column">
 			<md-button class="text-blue-sea text-small text-wrap row-1" ng-click="$ctrl.$toggleRoomConfig(false)" aria-label="Close room config">
 				<span translate="room.config.close"></span>
 				<md-icon class="mdi mdi-chevron-up md-18 text-blue-sea"></md-icon>

@@ -4,7 +4,7 @@
 		<strong ng-if="$ctrl.reservation.nights && !$ctrl.reservation.rooms.length"><span translate="reservation.summary.search"></span></strong>
 		<strong ng-if="!$ctrl.reservation.nights" ><span translate="reservation.search.your.room"></span></strong>
 	</div>	
-	<div ng-if="!$ctrl.step || $ctrl.step <= 1" class="no-padding-top no-padding-bottom">
+	<div ng-if="!$ctrl.step || $ctrl.step <= 1" class="no-padding-top no-padding-bottom" layout="column" layout-padding-sm>
 		<div flex layout="column">
 			<ch-date-range-picker 
 				label="{{'reservation.when.question'|translate}}"
@@ -21,7 +21,9 @@
 				diff-label-plural="{{'common.nights'|translate}}"
 				use-utc="true" disable-body-scroll="true"></ch-date-range-picker>
 		</div>
+		
 		<div><md-divider></md-divider></div>
+		
 		<div flex layout="column">
 			<ch-people-picker  
 				label="{{'reservation.people.question'|translate}}" 
@@ -32,7 +34,7 @@
 			</ch-people-picker>
 		</div>
 	</div>
-	<div ng-if="$ctrl.step > 1" class="no-padding-top no-padding-bottom">
+	<div ng-if="$ctrl.step > 1" class="no-padding-top no-padding-bottom" layout="column" layout-padding-sm>
 		<div flex layout="column">
 			<div layout="column" layout-padding class="text-center"> 
 	  			<div class="text-gray-light text-small no-padding-bottom"> 
@@ -67,7 +69,9 @@
 			</div>
 		</div>
 	</div>
+	
 	<div class="no-padding-top"><md-divider></md-divider></div>
+	
 	<div id="booking-summary" class="no-padding-top no-padding-bottom" ng-show="$ctrl.reservation.totalAmount.finalAmount && $ctrl.reservation.totalAmount.finalAmount > 0">
 		<div class="text-gray-light text-small text-center">
 			<span translate="reservation.rooms.details"></span>:
@@ -88,7 +92,7 @@
 						<span>{{room.totalRate.amount.finalAmount|chCurrency}}</span>
 					</div>
 				</div>
-				<ul ng-if="room.services.length" class="flex-100 no-padding no-margin">
+				<ul ng-if="room.services.length" class="flex-100 no-padding no-margin-right no-margin-bottom no-margin-top">
 					<li ng-if="!serviceSold.included" ng-repeat="serviceSold in room.services" class="layout-row layout-wrap layout-align-start-center" ng-class="{'text-danger': serviceSold.toRemove}">
 						<small class="flex">
 							<span>
@@ -109,7 +113,7 @@
 						</span>
 					</li>
 				</ul>
-				<ul ng-if="room.otherBeds.length" class="flex-100 no-padding no-margin">
+				<ul ng-if="room.otherBeds.length" class="flex-100 no-padding no-margin no-margin-right no-margin-bottom no-margin-top">
 					<li ng-repeat="bed in room.otherBeds" class="layout-row layout-wrap layout-align-start-center">
 						<small class="flex">
 							<span>1&nbsp;<span class="text-lowercase" translate="bed.bed"></span>&nbsp;<span translate="{{'bed.' + bed.bed.type}}"></span></span>

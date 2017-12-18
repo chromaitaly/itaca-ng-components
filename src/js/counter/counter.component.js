@@ -52,7 +52,7 @@
 			  	"</div>" + 
 			  	"<div class=\"no-padding\">" +
 				  	"<md-input-container md-no-float class=\"md-block minimal-input no-margin no-padding\">" +
-				  		"<input ng-if=\"$ctrl.fieldName\" type=\"hidden\" name=\"{{$ctrl.fieldName}}\">" +
+				  		"<input ng-if=\"$ctrl.fieldName\" type=\"hidden\" name=\"{{$ctrl.fieldName}}\" step=\"{{$ctrl.step}}\" ng-min=\"$ctrl.min\" ng-max=\"$ctrl.max\">" +
 			  			"<small ng-transclude class=\"no-padding text-center\"></small>" +
 		  			"</md-input-container>" +
 		  		"</div>" +
