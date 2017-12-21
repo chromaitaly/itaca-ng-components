@@ -150,7 +150,7 @@
 									<small class="text-success" translate="common.booked.male"></small>
 								</div>
 								
-								<md-button ng-if="$ctrl.configBed" show-gt-sm class="button-small text-blue-sea text-small" ng-class="$ctrl.$mdMedia('gt-sm') ? 'auto-height row-1' : 'only-border border-blue-sea'" 
+								<md-button ng-if="$ctrl.configBed" hide show-gt-sm class="button-small text-blue-sea text-small" ng-class="$ctrl.$mdMedia('gt-sm') ? 'auto-height row-1' : 'only-border border-blue-sea'" 
 									ng-click="$ctrl.$editBed(bed)" ng-disabled="$ctrl.$$editingBed" aria-label="Edit bed">
 									<md-icon class="mdi mdi-pencil md-18 text-blue-sea"></md-icon>
 									<span translate="common.edit"></span>
@@ -165,7 +165,7 @@
 								</md-button>
 							</div>
 							
-							<div class="no-padding-right flex-order-xs-3 flex-order-sm-3" ng-class="$ctrl.$mdMedia('gt-sm') ? 'layout-row layout-align-end-center' : 'flex-100 layout-column text-center'" 
+							<div class="no-padding-right flex-order-xs-3 flex-order-sm-3" ng-class="$ctrl.$mdMedia('gt-sm') ? 'layout-row layout-align-end-center' : 'flex-100 layout-column'" 
 								ng-if="!bed.$$available">
 								<md-button ng-if="$ctrl.configBed" hide-gt-sm class="button-small text-blue-sea text-small" ng-class="$ctrl.$mdMedia('gt-sm') ? 'auto-height row-1' : 'only-border border-blue-sea'" 
 									ng-click="$ctrl.$editBed(bed)" ng-disabled="$ctrl.$$editingBed" aria-label="Edit bed">
@@ -186,7 +186,7 @@
 							<ch-bed-sold-edit
 								bed-sold="$ctrl.$$editingBed"
 								nights="$ctrl.nights"
-								people-limits="$ctrl.peopleLimits"
+								people-limits="$ctrl.$$peopleLimits"
 								people-age-ranges="$ctrl.peopleAgeRanges"
 								on-confirm="$ctrl.$confirmBedEdit($bedSold)"
 								on-cancel="$ctrl.$cancelBedEdit($bedSold)">

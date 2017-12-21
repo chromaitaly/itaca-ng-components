@@ -216,7 +216,6 @@
 					total-beds="$ctrl.room.type.beds"
 					min-count="1"
 					max-count="$ctrl.room.type.bedCount"
-					people-availability="$ctrl.$$peopleAvailability"
 					on-toggle-config="$ctrl.$onToggleBedsConfig($open)"
 					on-add="$ctrl.$onBedAdd($bed)"
 					on-remove="$ctrl.$onBedRemove($bed)"
@@ -226,14 +225,15 @@
 		</div>
 		
 		<div ng-if="$ctrl.room.type.otherBeds.length" layout="column" class="margin-20-no-x-sides no-margin-top">
-			<div ng-if="!$ctrl.$extraBedsConfig">
+			<div ng-if="!$ctrl.$$extraBedsConfig">
 				<div class="md-subhead md-margin text-blue-sea">
 					<md-icon class="mdi mdi-plus md-18 text-blue-sea no-margin"></md-icon>
 					<md-icon class="mdi mdi-hotel md-32 text-blue-sea no-margin"></md-icon>&nbsp;
 					<span ng-show="$ctrl.room.otherBeds.length" translate="bed.beds.list.title"></span>
 					<span ng-show="!$ctrl.room.otherBeds.length" translate="bed.beds.list.title.other"></span>
 				
-					<md-button ng-show="!$ctrl.room.otherBeds.length" class="button-small no-margin-top no-margin-bottom text-blue-sea" aria-label="Show/Hide extra beds" ng-click="$ctrl.$toggleExtraBeds()">
+					<md-button ng-show="!$ctrl.room.otherBeds.length" class="button-small no-margin-top no-margin-bottom text-blue-sea" 
+						aria-label="Show/Hide extra beds" ng-click="$ctrl.$toggleExtraBeds()">
 						<small ng-if="!$ctrl.$$showExtraBeds">
 							<md-icon class="mdi mdi-plus md-18 text-blue-sea"></md-icon>
 							<span translate="common.add"></span>
@@ -349,14 +349,12 @@
 					services="$ctrl.room.services"
 					total-services="$ctrl.$$freeServices"
 					preview-size="4"
-					people="$ctrl.room.people"
 					people-age-ranges="$ctrl.peopleAgeRanges"
 					on-add="$ctrl.$onServiceAdd($service)"
 					on-remove="$ctrl.$onServiceRemove($service)"
 					on-change="$ctrl.$onServiceChange($service)">
 				</ch-room-edit-services>
 			</div>
-<!-- 						<div th:replace="public/partials/hotel/content/book/rooms/services/services-config"></div> -->
 		</div>
 		
 		<div ng-if="$ctrl.$$paymentServices.length" layout="column" class="margin-20-no-x-sides no-margin-top">
@@ -388,12 +386,45 @@
 					on-change="$ctrl.$onServiceChange($service)">
 				</ch-room-edit-services>
 			</div>
-		
-<!-- 						<div th:replace="public/partials/hotel/content/book/rooms/services/services-config"></div> -->
 		</div>
 		
 		<div layout="column" class="margin-20-no-x-sides no-margin-top">
+			<div>
+				<div class="md-subhead md-margin text-blue-sea">
+					<md-icon class="mdi mdi-account-card-details md-32 text-blue-sea no-margin"></md-icon>&nbsp;
+					<span translate="reservation.text.identityDocuments.list"></span>
+				</div>
+				
+				<md-divider></md-divider>
+			
+				<div class="md-padding no-padding-top no-padding-bottom">
+					<span translate="reservation.text.identityDocuments.label"></span>&nbsp;
+					
+					<md-button class="no-margin button-small text-blue-sea text-small" 
+						ng-disabled="$ctrl.$$showIdentityDocuments" ng-click="$ctrl.$toggleIdentityDocuments()" aria-label="Hide/show room facilities">
+						<span ng-if="!$ctrl.$$showIdentityDocuments">
+							<span ng-if="!$ctrl.room.identityDocuments.length" translate="reservation.text.identityDocuments.enter"></span>
+							<span ng-if="$ctrl.room.identityDocuments.length" translate="reservation.text.identityDocuments.show"></span>
+						</span>
+						<span ng-if="$ctrl.$$showIdentityDocuments" translate="reservation.text.identityDocuments.hide"></span>
+						<md-icon class="mdi text-blue-sea" ng-class="$ctrl.$$showIdentityDocuments ? 'mdi-chevron-up' : 'mdi-chevron-down'"></md-icon>
+					</md-button>
+				</div>
+			</div>
+			
+			<div ng-if="$ctrl.$$showIdentityDocuments" id="ch-room-edit-{{$ctrl.$$index}}-config-documents">
+				<ch-room-edit-identity-documents
+					room="$ctrl.room"
+					nights="$ctrl.nights"
+					documents="$ctrl.room.identityDocuments"
+					people="$ctrl.room.people"
+					people-age-ranges="$ctrl.peopleAgeRanges"
+					on-add="$ctrl.$onIdentityDocumentAdd($document)"
+					on-remove="$ctrl.$onIdentityDocumentRemove($document)"
+					on-change="$ctrl.$onIdentityDocumentChange($document)">
+				</ch-room-edit-identity-documents>
 <!-- 						<div th:replace="public/partials/hotel/content/book/rooms/guests/guests-details"></div> -->
+			</div>
 		</div>
 		
 		<div layout="column">

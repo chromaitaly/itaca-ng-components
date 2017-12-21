@@ -1,26 +1,21 @@
 <div>
 	<ng-form name="serviceSoldEditForm">
 	    
-	    <div layout layout-wrap layout-padding-sm>	
-		 	<div class="flex-100 flex-gt-sm-30 layout-column">
-		 		<div ng-if="!$ctrl.serviceSold.service.gallery.length">
-		 			<img src="/resources/public/img/no-gallery-image.png" th:src="@{/resources/public/img/no-gallery-image.png}" class="full-width auto-height">
-		 		</div>
-		 		<div ng-if="!$ctrl.serviceSold.service.gallery.length">
-		 			<!-- TODO galleria -->
-		 		</div>
-		 	</div>
-		 		
-		 	<div class="flex-100 flex-gt-sm-70 layout-column">
-		 		<div layout layout-wrap layout-align="start start">
-		 			<div class="layout-column flex">
-					   	<h2 class="md-title no-margin">
-							<md-icon ng-if="$ctrl.$$servicesIcons[$ctrl.serviceSold.service.type.nameKey]" class="{{$ctrl.$$servicesIcons[$ctrl.serviceSold.service.type.nameKey]}} md-30 material-icons"></md-icon>
-							<md-icon ng-if="!$ctrl.$$servicesIcons[$ctrl.serviceSold.service.type.nameKey]" class="mdi mdi-check md-30"></md-icon>&nbsp;
-					    	<span translate="{{$ctrl.serviceSold.service.type.nameKey}}"></span>
-					   	</h2>
-				   	</div>
-				   	<div class="layout-column layout-align-center-center text-center">
+	    <div layout="column" layout-padding-sm>	
+	 		<div flex layout layout-padding-sm layout-align="start center" class="no-padding">
+				<div ng-if="$ctrl.$$servicesIcons[$ctrl.serviceSold.service.type.nameKey]">
+					<md-icon class="material-icons {{$ctrl.$$servicesIcons[$ctrl.serviceSold.service.type.nameKey]}} md-30 circle-icon md-avatar-icon bg-gray-lighter text-gray-light"></md-icon>
+				</div>
+				<div ng-if="!$ctrl.$$servicesIcons[$ctrl.serviceSold.service.type.nameKey]">
+					<md-icon class="mdi mdi-check md-30 circle-icon md-avatar-icon bg-gray-lighter text-gray-light"></md-icon>
+				</div>
+				
+				<div flex layout layout-wrap layout-align="start center" layout-padding-sm>
+					<div flex>
+						<strong><span translate="{{$ctrl.serviceSold.service.type.nameKey}}"></span></strong>
+					</div>
+					
+				   	<div layout="column" layout-align="center center" class="text-center">
 				       <strong ng-if="$ctrl.serviceSold.amount" class="md-headline" ng-class="{'text-striked': $ctrl.serviceSold.$$removed}">
 				        	<span ng-if="$ctrl.serviceSold.amount.finalAmount > 0">{{$ctrl.serviceSold.amount.finalAmount|chCurrency}}</span>
 				        	<span ng-if="$ctrl.serviceSold.amount.finalAmount == 0 && $ctrl.serviceSold.service.paymentType != 'PER_PERSON'" translate="common.free"></span>
@@ -30,81 +25,83 @@
 			        		<span ng-if="$ctrl.nights == 1" translate="reservation.price.for.one.night"></span>
 						</small>
 				    </div>
-				</div>
-			  	
-		  		<p class="text-gray-light no-margin-bottom" ng-if="$ctrl.serviceSold.service.description[$ctrl.Lang.current.iso]">
+			   </div>
+			</div>
+		  	
+		  	<div ng-if="$ctrl.serviceSold.service.description[$ctrl.Lang.current.iso]">
+		  		<p class="text-gray-light no-margin-bottom">
 		  			<span>{{$ctrl.serviceSold.service.description[$ctrl.Lang.current.iso]}}</span>
 		  		</p>
-			  		
-				<div class="md-padding no-padding-bottom no-padding-left no-padding-right">
-					<div>
-						<span><span translate="common.price.details"></span>:</span>
+		  	</div>
+		  		
+			<div class="md-padding no-padding-bottom no-padding-left no-padding-right text-small">
+				<div>
+					<span><span translate="common.price.details"></span>:</span>
+				</div>
+			
+				<div ng-switch="$ctrl.serviceSold.service.paymentType">
+					<div ng-switch-when="FREE">
+						<span class="text-success" translate="common.free"></span>
 					</div>
-				
-					<div ng-switch="$ctrl.serviceSold.service.paymentType">
-						<div ng-switch-when="FREE">
-							<span class="text-success" translate="common.free"></span>
-						</div>
-						<div ng-switch-when="SINGLE" class="text-gray-light">
-							<span ng-if="$ctrl.$$priceDetails.amount.finalAmount > 0">
-								<span>{{4ctrl.$$priceDetails.amount.finalAmount|chCurrency}}</span>
-							</span>
-							
-							<span ng-if="$ctrl.$$priceDetails.amount.finalAmount <= 0" translate="service.type.payment.free"></span>
-							
-							<div class="text-italic text-gray-light text-lowercase" ng-switch="$ctrl.serviceSold.service.frequency">
-								<span class="text-initial" translate="common.price.is.intend"></span></span>
-								<span ng-switch-when="DAILY">&nbsp;<span translate="date.frequency.daily"></span></span>
-								<span ng-switch-when="MONTHLY">&nbsp;<span translate="date.frequency.monthly"></span></span>
-								<span ng-switch-when="YEARLY">&nbsp;<span translate="date.frequency.yearly"></span></span>
-								<span ng-switch-when="LUMP_SUM">&nbsp;<span translate="common.entire.stay"></span></span>
-							</div>
-						</div>
+					<div ng-switch-when="SINGLE" class="text-gray-light">
+						<span ng-if="$ctrl.$$priceDetails.amount.finalAmount > 0">
+							<span>{{$ctrl.$$priceDetails.amount.finalAmount|chCurrency}}</span>
+						</span>
 						
-						<div ng-switch-when="PER_PERSON"  class="text-gray-light text-lowercase">
-							<span ng-if="$ctrl.$$priceDetails.adults.amount.finalAmount > 0">
-								<span>{{$ctrl.$$priceDetails.adults.amount.finalAmount|chCurrency}}&nbsp;</span>
-								<span class="text-lowercase"><span translate="people.adult.per"></span>&nbsp;,</span>
-							</span>
-							<span ng-if="!$ctrl.$$priceDetails.adults.amount.finalAmount">
-								<span class="text-lowercase"><span translate="people.adults"></span>&nbsp;</span>
-								<span translate="service.type.payment.free"></span>,&nbsp;
-							</span>
-							
-							<span ng-if="$ctrl.$$priceDetails.boys.amount.finalAmount > 0">
-								<span>{{$ctrl.$$priceDetails.boys.amount.finalAmount|chCurrency}}&nbsp;</span>
-								<span class="text-lowercase"><span translate="people.boy.per"></span>&nbsp;,</span>
-							</span>
-							<span ng-if="!$ctrl.$$priceDetails.boys.amount.finalAmount">
-								<span class="text-lowercase"><span translate="people.boys"></span>&nbsp;</span>
-								<span translate="service.type.payment.free"></span>,&nbsp;
-							</span>
-							
-							<span ng-if="$ctrl.$$childrenAmount.amount.finalAmount > 0">
-								<span>{{$ctrl.$$priceDetails.children.amount.finalAmount|chCurrency}}&nbsp;</span>
-								<span class="text-lowercase"><span translate="people.child.per"></span>&nbsp;,</span>
-							</span>
-							<span ng-if="!$ctrl.$$childrenAmount.amount.finalAmount">
-								<span class="text-lowercase"><span translate="people.children"></span>&nbsp;</span>
-								<span translate="service.type.payment.free"></span>,&nbsp;
-							</span>
-							
-							<span ng-if="$ctrl.$$priceDetails.kids.amount.finalAmount > 0">
-								<span>{{$ctrl.$$priceDetails.kids.amount.finalAmount|chCurrency}}&nbsp;</span>
-								<span class="text-lowercase"><span translate="people.kid.per"></span>&nbsp;</span>
-							</span>
-							<span ng-if="!$ctrl.$$priceDetails.kids.amount.finalAmount">
-								<span class="text-lowercase"><span translate="people.kids"></span>&nbsp;</span>
-								<span translate="service.type.payment.free"></span>
-							</span>
-							
-							<div class="text-italic text-gray-light text-lowercase" ng-switch="$ctrl.serviceSold.service.frequency">
-								<span class="text-initial" translate="common.price.is.intend"></span>&nbsp;<span translate="service.type.payment.person"></span>
-								<span ng-switch-when="DAILY">&nbsp;<span translate="date.frequency.daily"></span></span>
-								<span ng-switch-when="MONTHLY">&nbsp;<span translate="date.frequency.monthly"></span></span>
-								<span ng-switch-when="YEARLY">&nbsp;<span translate="date.frequency.yearly"></span></span>
-								<span ng-switch-when="LUMP_SUM">&nbsp;<span translate="common.entire.stay"></span></span>
-							</div>
+						<span ng-if="$ctrl.$$priceDetails.amount.finalAmount <= 0" translate="service.type.payment.free"></span>
+						
+						<div class="text-italic text-gray-light text-lowercase" ng-switch="$ctrl.serviceSold.service.frequency">
+							<span class="text-initial" translate="common.price.is.intend"></span></span>
+							<span ng-switch-when="DAILY">&nbsp;<span translate="date.frequency.daily"></span></span>
+							<span ng-switch-when="MONTHLY">&nbsp;<span translate="date.frequency.monthly"></span></span>
+							<span ng-switch-when="YEARLY">&nbsp;<span translate="date.frequency.yearly"></span></span>
+							<span ng-switch-when="LUMP_SUM">&nbsp;<span translate="common.entire.stay"></span></span>
+						</div>
+					</div>
+					
+					<div ng-switch-when="PER_PERSON"  class="text-gray-light text-lowercase">
+						<span ng-if="$ctrl.$$priceDetails.adults.amount.finalAmount > 0">
+							<span>{{$ctrl.$$priceDetails.adults.amount.finalAmount|chCurrency}}&nbsp;</span>
+							<span class="text-lowercase"><span translate="people.adult.per"></span>&nbsp;,</span>
+						</span>
+						<span ng-if="!$ctrl.$$priceDetails.adults.amount.finalAmount">
+							<span class="text-lowercase"><span translate="people.adults"></span>&nbsp;</span>
+							<span translate="service.type.payment.free"></span>,&nbsp;
+						</span>
+						
+						<span ng-if="$ctrl.$$priceDetails.boys.amount.finalAmount > 0">
+							<span>{{$ctrl.$$priceDetails.boys.amount.finalAmount|chCurrency}}&nbsp;</span>
+							<span class="text-lowercase"><span translate="people.boy.per"></span>&nbsp;,</span>
+						</span>
+						<span ng-if="!$ctrl.$$priceDetails.boys.amount.finalAmount">
+							<span class="text-lowercase"><span translate="people.boys"></span>&nbsp;</span>
+							<span translate="service.type.payment.free"></span>,&nbsp;
+						</span>
+						
+						<span ng-if="$ctrl.$$childrenAmount.amount.finalAmount > 0">
+							<span>{{$ctrl.$$priceDetails.children.amount.finalAmount|chCurrency}}&nbsp;</span>
+							<span class="text-lowercase"><span translate="people.child.per"></span>&nbsp;,</span>
+						</span>
+						<span ng-if="!$ctrl.$$childrenAmount.amount.finalAmount">
+							<span class="text-lowercase"><span translate="people.children"></span>&nbsp;</span>
+							<span translate="service.type.payment.free"></span>,&nbsp;
+						</span>
+						
+						<span ng-if="$ctrl.$$priceDetails.kids.amount.finalAmount > 0">
+							<span>{{$ctrl.$$priceDetails.kids.amount.finalAmount|chCurrency}}&nbsp;</span>
+							<span class="text-lowercase"><span translate="people.kid.per"></span>&nbsp;</span>
+						</span>
+						<span ng-if="!$ctrl.$$priceDetails.kids.amount.finalAmount">
+							<span class="text-lowercase"><span translate="people.kids"></span>&nbsp;</span>
+							<span translate="service.type.payment.free"></span>
+						</span>
+						
+						<div class="text-italic text-gray-light text-lowercase" ng-switch="$ctrl.serviceSold.service.frequency">
+							<span class="text-initial" translate="common.price.is.intend"></span>&nbsp;<span translate="service.type.payment.person"></span>
+							<span ng-switch-when="DAILY">&nbsp;<span translate="date.frequency.daily"></span></span>
+							<span ng-switch-when="MONTHLY">&nbsp;<span translate="date.frequency.monthly"></span></span>
+							<span ng-switch-when="YEARLY">&nbsp;<span translate="date.frequency.yearly"></span></span>
+							<span ng-switch-when="LUMP_SUM">&nbsp;<span translate="common.entire.stay"></span></span>
 						</div>
 					</div>
 				</div>
