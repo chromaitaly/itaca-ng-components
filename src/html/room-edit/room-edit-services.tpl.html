@@ -10,16 +10,16 @@
 			
 				<div ng-if="!service.$$editing" flex layout layout-wrap layout-align="start center" layout-padding-sm class="no-secondary-container">
 					<div ng-if="$ctrl.$$servicesIcons[service.type.nameKey]">
-						<md-icon class="{{$ctrl.$$servicesIcons[service.type.nameKey]}} md-30 circle-icon md-avatar-icon material-icons" ng-class="service.$$serviceSold ? 'bg-success text-white' : 'bg-gray-lighter text-gray-light'"></md-icon>
+						<md-icon class="{{$ctrl.$$servicesIcons[service.type.nameKey]}} md-30 circle-icon material-icons" ng-class="service.$$serviceSold ? 'bg-success text-white' : 'bg-gray-lighter text-gray-light'"></md-icon>
 					</div>
 					<div ng-if="!$ctrl.$$servicesIcons[service.type.nameKey]">
-						<md-icon class="mdi mdi-check md-30 circle-icon md-avatar-icon" ng-class="service.$$serviceSold ? 'bg-success text-white' : 'bg-gray-lighter text-gray-light'"></md-icon>
+						<md-icon class="mdi mdi-check md-30 circle-icon" ng-class="service.$$serviceSold ? 'bg-success text-white' : 'bg-gray-lighter text-gray-light'"></md-icon>
 					</div>	
 					
 					<div class="flex layout-column flex-order-xs-1 flex-order-sm-1" ng-if="!service.$$serviceSold">
 						<strong ng-click="$ctrl.$showServiceInfo($event, service)" aria-label="Show service info" class="clickable">
 							<span ng-if="service.maxCount > 1">{{service.maxCount}}&nbsp;x&nbsp;</span>
-							<span translate="{{service.type.nameKey}}"></span>
+							<span translate="{{service.type.nameKey}}"></span>&nbsp;
 							<md-icon class="mdi mdi-information-outline md-14"></md-icon>
 						</strong>
 						
@@ -105,6 +105,7 @@
 				
 				<div flex ng-if="service.$$editing && $ctrl.$$editingService">
 					<ch-service-sold-edit
+						class="md-whiteframe-z2 md-margin layout-column layout-padding-sm"
 						service-sold="$ctrl.$$editingService"
 						nights="$ctrl.nights"
 						people-limits="$ctrl.$$peopleLimits"

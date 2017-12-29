@@ -3,11 +3,11 @@
 	    
 	    <div layout="column" layout-padding-sm>	
 	 		<div flex layout layout-padding-sm layout-align="start center" class="no-padding">
-				<div ng-if="$ctrl.$$servicesIcons[$ctrl.serviceSold.service.type.nameKey]">
-					<md-icon class="material-icons {{$ctrl.$$servicesIcons[$ctrl.serviceSold.service.type.nameKey]}} md-30 circle-icon md-avatar-icon bg-gray-lighter text-gray-light"></md-icon>
+				<div class="no-padding" ng-if="$ctrl.$$servicesIcons[$ctrl.serviceSold.service.type.nameKey]">
+					<md-icon class="material-icons {{$ctrl.$$servicesIcons[$ctrl.serviceSold.service.type.nameKey]}} md-30 circle-icon bg-gray-lighter text-gray-light"></md-icon>
 				</div>
 				<div ng-if="!$ctrl.$$servicesIcons[$ctrl.serviceSold.service.type.nameKey]">
-					<md-icon class="mdi mdi-check md-30 circle-icon md-avatar-icon bg-gray-lighter text-gray-light"></md-icon>
+					<md-icon class="mdi mdi-check md-30 circle-icon bg-gray-lighter text-gray-light"></md-icon>
 				</div>
 				
 				<div flex layout layout-wrap layout-align="start center" layout-padding-sm>
@@ -20,7 +20,7 @@
 				        	<span ng-if="$ctrl.serviceSold.amount.finalAmount > 0">{{$ctrl.serviceSold.amount.finalAmount|chCurrency}}</span>
 				        	<span ng-if="$ctrl.serviceSold.amount.finalAmount == 0 && $ctrl.serviceSold.service.paymentType != 'PER_PERSON'" translate="common.free"></span>
 				        </strong>
-				        <small class="text-mini text-gray-light no-padding-bottom">
+				        <small class="text-gray-light no-padding-bottom">
 							<span ng-if="$ctrl.nights > 1" translate="reservation.price.for.nights" translate-values="{count: $ctrl.nights}"></span>
 			        		<span ng-if="$ctrl.nights == 1" translate="reservation.price.for.one.night"></span>
 						</small>

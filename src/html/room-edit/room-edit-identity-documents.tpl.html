@@ -1,79 +1,76 @@
 <div>
 	<md-list>
-		<md-list-item ng-repeat="document in $ctrl.identityDocuments track by $index" class="am-fade-and-slide-right flex-100"> 
-			<div ng-if="!document.$$editing" flex layout layout-wrap layout-align="center center">
-				<div ng-switch="document.guestType">
-	   				<md-icon ng-switch-when="GROUP_LEADER" class="mdi mdi-google-circles md-18 circle-icon bg-success text-white"></md-icon>
-	   				<md-icon ng-switch-when="HOUSEHOLDER" class="mdi mdi-account-multiple md-18 circle-icon bg-success text-white"></md-icon>
-	   				<md-icon ng-switch-default class="mdi md-18 circle-icon bg-gray-lighter text-gray-light" ng-class="document.name && document.surname ? 'mdi-account': 'mdi-account-alert'"></md-icon>
-	    		</div>
-	    		
-	    		<div>
-	    			<strong><span translate="guest.guest"></span>&nbsp;{{$index+1}}:&nbsp;</strong>
-	    		</div>
-	
-	     		<div ng-class="{'flex': $ctrl.$mdMedia('gt-sm'), 'text-center': !$ctrl.$mdMedia('gt-sm')}">
-	     			<span ng-if="document.name && document.surname">
-	     				<span class="text-capitalize">{{document.name}}&nbsp;{{document.surname}}</span>
-     					<span ng-class="document.guestType == 'GROUP_LEADER' || document.guestType == 'HOUSEHOLDER'? 'label label-xs bg-success' : 'label label-xs bg-gray-light'">
-     						<span ng-if="document.guestType == 'GROUP_LEADER'" translate="common.GROUP_LEADER"></span>
-     						<span ng-if="document.guestType == 'HOUSEHOLDER'" translate="common.HOUSEHOLDER"></span>
-     						<span ng-if="document.guestType == 'SINGLE_GUEST'" translate="common.SINGLE_GUEST"></span>
-     						<span ng-if="document.guestType == 'GROUP_MEMBER'" translate="common.GROUP_MEMBER"></span>
-     						<span ng-if="document.guestType == 'FAMILY_MEMBER'" translate="common.FAMILY_MEMBER"></span>
-     					</span>
-     				</span>
-     				<span ng-if="!document.name || !document.surname" class="text-gray-light">
-	   					<span translate="reservation.text.identityDocuments.no.guest"></span>,&nbsp;
-	   					<span translate="reservation.text.identityDocuments.add.question"></span>
-	   				</span>
-	     		</div>
-	      			
-	      		<div ng-class="{'flex-100 layout-column': !$ctrl.$mdMedia('gt-sm')}">
-	     			<md-button ng-class="{'text-blue-sea': !$ctrl.$$editingDocument}" class="button-small row-mini auto-height" 
-	     				ng-disabled="$ctrl.$$editingDocument" ng-click="$ctrl.$editDocument(document)" aria-label="{{document.name && document.surname ? 'Edit' : 'Add'}} document">
-	   					<span ng-if="document.name && document.surname">
-	    					<span class="mdi mdi-pencil md-24" ng-class="{'text-blue-sea': !$ctrl.$$editingDocument}"></span>
-	    					<small translate="common.edit"></small>
-	    				</span> 
-	    				
-	    				<span ng-if="!document.name || !document.surname">
-	    					<span class="mdi mdi-plus md-24"></span>
-		   					<small translate="common.add"></small>
+		<md-list-item ng-repeat="document in $ctrl.identityDocuments track by $index" class="am-fade-and-slide-right"> 
+			<div flex layout="column">
+				<div layout layout-wrap layout-align="start center">
+					<div ng-switch="document.guestType">
+		   				<md-icon ng-switch-when="GROUP_LEADER" class="mdi mdi-google-circles md-18 circle-icon bg-success text-white"></md-icon>
+		   				<md-icon ng-switch-when="HOUSEHOLDER" class="mdi mdi-account-multiple md-18 circle-icon bg-success text-white"></md-icon>
+		   				<md-icon ng-switch-default class="mdi md-18 circle-icon bg-gray-lighter text-gray-light" ng-class="document.name && document.surname ? 'mdi-account': 'mdi-account-alert'"></md-icon>
+		    		</div>
+		    		
+		    		<div>
+		    			<strong><span translate="guest.guest"></span>&nbsp;{{$index+1}}:&nbsp;</strong>
+		    		</div>
+		
+		     		<div flex ng-if="!document.$$editing" class="md-padding" 
+		     			ng-class="{'flex': $ctrl.$mdMedia('gt-sm'), 'text-center': !$ctrl.$mdMedia('gt-sm')}">
+		     			<span ng-if="document.name && document.surname">
+		     				<span class="text-capitalize">{{document.name}}&nbsp;{{document.surname}}</span>&nbsp;
+		     				<span ng-if="document.birthDate">-&nbsp;{{document.birthDate|utcDate:"shortDate"}}&nbsp;</span>
+	     					<span ng-class="document.guestType == 'GROUP_LEADER' || document.guestType == 'HOUSEHOLDER'? 'label label-xs bg-success' : 'label label-xs bg-gray-light'">
+	     						<span ng-if="document.guestType == 'GROUP_LEADER'" translate="common.GROUP_LEADER"></span>
+	     						<span ng-if="document.guestType == 'HOUSEHOLDER'" translate="common.HOUSEHOLDER"></span>
+	     						<span ng-if="document.guestType == 'SINGLE_GUEST'" translate="common.SINGLE_GUEST"></span>
+	     						<span ng-if="document.guestType == 'GROUP_MEMBER'" translate="common.GROUP_MEMBER"></span>
+	     						<span ng-if="document.guestType == 'FAMILY_MEMBER'" translate="common.FAMILY_MEMBER"></span>
+	     					</span>
+	     				</span>
+	     				<span ng-if="!document.name || !document.surname" class="text-gray-light">
+		   					<span translate="reservation.text.identityDocuments.no.guest"></span>,&nbsp;
+		   					<span translate="reservation.text.identityDocuments.add.question"></span>
 		   				</span>
-	     			</md-button>
-	     			
-	     			<md-button ng-if="document.name && document.surname" class="md-icon-button no-margin" 
-	     				ng-disabled="$ctrl.$$editingDocument" ng-click="$ctrl.$removeDocument(document)" aria-label="Remove document">
-						<md-icon class="mdi mdi-close md-18"></md-icon>
-						<md-tooltip><span translate="common.remove"></span></md-tooltip>
-					</md-button>
-				</div>
-	    	</div>
-	    				
-	    	<div ng-if="document.$$editing" layout layout-wrap class="only-border bg-gray-lighter border-radius">
-	    		<div> 
-	    			<div th:replace="public/partials/hotel/content/book/rooms/guests/guests-details-item"></div>
-	    		</div>
-	    		
-	    		<div ng-if="!action.anAdult && (!document.guestType || document.guestType == 'GROUP_LEADER' || document.guestType == 'HOUSEHOLDER' || document.guestType == 'SINGLE_GUEST')" class="md-margin">
-  					<strong class="text-info" translate="reservation.text.identityDocuments.legalAge"></strong>
-  				</div>
-	    		
-			    <div class="layout-row flex-100">
-			    	<div flex></div>
-			    	
-			    	<md-button ng-click="cancel()" aria-label="Cancel document">
-						<md-icon class="mdi mdi-close md-24"></md-icon>
-						<span translate="common.cancel"></span>
-					</md-button>
-			    
-					<md-button class="bg-success text-white" ng-click="confirm()" aria-label="Confirm document">
-						<md-icon class="mdi mdi-check md-24 text-white"></md-icon>
-						<span translate="common.confirm"></span>
-					</md-button>
-				</div>
-	    	</div>
+		     		</div>
+		      			
+		      		<div ng-if="!document.$$editing" ng-class="{'flex-100 layout-column': !$ctrl.$mdMedia('gt-sm')}">
+		     			<md-button ng-class="document.name && document.surname ? 'text-blue-sea' : 'only-border border-success text-success'" class="button-small" 
+		     				ng-disabled="$ctrl.$$editingDocument" ng-click="$ctrl.$editDocument(document)" aria-label="{{document.name && document.surname ? 'Edit' : 'Add'}} document">
+		   					<span ng-if="document.name && document.surname">
+		    					<span class="mdi mdi-pencil md-24" ng-class="{'text-blue-sea': !$ctrl.$$editingDocument}"></span>
+		    					<small translate="common.edit"></small>
+		    				</span> 
+		    				
+		    				<span ng-if="!document.name || !document.surname">
+		    					<span class="mdi mdi-plus md-24"></span>
+			   					<small translate="common.add"></small>
+			   				</span>
+		     			</md-button>
+		     			
+		     			<md-button ng-if="document.name && document.surname" class="md-icon-button no-margin" 
+		     				ng-disabled="$ctrl.$$editingDocument" ng-click="$ctrl.$removeDocument(document)" aria-label="Remove document">
+							<md-icon class="mdi mdi-close md-18"></md-icon>
+							<md-tooltip><span translate="common.remove"></span></md-tooltip>
+						</md-button>
+					</div>
+		    	</div>
+		    	
+		    	<div flex ng-if="document.$$editing && $ctrl.$$editingDocument">
+		    		<div>
+		    			<ch-identity-document-edit
+		    				class="md-whiteframe-z2 md-margin layout-column layout-padding-sm"
+		    				identity-document="$ctrl.$$editingDocument"
+		    				on-confirm="$ctrl.$confirmDocumentEdit($document)"
+							on-cancel="$ctrl.$cancelDocumentEdit($document)">
+		    			</ch-identity-document-edit>
+		    			
+	<!-- 	    			<div th:replace="public/partials/hotel/content/book/rooms/guests/guests-details-item"></div> -->
+		    		</div>
+		    		
+	<!-- 	    		<div ng-if="!action.anAdult && (!document.guestType || document.guestType == 'GROUP_LEADER' || document.guestType == 'HOUSEHOLDER' || document.guestType == 'SINGLE_GUEST')" class="md-margin"> -->
+	<!--   					<strong class="text-info" translate="reservation.text.identityDocuments.legalAge"></strong> -->
+	<!--   				</div> -->
+		    	</div>
+		    </div>
 	    		
 	    	<md-divider class="no-padding" ng-if="!document.$$editing && !$last"></md-divider>
 		</md-list-item>

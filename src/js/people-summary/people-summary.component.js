@@ -33,7 +33,7 @@
 
 				} else {					
 					$translate('people.pax').then(function(message){
-						ctrl.$$peopleSummary = guestsCount.total  +' '+ message;
+						ctrl.$$peopleSummary = _.toLower(guestsCount.total  +' '+ message);
 					});
 				}
 				

@@ -85,8 +85,8 @@
 		<div ng-show="bedSoldEditForm.people.$dirty" ng-messages="bedSoldEditForm.people.$error" class="md-padding no-padding-top text-danger text-small">
      		<div ng-message="min"><span translate="error.bed.no.people"></span></div>
     	</div>
-		
-		<div ng-if="$ctrl.$$guestsCount.total == $ctrl.bedSold.bed.maxPerson" class="md-padding no-padding-top">
+    	
+		<div ng-if="bedSoldEditForm.people.$valid && $ctrl.$$guestsCount.total == $ctrl.bedSold.bed.maxPerson" class="md-padding no-padding-top">
 			<span class="label label-inline-block bg-info text-wrap text-center" translate="bed.max.person.selected"></span>
 		</div>
 	 

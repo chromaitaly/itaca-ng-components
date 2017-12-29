@@ -63,7 +63,7 @@
 				<div ng-if="$ctrl.step == 2 && ($ctrl.$$remainingPeople.adults > 0 || $ctrl.$$remainingPeople.boys > 0 || $ctrl.$$remainingPeople.children > 0 || $ctrl.$$remainingPeople.kids > 0)" 
 					class="text-lowercase text-small text-warn">
 					<md-icon class="mdi mdi-alert md-14 text-warn"></md-icon>
-					<span translate="reservation.people.unsatisfied"></span>:&nbsp;<strong><ch-people-summary people="$ctrl.$$remainingPeople"></ch-people-summary></strong>&nbsp;<span translate="reservation.people.unsatisfied.to.arrange"></span>.&nbsp;
+					<span translate="reservation.people.unsatisfied"></span>:&nbsp;<strong><ch-people-summary people="$ctrl.$$remainingPeople"></ch-people-summary>&nbsp;<span translate="reservation.people.unsatisfied.to.arrange"></span></strong>.&nbsp;
 					<span class="text-initial" translate="reservation.people.unsatisfied.add.beds.or.rooms"></span>.
 				</div>
 			</div>
@@ -96,12 +96,12 @@
 					<li ng-if="!serviceSold.included" ng-repeat="serviceSold in room.services" class="layout-row layout-wrap layout-align-start-center" ng-class="{'text-danger': serviceSold.toRemove}">
 						<small class="flex">
 							<span>
-								<span ng-if="serviceSold.count > 1">{{serviceSold.count}}&nbsp;</span>
-								<span ng-if="serviceSold.count <= 1">1&nbsp;</span>
-								<span translate="{{serviceSold.service.type.nameKey}}"></span>
+								<span ng-if="serviceSold.count > 1">{{serviceSold.count}}</span>
+								<span ng-if="serviceSold.count <= 1">1</span>
+								<span>&nbsp;<span translate="{{serviceSold.service.type.nameKey}}"></span></span>
 							</span>
 							<span ng-if="serviceSold.service.paymentType == 'PER_PERSON' && ! serviceSold.toRemove">
-								&nbsp;<ch-people-summary people="serviceSold.people" no-details="true"></ch-people-summary>
+								&nbsp;x&nbsp;<ch-people-summary people="serviceSold.people" no-details="true"></ch-people-summary>
 							</span>
 							<span ng-if="$ctrl.reservation.nights > 1 && serviceSold.service.frequency == 'DAILY'" class="text-lowercase">
 								<span>&nbsp;(x&nbsp;{{$ctrl.reservation.nights}}<span translate="date.days.abbr"></span>)</span>
@@ -114,15 +114,18 @@
 					</li>
 				</ul>
 				<ul ng-if="room.otherBeds.length" class="flex-100 no-padding no-margin no-margin-right no-margin-bottom no-margin-top">
-					<li ng-repeat="bed in room.otherBeds" class="layout-row layout-wrap layout-align-start-center">
+					<li ng-repeat="bedSold in room.otherBeds" class="layout-row layout-wrap layout-align-start-center">
 						<small class="flex">
-							<span>1&nbsp;<span class="text-lowercase" translate="bed.bed"></span>&nbsp;<span translate="{{'bed.' + bed.bed.type}}"></span></span>
+							<span>1&nbsp;<span class="text-lowercase" translate="bed.bed"></span>&nbsp;<span translate="{{'bed.' + bedSold.bed.type}}"></span></span>
+							<span>
+								&nbsp;x&nbsp;<ch-people-summary people="bedSold.people" no-details="true"></ch-people-summary>
+							</span>
 							<span ng-if="$ctrl.reservation.nights > 1" class="text-lowercase">
 								<span>&nbsp;(x&nbsp;{{$ctrl.reservation.nights}}&nbsp;<span translate="common.nights"></span>)</span>
 							</span>
 						</small>
 						<span class="text-right">
-							<span>{{bed.amount.finalAmount|chCurrency}}</span>													
+							<span>{{bedSold.amount.finalAmount|chCurrency}}</span>													
 						</span>
 					</li>
 				</ul>

@@ -3,7 +3,8 @@
 		<div ng-if="!$ctrl.beds.length">
 			<span class="text-italic" translate="bed.beds.no.selection"></span>
 			
-			<md-button ng-click="$ctrl.$toggleDetails(true)" aria-label="Show available beds">
+			<md-button class="only-border border-blue-sea text-blue-sea" ng-click="$ctrl.$toggleDetails(true)" aria-label="Show available beds">
+				<md-icon class="mdi mdi-plus md-18 text-blue-sea"></md-icon>
 				<small translate="common.add.now"></small>
 			</md-button>
 		</div>
@@ -182,8 +183,9 @@
 							</div>
 						</div>
 						
-						<div ng-if="bed.$$editing && $ctrl.$$editingBed" layout="column" layout-padding-sm>
+						<div ng-if="bed.$$editing && $ctrl.$$editingBed">
 							<ch-bed-sold-edit
+								class="md-whiteframe-z2 md-margin layout-column layout-padding-sm"
 								bed-sold="$ctrl.$$editingBed"
 								nights="$ctrl.nights"
 								people-limits="$ctrl.$$peopleLimits"
@@ -208,9 +210,13 @@
 			</div>
 		
 			<div flex class="layout-row layout-align-end-center">
-				<md-button ng-class="{'bg-success': !$ctrl.$$errors.min && !$ctrl.$$errors.max}" class="md-raised" ng-click="$ctrl.$confirm()" aria-label="Confirm beds" ng-disabled="$ctrl.$$errors.min || $ctrl.$$errors.max">
-					<md-icon class="mdi mdi-check md-24" ng-class="{'text-white': !$ctrl.$$errors.min && !$ctrl.$$errors.max}"></md-icon>
-					<span translate="common.confirm"></span>
+				<md-button ng-class="{'md-raised': $ctrl.beds.length, 'bg-success': !$ctrl.$$errors.min && !$ctrl.$$errors.max && $ctrl.beds.length, 'text-blue-sea': !$ctrl.beds.length}" 
+					ng-disabled="$ctrl.$$errors.min || $ctrl.$$errors.max"
+					ng-click="$ctrl.$confirm()" aria-label="Confirm beds">
+					<md-icon ng-show="$ctrl.beds.length" class="mdi mdi-check md-24" ng-class="{'text-white': !$ctrl.$$errors.min && !$ctrl.$$errors.max}"></md-icon>
+					<md-icon ng-show="!$ctrl.beds.length" class="mdi mdi-chevron-up md-24 text-blue-sea"></md-icon>
+					<span ng-show="$ctrl.beds.length" translate="common.confirm"></span>
+					<span ng-show="!$ctrl.beds.length" translate="common.hide"></span>
 				</md-button>
 			</div>
 		</div>
