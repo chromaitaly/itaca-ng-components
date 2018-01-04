@@ -32,16 +32,15 @@
 		controller: PeoplePickerCtrl,
 		template: 
 			"<ng-form name=\"chPeoplePickerForm\" class=\"flex no-padding layout-column\">" +
-			  	"<md-button class=\"ch-people-picker-button flex layout-padding no-padding minimal-button text-lowercase text-center {{$ctrl.buttonClass}}\" aria-label=\"Change people\" ng-disabled=\"$ctrl.ngDisabled\" ng-click=\"$ctrl.$openPanel($event)\">" +
+			  	"<md-button class=\"ch-people-picker-button flex minimal-button text-lowercase text-center {{$ctrl.buttonClass}}\" aria-label=\"Change people\" ng-disabled=\"$ctrl.ngDisabled\" ng-click=\"$ctrl.$openPanel($event)\">" +
 			  		"<div class=\"{{$ctrl.wrapperClass}}\">" +
 			  			"<div ng-if=\"$ctrl.label\" class=\"md-padding\">" +
-							"<div class=\"{{$ctrl.labelClass}} text-initial text-wrap row-1\" ng-class=\"{\"text-small\": $ctrl.$$hasPeople}\"><span ng-bind-html=\"$ctrl.label\"></span></div>" +
+							"<div class=\"{{$ctrl.labelClass}} text-initial text-wrap row-1\" ng-class=\"{'text-small': $ctrl.$$hasPeople}\"><span ng-bind-html=\"$ctrl.label\"></span></div>" +
 						"</div>" +
 						"<div ng-show=\"$ctrl.$$hasPeople\" class=\"md-subhead text-wrap row-mini\">" +
 							"<strong><ch-people-summary people=\"$ctrl.people\"></ch-people-summary></strong>" +
 						"</div>" +
 					"</div>" +
-					"<input type=\"hidden\" name=\"{{$ctrl.fieldName}}\" ng-model=\"$ctrl.people\" ng-required=\"$ctrl.ngRequired\">" +
 					"<div ng-messages=\"chPeoplePickerForm[$ctrl.fieldName].$error\" ng-show=\"chPeoplePickerForm[$ctrl.fieldName].$dirty\" class=\"text-danger text-small text-center row-1 no-padding layout-column layout-padding-sm\">"+
 						"<div ng-message=\"required\">"+
 	          				"<md-icon ng-if=\"$ctrl.showErrorIcon\" class=\"mdi mdi-alert-outline material-icons md-18 text-danger\"></md-icon>"+
@@ -54,6 +53,7 @@
 	          			"</div>"+
 			        "</div>"+
 				"</md-button>" +
+				"<input type=\"hidden\" name=\"{{$ctrl.fieldName}}\" ng-model=\"$ctrl.people\" ng-required=\"$ctrl.ngRequired\">" +
 		    "</ng-form>"
 	});
 
@@ -66,17 +66,16 @@
 	    	ctrl.clickOutsideToClose = ctrl.clickOutsideToClose || true;
 	    	ctrl.hasBackdrop = _.isNil(ctrl.hasBackdrop) ? false : ctrl.hasBackdrop;
 	    	ctrl.buttonClass = ctrl.buttonClass || "no-margin";
+	    	ctrl.wrapperClass = ctrl.wrapperClass || "md-padding";
 //	    	ctrl.counterBtnClass = ctrl.counterBtnClass || "md-fab md-mini";
 //        	ctrl.counterBtnActiveClass = ctrl.counterBtnActiveClass || "md-primary";
         	ctrl.labelClass = ctrl.labelClass || "text-gray-light";
         	
-        	ctrl.$$xPosition = "CENTER";
-	    	ctrl.$$yPosition = "BELOW";
 	    	ctrl.$$panelClass = "bg-white md-whiteframe-15dp";
 	    	
 	    	var position = $mdPanel.newPanelPosition()
 		        .relativeTo($element)
-		        .addPanelPosition($mdPanel.xPosition[ctrl.$$xPosition], $mdPanel.yPosition[ctrl.$$yPosition]);
+		        .addPanelPosition($mdPanel.xPosition.CENTER, $mdPanel.yPosition.BELOW);
 	    	
 	    	ctrl.$$panelConfig = {
 				attachTo: angular.element(document.body),
@@ -134,7 +133,7 @@
 	   
     	this.$checkPeople = function(){
     		ctrl.$$hasPeople = ctrl.people && (ctrl.people.adults || ctrl.people.boys || ctrl.people.children || ctrl.people.kids);
-    		var mc = ctrl.chPeoplePickerForm[ctrl.fieldName];
+    		var mc = $scope.chPeoplePickerForm[ctrl.fieldName];
     		
     		if (mc) {
     			ctrl.$$hasPeople && mc.$setDirty();

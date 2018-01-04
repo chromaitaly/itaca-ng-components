@@ -19,7 +19,7 @@
 				max-range="$ctrl.maxRange"
 				diff-label-singular="{{'common.night'|translate}}"
 				diff-label-plural="{{'common.nights'|translate}}"
-				use-utc="true" disable-body-scroll="true"></ch-date-range-picker>
+				use-utc="true" disable-body-scroll="false"></ch-date-range-picker>
 		</div>
 		
 		<div><md-divider></md-divider></div>
@@ -29,8 +29,9 @@
 				label="{{'reservation.people.question'|translate}}" 
 				people="$ctrl.reservation.people" 
 				ng-required="true" 
-				has-confirm="false" 
-				disable-body-scroll="true">
+				has-confirm="true" 
+				disable-body-scroll="false"
+				fullscreen="$ctrl.$mdMedia('xs')">
 			</ch-people-picker>
 		</div>
 	</div>

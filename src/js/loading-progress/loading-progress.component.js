@@ -13,7 +13,7 @@
 		},
 		controller: LoadingProgressCtrl,
 		template: 
-			"<div flex=\"100\" layout=\"column\" layout-align=\"center center\" class=\"{{$ctrl.contClass}}\">" +
+			"<div flex=\"100\" layout=\"column\" layout-align=\"center center\" class=\"ch-loading-progress {{$ctrl.contClass}}\">" +
 				"<div ng-if=\"!$ctrl.errorMessage && !$ctrl.errorMessageKey\" flex layout=\"column\" layout-padding layout-align=\"center center\">" +
 					"<div>" +
 						"<md-progress-circular class=\"ch-progress-white\" md-mode=\"indeterminate\" md-diameter=\"{{$ctrl.progressDiameter}}\"></md-progress-circular>" +
@@ -37,22 +37,26 @@
 	});
 
 	/* @ngInject */
-	function LoadingProgressCtrl($scope, $element) {
+	function LoadingProgressCtrl($scope, $element, $mdUtil) {
 		var ctrl = this;
 		
 		this.$postLink = function() {
 			ctrl.$hideSiblings(ctrl.hideSiblings);
+			ctrl.$disableScroll();
 		};
 		
 		this.$onInit = function() {
 			ctrl.contClass = ctrl.contClass || "bg-primary text-white md-title";
 			ctrl.progressDiameter = ctrl.progressDiameter || 150;
-			
-			ctrl.$initWatchers();
 		};
 		
 		this.$onDestroy = function() {
 			ctrl.$hideSiblings(false);
+			ctrl.$restoreScroll();
+		};
+		
+		this.$disableScroll = function() {
+			ctrl.$restoreScroll = $mdUtil.disableScrollAround($element);
 		};
 		
 		this.$hideSiblings = function(hide) {
@@ -62,16 +66,6 @@
 			hide ? children.addClass("ng-hide") : children.removeClass("ng-hide");
 			// mostro il nodo del loading
 			$element.removeClass("ng-hide");
-		};
-		
-		this.$initWatchers = function() {
-			$scope.$watch(function() {
-				return ctrl.hideElement;
-			
-			}, function(newVal, oldVal) {
-				ctrl.$toggleEl(oldVal, true);
-				ctrl.$toggleEl(newVal);
-			});
 		};
 	}
 })();

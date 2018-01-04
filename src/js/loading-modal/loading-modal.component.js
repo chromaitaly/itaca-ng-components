@@ -22,11 +22,23 @@
 	});
 
 	/* @ngInject */
-	function LoadingModalCtrl($scope) {
+	function LoadingModalCtrl($scope, $element, $mdUtil) {
 		var ctrl = this;
+		
+		this.$postLink = function() {
+			ctrl.$disableScroll();
+		};
 		
 		this.$onInit = function() {
 			ctrl.progressDiameter = ctrl.progressDiameter || 80;
+		};
+		
+		this.$onDestroy = function() {
+			ctrl.$restoreScroll();
+		};
+		
+		this.$disableScroll = function() {
+			ctrl.$restoreScroll = $mdUtil.disableScrollAround($element);
 		};
 	}
 })();
