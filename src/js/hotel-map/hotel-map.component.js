@@ -7,6 +7,7 @@
 	    	hotel: "<?",
 	    	address: "<?",
 	    	showGallery: "<?",
+	    	storageUrl: "@",
 	    	markerType: "@",
 	    	searchParams: "<?",
 	    	disableUi: "<?",
@@ -19,12 +20,13 @@
 	    	"<ng-map class=\"{{$ctrl.mapClass}}\" ng-style=\"$ctrl.$$mapStyle\" default-style=\"false\" zoom-to-inlude-markers=\"true\" disable-default-ui=\"{{$ctrl.disableUi}}\" " + 
 	    		"center=\"[{{$ctrl.$$center.lat}}, {{$ctrl.$$center.lng}}]\" map-initialized=\"$ctrl.$initMap(map)\" zoom=\"14\" clickable-icons=\"false\" trigger-resize=\"true\" scrollwheel=\"{{!$ctrl.disableScrollwheel}}\">" +
 	    		"<div ng-if=\"$ctrl.hotel\">" +
-	    			"<ch-hotel-map-marker hotel=\"$ctrl.hotel\" marker-type=\"$ctrl.markerType\"></ch-hotel-map-marker>" +
+	    			"<ch-hotel-map-marker hotel=\"$ctrl.hotel\" marker-type=\"{{$ctrl.markerType}}\"></ch-hotel-map-marker>" +
 	    		"</div>" + 
 	    		"<div ng-if=\"$ctrl.hotels\" ng-repeat=\"hotel in $ctrl.hotels\">" +
-	    			"<ch-hotel-map-marker hotel=\"hotel\" marker-type=\"$ctrl.markerType\"></ch-hotel-map-marker>" +
+	    			"<ch-hotel-map-marker hotel=\"hotel\" marker-type=\"{{$ctrl.markerType}}\"></ch-hotel-map-marker>" +
 	    		"</div>" + 
-	    		"<ch-hotel-map-info-window hotel=\"$ctrl.$$currHotel\" marker-type=\"$ctrl.markerType\" show-gallery=\"$ctrl.showGallery\" on-hotel-click=\"$ctrl.onHotelClick\"></ch-hotel-map-info-window>" +
+	    		"<ch-hotel-map-info-window hotel=\"$ctrl.$$currHotel\" marker-type=\"{{$ctrl.markerType}}\" " +
+	    			"show-gallery=\"$ctrl.showGallery\" storage-url=\"{{$ctrl.storageUrl}}\" on-hotel-click=\"$ctrl.onHotelClick\"></ch-hotel-map-info-window>" +
 			"</ng-map>"
 	});
 	
@@ -36,14 +38,14 @@
 		 
 		 this.$onInit = function() {
 			 // mostrare galleria?
-			 ctrl.showGallery = _.isBoolean(scope.showGallery) ? scope.showGallery : false;	    	
+			 ctrl.showGallery = _.isBoolean(ctrl.showGallery) ? ctrl.showGallery : false;	    	
 			 // mostro i comandi di google 
-			 ctrl.disableUi = _.isBoolean(scope.disableUi) ? scope.disableUi : false;
+			 ctrl.disableUi = _.isBoolean(ctrl.disableUi) ? ctrl.disableUi : false;
 			 // tipo markers
-			 ctrl.markerType = _.includes(["pointer", "price", "name"], _.toLower(scope.markerType)) ? _.toLower(scope.markerType) : "pointer";
+			 ctrl.markerType = _.includes(["pointer", "price", "name"], _.toLower(ctrl.markerType)) ? _.toLower(ctrl.markerType) : "pointer";
 			 // classe mappa
-			 ctrl.mapClass = scope.mapClass || "flex";
-			 ctrl.disableScrollwheel = _.isBoolean(scope.disableScrollwheel) ? scope.disableScrollwheel : false;
+			 ctrl.mapClass = ctrl.mapClass || "flex";
+			 ctrl.disableScrollwheel = _.isBoolean(ctrl.disableScrollwheel) ? ctrl.disableScrollwheel : false;
 	    	
 			 ctrl.$initLocations();
 		 };
@@ -120,7 +122,7 @@
 				 ctrl.$$centerObj = divider ? new google.maps.LatLng({lat: totalLat/divider, lng: totalLng/divider}) : new google.maps.LatLng(0, 0);
 				
 				 // aggiorna centro mappa
-				 crl.$updateCenter(map);
+				 ctrl.$updateCenter(map);
 			 }
 		 };
 		 
@@ -130,21 +132,21 @@
 					 ctrl.$$centerObj = new google.maps.LatLng(0, 0);
 				 }
 	    			
-				 _.assign(ctrl.$$center, scope.$$centerObj.toJSON());
+				 _.assign(ctrl.$$center, ctrl.$$centerObj.toJSON());
 	    			
 				 google.maps.event.trigger(map, 'resize');
 			 }, 1000);
 		 };
 		 
 		 this.$initWatchers = function() {
-			 scope.$watchCollection(function() {
+			 $scope.$watchCollection(function() {
     			return ctrl.$$map.markers;
 			
 			 }, function(newVal, oldVal) {
 	    		ctrl.$getCenter(ctrl.$$map);
 			 });
 	    	
-			 scope.$watchCollection(function() {
+			 $scope.$watchCollection(function() {
     			return ctrl.$$map.customMarkers;
 			
 			 }, function(newVal, oldVal) {
@@ -169,4 +171,4 @@
 			 }
 		 });
 	 }
-});
+})();

@@ -8,14 +8,15 @@
 		bindings: {
     		title: "@?",
     		subtitle: "@?",
-    		bgClass: "@?"     			
+    		bgClass: "@?",
+    		size: "@?"
 		},
 		controller: ReviewsSummaryGarCtrl,
 		template: 
 			"<div ng-if=\"$ctrl.summary.gar\" class=\"layout-column layout-padding layout-align-center-center no-padding\">" +
-				"<div class=\"border-radius layout-column layout-align-center-center layout-padding {{$ctrl.bgClass}}\">" +
+				"<div class=\"border-radius layout-column layout-align-center-center {{$ctrl.bgClass}}\" ng-class=\"{'layout-padding': $ctrl.size == 'big'}\">" +
 					"<strong class=\"md-subhead\" translate=\"{{$ctrl.summary.garLabel}}\"></strong>" +
-					"<span class=\"md-display-3 no-padding-top\">{{$ctrl.summary.gar.toFixed(1)}}</span>" +
+					"<span class=\"no-padding-top\" ng-class=\"$ctrl.size == 'small' ? 'md-display-1' : 'md-display-3'\">{{$ctrl.summary.gar.toFixed(1)}}</span>" +
 					"<small ng-if=\"!$ctrl.$$hideTitle\" class=\"no-padding-bottom\">" +
 						"<span ng-if=\"$ctrl.title\" ng-bind=\"$ctrl.title\"></span>" +
 						"<span ng-if=\"!$ctrl.subtitle\" translate=\"review.score.total\"><span>" +
@@ -38,6 +39,7 @@
 			ctrl.bgClass = ctrl.bgClass || "bg-primary";
 			ctrl.$$hideTitle = _.isBoolean(ctrl.title) && !ctrl.title;
 			ctrl.$$hideSubtitle = _.isBoolean(ctrl.subtitle) && !ctrl.subtitle;
+			ctrl.size = _.includes(["small", "big"], _.toLower(ctrl.size)) ? _.toLower(ctrl.size) : "big";
 			
 			ctrl.$initSummary();
 		};

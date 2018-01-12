@@ -22,7 +22,7 @@
 				use-utc="true" disable-body-scroll="false"></ch-date-range-picker>
 		</div>
 		
-		<div><md-divider></md-divider></div>
+		<md-divider class="no-padding"></md-divider>
 		
 		<div flex layout="column">
 			<ch-people-picker  
@@ -34,7 +34,10 @@
 				fullscreen="$ctrl.$mdMedia('xs')">
 			</ch-people-picker>
 		</div>
+		
+		<md-divider></md-divider>
 	</div>
+	
 	<div ng-if="$ctrl.step > 1" class="no-padding-top no-padding-bottom" layout="column" layout-padding-sm>
 		<div flex layout="column">
 			<div layout="column" layout-padding class="text-center"> 
@@ -52,7 +55,9 @@
 				</div> 
 			</div>
 		</div>
-		<div><md-divider></md-divider></div>
+		
+		<md-divider class="no-padding"></md-divider>
+		
 		<div flex layout="column">
 			<div layout="column" layout-padding class="text-center">
 				<div class="text-gray-light text-small no-padding-bottom">
@@ -69,71 +74,75 @@
 				</div>
 			</div>
 		</div>
+		
+		<md-divider></md-divider>
 	</div>
 	
-	<div class="no-padding-top"><md-divider></md-divider></div>
-	
-	<div id="booking-summary" class="no-padding-top no-padding-bottom" ng-show="$ctrl.reservation.totalAmount.finalAmount && $ctrl.reservation.totalAmount.finalAmount > 0">
+	<div id="booking-summary" class="no-padding-top no-padding-bottom layout-padding-sm" ng-show="$ctrl.reservation.totalAmount.finalAmount && $ctrl.reservation.totalAmount.finalAmount > 0">
 		<div class="text-gray-light text-small text-center">
 			<span translate="reservation.rooms.details"></span>:
 		</div>
-		<ul>
-			<li ng-repeat="room in $ctrl.reservation.rooms" class="layout-row layout-wrap layout-align-start-center">
-				<small class="flex">
-					<strong>1&nbsp;<span translate="{{room.type.roomType.nameKey}}"></span>&nbsp;<small class="text-uppercase" translate="room.category.{{room.type.category}}"></small></strong>
-					<span ng-if="$ctrl.reservation.nights > 1" class="text-lowercase">
-						<span>&nbsp;(x&nbsp;{{$ctrl.reservation.nights}}&nbsp;<span translate="common.nights"></span>)</span>
-					</span>
-				</small>
-				<div class="text-right">
-					<div class="text-gray-light text-small text-striked" ng-if="room.totalRate.amount.initialAmount != room.totalRate.amount.finalAmount">
-						<em>{{room.totalRate.amount.initialAmount|chCurrency}}</em>
-					</div>
-					<div>
-						<span>{{room.totalRate.amount.finalAmount|chCurrency}}</span>
-					</div>
-				</div>
-				<ul ng-if="room.services.length" class="flex-100 no-padding no-margin-right no-margin-bottom no-margin-top">
-					<li ng-if="!serviceSold.included" ng-repeat="serviceSold in room.services" class="layout-row layout-wrap layout-align-start-center" ng-class="{'text-danger': serviceSold.toRemove}">
-						<small class="flex">
-							<span>
-								<span ng-if="serviceSold.count > 1">{{serviceSold.count}}</span>
-								<span ng-if="serviceSold.count <= 1">1</span>
-								<span>&nbsp;<span translate="{{serviceSold.service.type.nameKey}}"></span></span>
-							</span>
-							<span ng-if="serviceSold.service.paymentType == 'PER_PERSON' && ! serviceSold.toRemove">
-								&nbsp;x&nbsp;<ch-people-summary people="serviceSold.people" no-details="true"></ch-people-summary>
-							</span>
-							<span ng-if="$ctrl.reservation.nights > 1 && serviceSold.service.frequency == 'DAILY'" class="text-lowercase">
-								<span>&nbsp;(x&nbsp;{{$ctrl.reservation.nights}}<span translate="date.days.abbr"></span>)</span>
-							</span>
-						</small>
-						<span class="text-right">
-							<span ng-if="serviceSold.amount.finalAmount > 0">{{serviceSold.amount.finalAmount|chCurrency}}</span>													
-							<i ng-if="serviceSold.amount.finalAmount <= 0" translate="common.free"></i>
+		<div>
+			<ul>
+				<li ng-repeat="room in $ctrl.reservation.rooms" class="layout-row layout-wrap layout-align-start-center">
+					<small class="flex">
+						<strong>1&nbsp;<span translate="{{room.type.roomType.nameKey}}"></span>&nbsp;<small class="text-uppercase" translate="room.category.{{room.type.category}}"></small></strong>
+						<span ng-if="$ctrl.reservation.nights > 1" class="text-lowercase">
+							<span>&nbsp;(x&nbsp;{{$ctrl.reservation.nights}}&nbsp;<span translate="common.nights"></span>)</span>
 						</span>
-					</li>
-				</ul>
-				<ul ng-if="room.otherBeds.length" class="flex-100 no-padding no-margin no-margin-right no-margin-bottom no-margin-top">
-					<li ng-repeat="bedSold in room.otherBeds" class="layout-row layout-wrap layout-align-start-center">
-						<small class="flex">
-							<span>1&nbsp;<span class="text-lowercase" translate="bed.bed"></span>&nbsp;<span translate="{{'bed.' + bedSold.bed.type}}"></span></span>
-							<span>
-								&nbsp;x&nbsp;<ch-people-summary people="bedSold.people" no-details="true"></ch-people-summary>
+					</small>
+					<div class="text-right">
+						<div class="text-gray-light text-small text-striked" ng-if="room.totalRate.amount.initialAmount != room.totalRate.amount.finalAmount">
+							<em>{{room.totalRate.amount.initialAmount|chCurrency}}</em>
+						</div>
+						<div>
+							<span>{{room.totalRate.amount.finalAmount|chCurrency}}</span>
+						</div>
+					</div>
+					<ul ng-if="room.services.length" class="flex-100 no-padding no-margin-right no-margin-bottom no-margin-top">
+						<li ng-if="!serviceSold.included" ng-repeat="serviceSold in room.services" class="layout-row layout-wrap layout-align-start-center" ng-class="{'text-danger': serviceSold.toRemove}">
+							<small class="flex">
+								<span>
+									<span ng-if="serviceSold.count > 1">{{serviceSold.count}}</span>
+									<span ng-if="serviceSold.count <= 1">1</span>
+									<span>&nbsp;<span translate="{{serviceSold.service.type.nameKey}}"></span></span>
+								</span>
+								<span ng-if="serviceSold.service.paymentType == 'PER_PERSON' && ! serviceSold.toRemove">
+									&nbsp;x&nbsp;<ch-people-summary people="serviceSold.people" no-details="true"></ch-people-summary>
+								</span>
+								<span ng-if="$ctrl.reservation.nights > 1 && serviceSold.service.frequency == 'DAILY'" class="text-lowercase">
+									<span>&nbsp;(x&nbsp;{{$ctrl.reservation.nights}}<span translate="date.days.abbr"></span>)</span>
+								</span>
+							</small>
+							<span class="text-right">
+								<span ng-if="serviceSold.amount.finalAmount > 0">{{serviceSold.amount.finalAmount|chCurrency}}</span>													
+								<i ng-if="serviceSold.amount.finalAmount <= 0" translate="common.free"></i>
 							</span>
-							<span ng-if="$ctrl.reservation.nights > 1" class="text-lowercase">
-								<span>&nbsp;(x&nbsp;{{$ctrl.reservation.nights}}&nbsp;<span translate="common.nights"></span>)</span>
+						</li>
+					</ul>
+					<ul ng-if="room.otherBeds.length" class="flex-100 no-padding no-margin no-margin-right no-margin-bottom no-margin-top">
+						<li ng-repeat="bedSold in room.otherBeds" class="layout-row layout-wrap layout-align-start-center">
+							<small class="flex">
+								<span>1&nbsp;<span class="text-lowercase" translate="bed.bed"></span>&nbsp;<span translate="{{'bed.' + bedSold.bed.type}}"></span></span>
+								<span>
+									&nbsp;x&nbsp;<ch-people-summary people="bedSold.people" no-details="true"></ch-people-summary>
+								</span>
+								<span ng-if="$ctrl.reservation.nights > 1" class="text-lowercase">
+									<span>&nbsp;(x&nbsp;{{$ctrl.reservation.nights}}&nbsp;<span translate="common.nights"></span>)</span>
+								</span>
+							</small>
+							<span class="text-right">
+								<span>{{bedSold.amount.finalAmount|chCurrency}}</span>													
 							</span>
-						</small>
-						<span class="text-right">
-							<span>{{bedSold.amount.finalAmount|chCurrency}}</span>													
-						</span>
-					</li>
-				</ul>
-			</li>
-		</ul>
+						</li>
+					</ul>
+				</li>
+			</ul>
+		</div>
+		
 		<md-divider></md-divider>
-		<div class="layout-row layout-wrap layout-padding no-padding-left no-padding-right" ng-if="$ctrl.reservation.totalAmount.finalAmount">
+		
+		<div class="layout-row layout-wrap layout-padding no-pading-top no-padding-left no-padding-right" ng-if="$ctrl.reservation.totalAmount.finalAmount">
 			<div class="flex no-padding" style="min-width: 125px">
 				<div class="md-headline">
 					<span translate="common.total"></span>&nbsp;
@@ -147,6 +156,7 @@
 				<span ng-if="$ctrl.currentCurrency != $ctrl.hotelCurrency">*</span>
 			</div>
 		</div>
+		
 		<div class="layout-row layout-padding no-padding-left no-padding-right no-padding-top" ng-if="$ctrl.reservation.totalAmount.finalAmount && $ctrl.currentCurrency != $ctrl.hotelCurrency">
 			<div class="flex no-padding">
 				<div class="md-subhead">
@@ -160,6 +170,7 @@
 				<span>{{$ctrl.reservation.totalAmount.finalAmount | chCurrency:$ctrl.hotelCurrency }}</span>
 			</div>
 		</div>
+		
 		<div class="text-gray-light layout-row no-padding" ng-if="$ctrl.reservation.totalAmount.finalAmount && $ctrl.currentCurrency != $ctrl.hotelCurrency">
 			<small class="layout-column layout-margin no-margin">
 				<span class="no-margin">
@@ -170,6 +181,7 @@
 			</small>		
 		</div>
 	</div>
+	
 	<div layout="column" class="no-padding" ng-switch="$ctrl.step">
 		<div ng-switch-default layout="column">
 			<md-button class="md-raised md-primary row-1" ng-disabled="bookingForm.$invalid" ch-click="$ctrl.$search()" aria-label="Check availability">
@@ -178,6 +190,7 @@
   				</div>
   			</md-button>
   		</div>
+  		
   		<div ng-switch-when="1" layout="column">
   			<md-button class="md-raised md-primary row-1" ng-disabled="$ctrl.reservation.rooms.length <= 0" ng-click="$ctrl.$next()" aria-label="Book now">
   				<div layout="column" layout-padding>
@@ -191,6 +204,7 @@
   				</div>
   			</md-button>
 		</div>
+		
   		<div ng-switch-when="2|3|4" ng-switch-when-separator="|" layout="column">
   			<md-button class="md-raised row-1" ng-class="{'md-primary': $ctrl.step == 2, 'bg-success': $ctrl.step == 3}" ng-click="$ctrl.$next()" aria-label="Book now" ng-switch="$ctrl.step">
   				<div ng-switch-when="2" layout="column" layout-padding>
@@ -213,12 +227,14 @@
   			</md-button>
 		</div>
 	</div>
+	
 	<div class="layout-column layout-padding no-padding text-center" ng-if="$ctrl.step <= 1">
 		<span class="no-padding-bottom">
 			<md-icon class="mdi mdi-checkbox-marked-circle-outline text-success md-18"></md-icon>&nbsp;
 			<span class="text-success" translate="common.only.two.min"></span>
 		</span>
 	</div>
+	
 	<div layout="column" class="text-gray-light" ng-if="$ctrl.reservation.nights">
 		<small>
 			<span ng-if="$ctrl.reservation.nights == 1" translate="reservation.rates.info.night"></span>

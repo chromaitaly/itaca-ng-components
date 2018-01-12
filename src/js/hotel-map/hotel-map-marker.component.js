@@ -46,6 +46,7 @@
 		var ctrl = this;
 		
 		this.$onInit = function() {
+			ctrl.markerType = _.includes(["pointer", "price", "name"], _.toLower(ctrl.markerType)) ? _.toLower(ctrl.markerType) : "pointer";
 			ctrl.$$markerIcon = "/resources/public/img/map-marker.01.png";
 			ctrl.$getMarkerPosition();
 		};
@@ -67,33 +68,32 @@
 			});
     	};
     	
-    	this.$setSelected = function(hotel, selected) {
+    	this.$setSelected = function(ev, hotel, selected) {
     		if (hotel) {
     			hotel.selectEffect = false;
     			hotel.selected = _.isBoolean(selected) ? selected : true;
     		}
     	};
     	
-    	this.$showDetails = function(hotel, isCustomMarker) {
+    	this.$showDetails = function(ev, hotel, isCustomMarker) {
     		// chiudo i dettagli attuali (se diversi dall'hotel passato)
     		if (!ctrl.chHotelMapCtrl.$$currHotel || ctrl.chHotelMapCtrl.$$currHotel.id != hotel.id) {
     			ctrl.$hideDetails(ev, ctrl.chHotelMapCtrl.$$currHotel);
 	    		// imposto a selezionato
-	    		ctrl.setSelected(hotel, true);
+	    		ctrl.$setSelected(ev, hotel, true);
 	    		// aggiorno l'hotel corrente
 	    		ctrl.chHotelMapCtrl.$$currHotel = hotel;
     		}
 
     		// mostro i dettagli dell'hotel
-    		ctrl.chHotelMapCtrl.map.showInfoWindow("hotel-iw", isCustomMarker ? "cmk_" + hotel.id : "mk_" + hotel.id);
+    		ctrl.chHotelMapCtrl.$$map.showInfoWindow("hotel-iw", isCustomMarker ? "cmk_" + hotel.id : "mk_" + hotel.id);
     	};
     	
-    	this.$hideDetails = function(hotel) {
+    	this.$hideDetails = function(ev, hotel) {
     		// rimuovo il selezionato
-    		ctrl.$setSelected(hotel, false);
+    		ctrl.$setSelected(ev, hotel, false);
     		// chiudo i dettagli dell'hotel
-    		ctrl.chHotelMapCtrl.map.hideInfoWindow("hotel-iw");
+    		ctrl.chHotelMapCtrl.$$map.hideInfoWindow("hotel-iw");
     	};
 	}
 })();
-	

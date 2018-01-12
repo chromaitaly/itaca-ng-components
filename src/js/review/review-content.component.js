@@ -41,7 +41,7 @@
 		    				"</md-button>" +
 		    			"</div>" +
 		    		"</div>" +
-		    		"<div class=\"flex-100 flex-gt-sm-20 layout-column\" ng-class=\"$ctrl.review.showDetails ? 'layout-align-center-center' : 'layout-align-start-center'\">" +
+		    		"<div class=\"flex-100 flex-gt-sm-25 layout-column\" ng-class=\"$ctrl.review.showDetails ? 'layout-align-center-center' : 'layout-align-start-center'\">" +
 		    			"<small ng-if=\"$ctrl.review.showDetails\" class=\"font-12 text-gray-light text-center\" translate=\"review.score.total\"></small>" +
 		    			"<span class=\"md-headline\">{{::$ctrl.review.score.toFixed(1)}}</span>" +
 		    			"<span class=\"text-center\" translate=\"{{$ctrl.review.label}}\"></span>" +
