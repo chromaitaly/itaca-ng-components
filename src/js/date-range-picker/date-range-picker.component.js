@@ -41,8 +41,8 @@
         	"<ng-form name=\"chDateRangeForm\" class=\"flex no-padding layout-column\">" +
 			  	"<md-button class=\"ch-date-range-picker-button flex minimal-button text-lowercase text-center {{$ctrl.buttonClass}}\" ng-click=\"$ctrl.$openPanel($event)\" aria-label=\"Change period\" ng-disabled=\"$ctrl.ngDisabled\">" +
 			  		"<div class=\"{{$ctrl.wrapperClass}}\">" +
-				  		"<div ng-if=\"$ctrl.label || $ctrl.placeholder\" class=\"md-padding\">" +
-				  			"<div class=\"{{$ctrl.labelClass}} text-initial text-wrap row-1\" ng-class=\"{\"text-small\": $ctrl.start || $ctrl.end}\">"+
+			  			"<div ng-if=\"$ctrl.label || $ctrl.placeholder\" class=\"layout-row layout-align-center-center\" ng-class=\"{'no-padding-top': $ctrl.$mdMedia('gt-xs'), 'md-padding': !$ctrl.$mdMedia('gt-xs') || $ctrl.start || $ctrl.end}\">" +
+				  			"<div class=\"{{$ctrl.labelClass}} text-initial text-wrap row-1\" ng-class=\"{'text-small': $ctrl.start || $ctrl.end}\">"+
 				  				"<span ng-if=\"$ctrl.placeholder && !$ctrl.start && !$ctrl.end\" ng-bind-html=\"$ctrl.placeholder\"></span>" +
 					  			"<span ng-if=\"$ctrl.label && (($ctrl.start || $ctrl.end) || !$ctrl.placeholder)\" ng-bind-html=\"$ctrl.label\"></span>" +
 				  			"</div>"+
@@ -52,7 +52,7 @@
 								"<span><span translate=\"date.from.abbr\"></span>&nbsp;<span class=\"md-subhead\"><strong>{{$ctrl.start|date:\"shortDate\":$ctrl.$$timezone}}</strong></span>&nbsp;</span>" +
 								"<span><span translate=\"date.to.abbr\"></span>&nbsp;<span class=\"md-subhead\"><strong>{{$ctrl.end|date:\"shortDate\":$ctrl.$$timezone}}</strong></span></span>" +
 								"<span ng-if=\"$ctrl.$$diff\" class=\"{{$ctrl.labelClass}} text-small no-padding no-margin text-lowercase\">" + 
-								"&nbsp;(<span ng-bind=\"$ctrl.$$diff\">&nbsp;</span>" + 
+								"&nbsp;(<span ng-bind=\"$ctrl.$$diff\"></span>&nbsp;" + 
 						       		"<span ng-show=\"$ctrl.$$diff == 1\"><span ng-if=\"!$ctrl.$$diffLabelSingular\" translate=\"date.day\"></span><span ng-if=\"$ctrl.$$diffLabelSingular\" ng-bind=\"$ctrl.$$diffLabelSingular\"></span>)</span>" + 
 						       		"<span ng-show=\"$ctrl.$$diff > 1\"><span ng-if=\"!$ctrl.$$diffLabelPlural\" translate=\"date.days\"></span><span ng-if=\"$ctrl.$$diffLabelPlural\" ng-bind=\"$ctrl.$$diffLabelPlural\"></span>)</span>" + 
 						       	"</span>" +
@@ -92,8 +92,8 @@
 						"</div>" +
 					"</div>" +
 				"</md-button>" +
-				"<input type=\"hidden\" name=\"{{$ctrl.startInputName}}\" ng-model=\"start\" required>" +
-				"<input type=\"hidden\" name=\"{{$ctrl.endInputName}}\" ng-model=\"end\" required>" +
+				"<input type=\"hidden\" name=\"{{$ctrl.startInputName}}\" ng-model=\"$ctrl.start\" required>" +
+				"<input type=\"hidden\" name=\"{{$ctrl.endInputName}}\" ng-model=\"$ctrl.end\" required>" +
 				"<div ng-messages=\"chDateRangeForm[$ctrl.startInputName].$error\" class=\"font-12 text-center text-danger\" ng-show=\"chDateRangeForm[$ctrl.startInputName].$dirty || chDateRangeForm.$submitted\">"+
 	          		"<span ng-message=\"required\"><span translate-once=\"error.required\"></span></span>"+
 	          		"<span ng-if=\"$ctrl.startErrorMessages\" ng-repeat=\"error in $ctrl.startErrorMessages\" ng-message=\"error.key\"><span translate=\"error.label\"></span></span>"+
@@ -108,7 +108,9 @@
 
 	/* @ngInject */
 	function DateRangePickerCtrl($scope, $element, $mdPanel, $mdMedia, DateUtils) {
-		var ctr = this;
+		var ctrl = this;
+		
+		this.$mdMedia = $mdMedia;
 		
 		this.$onInit = function() {
 			ctrl.startInputName = ctrl.startInputName || "start";

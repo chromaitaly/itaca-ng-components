@@ -34,7 +34,7 @@
 			"<ng-form name=\"chPeoplePickerForm\" class=\"flex no-padding layout-column\">" +
 			  	"<md-button class=\"ch-people-picker-button flex minimal-button text-lowercase text-center {{$ctrl.buttonClass}}\" aria-label=\"Change people\" ng-disabled=\"$ctrl.ngDisabled\" ng-click=\"$ctrl.$openPanel($event)\">" +
 			  		"<div class=\"{{$ctrl.wrapperClass}}\">" +
-			  			"<div ng-if=\"$ctrl.label\" class=\"md-padding\">" +
+			  			"<div ng-if=\"$ctrl.label\" class=\"layout-row layout-align-center-center\" ng-class=\"{'no-padding-top': $ctrl.$mdMedia('gt-xs'), 'md-padding': !$ctrl.$mdMedia('gt-xs') || $ctrl.$$hasPeople}\">" +
 							"<div class=\"{{$ctrl.labelClass}} text-initial text-wrap row-1\" ng-class=\"{'text-small': $ctrl.$$hasPeople}\"><span ng-bind-html=\"$ctrl.label\"></span></div>" +
 						"</div>" +
 						"<div ng-show=\"$ctrl.$$hasPeople\" class=\"md-subhead text-wrap row-mini\">" +
@@ -58,8 +58,10 @@
 	});
 
 	/* @ngInject */
-	function PeoplePickerCtrl($scope, $element, $mdPanel, ReservationUtils) {
+	function PeoplePickerCtrl($scope, $element, $mdPanel, $mdMedia, ReservationUtils) {
 		var ctrl = this;
+		
+		this.$mdMedia = $mdMedia;
 		
 		this.$onInit = function() {
 	    	ctrl.fieldName = ctrl.fieldName || "people";
