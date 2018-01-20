@@ -18,7 +18,7 @@
 		},
 		controller: ReviewReplyCtrl,
 		template:
-			"<div ng-show=\"$ctrl.showReply || $ctrl.review.reply.response || $ctrl.noDefault\" class=\"ch-review-reply\">" +
+			"<div ng-if=\"$ctrl.showReply || $ctrl.review.reply.response || $ctrl.noDefault\" class=\"ch-review-reply\">" +
 				"<div class=\"ch-review-reply-arrow {{$ctrl.arrowClass}}\"></div>" +
 				"<div class=\"layout-padding no-padding ch-review-reply-inner {{$ctrl.responseClass}}\">" +
 					"<div ng-if=\"!$ctrl.noDefault\" class=\"layout-padding\">" +
@@ -39,11 +39,11 @@
 							"</div>" +
 							"<div ng-if=\"$ctrl.review.reply.response\">" +
 								"<div class=\"no-padding-left no-padding-right no-padding-bottom\">" +
-									"<md-button ng-if=\"!$ctrl.ngReadonly || $ctrl.ngEdit\" class=\"no-margin text-lowercase text-gray-light\" ng-class=\"{'md-icon-button': !$ctrl.$mdMedia('gt-md')}\"" +
+									"<md-button ng-if=\"!$ctrl.ngReadonly || $ctrl.ngEdit\" class=\"no-margin text-lowercase text-gray-light\" ng-class=\"{'md-icon-button': !$ctrl.$mdMedia('gt-sm')}\"" +
 										"ng-click=\"$ctrl.$edit()\" aria-label=\"Edit reply\">" +
-										"<md-icon class=\"mdi mdi-pencil\" ng-class=\"{'md-18': !$ctrl.$mdMedia('gt-md'), 'md-14': $ctrl.$mdMedia('gt-md')}\"></md-icon>" +
-										"<small hide show-gt-md translate=\"common.edit\"></small>" +
-										"<md-tooltip hide-gt-md><span translate=\"common.edit\"></span></md-tooltip>" +
+										"<md-icon class=\"mdi mdi-pencil\" ng-class=\"{'md-18': !$ctrl.$mdMedia('gt-sm'), 'md-14': $ctrl.$mdMedia('gt-sm')}\"></md-icon>" +
+										"<small hide show-gt-sm translate=\"common.edit\"></small>" +
+										"<md-tooltip hide-gt-sm><span translate=\"common.edit\"></span></md-tooltip>" +
 									"</md-button>" +
 								"</div>" +
 							"</div>" +

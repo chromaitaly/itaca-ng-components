@@ -7,6 +7,8 @@
 			chReviewCtrl: '^chReview'
 		},
 		bindings: {
+			showDate: "<",
+			dateFormat: "@"
 		},
 		controller: ReviewContentCtrl,
     	template: 
@@ -46,6 +48,12 @@
 		    		"</div>" +
 		    	"</div>" +
 		    	"<div class=\"overflow-hidden\" ng-transclude></div>" +
+		    	"<div ng-if=\"$ctrl.review.createdDate && $ctrl.showDate\">" +
+		    		"<md-divider></md-divider>" +
+		    		"<div class=\"layout-padding text-gray-light\">" +
+	    				"<small>{{$ctrl.review.createdDate|utcDate:$ctrl.dateFormat}}</small>" +
+    				"</div>" +
+	    		"</div>" +
 	    	"</div>"
     });
     
@@ -55,6 +63,9 @@
     	
     	this.$onInit = function(){
     		ctrl.$initReview();
+    		
+    		ctrl.showDate = _.isBoolean(ctrl.showDate) ? ctrl.showDate : false;
+			ctrl.dateFormat = !_.isNil(ctrl.dateFormat) ? ctrl.dateFormat : ctrl.chReviewCtrl.dateFormat;
     	};
     	
     	this.$initReview = function(){
@@ -67,6 +78,4 @@
     		ctrl.review.showDetails = true;
     	};
     }
-    
 })();
-

@@ -13,7 +13,7 @@
 		controller: ReviewHotelInfoCtrl,
 		template:
 			"<div flex layout-padding class=\"md-subhead row-mini text-bold\">" +
-				"<a ng-href=\"{{'/hotel/'+ $ctrl.review.hotel.id}}\" target=\"_blank\" class=\"display-block clickable\">" +
+				"<a ng-href=\"{{'/hotel/'+ $ctrl.review.hotel.id}}\" target=\"_blank\" class=\"ch-review-hotel-info-link display-block clickable\">" +
 					"<span class=\"layout-row layout-align-start-center\">" +
 						"<img ng-if=\"!$ctrl.hideImage && $ctrl.$$hotelImage\" class=\"md-margin menu-user-avatar-small no-margin-left no-margin-y-sides\" ng-src=\"{{$ctrl.$$hotelImage}}\">" +
 						"<span class=\"no-padding layout-column\">" +
@@ -27,6 +27,7 @@
 							"</small>" +
 						"</span>" +
 					"</span>" +
+					"<md-tooltip><span translate=\"hotel.go\"></span></md-tooltip>" +
 				"</a>" +
 			"</div>"
 	});

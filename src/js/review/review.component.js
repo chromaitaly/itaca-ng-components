@@ -41,15 +41,7 @@
     		ctrl.review.label = ReviewsUtils.generateScoreLabel(Math.floor(ctrl.review.score));
     		
     		ctrl.$getUserAvatar();
-    		ctrl.$initLikes();
-    		ctrl.$initWatchers();
     	};
-    	
-    	this.$initLikes = function() {
-			ctrl.review.helpful = AppOptions.guest &&  AppOptions.guest.id && _.some(ctrl.review.likes, function(userId) {
-				return _.isEqual(userId, AppOptions.guest.id);
-			});
-		};
     	
     	this.$getUserAvatar = function(){
     		
@@ -69,16 +61,6 @@
     		// default settings
     		ctrl.review.reviewSettings = _.isObjectLike(ctrl.review.reviewSettings) ? ctrl.review.reviewSettings : {};
     		ctrl.review.reviewSettings.showRealName = _.isBoolean(ctrl.review.reviewSettings.showRealName) ? ctrl.review.reviewSettings.showRealName : true; 
-    	};
-    	
-    	this.$initWatchers = function() {
-    		$scope.$watchCollection(function() {
-    			return ctrl.review.likes;
-    			
-    		}, function(newVal, oldVal) {
-    			ctrl.$initLikes();
-				ctrl.review.thanksNow = _.isEqual(newVal, oldVal) ? false : Boolean(ctrl.review.helpful);
-    		});  		
     	};
 	}
 })();
