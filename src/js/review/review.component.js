@@ -8,7 +8,7 @@
     		newLimit: "@?",
     		dateFormat: "@?",
     		hideUser: "<?",
-    		hideLikes: "<?",
+    		hideDate: "<?",
     		imgBaseUrl: "@?" 
     	},
 		controller: ReviewCtrl,
@@ -22,7 +22,6 @@
     	this.$onInit = function(){
     		ctrl.newLimit = _.isFinite(parseInt(ctrl.newLimit)) ? parseInt(ctrl.newLimit) : 7;
     		ctrl.hideUser = _.isBoolean(ctrl.hideUser) ? ctrl.hideUser : false;
-    		ctrl.hideLikes = _.isBoolean(ctrl.hideLikes) ? ctrl.hideLikes : false;
     		ctrl.imgBaseUrl = ctrl.imgBaseUrl || true;
     		if (_.isBoolean(ctrl.imgBaseUrl)) {
     			ctrl.imgBaseUrl = ctrl.imgBaseUrl && AppOptions.config && AppOptions.config.amz ? AppOptions.config.amz.baseUrl+"/"+AppOptions.config.amz.bucketName+"/" : "";
@@ -53,17 +52,16 @@
 		};
     	
     	this.$getUserAvatar = function(){
-    		var baseUrl = AppOptions.config.amz.baseUrl +'/'+ AppOptions.config.amz.bucketName  +'/';
     		
     		if(ctrl.review.createdBy && ctrl.review.createdBy.avatarType){
     			switch(ctrl.review.createdBy.avatarType){
     				case 'PORTAL' 	:
-    					ctrl.userAvatar = ctrl.review.createdBy.avatar ? baseUrl + ctrl.review.createdBy.avatar : null; 
+    					ctrl.userAvatar = ctrl.review.createdBy.avatar ? ctrl.imgBaseUrl + ctrl.review.createdBy.avatar : null; 
     					break;
     				case 'FACEBOOK' : ctrl.userAvatar = ctrl.review.createdBy.facebookImage; break;
     				case 'GOOGLE' 	: ctrl.userAvatar = ctrl.review.createdBy.googleImage; break;
     				default		  	: 
-    					ctrl.userAvatar = ctrl.review.createdBy.avatar ? baseUrl + ctrl.review.createdBy.avatar : null; 
+    					ctrl.userAvatar = ctrl.review.createdBy.avatar ? ctrl.imgBaseUrl + ctrl.review.createdBy.avatar : null; 
     					break;
     			}
     		}

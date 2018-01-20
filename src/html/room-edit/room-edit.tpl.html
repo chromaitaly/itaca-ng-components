@@ -255,8 +255,8 @@
 						<span translate="bed.this.operation"></span>&nbsp;
 						<span>{{$ctrl.$$guestsCount.extra}}</span>&nbsp;
 						<span class="text-lowercase">
-							<span ng-if="($ctrl.room.type.guestsCount.extra - $ctrl.$$guestsCount.extra) == 1" translate="people.person"></span>
-							<span ng-if="($ctrl.room.type.guestsCount.extra - $ctrl.$$guestsCount.extra) != 1" translate="people.people"></span>&nbsp;
+							<span ng-if="$ctrl.$$guestsCount.extra == 1" translate="people.person"></span>
+							<span ng-if="$ctrl.$$guestsCount.extra != 1" translate="people.people"></span>&nbsp;
 							<span translate="room.room.in.yours"></span>
 						</span>
 					</small>

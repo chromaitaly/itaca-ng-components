@@ -6,8 +6,9 @@
 	<div ng-if="$ctrl.totalServices.length">
 		<md-list class="layout-row layout-wrap">
 			<md-list-item ng-repeat="service in $ctrl.totalServices track by $index" ng-show="$ctrl.$$showAllServices || $index < $ctrl.previewSize" 
-				class="am-fade-and-slide-right flex-100" ng-class="{'flex-gt-sm-50': $ctrl.totalServices.length > 1}">
-			
+				class="am-fade-and-slide-right no-padding-top no-padding-right flex-100" 
+				ng-class="{'flex-gt-sm-50': $ctrl.totalServices.length > 1, 'no-padding-left': !$ctrl.$mdMedia('gt-sm'), 'no-padding': service.$$editing}">
+				
 				<div ng-if="!service.$$editing" flex layout layout-wrap layout-align="start center" layout-padding-sm class="no-secondary-container">
 					<div ng-if="$ctrl.$$servicesIcons[service.type.nameKey]">
 						<md-icon class="{{$ctrl.$$servicesIcons[service.type.nameKey]}} md-30 circle-icon material-icons" ng-class="service.$$serviceSold ? 'bg-success text-white' : 'bg-gray-lighter text-gray-light'"></md-icon>

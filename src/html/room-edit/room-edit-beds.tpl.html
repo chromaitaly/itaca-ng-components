@@ -34,7 +34,7 @@
 				    </div>
 				</div>
 				
-				<div class="no-padding-right">
+				<div class="no-padding-right" ng-if="!$ctrl.minCount || $ctrl.$$availableBeds.length > $ctrl.minCount">
 					<md-button class="button-small no-margin text-small text-blue-sea" ng-click="$ctrl.$toggleDetails(true)" aria-label="Edit beds">
 						<md-icon class="mdi mdi-pencil md-18 text-blue-sea"></md-icon>
 						<span translate="common.edit"></span>
@@ -69,7 +69,8 @@
 		
 		<div ng-if="$ctrl.$$availableBeds.length">
 			<md-list>
-				<md-list-item class="am-fade-and-slide-right no-padding-top no-padding-right" ng-class="{'no-padding-left': !$ctrl.$mdMedia('gt-sm')}" 
+				<md-list-item class="am-fade-and-slide-right no-padding-top no-padding-right" 
+					ng-class="{'no-padding-left': !$ctrl.$mdMedia('gt-sm'), 'no-padding': bed.$$editing}" 
 					ng-repeat="bed in $ctrl.$$availableBeds track by $index">
 					<div flex>
 						<div ng-if="!bed.$$editing" layout layout-wrap layout-padding-sm layout-align="center center">
@@ -84,24 +85,24 @@
 									<span translate="bed.{{bed.type}}.description"></span>
 								</div>
 								
-								<div class="text-small">
+								<div class="text-small text-lowercase">
 									<span ng-if="bed.adultsPrice">
-										<span>{{bed.adultsPrice|chCurrency}}</span>
+										<span>{{bed.adultsPrice|chCurrency}}&nbsp;</span>
 										<span translate="people.adult"></span>
 										<span ng-if="bed.boysPrice">,&nbsp;</span>
 									</span>
 									<span ng-if="bed.boysPrice">
-										<span>{{bed.boysPrice|chCurrency}}</span>
+										<span>{{bed.boysPrice|chCurrency}}&nbsp;</span>
 										<span translate="people.boy"></span>
 										<span ng-if="bed.childrenPrice">,&nbsp;</span>
 									</span>
 									<span ng-if="bed.childrenPrice">
-										<span>{{bed.childrenPrice|chCurrency}}</span>
+										<span>{{bed.childrenPrice|chCurrency}}&nbsp;</span>
 										<span translate="people.child"></span>
 										<span ng-if="bed.kidsPrice">,&nbsp;</span>
 									</span>
 									<span ng-if="bed.kidsPrice">
-										<span>{{bed.kidsPrice|chCurrency}}</span>
+										<span>{{bed.kidsPrice|chCurrency}}&nbsp;</span>
 										<span translate="people.kid"></span>
 									</span>
 								</div>

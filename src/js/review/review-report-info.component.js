@@ -6,13 +6,16 @@
 		require: {
 			chReviewCtrl: '^chReview'
 		},
+		bindings: {
+			contentClass: "@"
+		},
 		controller: ReviewReportInfoCtrl,
 		template:
-			"<div class=\"no-padding flex\" ng-if=\"$ctrl.review.reportType\">" +
+			"<div ng-if=\"$ctrl.review.reportType\" class=\"{{$ctrl.contentClass}}\">" +
 				"<div>" +
 					"<md-icon class=\"mdi md-18 mdi-flag-variant text-danger\"></md-icon>" +
 					"<small translate=\"review.reporting.label\"></small>" +
-				"</div>" +
+				"</div>" +					
 			"</div>"
 	});
 	
@@ -21,6 +24,7 @@
 		var ctrl = this;
 		
 		this.$onInit = function() {
+			ctrl.contentClass = ctrl.contentClass || "layout-padding bg-gray-lighter text-danger";
 			ctrl.$initReview();
 		};
 		

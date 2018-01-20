@@ -11,24 +11,24 @@
 					<span translate="bed.{{$ctrl.bedSold.bed.type}}.description"></span>
 				</div>
 				
-				<div class="text-small">
+				<div class="text-small text-lowercase">
 					<span ng-if="$ctrl.bedSold.bed.adultsPrice">
-						<span>{{$ctrl.bedSold.bed.adultsPrice|chCurrency}}</span>
+						<span>{{$ctrl.bedSold.bed.adultsPrice|chCurrency}}&nbsp;</span>
 						<span translate="people.adult"></span>
 						<span ng-if="$ctrl.bedSold.bed.boysPrice">,&nbsp;</span>
 					</span>
 					<span ng-if="$ctrl.bedSold.bed.boysPrice">
-						<span>{{$ctrl.bedSold.bed.boysPrice|chCurrency}}</span>
+						<span>{{$ctrl.bedSold.bed.boysPrice|chCurrency}}&nbsp;</span>
 						<span translate="people.boy"></span>
 						<span ng-if="$ctrl.bedSold.bed.childrenPrice">,&nbsp;</span>
 					</span>
 					<span ng-if="$ctrl.bedSold.bed.childrenPrice">
-						<span>{{$ctrl.bedSold.bed.childrenPrice|chCurrency}}</span>
+						<span>{{$ctrl.bedSold.bed.childrenPrice|chCurrency}}&nbsp;</span>
 						<span translate="people.child"></span>
 						<span ng-if="$ctrl.bedSold.bed.kidsPrice">,&nbsp;</span>
 					</span>
 					<span ng-if="$ctrl.bedSold.bed.kidsPrice">
-						<span>{{$ctrl.bedSold.bed.kidsPrice|chCurrency}}</span>
+						<span>{{$ctrl.bedSold.bed.kidsPrice|chCurrency}}&nbsp;</span>
 						<span translate="people.kid"></span>
 					</span>
 				</div>

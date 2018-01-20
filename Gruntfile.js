@@ -122,6 +122,7 @@ module.exports = function(grunt) {
 						existingModule : true,
 						htmlmin : {
 							collapseWhitespace : true,
+							collapseInlineTagWhitespace: true,
 							removeComments : true
 						},
 						rename : function(moduleName) {

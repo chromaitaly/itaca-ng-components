@@ -83,25 +83,27 @@
 			<span translate="reservation.rooms.details"></span>:
 		</div>
 		<div>
-			<ul>
-				<li ng-repeat="room in $ctrl.reservation.rooms" class="layout-row layout-wrap layout-align-start-center">
-					<small class="flex">
-						<strong>1&nbsp;<span translate="{{room.type.roomType.nameKey}}"></span>&nbsp;<small class="text-uppercase" translate="room.category.{{room.type.category}}"></small></strong>
-						<span ng-if="$ctrl.reservation.nights > 1" class="text-lowercase">
-							<span>&nbsp;(x&nbsp;{{$ctrl.reservation.nights}}&nbsp;<span translate="common.nights"></span>)</span>
-						</span>
-					</small>
-					<div class="text-right">
-						<div class="text-gray-light text-small text-striked" ng-if="room.totalRate.amount.initialAmount != room.totalRate.amount.finalAmount">
-							<em>{{room.totalRate.amount.initialAmount|chCurrency}}</em>
-						</div>
-						<div>
-							<span>{{room.totalRate.amount.finalAmount|chCurrency}}</span>
+			<ul class="no-margin-x-sides">
+				<li ng-repeat="room in $ctrl.reservation.rooms">
+					<div class="layout-row layout-padding-sm layout-align-start-center">
+						<small class="flex no-padding-y-sides">
+							<strong>1&nbsp;<span translate="{{room.type.roomType.nameKey}}"></span>&nbsp;<small class="text-uppercase" translate="room.category.{{room.type.category}}"></small></strong>
+							<span ng-if="$ctrl.reservation.nights > 1" class="text-lowercase">
+								<span>&nbsp;(x&nbsp;{{$ctrl.reservation.nights}}&nbsp;<span translate="common.nights"></span>)</span>
+							</span>
+						</small>
+						<div class="text-right no-padding-y-sides">
+							<div class="text-gray-light text-small text-striked" ng-if="room.totalRate.amount.initialAmount != room.totalRate.amount.finalAmount">
+								<em>{{room.totalRate.amount.initialAmount|chCurrency}}</em>
+							</div>
+							<div>
+								<span>{{room.totalRate.amount.finalAmount|chCurrency}}</span>
+							</div>
 						</div>
 					</div>
-					<ul ng-if="room.services.length" class="flex-100 no-padding no-margin-right no-margin-bottom no-margin-top">
-						<li ng-if="!serviceSold.included" ng-repeat="serviceSold in room.services" class="layout-row layout-wrap layout-align-start-center" ng-class="{'text-danger': serviceSold.toRemove}">
-							<small class="flex">
+					<ul ng-if="room.services.length" class="no-padding no-margin-right no-margin-bottom no-margin-top">
+						<li ng-if="!serviceSold.included" ng-repeat="serviceSold in room.services" class="layout-row layout-padding-sm layout-align-start-center" ng-class="{'text-danger': serviceSold.toRemove}">
+							<small class="flex no-padding-y-sides">
 								<span>
 									<span ng-if="serviceSold.count > 1">{{serviceSold.count}}</span>
 									<span ng-if="serviceSold.count <= 1">1</span>
@@ -114,15 +116,15 @@
 									<span>&nbsp;(x&nbsp;{{$ctrl.reservation.nights}}<span translate="date.days.abbr"></span>)</span>
 								</span>
 							</small>
-							<span class="text-right">
+							<span class="text-right no-padding-y-sides">
 								<span ng-if="serviceSold.amount.finalAmount > 0">{{serviceSold.amount.finalAmount|chCurrency}}</span>													
 								<i ng-if="serviceSold.amount.finalAmount <= 0" translate="common.free"></i>
 							</span>
 						</li>
 					</ul>
-					<ul ng-if="room.otherBeds.length" class="flex-100 no-padding no-margin no-margin-right no-margin-bottom no-margin-top">
-						<li ng-repeat="bedSold in room.otherBeds" class="layout-row layout-wrap layout-align-start-center">
-							<small class="flex">
+					<ul ng-if="room.otherBeds.length" class="flex-100 no-padding no-margin-right no-margin-bottom no-margin-top">
+						<li ng-repeat="bedSold in room.otherBeds" class="layout-row layout-padding-sm layout-align-start-center">
+							<small class="flex no-padding-y-sides">
 								<span>1&nbsp;<span class="text-lowercase" translate="bed.bed"></span>&nbsp;<span translate="{{'bed.' + bedSold.bed.type}}"></span></span>
 								<span>
 									&nbsp;x&nbsp;<ch-people-summary people="bedSold.people" no-details="true"></ch-people-summary>
@@ -131,7 +133,7 @@
 									<span>&nbsp;(x&nbsp;{{$ctrl.reservation.nights}}&nbsp;<span translate="common.nights"></span>)</span>
 								</span>
 							</small>
-							<span class="text-right">
+							<span class="text-right no-padding-y-sides">
 								<span>{{bedSold.amount.finalAmount|chCurrency}}</span>													
 							</span>
 						</li>

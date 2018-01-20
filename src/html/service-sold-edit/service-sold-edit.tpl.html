@@ -59,42 +59,44 @@
 						</div>
 					</div>
 					
-					<div ng-switch-when="PER_PERSON"  class="text-gray-light text-lowercase">
-						<span ng-if="$ctrl.$$priceDetails.adults.amount.finalAmount > 0">
-							<span>{{$ctrl.$$priceDetails.adults.amount.finalAmount|chCurrency}}&nbsp;</span>
-							<span class="text-lowercase"><span translate="people.adult.per"></span>&nbsp;,</span>
-						</span>
-						<span ng-if="!$ctrl.$$priceDetails.adults.amount.finalAmount">
-							<span class="text-lowercase"><span translate="people.adults"></span>&nbsp;</span>
-							<span translate="service.type.payment.free"></span>,&nbsp;
-						</span>
-						
-						<span ng-if="$ctrl.$$priceDetails.boys.amount.finalAmount > 0">
-							<span>{{$ctrl.$$priceDetails.boys.amount.finalAmount|chCurrency}}&nbsp;</span>
-							<span class="text-lowercase"><span translate="people.boy.per"></span>&nbsp;,</span>
-						</span>
-						<span ng-if="!$ctrl.$$priceDetails.boys.amount.finalAmount">
-							<span class="text-lowercase"><span translate="people.boys"></span>&nbsp;</span>
-							<span translate="service.type.payment.free"></span>,&nbsp;
-						</span>
-						
-						<span ng-if="$ctrl.$$childrenAmount.amount.finalAmount > 0">
-							<span>{{$ctrl.$$priceDetails.children.amount.finalAmount|chCurrency}}&nbsp;</span>
-							<span class="text-lowercase"><span translate="people.child.per"></span>&nbsp;,</span>
-						</span>
-						<span ng-if="!$ctrl.$$childrenAmount.amount.finalAmount">
-							<span class="text-lowercase"><span translate="people.children"></span>&nbsp;</span>
-							<span translate="service.type.payment.free"></span>,&nbsp;
-						</span>
-						
-						<span ng-if="$ctrl.$$priceDetails.kids.amount.finalAmount > 0">
-							<span>{{$ctrl.$$priceDetails.kids.amount.finalAmount|chCurrency}}&nbsp;</span>
-							<span class="text-lowercase"><span translate="people.kid.per"></span>&nbsp;</span>
-						</span>
-						<span ng-if="!$ctrl.$$priceDetails.kids.amount.finalAmount">
-							<span class="text-lowercase"><span translate="people.kids"></span>&nbsp;</span>
-							<span translate="service.type.payment.free"></span>
-						</span>
+					<div ng-switch-when="PER_PERSON" class="text-gray-light text-lowercase">
+						<div>
+							<span ng-if="$ctrl.$$priceDetails.adults.amount.finalAmount > 0">
+								<span>{{$ctrl.$$priceDetails.adults.amount.finalAmount|chCurrency}}&nbsp;</span>
+								<span translate="people.adult.per"></span>,&nbsp;
+							</span>
+							<span ng-if="!$ctrl.$$priceDetails.adults.amount.finalAmount">
+								<span class="text-lowercase"><span translate="people.adults"></span>&nbsp;</span>
+								<span translate="service.type.payment.free"></span>,&nbsp;
+							</span>
+							
+							<span ng-if="$ctrl.$$priceDetails.boys.amount.finalAmount > 0">
+								<span>{{$ctrl.$$priceDetails.boys.amount.finalAmount|chCurrency}}&nbsp;</span>
+								<span translate="people.boy.per"></span>,&nbsp;
+							</span>
+							<span ng-if="!$ctrl.$$priceDetails.boys.amount.finalAmount">
+								<span class="text-lowercase"><span translate="people.boys"></span>&nbsp;</span>
+								<span translate="service.type.payment.free"></span>,&nbsp;
+							</span>
+							
+							<span ng-if="$ctrl.$$priceDetails.children.amount.finalAmount > 0">
+								<span>{{$ctrl.$$priceDetails.children.amount.finalAmount|chCurrency}}&nbsp;</span>
+								<span translate="people.child.per"></span>,&nbsp;
+							</span>
+							<span ng-if="!$ctrl.$$priceDetails.children.amount.finalAmount">
+								<span class="text-lowercase"><span translate="people.children"></span>&nbsp;</span>
+								<span translate="service.type.payment.free"></span>,&nbsp;
+							</span>
+							
+							<span ng-if="$ctrl.$$priceDetails.kids.amount.finalAmount > 0">
+								<span>{{$ctrl.$$priceDetails.kids.amount.finalAmount|chCurrency}}&nbsp;</span>
+								<span translate="people.kid.per"></span>
+							</span>
+							<span ng-if="!$ctrl.$$priceDetails.kids.amount.finalAmount">
+								<span class="text-lowercase"><span translate="people.kids"></span>&nbsp;</span>
+								<span translate="service.type.payment.free"></span>
+							</span>
+						</div>
 						
 						<div class="text-italic text-gray-light text-lowercase" ng-switch="$ctrl.serviceSold.service.frequency">
 							<span class="text-initial" translate="common.price.is.intend"></span>&nbsp;<span translate="service.type.payment.person"></span>
