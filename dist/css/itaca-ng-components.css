@@ -141,6 +141,14 @@ ch-review-title,
 ch-review-reservation {
   display: block;
 }
+a.ch-review-hotel-info-link:not(.md-button),
+a.ch-review-hotel-info-link:not(.md-button):hover {
+  text-decoration: none !important;
+  border: 0;
+}
+.font-10 {
+  font-size: 10px !important;
+}
 .ch-review-reply {
   width: auto;
   margin: 0 8px 8px 8px;

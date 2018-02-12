@@ -1,0 +1,99 @@
+<table border="1" class="ch-table ch-table-padding align-center">
+	<thead>
+		<tr>
+			<th width="10%" class="bg-gray-lighter text-center">
+				<strong translate="order.item.code.abbr">Cod. articolo</strong>
+			</th>
+			<th width="30%" class="bg-gray-lighter text-center">
+				<strong translate="common.description">Descrizione</strong>
+			</th>
+			<th width="10%" class="bg-gray-lighter text-center">
+				<strong translate="common.quantity.abbr">Quantità</strong>
+			</th>
+			<th width="20%" class="bg-gray-lighter text-center">
+				<strong translate="common.price.unit">Prezzo unitario</strong>
+			</th>
+			<th width="20%" class="bg-gray-lighter text-center">
+				<strong translate="common.amount">Importo</strong>
+			</th>
+			<th width="10%" class="bg-gray-lighter text-center">
+				<strong><span translate="common.vat.alt">IVA</span>&nbsp;(%)</strong>
+			</th>
+		</tr>
+	</thead>
+	
+	<tfoot>
+		<tr>
+	    	<td colspan="4" class="no-border-bottom text-right">
+	    		<span translate="common.taxable">Imponibile</span>
+	    	</td>
+	    	<td class="text-right">
+	    		<span ng-if="$ctrl.invoice.order.amount != null && $ctrl.invoice.order.amount.finalAmount != null">
+	    			<span ng-if="$ctrl.invoice.order.amount.vatAmount != null">{{($ctrl.invoice.order.amount.finalAmount - $ctrl.invoice.order.amount.vatAmount)|chCurrency}}</span>
+	    			<span ng-if="$ctrl.invoice.order.amount.vatAmount == null">{{($ctrl.invoice.order.amount.finalAmount)|chCurrency}}</span>
+	    		</span>
+	    		<span ng-if="$ctrl.invoice.order.amount == null || $ctrl.invoice.order.amount.finalAmount == null">{{0|chCurrency}}</span>
+	    	</td>
+	    	<td class="no-border-bottom">&nbsp;</td>
+		</tr>
+		<tr>
+	    	<td colspan="4" class="no-border-bottom no-border-top text-right">
+	    		<span translate="common.vat.alt">IVA</span>
+	    	</td>
+	    	<td class="text-right">
+	    		<span ng-if="$ctrl.invoice.order.amount != null && $ctrl.invoice.order.amount.vatAmount != null">{{$ctrl.invoice.order.amount.vatAmount|chCurrency}}</span>
+	    		<span ng-if="$ctrl.invoice.order.amount == null || $ctrl.invoice.order.amount.vatAmount == null">{{0|chCurrency}}</span>
+	    	</td>
+	    	<td class="no-border-top no-border-bottom">&nbsp;</td>
+		</tr>
+		<tr>
+	    	<td colspan="4" class="no-border-top text-uppercase text-right">
+	    		<strong translate="billing.invoice.price.total">TOTALE FATTURA</strong>
+	    	</td>
+	    	<td class="bg-gray-lighter text-right">
+	    		<strong ng-if="$ctrl.invoice.order.amount != null && $ctrl.invoice.order.amount.finalAmount != null">{{$ctrl.invoice.order.amount.finalAmount|chCurrency}}</strong>
+	    		<strong ng-if="$ctrl.invoice.order.amount == null || $ctrl.invoice.order.amount.finalAmount == null">{{0|chCurrency}}</strong>
+	    	</td>
+	    	<td class="no-border-top">&nbsp;</td>
+		</tr>
+	</tfoot>
+	
+	<tbody>
+		<tr ng-repeat="productSold in $ctrl.invoice.order.products track by $index">
+			<td>
+				<span translate="productSold.product.serial"></span>
+			</td>
+			<td class="text-left">
+				<span translate="productSold.product.name"></span>
+				<div ng-if="productSold.product.type == 'FREE_LOAN'" class="text-gray-light">
+					<small>(<span translate="common.freeloan"></span>)</small>
+				</div>
+			</td>
+			<td>
+				<span translate="productSold.counter.actual"></span>
+			</td>
+			<td>
+				<span ng-if="productSold.product.amount != null && productSold.product.amount.finalAmount != null">{{productSold.product.amount.finalAmount|chCurrency}}</span>
+				<span ng-if="productSold.product.amount == null || productSold.product.amount.finalAmount == null">{{0|chCurrency}}</span>
+			</td>
+			<td>
+				<span ng-if="productSold.amount != null && productSold.amount.finalAmount != null">{{productSold.amount.finalAmount|chCurrency}}</span>
+				<span ng-if="productSold.amount == null || productSold.amount.finalAmount == null">{{0|chCurrency}}</span>
+			</td>
+			<td>
+				<span ng-if="productSold.amount != null && productSold.amount.vatRate != null" translate="productSold.amount.vatRate"></span>
+				<span ng-if="productSold.amount == null || productSold.amount.vatRate == null">-</span>
+			</td>
+		</tr>
+		
+		<!-- Riempio la tabella con righe vuote -->
+		<tr ng-repeat="i in [] | range: (15 - $ctrl.invoice.order.products.length)">
+			<td>&nbsp;</td>
+			<td>&nbsp;</td>
+			<td>&nbsp;</td>
+			<td>&nbsp;</td>
+			<td>&nbsp;</td>
+			<td>&nbsp;</td>					
+		</tr>
+	</tbody>
+</table>

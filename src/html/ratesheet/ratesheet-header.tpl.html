@@ -1,0 +1,44 @@
+<div flex layout="column">
+	<div ng-if="$ctrl.header.hotelClosed" layout layout-align="center center" flex>
+		<md-button class="md-icon-button no-margin no-padding auto-height cursor-help" 
+			tabindex="-1" aria-label="Availability">
+			<md-icon class="mdi mdi-lock md-18"></md-icon>
+			<md-tooltip><span translate="hotel.closed"></span></md-tooltip>
+		</md-button>
+	</div>
+	
+	<div ng-if="!$ctrl.header.hotelClosed" flex layout="column">
+		<md-button ng-disabled="$ctrl.header.pastDate || $ctrl.header.availability.actual <= 0" 
+			ng-click="$ctrl.$toggleRoomTypeClosing($event)" aria-label="Enable/Disable all room rates" tabindex="-1"
+			class="no-margin row-1 forced" ng-class="{'minimal-button': !$ctrl.$mdMedia('gt-xs'), 
+				'bg-success': !$ctrl.header.roomClosed && $ctrl.header.availability.actual > 0, 
+				'bg-danger': $ctrl.header.roomClosed, 
+				'bg-warn': !$ctrl.header.roomClosed && $ctrl.header.availability.actual == 0, 
+				'bg-gray-base text-white': !$ctrl.header.roomClosed && $ctrl.header.availability.actual < 0}">
+			
+			<small ng-if="$ctrl.header.roomClosed">
+				<strong hide-xs translate="common.closed.female"></strong>
+				<md-icon hide show-xs class="mdi mdi-lock md-24 text-white"></md-icon>
+				<md-tooltip>
+					<span translate="ratesheet.rate.room.open"></span>													
+				</md-tooltip>
+			</small>
+			
+			<small ng-if="!$ctrl.header.roomClosed">
+				<strong hide-xs>
+					<span ng-if="$ctrl.header.availability.actual > 0" translate="common.opened.female"></span>
+					<span ng-if="$ctrl.header.availability.actual == 0" translate="hotel.availability.none.abbr"></span>
+					<span ng-if="$ctrl.header.availability.actual < 0" translate="ratesheet.overbooking"></span>
+				</strong>
+				
+<!-- 				<md-icon show-xs class="mdi mdi-lock-open md-24 text-white"> -->
+				
+				<md-tooltip>
+					<span ng-if="$ctrl.header.availability.actual > 0" translate="ratesheet.rate.room.close"></span>
+					<span ng-if="$ctrl.header.availability.actual == 0" translate="hotel.availability.none"></span>
+					<span ng-if="$ctrl.header.availability.actual < 0" translate="ratesheet.overbooking"></span>
+				</md-tooltip>
+			</small>
+		</md-button>
+	</div>	
+</div>

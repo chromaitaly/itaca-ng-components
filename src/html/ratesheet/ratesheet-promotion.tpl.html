@@ -1,0 +1,56 @@
+<ng-form name="chRatesheetPromotionForm" flex layout="column">
+
+	<div ng-if="$ctrl.promotion.hotelClosed" layout layout-align="center center" flex>
+		<md-button aria-label="Closed" class="md-icon-button no-margin no-padding auto-height cursor-help" tabindex="-1">
+			<md-icon class="mdi mdi-lock md-18"></md-icon>
+			<md-tooltip><span translate="hotel.closed"></span></md-tooltip>
+		</md-button>
+	</div>
+	
+	<div ng-if="!$ctrl.promotion.valid && !$ctrl.promotion.hotelClosed" layout layout-align="center center" flex>
+		<md-icon class="mdi mdi-block-helper md-18"></md-icon>
+	</div>
+
+	<div ng-if="$ctrl.promotion.valid && !$ctrl.promotion.hotelClosed">								
+		<div layout="column" flex>
+			<md-button ng-disabled="$ctrl.promotion.pastDate || $ctrl.promotion.availability.actual <= 0" ng-click="$ctrl.$toggleClosing()" aria-label="Enable/Disable promotion"
+				class="no-margin forced" ng-class="{'minimal-button': !$ctrl.$mdMedia('gt-xs'), 
+					'bg-success': !$ctrl.promotion.roomClosed && $ctrl.promotion.enabled && $ctrl.promotion.availability.actual > 0,
+					'bg-warn': !$ctrl.promotion.roomClosed && $ctrl.promotion.enabled && $ctrl.promotion.availability.actual == 0,
+					'bg-gray-base text-white': !$ctrl.promotion.roomClosed && $ctrl.promotion.enabled && $ctrl.promotion.availability.actual < 0,
+					'bg-danger': $ctrl.promotion.roomClosed || !$ctrl.promotion.enabled}" tabindex="-1">
+				<div ng-show="!$ctrl.promotion.roomClosed" flex layout layout-xs="column" layout-align="center center">
+					<small ng-show="$ctrl.promotion.minStay > 1"><md-icon class="mdi mdi-calendar-today md-14 text-white"></md-icon></small>
+				</div>
+				<md-tooltip>
+					<span ng-if="$ctrl.promotion.roomClosed || !$ctrl.promotion.enabled">
+						<span ng-if="$ctrl.promotion.availability.actual > 0" translate="ratesheet.promos.promo.enable"></span>
+						<span ng-if="$ctrl.promotion.availability.actual == 0" translate="hotel.availability.none.abbr"></span>
+						<span ng-if="promoDailyDetaile.availability.actual < 0" translate="ratesheet.overbooking"></span>
+					</span>
+					<span ng-if="!$ctrl.promotion.roomClosed && $ctrl.promotion.enabled" translate="ratesheet.promos.promo.disable"></span>
+				</md-tooltip>
+			</md-button>
+		</div>
+		
+		<div ng-if="$ctrl.showDetails" ng-switch="$ctrl.type" layout="column" layout-align="center center">
+			<div ng-switch-when="MINIMUM_STAY">
+				<md-input-container flex class="no-margin-bottom minimal-input">
+	          		<label><span translate="common.nights"></span></label>
+		            <input value="{{$ctrl.promotion.minStay}}" class="text-center" disabled readonly>
+	          	</md-input-container>
+	    	</div>
+	    	
+	    	<div ng-switch-default>
+				<md-input-container flex class="no-margin-bottom minimal-input">
+					<label><span translate="common.nights"></span></label>
+		            <input type="number" class="text-center" name="minStay" ng-model="$ctrl.$$tempPromotion.minStay" ng-disabled="$ctrl.$$tempPromotion.pastDate || $ctrl.$$tempPromotion.roomClosed || !$ctrl.$$tempPromotion.enabled" min="0" step="1"
+		            	ng-blur="$ctrl.$saveMinStay()" tabindex="2">
+	            	<div ng-messages="chRatesheetPromotionForm.minStay.$error">
+		          		<div ng-message="min"><span translate="error.field.min" translate-values="{num: 1}"></span></div>
+			        </div>
+	          	</md-input-container>
+			</div>
+        </div>
+	</div>
+</ng-form>

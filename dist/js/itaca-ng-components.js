@@ -1603,6 +1603,22 @@
 
 (function() {
     "use strict";
+    InvoiceCtrl.$inject = [ "$scope" ];
+    angular.module("itaca.components").component("chInvoice", {
+        bindings: {
+            invoice: "<"
+        },
+        controller: InvoiceCtrl,
+        templateUrl: "/tpls/invoice/invoice.tpl"
+    });
+    function InvoiceCtrl($scope) {
+        var ctrl = this;
+        this.$onInit = function() {};
+    }
+})();
+
+(function() {
+    "use strict";
     LoadingModalCtrl.$inject = [ "$scope", "$element", "$mdUtil" ];
     angular.module("itaca.components").component("chLoadingModal", {
         bindings: {
@@ -2314,6 +2330,185 @@
 
 (function() {
     "use strict";
+    RatesheetAvailabilityCtrl.$inject = [ "$scope", "$mdMedia" ];
+    angular.module("itaca.components").component("chRatesheetAvailability", {
+        bindings: {
+            availability: "<",
+            onClick: "&?"
+        },
+        controller: RatesheetAvailabilityCtrl,
+        templateUrl: "/tpls/ratesheet/ratesheet-availability.tpl"
+    });
+    function RatesheetAvailabilityCtrl($scope, $mdMedia) {
+        this.$mdMedia = $mdMedia;
+        var ctrl = this;
+        this.$onInit = function() {};
+        this.$click = function(ev) {
+            ctrl.onClick && ctrl.onClick({
+                $event: ev,
+                $date: ctrl.availability.date
+            });
+        };
+    }
+})();
+
+(function() {
+    "use strict";
+    RatesheetHeaderCtrl.$inject = [ "$scope", "$mdMedia" ];
+    angular.module("itaca.components").component("chRatesheetHeader", {
+        bindings: {
+            header: "<",
+            onToggleClosing: "&?"
+        },
+        controller: RatesheetHeaderCtrl,
+        templateUrl: "/tpls/ratesheet/ratesheet-header.tpl"
+    });
+    function RatesheetHeaderCtrl($scope, $mdMedia) {
+        this.$mdMedia = $mdMedia;
+        var ctrl = this;
+        this.$onInit = function() {};
+        this.$toggleRoomTypeClosing = function(ev) {
+            ctrl.onToggleClosing && ctrl.onToggleClosing({
+                $event: ev,
+                $date: ctrl.header.date,
+                $closed: _.isBoolean(ctrl.header.roomClosed) ? !ctrl.header.roomClosed : false
+            });
+        };
+    }
+})();
+
+(function() {
+    "use strict";
+    RatesheetPromotionCtrl.$inject = [ "$scope", "$mdMedia", "REGEXP" ];
+    angular.module("itaca.components").component("chRatesheetPromotion", {
+        bindings: {
+            promotion: "<",
+            type: "@",
+            showDetails: "<",
+            onSaveMinStay: "&?",
+            onToggleClosing: "&?"
+        },
+        controller: RatesheetPromotionCtrl,
+        templateUrl: "/tpls/ratesheet/ratesheet-promotion.tpl"
+    });
+    function RatesheetPromotionCtrl($scope, $mdMedia, REGEXP) {
+        this.$mdMedia = $mdMedia;
+        this.REGEXP = REGEXP;
+        var ctrl = this;
+        this.$onInit = function() {
+            ctrl.$initPromotion();
+        };
+        this.$initPromotion = function() {
+            ctrl.type = ctrl.type || "STANDARD";
+            ctrl.$$tempPromotion = angular.copy(ctrl.promotion);
+        };
+        this.$onChanges = function(changesObj) {
+            if (!changesObj) {
+                return;
+            }
+            if (changesObj.promotion || changesObj.type) {
+                ctrl.$initPromotion();
+            }
+        };
+        this.$toggleClosing = function(ev) {
+            var close = _.isBoolean(ctrl.promotion.enabled) ? ctrl.promotion.enabled : false;
+            ctrl.onToggleClosing && ctrl.onToggleClosing({
+                $event: ev,
+                $promotion: ctrl.$$tempPromotion,
+                $type: ctrl.type,
+                $closed: close
+            });
+        };
+        this.$saveMinStay = function() {
+            var form = $scope.chRatesheetPromotionForm;
+            form.$setSubmitted();
+            if (form.$invalid) {
+                form.minStay.$setTouched();
+                return;
+            }
+            ctrl.onSaveMinStay && ctrl.onSaveMinStay({
+                $promotion: ctrl.$$tempPromotion,
+                $type: ctrl.type
+            });
+        };
+    }
+})();
+
+(function() {
+    "use strict";
+    RatesheetRateCtrl.$inject = [ "$scope", "$mdMedia", "REGEXP" ];
+    angular.module("itaca.components").component("chRatesheetRate", {
+        bindings: {
+            rate: "<",
+            type: "@",
+            showDetails: "<",
+            onSave: "&?",
+            onSaveMinStay: "&?",
+            onToggleClosing: "&?"
+        },
+        controller: RatesheetRateCtrl,
+        templateUrl: "/tpls/ratesheet/ratesheet-rate.tpl"
+    });
+    function RatesheetRateCtrl($scope, $mdMedia, REGEXP) {
+        this.$mdMedia = $mdMedia;
+        this.REGEXP = REGEXP;
+        var ctrl = this;
+        this.$onInit = function() {
+            ctrl.$initRate();
+        };
+        this.$initRate = function() {
+            ctrl.type = ctrl.type || "STANDARD";
+            ctrl.$$isStandard = ctrl.type == "STANDARD";
+            ctrl.$$rateDataKey = ctrl.$$isStandard ? "standard" : "notRefundable";
+            ctrl.$$tempRate = angular.copy(ctrl.rate);
+        };
+        this.$onChanges = function(changesObj) {
+            if (!changesObj) {
+                return;
+            }
+            if (changesObj.rate || changesObj.type) {
+                ctrl.$initRate();
+            }
+        };
+        this.$toggleRateClosing = function(ev) {
+            var close = ctrl.$$isStandard ? ctrl.rate.standard.enabled : ctrl.rate.notRefundable.enabled;
+            close = _.isBoolean(close) ? close : false;
+            ctrl.onToggleClosing && ctrl.onToggleClosing({
+                $event: ev,
+                $rate: ctrl.$$tempRate,
+                $type: ctrl.type,
+                $closed: close
+            });
+        };
+        this.$saveMinStay = function() {
+            var form = $scope.chRatesheetRateForm;
+            form.$setSubmitted();
+            if (form.$invalid) {
+                form.minStay.$setTouched();
+                return;
+            }
+            ctrl.onSaveMinStay && ctrl.onSaveMinStay({
+                $rate: ctrl.$$tempRate,
+                $type: ctrl.type
+            });
+        };
+        this.$saveRate = function() {
+            var form = $scope.chRatesheetRateForm;
+            form.$setSubmitted();
+            if (form.$invalid) {
+                form.amount.$setTouched();
+                return;
+            }
+            ctrl.onSave && ctrl.onSave({
+                $rate: ctrl.$$tempRate,
+                $type: ctrl.type
+            });
+        };
+    }
+})();
+
+(function() {
+    "use strict";
     angular.module("itaca.components").component("chReviewActionsContent", {
         transclude: true,
         require: {
@@ -2342,23 +2537,15 @@
             chReviewCtrl: "^chReview"
         },
         bindings: {
-            hideUser: "<?",
-            userState: "@?",
-            userStateParams: "<?",
-            userClick: "&?",
-            hideLikes: "<?",
-            likeLabel: "@?",
-            unlikeLabel: "@?",
-            likeClick: "&?"
+            actions: "<?"
         },
         controller: ReviewActionsCtrl,
-        template: "<div flex>" + '<div ng-if="!$ctrl.noDefault && (!$ctrl.hideUser || !$ctrl.hideLikes)" class="bg-gray-lighter flex layout-row layout-wrap layout-padding">' + '<div class="layout-row layout-padding-sm no-padding no-outline" ng-class="{\'clickable\': $ctrl.userState || $ctrl.userClick}" ng-click="$ctrl.$userClick($event)" aria-label="Toggle user action">' + "<div>" + '<span ng-if="$ctrl.userAvatar && $ctrl.review.reviewSettings.showAvatar && !$ctrl.review.reviewSettings.anonymous"' + 'class="relative menu-user-avatar-small display-block overflow-hidden">' + '<img alt="User profile image" class="full-width" ng-src="{{$ctrl.userAvatar}}" lazy-image />' + "</span>" + '<span ng-if="(!$ctrl.review.reviewSettings.showAvatar || !$ctrl.userAvatar) && !$ctrl.review.reviewSettings.anonymous"' + 'class="bg-blue-sea menu-user-avatar-small layout-row layout-align-center-center">' + '<span class="md-headline text-uppercase">{{!$ctrl.review.reviewSettings.showRealName && ($ctrl.review.createdBy || $ctrl.review.reservation.guest).nickname ? ($ctrl.review.createdBy || $ctrl.review.reservation.guest).nickname.charAt(0) : ($ctrl.review.createdBy || $ctrl.review.reservation.guest).name.charAt(0)}}</span>' + "</span>" + '<md-icon ng-if="$ctrl.review.reviewSettings.anonymous" class="mdi mdi-account-circle md-38"></md-icon>' + "</div>" + '<div class="layout-align-center-start layout-column no-padding-bottom no-padding-top row-1">' + '<small class="font-10 text-gray-light row-1"><span translate="common.written.by.female"></span>:</small>' + '<strong class="md-subhead">' + '<span ng-if="!$ctrl.review.reviewSettings.anonymous && ($ctrl.review.createdBy || $ctrl.review.reservation.guest)">' + '<span ng-if="!$ctrl.review.reviewSettings || $ctrl.review.reviewSettings.showRealName || !$ctrl.review.createdBy.nickname">' + '<span ng-if="$ctrl.review.createdBy">{{::$ctrl.review.createdBy.name}}&nbsp;{{::$ctrl.review.createdBy.surname}}</span>' + '<span ng-if="!$ctrl.review.createdBy && $ctrl.review.reservation.guest">{{::$ctrl.review.reservation.guest.name}}&nbsp;{{::$ctrl.review.reservation.guest.surname}}</span>' + "</span>" + '<span ng-if="$ctrl.review.reviewSettings && !$ctrl.review.reviewSettings.showRealName && $ctrl.review.createdBy.nickname">' + '<span ng-if="$ctrl.review.createdBy">{{::$ctrl.review.createdBy.nickname}}</span>' + '<span ng-if="!$ctrl.review.createdBy && $ctrl.review.reservation.guest">{{::$ctrl.review.reservation.guest.nickname}}</span>' + "</span>" + "</span>" + '<span ng-if="$ctrl.review.reviewSettings.anonymous || (!$ctrl.review.createdBy && !$ctrl.review.reservation.guest)" translate="common.anonymous"></span>' + "</strong>" + '<small class="font-10 text-gray-light row-1 text-lowercase" ng-if="!$ctrl.review.reviewSettings.anonymous && $ctrl.review.guest.reviewsCount">' + "<span>{{::$ctrl.review.guest.reviewsCount}}&nbsp;</span>" + '<span ng-if="$ctrl.review.guest.reviewsCount == 1" translate="reviews.review"></span>' + '<span ng-if="$ctrl.review.guest.reviewsCount != 1" translate="reviews.reviews"></span>' + "</small>" + "</div>" + "</div>" + '<div ng-if="!$ctrl.hideLikes" class="no-padding flex-gt-sm flex-xs-100 flex-sm-100 layout-row layout-align-center-center layout-align-gt-sm-end-center">' + '<md-button class="auto-height md-primary md-raised no-margin" ng-click="$ctrl.$likeClick($event)" aria-label="Toggle like">' + '<md-icon ng-show="!$ctrl.review.helpful" class="mdi md-18 mdi-thumb-up"></md-icon>&nbsp;' + '<small ng-if="!$ctrl.review.helpful"><span ng-if="!$ctrl.likeLabel" translate="review.likes.button"></span><span ng-if="$ctrl.likeLabel" ng-bind="$ctrl.likeLabel"></span></small>' + '<small ng-if="$ctrl.review.helpful"><span ng-if="!$ctrl.unlikeLabel" translate="review.likes.button.undo"></span><span ng-if="$ctrl.unlikeLabel" ng-bind="$ctrl.unlikeLabel"></span></small>' + "</md-button>" + "</div>" + "</div>" + "<div flex ng-transclude></div>" + "<md-divider></<md-divider>" + "</div>"
+        template: '<div flex ng-if="!$ctrl.noDefault && !$ctrl.hideAction">' + "<md-divider></<md-divider>" + '<div class="flex layout-row layout-wrap">' + '<div ng-repeat="action in $ctrl.actions" ng-if="!action.hide" ng-class="{\'flex-33\': $ctrl.actions.length <= 3, \'flex\': $ctrl.actions.length > 3}" layout>' + '<div class="flex layout-column">' + '<md-button class="no-margin {{btnClass}}" ng-disabled="action.disabled" ng-click="$ctrl.$actionClick($event, action)" aria-label="{{action.label}}">' + '<md-icon ng-if="action.icon" class="{{::action.icon}} material-icons"></md-icon>&nbsp;' + '<span ng-if="action.label" class="text-initial" ng-bind-html="action.label"></span>' + "</md-button>" + "</div>" + "<md-divider></<md-divider>" + "</div>" + "</div>" + "<md-divider></<md-divider>" + "</div>"
     });
     function ReviewActionsCtrl($scope, Navigator) {
         var ctrl = this;
         this.$onInit = function() {
-            ctrl.hideUser = _.isBoolean(ctrl.hideUser) ? ctrl.hideUser : ctrl.chReviewCtrl.hideUser;
-            ctrl.hideLikes = _.isBoolean(ctrl.hideLikes) ? ctrl.hideLikes : ctrl.chReviewCtrl.hideLikes;
+            ctrl.hideAction = _.isEmpty(ctrl.actions) ? true : false;
             ctrl.$initReview();
         };
         this.$initReview = function() {
@@ -2367,21 +2554,8 @@
             }
             ctrl.review = ctrl.chReviewCtrl.review;
         };
-        this.$userClick = function(ev) {
-            if (ctrl.userState) {
-                Navigator.goToState(ctrl.userState, ctrl.userStateParams);
-            } else {
-                ctrl.userClick && ctrl.userClick({
-                    $event: ev,
-                    review: ctrl.review
-                });
-            }
-        };
-        this.$likeClick = function(ev) {
-            ctrl.likeClick && ctrl.likeClick({
-                $event: ev,
-                review: ctrl.review
-            });
+        this.$actionClick = function(ev, action) {
+            action.onClick && action.onClick.apply(this, [ ev, ctrl.review ].concat(action.onClickParams));
         };
     }
 })();
@@ -2395,18 +2569,18 @@
             chReviewCtrl: "^chReview"
         },
         bindings: {
-            dateFormat: "@?",
-            hideLikes: "<?"
+            showDate: "<",
+            dateFormat: "@"
         },
         controller: ReviewContentCtrl,
-        template: "<div>" + '<div class="layout-row layout-wrap layout-align-center-center layout-padding">' + '<div class="layout-column flex-xs-100 flex-sm-100 flex-gt-sm">' + '<div ng-show="!$ctrl.review.showDetails">' + '<div class="md-margin ng-scope no-margin-top no-margin-x-sides">' + '<small><span translate="review.score.total"></span>:</small>' + '<md-progress-linear md-mode="determinate" value="{{($ctrl.review.score * 10)}}"></md-progress-linear>' + "</div>" + "</div>" + '<div ng-show="$ctrl.review.showDetails">' + '<div ng-repeat="feedback in $ctrl.review.feedbacks track by $index" class="md-margin ng-scope no-margin-top no-margin-x-sides"' + 'title="{{::feedback.value}}" ng-switch="feedback.type">' + '<small class="layout-row flex-100"><span class="flex" translate="{{::feedback.titleKey}}" translate-values="{{feedback.titleParams}}"></span><span ng-if="feedback.type == \'RANK\'">{{::feedback.value}}</span></small>' + '<md-progress-linear ng-switch-when="RANK" md-mode="determinate" value="{{(feedback.value * 10)}}"></md-progress-linear>' + "<div ng-switch-default>" + '<small ng-if="feedback.value">{{feedback.value}}</small>' + '<small ng-if="!feedback.value" class="text-gray-light text-lowercase"><em>({{::(\'review.comment.none\'|translate)}})</em></small>' + "</div>" + "</div>" + "</div>" + '<div class="text-right">' + '<md-button class="auto-height no-margin row-1 text-capitalize text-gray-light text-small" ng-click="$ctrl.review.showDetails = !$ctrl.review.showDetails" aria-label="show details">' + '<span ng-if="!$ctrl.review.showDetails" translate="common.show"></span>' + '<span ng-if="$ctrl.review.showDetails" translate="common.hide"></span>' + '&nbsp;<span class="text-lowercase" translate="common.details"></span>' + "<md-icon ng-class=\"$ctrl.review.showDetails ? 'mdi-chevron-up' : 'mdi-chevron-down'\" class=\"mdi md-18\"></md-icon>" + "</md-button>" + "</div>" + "</div>" + "<div class=\"flex-100 flex-gt-sm-25 layout-column\" ng-class=\"$ctrl.review.showDetails ? 'layout-align-center-center' : 'layout-align-start-center'\">" + '<small ng-if="$ctrl.review.showDetails" class="font-12 text-gray-light text-center" translate="review.score.total"></small>' + '<span class="md-headline">{{::$ctrl.review.score.toFixed(1)}}</span>' + '<span class="text-center" translate="{{$ctrl.review.label}}"></span>' + "</div>" + "</div>" + "<div ng-transclude></div>" + '<div ng-if="$ctrl.review.createdDate" class="layout-padding">' + '<small class="text-gray-light">{{$ctrl.review.createdDate|utcDate:$ctrl.dateFormat}}</small>' + "</div>" + "<md-divider></<md-divider>" + '<div ng-if="!$ctrl.hideLikes && $ctrl.review.likes.length" class="bg-gray-lighter">' + '<div class="layout-padding">' + '<small class="text-primary">' + '<md-icon class="mdi md-14 mdi-thumb-up text-primary"></md-icon>&nbsp;' + '<span ng-if="!$ctrl.review.helpful" class="text-lowercase">' + "<span>{{$ctrl.review.likes.length}}&nbsp;</span>" + '<span ng-if="$ctrl.review.likes.length == 1" translate="review.likes.count"></span>' + '<span ng-if="$ctrl.review.likes.length != 1" translate="review.likes.count.plur"></span>' + "</span>" + '<span ng-if="$ctrl.review.helpful">' + '<span ng-if="$ctrl.review.likes.length == 1" translate="review.likes.you"></span>' + '<span ng-if="$ctrl.review.likes.length != 1" translate="review.likes.you.other" translate-values="{num: $ctrl.review.likes.length}"></span>' + "</span>" + "</small>" + "</div>" + "<md-divider></<md-divider>" + "</div>" + "</div>"
+        template: "<div>" + '<div class="layout-row layout-wrap layout-align-center-center layout-padding">' + '<div class="layout-column flex-xs-100 flex-sm-100 flex-gt-sm">' + '<div ng-show="!$ctrl.review.showDetails">' + '<div class="md-margin ng-scope no-margin-top no-margin-x-sides">' + '<small><span translate="review.score.total"></span>:</small>' + '<md-progress-linear md-mode="determinate" value="{{($ctrl.review.score * 10)}}"></md-progress-linear>' + "</div>" + "</div>" + '<div ng-show="$ctrl.review.showDetails">' + '<div ng-repeat="feedback in $ctrl.review.feedbacks track by $index" class="md-margin ng-scope no-margin-top no-margin-x-sides"' + 'title="{{::feedback.value}}" ng-switch="feedback.type">' + '<small class="layout-row flex-100"><span class="flex" translate="{{::feedback.titleKey}}" translate-values="{{feedback.titleParams}}"></span><span ng-if="feedback.type == \'RANK\'">{{::feedback.value}}</span></small>' + '<md-progress-linear ng-switch-when="RANK" md-mode="determinate" value="{{(feedback.value * 10)}}"></md-progress-linear>' + "<div ng-switch-default>" + '<small ng-if="feedback.value">{{feedback.value}}</small>' + '<small ng-if="!feedback.value" class="text-gray-light text-lowercase"><em>({{::(\'review.comment.none\'|translate)}})</em></small>' + "</div>" + "</div>" + "</div>" + '<div class="text-right">' + '<md-button class="auto-height no-margin row-1 text-capitalize text-gray-light text-small" ng-click="$ctrl.review.showDetails = !$ctrl.review.showDetails" aria-label="show details">' + '<span ng-if="!$ctrl.review.showDetails" translate="common.show"></span>' + '<span ng-if="$ctrl.review.showDetails" translate="common.hide"></span>' + '&nbsp;<span class="text-lowercase" translate="common.details"></span>' + "<md-icon ng-class=\"$ctrl.review.showDetails ? 'mdi-chevron-up' : 'mdi-chevron-down'\" class=\"mdi md-18\"></md-icon>" + "</md-button>" + "</div>" + "</div>" + "<div class=\"flex-100 flex-gt-sm-25 layout-column\" ng-class=\"$ctrl.review.showDetails ? 'layout-align-center-center' : 'layout-align-start-center'\">" + '<small ng-if="$ctrl.review.showDetails" class="font-12 text-gray-light text-center" translate="review.score.total"></small>' + '<span class="md-headline">{{::$ctrl.review.score.toFixed(1)}}</span>' + '<span class="text-center" translate="{{$ctrl.review.label}}"></span>' + "</div>" + "</div>" + '<div class="overflow-hidden" ng-transclude></div>' + '<div ng-if="$ctrl.review.createdDate && $ctrl.showDate">' + "<md-divider></md-divider>" + '<div class="layout-padding text-gray-light">' + "<small>{{$ctrl.review.createdDate|utcDate:$ctrl.dateFormat}}</small>" + "</div>" + "</div>" + "</div>"
     });
     function ReviewContentCtrl($scope) {
         var ctrl = this;
         this.$onInit = function() {
-            ctrl.dateFormat = ctrl.dateFormat || ctrl.chReviewCtrl.dateFormat;
-            ctrl.hideLikes = _.isBoolean(ctrl.hideLikes) ? ctrl.hideLikes : ctrl.chReviewCtrl.hideLikes;
             ctrl.$initReview();
+            ctrl.showDate = _.isBoolean(ctrl.showDate) ? ctrl.showDate : false;
+            ctrl.dateFormat = !_.isNil(ctrl.dateFormat) ? ctrl.dateFormat : ctrl.chReviewCtrl.dateFormat;
         };
         this.$initReview = function() {
             if (!ctrl.chReviewCtrl.review) {
@@ -2476,7 +2650,7 @@
             imgBaseUrl: "@?"
         },
         controller: ReviewHotelInfoCtrl,
-        template: '<div flex layout-padding class="md-subhead row-mini text-bold">' + '<a ng-href="{{\'/hotel/\'+ $ctrl.review.hotel.id}}" target="_blank" class="display-block clickable">' + '<span class="layout-row layout-align-start-center">' + '<img ng-if="!$ctrl.hideImage && $ctrl.$$hotelImage" class="md-margin menu-user-avatar-small no-margin-left no-margin-y-sides" ng-src="{{$ctrl.$$hotelImage}}">' + '<span class="no-padding layout-column">' + "<span>" + '<span class="text-primary">{{::$ctrl.review.hotel.name}}&nbsp;</span>' + '<span class="label label-xs" translate="hotel.type.{{::$ctrl.review.hotel.type}}"></span>' + "</span>" + '<small class="text-gray-light">' + "<span>{{::$ctrl.review.hotel.addressInfo.city}}</span>,&nbsp;" + "<span>{{::$ctrl.review.hotel.addressInfo.address}}</span>" + "</small>" + "</span>" + "</span>" + "</a>" + "</div>"
+        template: '<div flex layout-padding class="md-subhead row-mini text-bold">' + '<a ng-href="{{\'/hotel/\'+ $ctrl.review.hotel.id}}" target="_blank" class="ch-review-hotel-info-link display-block clickable">' + '<span class="layout-row layout-align-start-center">' + '<img ng-if="!$ctrl.hideImage && $ctrl.$$hotelImage" class="md-margin menu-user-avatar-small no-margin-left no-margin-y-sides" ng-src="{{$ctrl.$$hotelImage}}">' + '<span class="no-padding layout-column">' + "<span>" + '<span class="text-primary">{{::$ctrl.review.hotel.name}}&nbsp;</span>' + '<span class="label label-xs" translate="hotel.type.{{::$ctrl.review.hotel.type}}"></span>' + "</span>" + '<small class="text-gray-light">' + "<span>{{::$ctrl.review.hotel.addressInfo.city}}</span>,&nbsp;" + "<span>{{::$ctrl.review.hotel.addressInfo.address}}</span>" + "</small>" + "</span>" + "</span>" + '<md-tooltip><span translate="hotel.go"></span></md-tooltip>' + "</a>" + "</div>"
     });
     function ReviewHotelInfoCtrl($scope, AppOptions) {
         var ctrl = this;
@@ -2513,21 +2687,66 @@
 
 (function() {
     "use strict";
+    ReviewLikesCtrl.$inject = [ "$scope", "AppOptions" ];
+    angular.module("itaca.components").component("chReviewLikes", {
+        require: {
+            chReviewCtrl: "^chReview"
+        },
+        bindings: {
+            contentClass: "@"
+        },
+        controller: ReviewLikesCtrl,
+        template: '<div ng-if="$ctrl.review.likes.length" class="{{$ctrl.contentClass}}" >' + "<small>" + '<md-icon class="mdi md-14 mdi-thumb-up text-primary"></md-icon>&nbsp;' + '<span ng-if="!$ctrl.review.helpful" class="text-lowercase">' + "<span>{{$ctrl.review.likes.length}}&nbsp;</span>" + '<span ng-if="$ctrl.review.likes.length == 1" translate="review.likes.count"></span>' + '<span ng-if="$ctrl.review.likes.length != 1" translate="review.likes.count.plur"></span>' + "</span>" + '<span ng-if="$ctrl.review.helpful">' + '<span ng-if="$ctrl.review.likes.length == 1" translate="review.likes.you"></span>' + '<span ng-if="$ctrl.review.likes.length > 1" ng-switch on="$ctrl.review.likes.length-1">' + '<span ng-switch-when="1" translate="review.likes.you.other"></span>' + '<span ng-switch-default translate="review.likes.you.others" translate-values="{num: $ctrl.review.likes.length-1}"></span>' + "</span>" + "</span>" + "</small>" + "</div>"
+    });
+    function ReviewLikesCtrl($scope, AppOptions) {
+        var ctrl = this;
+        this.$onInit = function() {
+            ctrl.contentClass = ctrl.contentClass || "layout-padding bg-gray-lighter text-primary";
+            ctrl.$initReview();
+            ctrl.$initLikes();
+            ctrl.$initWatchers();
+        };
+        this.$initReview = function() {
+            if (!ctrl.chReviewCtrl.review) {
+                return;
+            }
+            ctrl.review = ctrl.chReviewCtrl.review;
+        };
+        this.$initLikes = function() {
+            ctrl.review.helpful = AppOptions.guest && AppOptions.guest.id && _.some(ctrl.review.likes, function(userId) {
+                return _.isEqual(userId, AppOptions.guest.id);
+            });
+        };
+        this.$initWatchers = function() {
+            $scope.$watchCollection(function() {
+                return ctrl.review.likes;
+            }, function(newVal, oldVal) {
+                ctrl.$initLikes();
+                ctrl.review.thanksNow = _.isEqual(newVal, oldVal) ? false : Boolean(ctrl.review.helpful);
+            });
+        };
+    }
+})();
+
+(function() {
+    "use strict";
     angular.module("itaca.components").component("chReviewProCon", {
         transclude: true,
         require: {
             chReviewCtrl: "^chReview"
         },
         bindings: {
-            textLimit: "<?"
+            textLimit: "<?",
+            showHint: "<?"
         },
         controller: ReviewProConCtrl,
-        template: '<div ng-if="$ctrl.review.pro || $ctrl.review.con" flex layout-padding>' + '<div ng-if="$ctrl.review.pro" class="md-padding no-padding-top">' + '<md-icon class="mdi mdi-thumb-up-outline text-success md-24"></md-icon>&nbsp;' + '<strong><span translate="review.pro"></span>:</strong>' + '<div class="layout-margin no-margin-x-sides text-ellipsis">' + '<span hm-read-more hm-text="{{$ctrl.review.pro}}" hm-limit="$ctrl.textLimit"' + "hm-more-text=\"{{'common.read.more'|translate}}\"" + "hm-less-text=\"{{'common.read.less'|translate}}\"" + 'hm-link-class="clickable text-primary"></span>' + "</div>" + "</div>" + '<div ng-if="$ctrl.review.con" class="md-padding no-padding-top">' + '<md-icon class="mdi mdi-thumb-down-outline text-warn md-24"></md-icon>&nbsp;' + '<strong><span translate="review.con"></span>:</strong>' + '<div class="layout-margin no-margin-x-sides text-ellipsis">' + '<span hm-read-more hm-text="{{$ctrl.review.con}}" hm-limit="$ctrl.textLimit"' + "hm-more-text=\"{{'common.read.more'|translate}}\"" + "hm-less-text=\"{{'common.read.less'|translate}}\"" + 'hm-link-class="clickable text-primary"></span>' + "</div>" + "</div>" + "</div>"
+        template: '<div ng-if="$ctrl.review.pro || $ctrl.review.con || ($ctrl.review.hint && $ctrl.showHint)" flex layout-padding>' + '<div ng-if="$ctrl.review.pro" class="md-padding no-padding-top">' + '<md-icon class="mdi mdi-thumb-up-outline text-success md-24"></md-icon>&nbsp;' + '<strong><span translate="review.pro"></span>:</strong>' + '<div class="layout-margin no-margin-x-sides text-ellipsis">' + '<span hm-read-more hm-text="{{$ctrl.review.pro}}" hm-limit="$ctrl.textLimit"' + "hm-more-text=\"{{'common.read.more'|translate}}\"" + "hm-less-text=\"{{'common.read.less'|translate}}\"" + 'hm-link-class="clickable text-primary"></span>' + "</div>" + "</div>" + '<div ng-if="$ctrl.review.con" class="md-padding no-padding-top">' + '<md-icon class="mdi mdi-thumb-down-outline text-warn md-24"></md-icon>&nbsp;' + '<strong><span translate="review.con"></span>:</strong>' + '<div class="layout-margin no-margin-x-sides text-ellipsis">' + '<span hm-read-more hm-text="{{$ctrl.review.con}}" hm-limit="$ctrl.textLimit"' + "hm-more-text=\"{{'common.read.more'|translate}}\"" + "hm-less-text=\"{{'common.read.less'|translate}}\"" + 'hm-link-class="clickable text-primary"></span>' + "</div>" + "</div>" + '<div ng-if="$ctrl.review.hint && $ctrl.showHint" class="md-padding no-padding-top">' + '<md-icon class="mdi mdi-message-text md-24"></md-icon>&nbsp;' + '<strong><span translate="common.hints"></span>:</strong>' + '<div class="layout-margin no-margin-x-sides text-ellipsis">' + '<span hm-read-more hm-text="{{$ctrl.review.hint}}" hm-limit="$ctrl.textLimit"' + "hm-more-text=\"{{'common.read.more'|translate}}\"" + "hm-less-text=\"{{'common.read.less'|translate}}\"" + 'hm-link-class="clickable text-primary"></span>' + "</div>" + "</div>" + "</div>"
     });
     function ReviewProConCtrl() {
         var ctrl = this;
         this.$onInit = function() {
             ctrl.textLimit = isFinite(parseInt(ctrl.textLimit)) ? parseInt(ctrl.textLimit) : 200;
+            ctrl.showHint = _.isBoolean(ctrl.showHint) ? ctrl.showHint : false;
             ctrl.$initReview();
         };
         this.$initReview = function() {
@@ -2562,7 +2781,7 @@
 
 (function() {
     "use strict";
-    ReviewReplyCtrl.$inject = [ "$scope" ];
+    ReviewReplyCtrl.$inject = [ "$scope", "$q", "$mdMedia" ];
     angular.module("itaca.components").component("chReviewReply", {
         transclude: true,
         require: {
@@ -2571,25 +2790,39 @@
         bindings: {
             ngReadonly: "<?",
             ngEdit: "<?",
-            title: "@",
+            showReply: "<?",
+            replyTitle: "@",
             onReply: "&?",
+            onCancelReply: "&?",
             responseClass: "@?",
             arrowClass: "@?"
         },
         controller: ReviewReplyCtrl,
-        template: '<div ng-show="!$ctrl.ngReadonly || $ctrl.review.reply.response || $ctrl.noDefault" class="ch-review-reply">' + '<div class="ch-review-reply-arrow {{$ctrl.arrowClass}}"></div>' + '<div class="layout-padding no-padding ch-review-reply-inner {{$ctrl.responseClass}}">' + '<div ng-if="!$ctrl.noDefault" class="layout-padding-sm">' + '<div><strong><span ng-if="!$ctrl.title"><span translate="common.answer"></span>:</span><span ng-if="$ctrl.title" ng-bind="$ctrl.title"></strong></div>' + "<div ng-if=\"$ctrl.$$currentMode == 'view'\">" + '<div class="text-ellipsis text-wrap">' + '<span hm-read-more hm-text="{{$ctrl.review.reply.response}}" hm-limit="200" hm-more-text="{{\'common.read.more\'|translate}}"' + 'hm-less-text="{{\'common.read.less\'|translate}}" hm-link-class="clickable text-primary"></span>' + "</div>" + '<div ng-if="!$ctrl.ngReadonly">' + '<md-button ng-if="$ctrl.ngEdit" class="minimal-button no-margin-x-sides auto-height row-1 text-initial" ng-click="$ctrl.$editReply($event)" aria-label="Edit reply">' + '<small translate="common.edit"></small>' + "</md-button>" + "</div>" + "</div>" + "<div ng-if=\"$ctrl.$$currentMode == 'edit'\" layout layout-padding-sm>" + "<div flex>" + '<md-input-container md-no-float class="md-block bg-white minimal-input no-margin">' + '<textarea placeholder="{{\'review.reply.label\'|translate}}..." ng-model="$ctrl.$$reply" max-rows="5" md-no-resize></textarea>' + "</md-input-container>" + "</div>" + '<div layout layout-align="center end" class="no-padding">' + '<md-button class="md-icon-button md-raised" ng-disabled="!$ctrl.$$reply" ng-click="$ctrl.$sendReply($event)" aria-label="Send reply">' + '<md-icon class="mdi mdi-send md-24"></md-icon>' + "</md-button>" + "</div>" + "</div>" + "</div>" + '<div ng-transclude class="no-padding"></div>' + "</div>" + "</div>"
+        template: '<div ng-if="$ctrl.showReply || $ctrl.review.reply.response || $ctrl.noDefault" class="ch-review-reply">' + '<div class="ch-review-reply-arrow {{$ctrl.arrowClass}}"></div>' + '<div class="layout-padding no-padding ch-review-reply-inner {{$ctrl.responseClass}}">' + '<div ng-if="!$ctrl.noDefault" class="layout-padding">' + '<div class="layout-row layout-padding-sm no-padding layout-align-start-center">' + "<div flex>" + '<strong ng-if="!$ctrl.replyTitle"><span translate="common.answer"></span>:</strong>' + '<strong ng-if="$ctrl.replyTitle" ng-bind="$ctrl.replyTitle"></strong>' + "</div>" + '<md-button ng-if="$ctrl.$$currentMode == \'edit\'" class="no-margin auto-height row-1 text-lowercase text-gray-light" ' + 'ng-click="$ctrl.$cancelEdit($event, true)" aria-label="Cancel reply">' + '<small translate="common.cancel"></small>' + "</md-button>" + "</div>" + '<div ng-if="$ctrl.$$currentMode == \'view\'" class="layout-row layout-align-start-center no-padding-top no-padding-bottom no-padding-right">' + '<div class="flex text-wrap">' + '<span hm-read-more hm-text="{{$ctrl.review.reply.response}}" hm-limit="200" hm-more-text="{{\'common.read.more\'|translate}}"' + 'hm-less-text="{{\'common.read.less\'|translate}}" hm-link-class="clickable text-primary"></span>' + "</div>" + '<div ng-if="$ctrl.review.reply.response">' + '<div class="no-padding-left no-padding-right no-padding-bottom">' + '<md-button ng-if="!$ctrl.ngReadonly || $ctrl.ngEdit" class="no-margin text-lowercase text-gray-light" ng-class="{\'md-icon-button\': !$ctrl.$mdMedia(\'gt-sm\')}"' + 'ng-click="$ctrl.$edit()" aria-label="Edit reply">' + "<md-icon class=\"mdi mdi-pencil\" ng-class=\"{'md-18': !$ctrl.$mdMedia('gt-sm'), 'md-14': $ctrl.$mdMedia('gt-sm')}\"></md-icon>" + '<small hide show-gt-sm translate="common.edit"></small>' + '<md-tooltip hide-gt-sm><span translate="common.edit"></span></md-tooltip>' + "</md-button>" + "</div>" + "</div>" + "</div>" + '<div ng-if="$ctrl.$$currentMode == \'edit\'" class="no-padding-top no-padding-bottom no-padding-right">' + '<div layout layout-padding-sm class="layout-align-start-center">' + "<div flex>" + '<md-input-container md-no-float class="md-block bg-white border-radius minimal-input no-margin">' + '<textarea placeholder="{{\'review.reply.label\'|translate}}..." ng-model="$ctrl.$$reply" ng-disabled="$ctrl.$$saving" ' + 'max-rows="5" md-no-resize autofocus></textarea>' + "</md-input-container>" + '<md-progress-linear md-mode="query" ng-show="$ctrl.$$saving"></md-progress-linear>' + "</div>" + '<div ng-if="$ctrl.$$error" class="am-fade-and-scale">' + '<md-icon class="mdi mdi-alert-circle-outline md-18 text-danger material-icons"></md-icon>' + '<md-tooltip><span translate="error.review.reply.saving"></span></md-tooltip>' + "</div>" + '<div layout layout-align="center end" class="no-padding am-fade-and-scale" ng-if="$ctrl.$$reply && $ctrl.$$reply != $ctrl.$$oriReply">' + '<md-button class="md-icon-button" ng-class="{\'md-raised\':$ctrl.$$reply}" ng-disabled="!$ctrl.$$reply || $ctrl.$$reply == $ctrl.$$oriReply || $ctrl.$$saving" ' + 'ng-click="$ctrl.$save($event)" aria-label="Send reply">' + '<md-icon class="mdi mdi-send md-24 material-icons" ng-class="{\'text-gray-light\': $ctrl.$$reply && $ctrl.$$reply != $ctrl.$$oriReply}"></md-icon>' + "</md-button>" + "</div>" + "</div>" + '<div ng-if="!$ctrl.$$saving && $ctrl.$$error" class="layout-padding-sm text-danger am-fade-and-scale">' + '<small ng-if="$ctrl.error != true" ng-bind="$ctrl.$$error"></small>' + '<small ng-if="$ctrl.error == true" translate="error.review.reply.saving"></small>' + "</div>" + "</div>" + "</div>" + '<div ng-transclude class="no-padding"></div>' + "</div>" + "</div>"
     });
-    function ReviewReplyCtrl($scope) {
+    function ReviewReplyCtrl($scope, $q, $mdMedia) {
         var ctrl = this;
+        this.$mdMedia = $mdMedia;
         this.$onInit = function() {
+            ctrl.$initReview();
+            ctrl.$$currentMode = "view";
             ctrl.ngReadonly = _.isBoolean(ctrl.ngReadonly) ? ctrl.ngReadonly : true;
-            if (ctrl.ngReadonly) {
-                ctrl.$$currentMode = "view";
-            }
             ctrl.ngEdit = _.isBoolean(ctrl.ngEdit) ? ctrl.ngEdit : false;
             ctrl.responseClass = ctrl.responseClass || "bg-info-light";
             ctrl.arrowClass = ctrl.arrowClass || "border-info-light";
-            ctrl.$initReview();
+            ctrl.$manageShowReply();
+        };
+        this.$onChanges = function(changesObj) {
+            if (!changesObj) {
+                return;
+            }
+            if (changesObj.ngEdit && !changesObj.ngEdit.isFirstChange() || changesObj.ngReadonly && !changesObj.ngReadonly.isFirstChange()) {
+                ctrl.$edit();
+            }
+            if (changesObj.showReply) {
+                ctrl.$manageShowReply();
+                ctrl.showReply && (!ctrl.review.reply || !ctrl.review.reply.response) && ctrl.$edit();
+            }
         };
         this.$initReview = function() {
             if (!ctrl.chReviewCtrl.review) {
@@ -2600,25 +2833,56 @@
                 ctrl.$$currentMode = "edit";
             }
         };
-        this.$editReply = function(ev) {
-            if (ctrl.ngReadonly) {
-                ctrl.$cancelReplyEdit(ev);
+        this.$manageShowReply = function() {
+            if (!ctrl.review) {
                 return;
             }
-            ctrl.$$reply = angular.copy(ctrl.review.reply.response);
+            ctrl.showReply = ctrl.review.reply && ctrl.review.reply.response ? true : _.isBoolean(ctrl.showReply) ? ctrl.showReply : false;
+        };
+        this.$edit = function() {
+            if (ctrl.ngReadonly || !ctrl.ngEdit) {
+                ctrl.$cancelEdit();
+                return;
+            }
+            ctrl.$$oriReply = angular.copy(ctrl.review.reply ? ctrl.review.reply.response : null);
+            ctrl.$$reply = angular.copy(ctrl.$$oriReply);
             ctrl.$$currentMode = "edit";
         };
-        this.$cancelReplyEdit = function(ev) {
+        this.$cancelEdit = function(ev, notify) {
             ctrl.$$reply = null;
+            ctrl.$$oriReply = null;
             ctrl.$$currentMode = "view";
-        };
-        this.$sendReply = function(ev) {
-            ctrl.review.reply.response = angular.copy(ctrl.$$reply);
-            ctrl.onReply && ctrl.onReply({
+            notify && ctrl.onCancelReply && ctrl.onCancelReply({
                 $event: ev,
-                reply: ctrl.review.reply.response
+                $review: ctrl.review
             });
-            ctrl.$cancelReplyEdit(ev);
+        };
+        this.$save = function(ev) {
+            if (!ctrl.$$reply) {
+                return;
+            }
+            ctrl.$onSaving();
+            var ret = ctrl.onReply ? ctrl.onReply({
+                $event: ev,
+                $review: ctrl.review,
+                $reply: ctrl.$$reply
+            }) : ctrl.$$reply;
+            $q.when(ret).then(ctrl.$onSaveSuccess, ctrl.$onSaveFailure);
+        };
+        this.$onSaveSuccess = function() {
+            ctrl.review.reply = ctrl.review.reply || {};
+            ctrl.review.reply.response = angular.copy(ctrl.$$reply);
+            ctrl.$$error = false;
+            ctrl.$$saving = false;
+            ctrl.$cancelEdit();
+        };
+        this.$onSaveFailure = function(error) {
+            ctrl.$$error = _.isEmpty(error) ? true : error;
+            ctrl.$$saving = false;
+        };
+        this.$onSaving = function() {
+            ctrl.$$error = false;
+            ctrl.$$saving = true;
         };
     }
 })();
@@ -2630,12 +2894,18 @@
         require: {
             chReviewCtrl: "^chReview"
         },
+        bindings: {
+            contentClass: "@",
+            showDetails: "<"
+        },
         controller: ReviewReportInfoCtrl,
-        template: '<div class="no-padding flex" ng-if="$ctrl.review.reportType">' + "<div>" + '<md-icon class="mdi md-18 mdi-flag-variant text-danger"></md-icon>' + '<small translate="review.reporting.label"></small>' + "</div>" + "</div>"
+        template: '<div ng-if="$ctrl.review.reportType" class="{{$ctrl.contentClass}}">' + '<div class="layout-padding-sm no-padding">' + "<div>" + '<md-icon class="mdi md-18 mdi-flag-variant text-danger"></md-icon>' + '<small translate="review.reporting.label"></small>' + "</div>" + '<div ng-if="$ctrl.showDetails" ng-switch="$ctrl.review.reportType">' + "<small><i>" + '<span ng-switch-when="OTHER">"{{$ctrl.review.reportNote}}"</span>' + "<span ng-switch-default>\"<span translate=\"{{'review.report.type.' + $ctrl.review.reportType +'.label'}}\"></span>\"</span>" + "</i></small>" + "</div>" + "</div>" + "</div>"
     });
     function ReviewReportInfoCtrl() {
         var ctrl = this;
         this.$onInit = function() {
+            ctrl.contentClass = ctrl.contentClass || "layout-padding bg-gray-lighter text-danger";
+            ctrl.showDetails = _.isBoolean(ctrl.showDetails) ? ctrl.showDetails : false;
             ctrl.$initReview();
         };
         this.$initReview = function() {
@@ -2743,6 +3013,52 @@
 
 (function() {
     "use strict";
+    ReviewUserCtrl.$inject = [ "$scope", "Navigator" ];
+    angular.module("itaca.components").component("chReviewUser", {
+        transclude: true,
+        require: {
+            chReviewCtrl: "^chReview"
+        },
+        bindings: {
+            dateFormat: "@",
+            hideUser: "<?",
+            hideDate: "<?",
+            userState: "@?",
+            userStateParams: "<?",
+            userClick: "&?"
+        },
+        controller: ReviewUserCtrl,
+        template: "<div flex>" + '<div ng-if="!$ctrl.noDefault && !$ctrl.hideUser" class="bg-gray-lighter flex layout-row layout-wrap layout-padding">' + '<div class="layout-row layout-padding-sm no-padding no-outline" ng-class="{\'clickable\': $ctrl.userState || $ctrl.userClick}" ng-click="$ctrl.$userClick($event)" aria-label="Toggle user action">' + "<div>" + '<span ng-if="$ctrl.userAvatar && $ctrl.review.reviewSettings.showAvatar && !$ctrl.review.reviewSettings.anonymous"' + 'class="relative menu-user-avatar-small display-block overflow-hidden">' + '<img alt="User profile image" class="full-width" ng-src="{{$ctrl.userAvatar}}" lazy-image />' + "</span>" + '<span ng-if="(!$ctrl.review.reviewSettings.showAvatar || !$ctrl.userAvatar) && !$ctrl.review.reviewSettings.anonymous"' + 'class="bg-blue-sea menu-user-avatar-small layout-row layout-align-center-center">' + '<span class="md-headline text-uppercase">{{!$ctrl.review.reviewSettings.showRealName && ($ctrl.review.createdBy || $ctrl.review.reservation.guest).nickname ? ($ctrl.review.createdBy || $ctrl.review.reservation.guest).nickname.charAt(0) : ($ctrl.review.createdBy || $ctrl.review.reservation.guest).name.charAt(0)}}</span>' + "</span>" + '<md-icon ng-if="$ctrl.review.reviewSettings.anonymous" class="mdi mdi-account-circle md-38"></md-icon>' + "</div>" + '<div class="layout-align-center-start layout-column no-padding-bottom no-padding-top row-1">' + '<span class="font-10 text-gray-light row-1"><span translate="common.written.by.female"></span></span>' + "<div>" + '<strong class="md-subhead">' + '<span ng-if="!$ctrl.review.reviewSettings.anonymous && ($ctrl.review.createdBy || $ctrl.review.reservation.guest)">' + '<span ng-if="!$ctrl.review.reviewSettings || $ctrl.review.reviewSettings.showRealName || !$ctrl.review.createdBy.nickname">' + '<span ng-if="$ctrl.review.createdBy">{{::$ctrl.review.createdBy.name}}&nbsp;{{::$ctrl.review.createdBy.surname}}</span>' + '<span ng-if="!$ctrl.review.createdBy && $ctrl.review.reservation.guest">{{::$ctrl.review.reservation.guest.name}}&nbsp;{{::$ctrl.review.reservation.guest.surname}}</span>' + "</span>" + '<span ng-if="$ctrl.review.reviewSettings && !$ctrl.review.reviewSettings.showRealName && $ctrl.review.createdBy.nickname">' + '<span ng-if="$ctrl.review.createdBy">{{::$ctrl.review.createdBy.nickname}}</span>' + '<span ng-if="!$ctrl.review.createdBy && $ctrl.review.reservation.guest">{{::$ctrl.review.reservation.guest.nickname}}</span>' + "</span>" + "</span>" + '<span ng-if="$ctrl.review.reviewSettings.anonymous || (!$ctrl.review.createdBy && !$ctrl.review.reservation.guest)" translate="common.anonymous"></span>' + "</strong>" + '<span ng-if="$ctrl.review.createdDate && !$ctrl.hideDate" class="font-10 text-gray-light">' + "<span>&nbsp;-&nbsp;{{$ctrl.review.createdDate|utcDate:$ctrl.dateFormat}}</span>" + "</span>" + "</div>" + '<small class="font-10 text-gray-light row-1 text-lowercase" ng-if="!$ctrl.review.reviewSettings.anonymous && $ctrl.review.guest.reviewsCount">' + "<span>{{::$ctrl.review.guest.reviewsCount}}&nbsp;</span>" + '<span ng-if="$ctrl.review.guest.reviewsCount == 1" translate="reviews.review"></span>' + '<span ng-if="$ctrl.review.guest.reviewsCount != 1" translate="reviews.reviews"></span>' + "</small>" + "</div>" + "</div>" + "</div>" + "<div flex ng-transclude></div>" + "</div>"
+    });
+    function ReviewUserCtrl($scope, Navigator) {
+        var ctrl = this;
+        this.$onInit = function() {
+            ctrl.hideUser = _.isBoolean(ctrl.hideUser) ? ctrl.hideUser : ctrl.chReviewCtrl.hideUser;
+            ctrl.hideDate = _.isBoolean(ctrl.hideDate) ? ctrl.hideDate : ctrl.chReviewCtrl.hideDate;
+            ctrl.dateFormat = !_.isNil(ctrl.dateFormat) ? ctrl.dateFormat : ctrl.chReviewCtrl.dateFormat;
+            ctrl.$initReview();
+        };
+        this.$initReview = function() {
+            if (!ctrl.chReviewCtrl.review) {
+                return;
+            }
+            ctrl.review = ctrl.chReviewCtrl.review;
+        };
+        this.$userClick = function(ev) {
+            if (ctrl.userState) {
+                Navigator.goToState(ctrl.userState, ctrl.userStateParams);
+            } else {
+                ctrl.userClick && ctrl.userClick({
+                    $event: ev,
+                    $review: ctrl.review
+                });
+            }
+        };
+    }
+})();
+
+(function() {
+    "use strict";
     ReviewCtrl.$inject = [ "$scope", "ReviewsUtils", "AppOptions" ];
     angular.module("itaca.components").component("chReview", {
         transclude: true,
@@ -2751,7 +3067,7 @@
             newLimit: "@?",
             dateFormat: "@?",
             hideUser: "<?",
-            hideLikes: "<?",
+            hideDate: "<?",
             imgBaseUrl: "@?"
         },
         controller: ReviewCtrl,
@@ -2762,7 +3078,6 @@
         this.$onInit = function() {
             ctrl.newLimit = _.isFinite(parseInt(ctrl.newLimit)) ? parseInt(ctrl.newLimit) : 7;
             ctrl.hideUser = _.isBoolean(ctrl.hideUser) ? ctrl.hideUser : false;
-            ctrl.hideLikes = _.isBoolean(ctrl.hideLikes) ? ctrl.hideLikes : false;
             ctrl.imgBaseUrl = ctrl.imgBaseUrl || true;
             if (_.isBoolean(ctrl.imgBaseUrl)) {
                 ctrl.imgBaseUrl = ctrl.imgBaseUrl && AppOptions.config && AppOptions.config.amz ? AppOptions.config.amz.baseUrl + "/" + AppOptions.config.amz.bucketName + "/" : "";
@@ -2776,20 +3091,12 @@
             ctrl.review.isNew = moment().isBefore(moment(ctrl.review.createdDate).add(ctrl.newLimit, "days"));
             ctrl.review.label = ReviewsUtils.generateScoreLabel(Math.floor(ctrl.review.score));
             ctrl.$getUserAvatar();
-            ctrl.$initLikes();
-            ctrl.$initWatchers();
-        };
-        this.$initLikes = function() {
-            ctrl.review.helpful = AppOptions.guest && AppOptions.guest.id && _.some(ctrl.review.likes, function(userId) {
-                return _.isEqual(userId, AppOptions.guest.id);
-            });
         };
         this.$getUserAvatar = function() {
-            var baseUrl = AppOptions.config.amz.baseUrl + "/" + AppOptions.config.amz.bucketName + "/";
             if (ctrl.review.createdBy && ctrl.review.createdBy.avatarType) {
                 switch (ctrl.review.createdBy.avatarType) {
                   case "PORTAL":
-                    ctrl.userAvatar = ctrl.review.createdBy.avatar ? baseUrl + ctrl.review.createdBy.avatar : null;
+                    ctrl.userAvatar = ctrl.review.createdBy.avatar ? ctrl.imgBaseUrl + ctrl.review.createdBy.avatar : null;
                     break;
 
                   case "FACEBOOK":
@@ -2801,20 +3108,12 @@
                     break;
 
                   default:
-                    ctrl.userAvatar = ctrl.review.createdBy.avatar ? baseUrl + ctrl.review.createdBy.avatar : null;
+                    ctrl.userAvatar = ctrl.review.createdBy.avatar ? ctrl.imgBaseUrl + ctrl.review.createdBy.avatar : null;
                     break;
                 }
             }
             ctrl.review.reviewSettings = _.isObjectLike(ctrl.review.reviewSettings) ? ctrl.review.reviewSettings : {};
             ctrl.review.reviewSettings.showRealName = _.isBoolean(ctrl.review.reviewSettings.showRealName) ? ctrl.review.reviewSettings.showRealName : true;
-        };
-        this.$initWatchers = function() {
-            $scope.$watchCollection(function() {
-                return ctrl.review.likes;
-            }, function(newVal, oldVal) {
-                ctrl.$initLikes();
-                ctrl.review.thanksNow = _.isEqual(newVal, oldVal) ? false : Boolean(ctrl.review.helpful);
-            });
         };
     }
 })();
@@ -4215,9 +4514,14 @@ angular.module("itaca.components").run([ "$templateCache", function($templateCac
     $templateCache.put("/tpls/booking-form/booking-form.tpl", '<ng-form name="bookingForm" novalidate layout="column" layout-padding><div class="md-subhead no-padding-top no-padding-bottom text-gray-light text-center"><strong ng-if="$ctrl.reservation.nights && $ctrl.reservation.rooms.length"><span translate="reservation.summary.your"></span></strong><strong ng-if="$ctrl.reservation.nights && !$ctrl.reservation.rooms.length"><span translate="reservation.summary.search"></span></strong><strong ng-if="!$ctrl.reservation.nights"><span translate="reservation.search.your.room"></span></strong></div><div ng-if="!$ctrl.step || $ctrl.step <= 1" class="no-padding-top no-padding-bottom" layout="column" layout-padding-sm><div flex layout="column"><ch-date-range-picker label="{{\'reservation.when.question\'|translate}}" start-label="{{\'date.checkin.select.alt\'|translate}}" start="$ctrl.reservation.checkin" start-min-date="$ctrl.minDate" start-error-messages="{mindate: (\'error.date.before.today\'|translate)}" end-label="{{\'date.checkout.select.alt\'|translate}}" end="$ctrl.reservation.checkout" end-min-date="$ctrl.$$minEndDate" end-max-date="$ctrl.$$maxEndDate" end-error-messages="{mindate: (\'error.date.end.before.start\'|translate), maxdate: (\'error.reservation.search.maxdate\'|translate)}" max-range="$ctrl.maxRange" diff-label-singular="{{\'common.night\'|translate}}" diff-label-plural="{{\'common.nights\'|translate}}" use-utc="true" disable-body-scroll="false"></ch-date-range-picker></div><md-divider class="no-padding"></md-divider><div flex layout="column"><ch-people-picker label="{{\'reservation.people.question\'|translate}}" people="$ctrl.reservation.people" ng-required="true" has-confirm="true" disable-body-scroll="false" fullscreen="$ctrl.$mdMedia(\'xs\')"></ch-people-picker></div><md-divider></md-divider></div><div ng-if="$ctrl.step > 1" class="no-padding-top no-padding-bottom" layout="column" layout-padding-sm><div flex layout="column"><div layout="column" layout-padding class="text-center"><div class="text-gray-light text-small no-padding-bottom"><span>{{\'reservation.when.question\'|translate}}</span></div><div class="layout layout-wrap layout-align-center-center row-mini text-lowercase no-padding-bottom"><span><span translate="date.from.abbr"></span>&nbsp;<span class="md-subhead"><strong>{{$ctrl.reservation.checkin|utcDate:"shortDate"}}</strong></span>&nbsp;</span><span><span translate="date.to.abbr"></span>&nbsp;<span class="md-subhead"><strong>{{$ctrl.reservation.checkout|utcDate:"shortDate"}}</strong></span></span><span ng-if="$ctrl.reservation.nights" class="text-gray-light text-small no-padding no-margin text-lowercase">&nbsp;(<span>{{$ctrl.reservation.nights}}&nbsp;</span><span ng-show="$ctrl.reservation.nights == 1" translate="common.night"></span><span ng-show="$ctrl.reservation.nights > 1" translate="common.nights"></span>)</span></div></div></div><md-divider class="no-padding"></md-divider><div flex layout="column"><div layout="column" layout-padding class="text-center"><div class="text-gray-light text-small no-padding-bottom"><span translate="reservation.people.question"></span></div><div ng-if="$ctrl.reservation.people" class="md-subhead text-wrap row-mini no-padding-bottom"><strong><ch-people-summary people="$ctrl.reservation.people"></ch-people-summary></strong></div><div ng-if="$ctrl.step == 2 && ($ctrl.$$remainingPeople.adults > 0 || $ctrl.$$remainingPeople.boys > 0 || $ctrl.$$remainingPeople.children > 0 || $ctrl.$$remainingPeople.kids > 0)" class="text-lowercase text-small text-warn"><md-icon class="mdi mdi-alert md-14 text-warn"></md-icon><span translate="reservation.people.unsatisfied"></span>:&nbsp;<strong><ch-people-summary people="$ctrl.$$remainingPeople"></ch-people-summary>&nbsp;<span translate="reservation.people.unsatisfied.to.arrange"></span></strong>.&nbsp;<span class="text-initial" translate="reservation.people.unsatisfied.add.beds.or.rooms"></span>.</div></div></div><md-divider></md-divider></div><div id="booking-summary" class="no-padding-top no-padding-bottom layout-padding-sm" ng-show="$ctrl.reservation.totalAmount.finalAmount && $ctrl.reservation.totalAmount.finalAmount > 0"><div class="text-gray-light text-small text-center"><span translate="reservation.rooms.details"></span>:</div><div><ul class="no-margin-x-sides"><li ng-repeat="room in $ctrl.reservation.rooms"><div class="layout-row layout-padding-sm layout-align-start-center"><small class="flex no-padding-y-sides"><strong>1&nbsp;<span translate="{{room.type.roomType.nameKey}}"></span>&nbsp;<small class="text-uppercase" translate="room.category.{{room.type.category}}"></small></strong><span ng-if="$ctrl.reservation.nights > 1" class="text-lowercase"><span>&nbsp;(x&nbsp;{{$ctrl.reservation.nights}}&nbsp;<span translate="common.nights"></span>)</span></span></small><div class="text-right no-padding-y-sides"><div class="text-gray-light text-small text-striked" ng-if="room.totalRate.amount.initialAmount != room.totalRate.amount.finalAmount"><em>{{room.totalRate.amount.initialAmount|chCurrency}}</em></div><div><span>{{room.totalRate.amount.finalAmount|chCurrency}}</span></div></div></div><ul ng-if="room.services.length" class="no-padding no-margin-right no-margin-bottom no-margin-top"><li ng-if="!serviceSold.included" ng-repeat="serviceSold in room.services" class="layout-row layout-padding-sm layout-align-start-center" ng-class="{\'text-danger\': serviceSold.toRemove}"><small class="flex no-padding-y-sides"><span><span ng-if="serviceSold.count > 1">{{serviceSold.count}}</span><span ng-if="serviceSold.count <= 1">1</span><span>&nbsp;<span translate="{{serviceSold.service.type.nameKey}}"></span></span></span><span ng-if="serviceSold.service.paymentType == \'PER_PERSON\' && ! serviceSold.toRemove">&nbsp;x&nbsp;<ch-people-summary people="serviceSold.people" no-details="true"></ch-people-summary></span><span ng-if="$ctrl.reservation.nights > 1 && serviceSold.service.frequency == \'DAILY\'" class="text-lowercase"><span>&nbsp;(x&nbsp;{{$ctrl.reservation.nights}}<span translate="date.days.abbr"></span>)</span></span></small><span class="text-right no-padding-y-sides"><span ng-if="serviceSold.amount.finalAmount > 0">{{serviceSold.amount.finalAmount|chCurrency}}</span><i ng-if="serviceSold.amount.finalAmount <= 0" translate="common.free"></i></span></li></ul><ul ng-if="room.otherBeds.length" class="flex-100 no-padding no-margin-right no-margin-bottom no-margin-top"><li ng-repeat="bedSold in room.otherBeds" class="layout-row layout-padding-sm layout-align-start-center"><small class="flex no-padding-y-sides"><span>1&nbsp;<span class="text-lowercase" translate="bed.bed"></span>&nbsp;<span translate="{{\'bed.\' + bedSold.bed.type}}"></span></span><span>&nbsp;x&nbsp;<ch-people-summary people="bedSold.people" no-details="true"></ch-people-summary></span><span ng-if="$ctrl.reservation.nights > 1" class="text-lowercase"><span>&nbsp;(x&nbsp;{{$ctrl.reservation.nights}}&nbsp;<span translate="common.nights"></span>)</span></span></small><span class="text-right no-padding-y-sides"><span>{{bedSold.amount.finalAmount|chCurrency}}</span></span></li></ul></li></ul></div><md-divider></md-divider><div class="layout-row layout-wrap layout-padding no-pading-top no-padding-left no-padding-right" ng-if="$ctrl.reservation.totalAmount.finalAmount"><div class="flex no-padding" style="min-width: 125px"><div class="md-headline"><span translate="common.total"></span>&nbsp;</div><div ng-if="$ctrl.currentCurrency != $ctrl.hotelCurrency" class="text-lowercase" style="margin-top:-6px"><small>(<span translate="currency.your.currency"></span>)</small></div></div><div class="text-right no-padding md-headline"><span>{{$ctrl.reservation.totalAmount.finalAmount|chCurrency}}</span><span ng-if="$ctrl.currentCurrency != $ctrl.hotelCurrency">*</span></div></div><div class="layout-row layout-padding no-padding-left no-padding-right no-padding-top" ng-if="$ctrl.reservation.totalAmount.finalAmount && $ctrl.currentCurrency != $ctrl.hotelCurrency"><div class="flex no-padding"><div class="md-subhead"><span translate="common.total"></span>:</div><div class="text-lowercase" style="margin-top:-6px"><small>(<span translate="currency.hotel.currency"></span>)</small></div></div><div class="md-subhead text-right no-padding"><span>{{$ctrl.reservation.totalAmount.finalAmount | chCurrency:$ctrl.hotelCurrency }}</span></div></div><div class="text-gray-light layout-row no-padding" ng-if="$ctrl.reservation.totalAmount.finalAmount && $ctrl.currentCurrency != $ctrl.hotelCurrency"><small class="layout-column layout-margin no-margin"><span class="no-margin"><span translate="currency.info.payment" translate-values="{name: $ctrl.reservation.hotel.name}"></span><span>:&nbsp;{{ 1 | chCurrency:$ctrl.hotelCurrency}} = {{ 1 | chCurrency}}</span></span><span class="no-margin-left no-margin-bottom no-margin-right"><span translate="currency.info.payment2"></span></span></small></div></div><div layout="column" class="no-padding" ng-switch="$ctrl.step"><div ng-switch-default layout="column"><md-button class="md-raised md-primary row-1" ng-disabled="bookingForm.$invalid" ch-click="$ctrl.$search()" aria-label="Check availability"><div layout="column" layout-padding><span translate="reservation.availability.check"></span></div></md-button></div><div ng-switch-when="1" layout="column"><md-button class="md-raised md-primary row-1" ng-disabled="$ctrl.reservation.rooms.length <= 0" ng-click="$ctrl.$next()" aria-label="Book now"><div layout="column" layout-padding><span ng-if="$ctrl.reservation.rooms.length"><span translate="reservation.instant"></span><md-icon class="mdi mdi-chevron-right" ng-class="{\'animated infinite wobble\':$ctrl.reservation.rooms.length}"></md-icon></span><span ng-if="!$ctrl.reservation.rooms.length"><span translate="reservation.rooms.select"></span></span></div></md-button></div><div ng-switch-when="2|3|4" ng-switch-when-separator="|" layout="column"><md-button class="md-raised row-1" ng-class="{\'md-primary\': $ctrl.step == 2, \'bg-success\': $ctrl.step == 3}" ng-click="$ctrl.$next()" aria-label="Book now" ng-switch="$ctrl.step"><div ng-switch-when="2" layout="column" layout-padding><span><span translate="common.last.step"></span><md-icon class="mdi mdi-chevron-right animated infinite wobble"></md-icon></span></div><div ng-switch-when="3" layout="column" layout-padding><div class="text-initial no-padding"><small translate="reservation.text.alright"></small></div><div class="text-uppercase no-padding"><strong translate="reservation.book.now" style="margin-left: 24px"></strong><md-icon class="mdi mdi-chevron-right text-white animated infinite wobble"></md-icon></div><small ng-if="$ctrl.reservation.guest.email" class="ng-binding ng-scope no-padding text-initial text-wrap"><span><span translate="reservation.email.confirm.to"></span>:</span><span>{{$ctrl.reservation.guest.email}}</span></small></div></md-button></div></div><div class="layout-column layout-padding no-padding text-center" ng-if="$ctrl.step <= 1"><span class="no-padding-bottom"><md-icon class="mdi mdi-checkbox-marked-circle-outline text-success md-18"></md-icon>&nbsp;<span class="text-success" translate="common.only.two.min"></span></span></div><div layout="column" class="text-gray-light" ng-if="$ctrl.reservation.nights"><small><span ng-if="$ctrl.reservation.nights == 1" translate="reservation.rates.info.night"></span><span ng-if="$ctrl.reservation.nights > 1" translate="reservation.rates.info.nights" translate-value-count="{{$ctrl.reservation.nights}}"></span></small><small ng-if="$ctrl.roomVatRate"><strong><span translate="common.included"></span>:</strong>&nbsp;{{::$ctrl.roomVatRate}}%&nbsp;<span translate="billing.vat.tax"></span></small><small ng-if="$ctrl.hotelCityTax || $ctrl.reservation.checkinDetails"><strong><span translate="common.included.not"></span>:</strong>&nbsp;<span ng-if="$ctrl.hotelCityTax">{{::($ctrl.hotelCityTax|chCurrency:$ctrl.hotelCurrency)}}&nbsp;<span translate="reservation.cityTax.description"></span></span><span ng-if="$ctrl.reservation.checkinDetails && $ctrl.reservation.checkinDetails.amount.finalAmount"><span ng-if="$ctrl.hotelCityTax">,&nbsp;</span>"{{::($ctrl.reservation.checkinDetails.amount.finalAmount|chCurrency:$ctrl.hotelCurrency)}}&nbsp;<span translate="reservation.checkinDetails.description"></span></span></small></div></ng-form>');
     $templateCache.put("/tpls/cancellation-policy-info/cancellation-policy-info.tpl", '<div><h4 class="{{$ctrl.titleClass}}"><strong><span ng-if="!$ctrl.title" translate="reservation.cancellation.terms.conditions"></span><span ng-if="$ctrl.title" ng-bind="$ctrl.title"></span></strong></h4><div ng-if="!$ctrl.cancellationPolicy"><span translate="reservation.cancellation.room.no.condition"></span></div><div flex ng-if="$ctrl.cancellationPolicy"><div class="layout-column" ng-if="!$ctrl.cancellationPolicy.cancellation.deposit"><div ng-switch="$ctrl.rateType"><div ng-switch-when="STANDARD"><span ng-if="!$ctrl.cancellationPolicy.flexible"><span translate="reservation.cancellation.room.condition.free.label"></span><strong>{{::($ctrl.cancellationPolicy.limitDate|date:"shortDate")}}</strong><span translate="date.time.to" class="text-lowercase"></span><span><strong>{{::($ctrl.cancellationPolicy.limitDate|offsetDate:"HH:mm":$ctrl.offset)}}</strong></span><span>[{{::$ctrl.city}}].</span><span translate="reservation.cancellation.room.condition.free.label2"></span></span><span ng-if="$ctrl.cancellationPolicy.flexible"><span translate="reservation.cancellation.room.condition.flex.label" translate-values="{limit: ($ctrl.cancellationPolicy.limitDate|offsetDate:\'short\':$ctrl.offset) + \' [\' + $ctrl.city + \']\'}"></span></span><span ng-if="$ctrl.cancellationPolicy.cancellation.chargeNights != $ctrl.cancellationPolicy.cancellation.stayNights">{{::$ctrl.cancellationPolicy.cancellation.percentage}}<span ng-if="$ctrl.cancellationPolicy.cancellation.chargeNights == 1"><span translate="reservation.percentage.firstNight"></span>&nbsp;<span translate="common.night" class="text-lowercase"></span></span><span ng-if="$ctrl.cancellationPolicy.cancellation.chargeNights > 1"><span ng-if="$ctrl.cancellationPolicy.cancellation.chargeNights < reservation.nights"><span translate="reservation.percentage.nights"></span>{{::$ctrl.cancellationPolicy.cancellation.chargeNights}}&nbsp;<span translate="common.nights" class="text-lowercase"></span></span><span ng-if="$ctrl.cancellationPolicy.cancellation.chargeNights >= reservation.nights"><span translate="reservation.percentage.total.stay"></span></span></span><span ng-if="$ctrl.cancellationPolicy.cancellation.chargeNights < 0"><span translate="reservation.percentage.total.stay"></span></span></span><span ng-if="$ctrl.cancellationPolicy.cancellation.chargeNights == $ctrl.cancellationPolicy.cancellation.stayNights">{{::$ctrl.cancellationPolicy.cancellation.percentage}}<span translate="reservation.percentage.total.stay"></span></span><span translate="reservation.total.night"></span><strong>{{$ctrl.cancellationPolicy.amount.finalAmount|chCurrency}}</strong>.</div><div ng-switch-when="NOT_REFUNDABLE"><span translate="reservation.cancellation.room.condition.notRef.label"></span><span ng-if="$ctrl.cancellationPolicy.limitDate"><span translate="reservation.cancellation.room.condition.notRef.label2"></span><strong>{{::($ctrl.cancellationPolicy.limitDate|date:"shortDate")}}</strong><span translate="date.time.to" class="text-lowercase"></span><span><strong>{{::($ctrl.cancellationPolicy.limitDate|offsetDate:"HH:mm":$ctrl.offset)}}</strong></span><span>[{{::$ctrl.city}}],</span><span translate="reservation.cancellation.room.condition.notRef.label3"></span><span ng-if="$ctrl.cancellationPolicy.cancellation.chargeNights != $ctrl.cancellationPolicy.cancellation.stayNights">{{::$ctrl.cancellationPolicy.cancellation.percentage}}<span ng-if="$ctrl.cancellationPolicy.cancellation.chargeNights == 1"><span translate="reservation.percentage.firstNight"></span>&nbsp;<span translate="common.night" class="text-lowercase"></span></span><span ng-if="$ctrl.cancellationPolicy.cancellation.chargeNights > 1"><span ng-if="$ctrl.cancellationPolicy.cancellation.chargeNights < reservation.nights"><span translate="reservation.percentage.nights"></span>{{::$ctrl.cancellationPolicy.cancellation.chargeNights}}&nbsp;<span translate="common.nights" class="text-lowercase"></span></span><span ng-if="$ctrl.cancellationPolicy.cancellation.chargeNights >= reservation.nights"><span translate="reservation.percentage.total.stay"></span></span></span><span ng-if="$ctrl.cancellationPolicy.cancellation.chargeNights < 0"><span translate="reservation.percentage.total.stay"></span></span></span><span ng-if="$ctrl.cancellationPolicy.cancellation.chargeNights == $ctrl.cancellationPolicy.cancellation.stayNights">{{::$ctrl.cancellationPolicy.cancellation.percentage}}<span translate="reservation.percentage.total.stay"></span></span><span translate="reservation.total.night"></span><strong>{{$ctrl.cancellationPolicy.amount.finalAmount|chCurrency}}</strong>.</span><span ng-if="!$ctrl.cancellationPolicy.limitDate"><span translate-once="reservation.cancellation.room.condition.notRef.label4"></span><strong>{{room.total$ctrl.cancellationPolicy.amount.finalAmount|chCurrency}}</strong>.</span></div></div></div><div class="layout-column" ng-if="$ctrl.cancellationPolicy.cancellation.deposit"><div class="no-margin-top"><span translate="reservation.room.deposit.label1"></span><span ng-if="$ctrl.cancellationPolicy.cancellation.chargeNights != $ctrl.cancellationPolicy.cancellation.stayNights">{{::$ctrl.cancellationPolicy.cancellation.percentage}}<span ng-if="$ctrl.cancellationPolicy.cancellation.chargeNights == 1"><span translate="reservation.percentage.firstNight"></span>&nbsp;<span translate="common.night" class="text-lowercase"></span></span><span ng-if="$ctrl.cancellationPolicy.cancellation.chargeNights > 1"><span ng-if="$ctrl.cancellationPolicy.cancellation.chargeNights < reservation.nights"><span translate="reservation.percentage.nights"></span>{{::$ctrl.cancellationPolicy.cancellation.chargeNights}}&nbsp;<span translate="common.nights" class="text-lowercase"></span></span><span ng-if="$ctrl.cancellationPolicy.cancellation.chargeNights >= reservation.nights"><span translate="reservation.percentage.total.stay"></span></span></span><span ng-if="$ctrl.cancellationPolicy.cancellation.chargeNights < 0"><span translate="reservation.percentage.total.stay"></span></span></span><span ng-if="$ctrl.cancellationPolicy.cancellation.chargeNights == $ctrl.cancellationPolicy.cancellation.stayNights">{{::$ctrl.cancellationPolicy.cancellation.percentage}}<span translate="reservation.percentage.total.stay"></span></span><span translate="reservation.total.night"></span><strong>{{$ctrl.cancellationPolicy.amount.finalAmount|chCurrency}}</strong>.<span translate="reservation.room.deposit.label2"></span></div></div></div></div>');
     $templateCache.put("/tpls/identity-document-edit/identity-document-edit.tpl", '<div><ng-form name="identityDocumentForm"><div ng-class="{\'text-center\': !$ctrl.$mdMedia(\'gt-sm\')}" class="text-gray-light" ng-switch="$ctrl.identityDocument.guestType"><div ng-switch-when="FAMILY_MEMBER" class="bg-success text-white md-button button-small"><md-icon class="mdi mdi-account md-18 text-white"></md-icon><small translate="common.FAMILY_MEMBER"></small></div><div ng-switch-when="GROUP_MEMBER" class="bg-success text-white md-button button-small"><md-icon class="mdi mdi-account md-18 text-white"></md-icon><small translate="common.GROUP_MEMBER"></small></div><div ng-switch-default><md-button ng-class="{\'bg-success\': $ctrl.identityDocument.guestType == \'GROUP_LEADER\'}" class="button-small" ng-click="$ctrl.$setGuestType(\'GROUP_LEADER\')" aria-label="Set as group leader"><md-icon class="mdi mdi-google-circles md-18" ng-class="$ctrl.identityDocument.guestType == \'GROUP_LEADER\' ? \'text-white\' : \'text-success\'"></md-icon><small translate="common.GROUP_LEADER" ng-class="$ctrl.identityDocument.guestType == \'GROUP_LEADER\' ? \'text-white\' : \'text-success\'"></small></md-button><md-button ng-class="{\'bg-success\': $ctrl.identityDocument.guestType == \'HOUSEHOLDER\'}" class="button-small" ng-click="$ctrl.$setGuestType(\'HOUSEHOLDER\')" aria-label="Set as householder"><md-icon class="mdi mdi-account-multiple md-18" ng-class="$ctrl.identityDocument.guestType == \'HOUSEHOLDER\' ? \'text-white\' : \'text-success\'"></md-icon><small translate="common.HOUSEHOLDER" ng-class="$ctrl.identityDocument.guestType == \'HOUSEHOLDER\' ? \'text-white\' : \'text-success\'"></small></md-button><md-button ng-class="{\'bg-success\': $ctrl.identityDocument.guestType == \'SINGLE_GUEST\'}" class="button-small" ng-click="$ctrl.$setGuestType(\'SINGLE_GUEST\')" aria-label="Set as single guest"><md-icon class="mdi mdi-account md-18" ng-class="$ctrl.identityDocument.guestType == \'SINGLE_GUEST\' ? \'text-white\' : \'text-success\'"></md-icon><small translate="common.SINGLE_GUEST" ng-class="$ctrl.identityDocument.guestType == \'SINGLE_GUEST\' ? \'text-white\' : \'text-success\'"></small></md-button></div></div><div><div class="layout-row layout-wrap layout-padding"><div class="flex-xs-100 flex-sm-50 flex-gt-sm-50 flex-gt-md-20"><md-input-container class="md-block no-margin-bottom"><label translate="common.name"></label><input type="text" ng-model="$ctrl.identityDocument.name" name="name" required><div ng-messages="identityDocumentForm.name.$error"><div ng-message="required"><span translate="error.required"></span></div></div></md-input-container></div><div class="flex-xs-100 flex-sm-50 flex-gt-sm-50 flex-gt-md-20"><md-input-container class="md-block no-margin-bottom"><label translate="common.surname"></label><input type="text" ng-model="$ctrl.identityDocument.surname" name="surname" required><div ng-messages="identityDocumentForm.surname.$error"><div ng-message="required"><span translate="error.required"></span></div></div></md-input-container></div><div class="flex-xs-100 flex-sm-50 flex-gt-sm-33 flex-gt-md-20"><md-input-container class="md-block no-margin-bottom"><label translate="common.birthdate"></label><md-datepicker name="birthdate" ng-model="$ctrl.identityDocument.birthDate" utc-date md-datepicker-on-click md-open-on-focus md-hide-icons="calendar" md-max-date="$ctrl.$$maxDate" required></md-datepicker><div ng-messages="identityDocumentForm.birthdate.$error"><div ng-message="maxdate"><span translate="reservation.text.identityDocuments.legalAge"></span></div><div ng-message="required"><span translate="error.required"></span></div></div></md-input-container></div><div class="flex-xs-100 flex-sm-50 flex-gt-sm-33 flex-gt-md-20"><md-input-container class="md-block no-margin-bottom"><label translate="common.birthplace"></label><input type="text" ng-model="$ctrl.identityDocument.birthPlace" name="birtplace"></md-input-container></div><div class="flex-xs-100 flex-sm-50 flex-gt-sm-33 flex-gt-md-20"><md-input-container class="md-block no-margin-bottom"><label translate="common.nationality"></label><input type="text" ng-model="$ctrl.identityDocument.nationality" name="nationality"></md-input-container></div></div><div class="layout-row layout-wrap layout-padding" ng-if="$ctrl.identityDocument.guestType != \'GROUP_MEMBER\' && $ctrl.identityDocument.guestType != \'FAMILY_MEMBER\'"><div class="flex-xs-100 flex-sm-50 flex-gt-sm-33 flex-gt-md-20"><md-input-container class="md-block no-margin-bottom"><label translate="common.document.type"></label><md-select ng-model="$ctrl.identityDocument.type" aria-label="type" name="type"><md-option value="PASSPORT"><span translate="common.PASSPORT"></span></md-option><md-option value="DRIVING_LICENSE"><span translate="common.DRIVING_LICENSE"></span></md-option><md-option value="IDENTITY_CARD"><span translate="common.IDENTITY_CARD"></span></md-option></md-select></md-input-container></div><div class="flex-xs-100 flex-sm-50 flex-gt-sm-33 flex-gt-md-20"><md-input-container class="md-block no-margin-bottom"><label translate="common.document.number"></label><input type="text" ng-model="$ctrl.identityDocument.number" name="number"></md-input-container></div><div class="flex-xs-100 flex-sm-50 flex-gt-sm-33 flex-gt-md-20"><md-input-container class="md-block no-margin-bottom"><label translate="common.document.expirationDate"></label><md-datepicker name="expirationDate" ng-model="$ctrl.identityDocument.expirationDate" utc-date md-datepicker-on-click md-open-on-focus md-hide-icons="calendar" md-min-date="$ctrl.$$today"></md-datepicker><div ng-messages="identityDocumentForm.expirationDate.$error"><div ng-message="mindate"><span translate="error.date.before.today"></span></div></div></md-input-container></div><div class="flex-xs-100 flex-sm-50 flex-gt-sm-50 flex-gt-md-20"><md-input-container class="md-block no-margin-bottom"><label translate="common.place.issuer"></label><input type="text" ng-model="$ctrl.identityDocument.issuer" name="issuer"></md-input-container></div><div class="flex-xs-100 flex-sm-50 flex-gt-sm-50 flex-gt-md-20"><md-input-container class="md-block no-margin-bottom"><label translate="common.citizenship"></label><input type="text" ng-model="$ctrl.identityDocument.citizenship" name="citizenship"></md-input-container></div></div></div><div layout="column" layout-gt-sm="row" layout-padding-sm layout-align="center center"><md-button ng-click="$ctrl.$cancel()" aria-label="Cancel identity document edit"><md-icon class="mdi mdi-close md-24"></md-icon><span translate="common.cancel"></span></md-button><md-button class="bg-success text-white" ng-click="$ctrl.$confirm()" ng-disabled="identityDocumentForm.$invalid" aria-label="Confirm identity document edit"><md-icon class="mdi mdi-check md-24 text-white"></md-icon><span translate="common.confirm"></span></md-button></div></ng-form></div>');
+    $templateCache.put("/tpls/invoice/invoice.tpl", '<table border="1" class="ch-table ch-table-padding align-center"><thead><tr><th width="10%" class="bg-gray-lighter text-center"><strong translate="order.item.code.abbr">Cod. articolo</strong></th><th width="30%" class="bg-gray-lighter text-center"><strong translate="common.description">Descrizione</strong></th><th width="10%" class="bg-gray-lighter text-center"><strong translate="common.quantity.abbr">Quantità</strong></th><th width="20%" class="bg-gray-lighter text-center"><strong translate="common.price.unit">Prezzo unitario</strong></th><th width="20%" class="bg-gray-lighter text-center"><strong translate="common.amount">Importo</strong></th><th width="10%" class="bg-gray-lighter text-center"><strong><span translate="common.vat.alt">IVA</span>&nbsp;(%)</strong></th></tr></thead><tfoot><tr><td colspan="4" class="no-border-bottom text-right"><span translate="common.taxable">Imponibile</span></td><td class="text-right"><span ng-if="$ctrl.invoice.order.amount != null && $ctrl.invoice.order.amount.finalAmount != null"><span ng-if="$ctrl.invoice.order.amount.vatAmount != null">{{($ctrl.invoice.order.amount.finalAmount - $ctrl.invoice.order.amount.vatAmount)|chCurrency}}</span><span ng-if="$ctrl.invoice.order.amount.vatAmount == null">{{($ctrl.invoice.order.amount.finalAmount)|chCurrency}}</span></span><span ng-if="$ctrl.invoice.order.amount == null || $ctrl.invoice.order.amount.finalAmount == null">{{0|chCurrency}}</span></td><td class="no-border-bottom">&nbsp;</td></tr><tr><td colspan="4" class="no-border-bottom no-border-top text-right"><span translate="common.vat.alt">IVA</span></td><td class="text-right"><span ng-if="$ctrl.invoice.order.amount != null && $ctrl.invoice.order.amount.vatAmount != null">{{$ctrl.invoice.order.amount.vatAmount|chCurrency}}</span><span ng-if="$ctrl.invoice.order.amount == null || $ctrl.invoice.order.amount.vatAmount == null">{{0|chCurrency}}</span></td><td class="no-border-top no-border-bottom">&nbsp;</td></tr><tr><td colspan="4" class="no-border-top text-uppercase text-right"><strong translate="billing.invoice.price.total">TOTALE FATTURA</strong></td><td class="bg-gray-lighter text-right"><strong ng-if="$ctrl.invoice.order.amount != null && $ctrl.invoice.order.amount.finalAmount != null">{{$ctrl.invoice.order.amount.finalAmount|chCurrency}}</strong><strong ng-if="$ctrl.invoice.order.amount == null || $ctrl.invoice.order.amount.finalAmount == null">{{0|chCurrency}}</strong></td><td class="no-border-top">&nbsp;</td></tr></tfoot><tbody><tr ng-repeat="productSold in $ctrl.invoice.order.products track by $index"><td><span translate="productSold.product.serial"></span></td><td class="text-left"><span translate="productSold.product.name"></span><div ng-if="productSold.product.type == \'FREE_LOAN\'" class="text-gray-light"><small>(<span translate="common.freeloan"></span>)</small></div></td><td><span translate="productSold.counter.actual"></span></td><td><span ng-if="productSold.product.amount != null && productSold.product.amount.finalAmount != null">{{productSold.product.amount.finalAmount|chCurrency}}</span><span ng-if="productSold.product.amount == null || productSold.product.amount.finalAmount == null">{{0|chCurrency}}</span></td><td><span ng-if="productSold.amount != null && productSold.amount.finalAmount != null">{{productSold.amount.finalAmount|chCurrency}}</span><span ng-if="productSold.amount == null || productSold.amount.finalAmount == null">{{0|chCurrency}}</span></td><td><span ng-if="productSold.amount != null && productSold.amount.vatRate != null" translate="productSold.amount.vatRate"></span><span ng-if="productSold.amount == null || productSold.amount.vatRate == null">-</span></td></tr><tr ng-repeat="i in [] | range: (15 - $ctrl.invoice.order.products.length)"><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td></tr></tbody></table>');
     $templateCache.put("/tpls/no-show-policy-info/no-show-policy-info.tpl", '<div><h4 class="{{$ctrl.titleClass}}"><strong><span ng-if="!$ctrl.title" translate="reservation.noshow.terms.conditions"></span><span ng-if="$ctrl.title" ng-bind="$ctrl.title"></span></strong></h4><div ng-if="!$ctrl.noShowPolicy"><span translate="reservation.cancellation.room.no.condition"></span></div><div flex ng-if="$ctrl.noShowPolicy"><div><span translate="reservation.noshow.room.conditions"></span><span ng-if="$ctrl.noShowPolicy.cancellation.chargeNights != $ctrl.noShowPolicy.cancellation.stayNights">{{::$ctrl.noShowPolicy.cancellation.percentage}}<span ng-if="$ctrl.noShowPolicy.cancellation.chargeNights == 1"><span translate="reservation.percentage.firstNight"></span><span translate="common.night" class="text-lowercase"></span></span><span ng-if="$ctrl.noShowPolicy.cancellation.chargeNights > 1"><span ng-if="$ctrl.noShowPolicy.cancellation.chargeNights < reservation.nights"><span translate="reservation.percentage.nights"></span>{{::$ctrl.noShowPolicy.cancellation.chargeNights}}&nbsp;<span translate="common.nights" class="text-lowercase"></span></span><span ng-if="$ctrl.noShowPolicy.cancellation.chargeNights >= reservation.nights"><span translate="reservation.percentage.total.stay"></span></span></span><span ng-if="$ctrl.noShowPolicy.cancellation.chargeNights < 0"><span translate="reservation.percentage.total.stay"></span></span></span><span ng-if="$ctrl.noShowPolicy.cancellation.chargeNights == $ctrl.noShowPolicy.cancellation.stayNights">{{::$ctrl.noShowPolicy.cancellation.percentage}}<span translate="reservation.percentage.total.stay"></span></span><span translate="reservation.total.night"></span><strong>{{$ctrl.noShowPolicy.amount.finalAmount|chCurrency}}</strong>.</div></div></div>');
     $templateCache.put("/tpls/payment-policy-info/payment-policy-info.tpl", '<div><h4 class="{{$ctrl.titleClass}}"><strong><span ng-if="!$ctrl.title" translate="common.payment"></span><span ng-if="$ctrl.title" ng-bind="$ctrl.title"></span></strong></h4><div ng-if="!$ctrl.cancellationPolicy"><span translate="reservation.payment.room.policy.free.label"></span><span translate="reservation.payment.room.policy.free.label2"></span></div><div flex ng-if="$ctrl.cancellationPolicy"><div ng-if="!$ctrl.cancellationPolicy.cancellation.deposit"><div ng-if="$ctrl.rateType == \'STANDARD\' && !$ctrl.cancellationPolicy.flexible"><span translate="reservation.payment.room.policy.free.label"></span><span translate="reservation.payment.room.policy.free.label2"></span><span translate="reservation.payment.room.policy.free.label3"></span></div><div ng-if="$ctrl.rateType == \'NOT_REFUNDABLE\' || $ctrl.cancellationPolicy.flexible"><span translate="reservation.payment.room.policy.notRef.label"></span><span ng-if="$ctrl.cancellationPolicy.cancellation.chargeNights != $ctrl.cancellationPolicy.cancellation.stayNights">{{::$ctrl.cancellationPolicy.cancellation.percentage}}<span ng-if="$ctrl.cancellationPolicy.cancellation.chargeNights == 1"><span translate="reservation.percentage.firstNight"></span>&nbsp;<span translate="common.night" class="text-lowercase"></span></span><span ng-if="$ctrl.cancellationPolicy.cancellation.chargeNights > 1"><span ng-if="$ctrl.cancellationPolicy.cancellation.chargeNights < reservation.nights"><span translate="reservation.percentage.nights"></span>{{::$ctrl.cancellationPolicy.cancellation.chargeNights}}&nbsp;<span translate="common.nights" class="text-lowercase"></span></span><span ng-if="$ctrl.cancellationPolicy.cancellation.chargeNights >= reservation.nights"><span translate="reservation.percentage.total.stay"></span></span></span><span ng-if="$ctrl.cancellationPolicy.cancellation.chargeNights < 0"><span translate="reservation.percentage.total.stay"></span></span></span><span ng-if="$ctrl.cancellationPolicy.cancellation.chargeNights == $ctrl.cancellationPolicy.cancellation.stayNights">{{::$ctrl.cancellationPolicy.cancellation.percentage}}<span translate="reservation.percentage.total.stay"></span></span><span translate="reservation.total.night"></span><strong>{{$ctrl.cancellationPolicy.amount.finalAmount|chCurrency}}</strong><br><span ng-if="!$ctrl.cancellationPolicy.limitDate || $ctrl.cancellationPolicy.flexible" translate="reservation.payment.room.policy.notRef.label2"></span><span ng-if="$ctrl.cancellationPolicy.limitDate && !$ctrl.cancellationPolicy.flexible"><span translate="reservation.payment.room.policy.notRef.label2.bis"></span><strong>{{::($ctrl.cancellationPolicy.limitDate|date:"shortDate")}}</strong><span translate="date.time.to" class="text-lowercase"></span><span><strong>{{::($ctrl.cancellationPolicy.limitDate|offsetDate:"HH:mm":$ctrl.offset)}}</strong></span><span>[{{::$ctrl.city}}].</span></span></div></div><div class="layout-column" ng-if="$ctrl.cancellationPolicy.cancellation.deposit"><span class="no-margin-top"><span translate="reservation.payment.room.policy.deposit.label"></span><span ng-if="$ctrl.cancellationPolicy.cancellation.chargeNights != $ctrl.cancellationPolicy.cancellation.stayNights">{{::$ctrl.cancellationPolicy.cancellation.percentage}}<span ng-if="$ctrl.cancellationPolicy.cancellation.chargeNights == 1"><span translate="reservation.percentage.firstNight"></span>&nbsp;<span translate="common.night" class="text-lowercase"></span></span><span ng-if="$ctrl.cancellationPolicy.cancellation.chargeNights > 1"><span ng-if="$ctrl.cancellationPolicy.cancellation.chargeNights < reservation.nights"><span translate="reservation.percentage.nights"></span>{{::$ctrl.cancellationPolicy.cancellation.chargeNights}}&nbsp;<span translate="common.nights" class="text-lowercase"></span></span><span ng-if="$ctrl.cancellationPolicy.cancellation.chargeNights >= reservation.nights"><span translate="reservation.percentage.total.stay"></span></span></span><span ng-if="$ctrl.cancellationPolicy.cancellation.chargeNights < 0"><span translate="reservation.percentage.total.stay"></span></span></span><span ng-if="$ctrl.cancellationPolicy.cancellation.chargeNights == $ctrl.cancellationPolicy.cancellation.stayNights">{{::$ctrl.cancellationPolicy.cancellation.percentage}}<span translate="reservation.percentage.total.stay"></span></span><span translate="reservation.total.night"></span><strong>{{$ctrl.cancellationPolicy.amount.finalAmount|chCurrency}}</strong><span translate="reservation.payment.room.policy.notRef.label2"></span></span></div></div></div>');
     $templateCache.put("/tpls/people-counters/people-counters.tpl", '<div class="layout layout-wrap layout-align-center-center"><div class="flex layout-column layout-align-center-center"><ch-counter label="{{$ctrl.$$adultsHint}}" count-class="bg-white only-border" ng-model="$ctrl.people.adults" min="$ctrl.$$peopleLimits.adults.min" max="$ctrl.$$peopleLimits.adults.max"></ch-counter></div><div class="flex layout-column layout-align-center-center"><ch-counter label="{{$ctrl.$$boysHint}}" count-class="bg-white only-border" ng-model="$ctrl.people.boys" min="$ctrl.$$peopleLimits.boys.min" max="$ctrl.$$peopleLimits.boys.max"></ch-counter></div><div class="flex layout-column layout-align-center-center"><ch-counter label="{{$ctrl.$$childrenHints}}" count-class="bg-white only-border" ng-model="$ctrl.people.children" min="$ctrl.$$peopleLimits.children.min" max="$ctrl.$$peopleLimits.children.max"></ch-counter></div><div class="flex layout-column layout-align-center-center layout-padding"><ch-counter label="{{$ctrl.$$kidsHints}}" count-class="bg-white only-border" ng-model="$ctrl.people.kids" min="$ctrl.$$peopleLimits.kids.min" max="$ctrl.$$peopleLimits.kids.max"></ch-counter></div></div>');
+    $templateCache.put("/tpls/ratesheet/ratesheet-availability.tpl", '<div flex layout="column"><div ng-if="$ctrl.availability.hotelClosed" layout layout-align="center center" flex><md-button class="md-icon-button no-margin no-padding auto-height cursor-help" tabindex="-1" aria-label="Availability"><md-icon class="mdi mdi-lock md-18"></md-icon><md-tooltip><span translate="hotel.closed"></span></md-tooltip></md-button></div><div ng-if="!$ctrl.availability.hotelClosed" flex layout="column"><md-button ng-disabled="$ctrl.availability.pastDate" tabindex="-1" aria-label="Availability" ng-click="$ctrl.$click($event)" class="no-margin row-1 forced" ng-class="{\'minimal-button\': !$ctrl.$mdMedia(\'gt-xs\'),\n' + "\t\t\t\t'bg-success': $ctrl.availability.counter.actual > 0 && !$ctrl.availability.hotelClosed && !$ctrl.availability.roomClosed, \n" + "\t\t\t\t'bg-danger': $ctrl.availability.roomClosed, \n" + "\t\t\t\t'bg-gray-base text-white': $ctrl.availability.counter.actual < 0 && !$ctrl.availability.hotelClosed && !$ctrl.availability.roomClosed, \n" + '\t\t\t\t\'bg-warn\': $ctrl.availability.counter.actual == 0 && !$ctrl.availability.hotelClosed && !$ctrl.availability.roomClosed}"><span layout layout-wrap layout-align="center center" class="md-margin" ng-class="{\'text-small\': $ctrl.$mdMedia(\'xs\')}"><span ng-if="$ctrl.availability.counter.actual > 0"><strong>{{$ctrl.availability.counter.actual}}</strong><small>/{{$ctrl.availability.counter.total}}</small><md-tooltip><span ng-if="!$ctrl.availability.pastDate" translate="ratesheet.availability.edit">Edit availability</span><span ng-if="$ctrl.availability.pastDate && $ctrl.availability.counter.actual == 1" translate="ratesheet.availability.rooms.one"></span><span ng-if="$ctrl.availability.pastDate && $ctrl.availability.counter.actual > 1" translate="ratesheet.availability.rooms" translate-values="{count: $ctrl.availability.counter.actual}"></span></md-tooltip></span><span ng-if="$ctrl.availability.counter.actual == 0"><md-icon class="mdi mdi-calendar-remove md-18 text-white"></md-icon><md-tooltip><span translate="hotel.availability.none"></span></md-tooltip></span><span ng-if="$ctrl.availability.counter.actual < 0"><md-icon class="mdi mdi-block-helper md-18 text-white"></md-icon><md-tooltip><span ng-if="$ctrl.availability.counter.actual == -1" translate="ratesheet.overbooking.rooms.one"></span><span ng-if="$ctrl.availability.counter.actual < -1" translate="ratesheet.overbooking.rooms" translate-values="{count: ($ctrl.availability.counter.actual|abs)}"></span></md-tooltip></span></span></md-button></div></div>');
+    $templateCache.put("/tpls/ratesheet/ratesheet-header.tpl", '<div flex layout="column"><div ng-if="$ctrl.header.hotelClosed" layout layout-align="center center" flex><md-button class="md-icon-button no-margin no-padding auto-height cursor-help" tabindex="-1" aria-label="Availability"><md-icon class="mdi mdi-lock md-18"></md-icon><md-tooltip><span translate="hotel.closed"></span></md-tooltip></md-button></div><div ng-if="!$ctrl.header.hotelClosed" flex layout="column"><md-button ng-disabled="$ctrl.header.pastDate || $ctrl.header.availability.actual <= 0" ng-click="$ctrl.$toggleRoomTypeClosing($event)" aria-label="Enable/Disable all room rates" tabindex="-1" class="no-margin row-1 forced" ng-class="{\'minimal-button\': !$ctrl.$mdMedia(\'gt-xs\'), \n' + "\t\t\t\t'bg-success': !$ctrl.header.roomClosed && $ctrl.header.availability.actual > 0, \n" + "\t\t\t\t'bg-danger': $ctrl.header.roomClosed, \n" + "\t\t\t\t'bg-warn': !$ctrl.header.roomClosed && $ctrl.header.availability.actual == 0, \n" + '\t\t\t\t\'bg-gray-base text-white\': !$ctrl.header.roomClosed && $ctrl.header.availability.actual < 0}"><small ng-if="$ctrl.header.roomClosed"><strong hide-xs translate="common.closed.female"></strong><md-icon hide show-xs class="mdi mdi-lock md-24 text-white"></md-icon><md-tooltip><span translate="ratesheet.rate.room.open"></span></md-tooltip></small><small ng-if="!$ctrl.header.roomClosed"><strong hide-xs><span ng-if="$ctrl.header.availability.actual > 0" translate="common.opened.female"></span><span ng-if="$ctrl.header.availability.actual == 0" translate="hotel.availability.none.abbr"></span><span ng-if="$ctrl.header.availability.actual < 0" translate="ratesheet.overbooking"></span></strong><md-tooltip><span ng-if="$ctrl.header.availability.actual > 0" translate="ratesheet.rate.room.close"></span><span ng-if="$ctrl.header.availability.actual == 0" translate="hotel.availability.none"></span><span ng-if="$ctrl.header.availability.actual < 0" translate="ratesheet.overbooking"></span></md-tooltip></small></md-button></div></div>');
+    $templateCache.put("/tpls/ratesheet/ratesheet-promotion.tpl", '<ng-form name="chRatesheetPromotionForm" flex layout="column"><div ng-if="$ctrl.promotion.hotelClosed" layout layout-align="center center" flex><md-button aria-label="Closed" class="md-icon-button no-margin no-padding auto-height cursor-help" tabindex="-1"><md-icon class="mdi mdi-lock md-18"></md-icon><md-tooltip><span translate="hotel.closed"></span></md-tooltip></md-button></div><div ng-if="!$ctrl.promotion.valid && !$ctrl.promotion.hotelClosed" layout layout-align="center center" flex><md-icon class="mdi mdi-block-helper md-18"></md-icon></div><div ng-if="$ctrl.promotion.valid && !$ctrl.promotion.hotelClosed"><div layout="column" flex><md-button ng-disabled="$ctrl.promotion.pastDate || $ctrl.promotion.availability.actual <= 0" ng-click="$ctrl.$toggleClosing()" aria-label="Enable/Disable promotion" class="no-margin forced" ng-class="{\'minimal-button\': !$ctrl.$mdMedia(\'gt-xs\'), \n' + "\t\t\t\t\t'bg-success': !$ctrl.promotion.roomClosed && $ctrl.promotion.enabled && $ctrl.promotion.availability.actual > 0,\n" + "\t\t\t\t\t'bg-warn': !$ctrl.promotion.roomClosed && $ctrl.promotion.enabled && $ctrl.promotion.availability.actual == 0,\n" + "\t\t\t\t\t'bg-gray-base text-white': !$ctrl.promotion.roomClosed && $ctrl.promotion.enabled && $ctrl.promotion.availability.actual < 0,\n" + '\t\t\t\t\t\'bg-danger\': $ctrl.promotion.roomClosed || !$ctrl.promotion.enabled}" tabindex="-1"><div ng-show="!$ctrl.promotion.roomClosed" flex layout layout-xs="column" layout-align="center center"><small ng-show="$ctrl.promotion.minStay > 1"><md-icon class="mdi mdi-calendar-today md-14 text-white"></md-icon></small></div><md-tooltip><span ng-if="$ctrl.promotion.roomClosed || !$ctrl.promotion.enabled"><span ng-if="$ctrl.promotion.availability.actual > 0" translate="ratesheet.promos.promo.enable"></span><span ng-if="$ctrl.promotion.availability.actual == 0" translate="hotel.availability.none.abbr"></span><span ng-if="promoDailyDetaile.availability.actual < 0" translate="ratesheet.overbooking"></span></span><span ng-if="!$ctrl.promotion.roomClosed && $ctrl.promotion.enabled" translate="ratesheet.promos.promo.disable"></span></md-tooltip></md-button></div><div ng-if="$ctrl.showDetails" ng-switch="$ctrl.type" layout="column" layout-align="center center"><div ng-switch-when="MINIMUM_STAY"><md-input-container flex class="no-margin-bottom minimal-input"><label><span translate="common.nights"></span></label><input value="{{$ctrl.promotion.minStay}}" class="text-center" disabled="disabled" readonly="readonly"></md-input-container></div><div ng-switch-default><md-input-container flex class="no-margin-bottom minimal-input"><label><span translate="common.nights"></span></label><input type="number" class="text-center" name="minStay" ng-model="$ctrl.$$tempPromotion.minStay" ng-disabled="$ctrl.$$tempPromotion.pastDate || $ctrl.$$tempPromotion.roomClosed || !$ctrl.$$tempPromotion.enabled" min="0" step="1" ng-blur="$ctrl.$saveMinStay()" tabindex="2"><div ng-messages="chRatesheetPromotionForm.minStay.$error"><div ng-message="min"><span translate="error.field.min" translate-values="{num: 1}"></span></div></div></md-input-container></div></div></div></ng-form>');
+    $templateCache.put("/tpls/ratesheet/ratesheet-rate.tpl", '<ng-form name="chRatesheetRateForm" flex layout="column"><div ng-if="$ctrl.rate.hotelClosed" layout layout-align="center center" flex><md-button aria-label="Closed" class="md-icon-button no-margin no-padding auto-height cursor-help" tabindex="-1"><md-icon class="mdi mdi-lock md-18"></md-icon><md-tooltip><span translate="hotel.closed"></span></md-tooltip></md-button></div><div ng-if="!$ctrl.rate.hotelClosed"><div layout="column" flex><md-button ng-disabled="$ctrl.rate.pastDate || $ctrl.rate.availability.actual <= 0" ng-click="$ctrl.$toggleRateClosing($event)" aria-label="Enable/Disable rate" class="no-margin button-label forced" ng-class="{\'minimal-button\': !$ctrl.$mdMedia(\'gt-xs\'), \n' + "\t\t\t\t\t'bg-success': !$ctrl.rate.roomClosed && $ctrl.rate[$ctrl.$$rateDataKey].enabled && $ctrl.rate[$ctrl.$$rateDataKey].amount.finalAmount && $ctrl.rate.availability.actual > 0, \n" + "\t\t\t\t\t'bg-warn': !$ctrl.rate.roomClosed && $ctrl.rate[$ctrl.$$rateDataKey].enabled && (!$ctrl.rate[$ctrl.$$rateDataKey].amount.finalAmount || $ctrl.rate.availability.actual == 0),\n" + "\t\t\t\t\t'bg-gray-base text-white': !$ctrl.rate.roomClosed && $ctrl.rate[$ctrl.$$rateDataKey].enabled && (!$ctrl.rate[$ctrl.$$rateDataKey].amount.finalAmount || $ctrl.rate.availability.actual < 0),\n" + '\t\t\t\t\t\'bg-danger\': $ctrl.rate.roomClosed || !$ctrl.rate[$ctrl.$$rateDataKey].enabled}" tabindex="-1"><div ng-show="!$ctrl.rate.roomClosed && $ctrl.rate[$ctrl.$$rateDataKey].enabled" flex layout layout-xs="column" layout-align="center center"><div flex ng-show="$ctrl.rate[$ctrl.$$rateDataKey].amount.finalAmount"><span ng-class="{\'text-small\': $ctrl.$mdMedia(\'xs\')}">{{$ctrl.rate[$ctrl.$$rateDataKey].amount.finalAmount|currency:\'€\'}}</span><md-tooltip ng-if="!$ctrl.rate.pastDate"><span ng-if="$ctrl.rate.availability.actual > 0" translate="ratesheet.rate.disable"></span><span ng-if="$ctrl.rate.availability.actual == 0" translate="hotel.availability.none"></span><span ng-if="$ctrl.rate.availability.actual < 0" translate="ratesheet.overbooking"></span></md-tooltip></div><div ng-if="!$ctrl.rate[$ctrl.$$rateDataKey].amount.finalAmount"><md-icon class="mdi mdi-currency-usd-off text-white md-24"></md-icon><md-tooltip><span translate="ratesheet.rate.no"></span></md-tooltip></div><small ng-show="$ctrl.rate[$ctrl.$$rateDataKey].minStay > 1"><md-icon class="mdi mdi-calendar-today md-14 text-white"></md-icon></small></div><md-tooltip ng-if="$ctrl.rate.roomClosed || !$ctrl.rate[$ctrl.$$rateDataKey].enabled"><span ng-if="$ctrl.rate.availability.actual > 0" translate="ratesheet.rate.enable"></span><span ng-if="$ctrl.rate.availability.actual == 0" translate="hotel.availability.none"></span><span ng-if="$ctrl.rate.availability.actual < 0" translate="ratesheet.overbooking"></span></md-tooltip></md-button></div><div ng-show="$ctrl.showDetails" layout="column" layout-align="center center"><div><md-input-container class="no-margin-bottom minimal-input"><label flex><span translate="common.price"></span></label><input type="number" class="text-center" name="amount" ng-model="$ctrl.$$tempRate[$ctrl.$$rateDataKey].amount.finalAmount" ng-disabled="$ctrl.$$tempRate.pastDate || $ctrl.$$tempRate.roomClosed || !$ctrl.$$tempRate[$ctrl.$$rateDataKey].enabled" min="0.01" step="0.01" aria-label="{{$ctrl.type}} Rate" ng-pattern="$ctrl.REGEXP.price" required ng-blur="$ctrl.$saveRate()"></md-input-container></div><div><md-input-container class="minimal-input"><label flex><span translate="common.nights"></span></label><input type="number" class="text-center" name="minStay" ng-model="$ctrl.$$tempRate[$ctrl.$$rateDataKey].minStay" ng-disabled="$ctrl.$$tempRate.pastDate || $ctrl.$$tempRate.roomClosed || !$ctrl.$$tempRate[$ctrl.$$rateDataKey].enabled" min="1" step="1" ng-blur="$ctrl.$saveMinStay()" tabindex="2"><div ng-messages="chRatesheetRateForm.minStay.$error"><div ng-message="min"><span translate="error.field.min" translate-values="{num: 1}"></span></div></div></md-input-container></div></div></div></ng-form>');
     $templateCache.put("/tpls/room-edit/room-edit-beds.tpl", '<div><div ng-if="!$ctrl.$$showDetails"><div ng-if="!$ctrl.beds.length"><span class="text-italic" translate="bed.beds.no.selection"></span><md-button class="only-border border-blue-sea text-blue-sea" ng-click="$ctrl.$toggleDetails(true)" aria-label="Show available beds"><md-icon class="mdi mdi-plus md-18 text-blue-sea"></md-icon><small translate="common.add.now"></small></md-button></div><md-list ng-if="$ctrl.beds.length"><md-list-item class="layout-row layout-wrap layout-padding-sm layout-align-center-center no-padding-top no-padding-right" ng-class="{\'no-padding-left\': !$ctrl.$mdMedia(\'gt-sm\')}" ng-repeat="bedSold in $ctrl.beds"><div class="flex"><strong ng-click="$ctrl.$showBedInfo($event, bedSold)" aria-label="Bed info" class="clickable"><span translate="bed.bed"></span><span translate="bed.{{bedSold.bed.type}}"></span>&nbsp;<md-icon class="mdi mdi-information-outline md-14"></md-icon></strong><div class="text-gray-light text-small"><span translate="bed.{{bedSold.bed.type}}.description"></span></div><div class="text-gray-light text-small"><ch-people-summary people="bedSold.people"></ch-people-summary></div><div ng-if="bedSold.amount" class="md-subhead"><span ng-if="bedSold.amount.finalAmount > 0">{{bedSold.amount.finalAmount|chCurrency}}</span><span ng-if="bedSold.amount.finalAmount == 0" class="text-success"><span translate="common.free"></span></span></div></div><div class="no-padding-right" ng-if="!$ctrl.minCount || $ctrl.$$availableBeds.length > $ctrl.minCount"><md-button class="button-small no-margin text-small text-blue-sea" ng-click="$ctrl.$toggleDetails(true)" aria-label="Edit beds"><md-icon class="mdi mdi-pencil md-18 text-blue-sea"></md-icon><span translate="common.edit"></span></md-button></div><div ng-if="!$last" class="no-margin no-padding"><md-divider></md-divider></div></md-list-item><md-list-item class="layout-row layout-wrap layout-align-center-center am-fade-and-slide-right" ng-class="{\'no-padding-left\': !$ctrl.$mdMedia(\'gt-sm\')}" ng-if="$ctrl.$$errors.min" ng-switch on="$ctrl.minCount - $ctrl.beds.length"><div flex class="layout-row layout-align-start-center"><span ng-switch-when="1" translate="error.beds.left.one"></span><span ng-switch-default translate="error.beds.left" translate-values="{num: $ctrl.minCount - $ctrl.beds.length}"></span></div><div class="layout-row layout-align-end-center"><md-button class="button-small bg-danger" aria-label="Select beds" ng-click="$ctrl.$toggleDetails(true)"><small translate="common.select.now"></small></md-button></div></md-list-item></md-list></div><div class="md-margin no-margin-x-sides no-margin-top" ng-if="$ctrl.$$showDetails"><div ng-if="!$ctrl.$$availableBeds.length"><span class="text-italic" translate="bed.beds.none.alt"></span></div><div ng-if="$ctrl.$$availableBeds.length"><md-list><md-list-item class="am-fade-and-slide-right no-padding-top no-padding-right" ng-class="{\'no-padding-left\': !$ctrl.$mdMedia(\'gt-sm\'), \'no-padding\': bed.$$editing}" ng-repeat="bed in $ctrl.$$availableBeds track by $index"><div flex><div ng-if="!bed.$$editing" layout layout-wrap layout-padding-sm layout-align="center center"><div class="flex flex-order-xs-1 flex-order-sm-1" ng-if="bed.$$available"><strong ng-click="$ctrl.$showBedInfo($event, bed)" aria-label="Bed info" class="clickable"><span translate="bed.bed"></span>&nbsp;<span translate="bed.{{bed.type}}"></span>&nbsp;<md-icon class="mdi mdi-information-outline md-14"></md-icon></strong><div class="text-gray-light text-small"><span translate="bed.{{bed.type}}.description"></span></div><div class="text-small text-lowercase"><span ng-if="bed.adultsPrice"><span>{{bed.adultsPrice|chCurrency}}&nbsp;</span><span translate="people.adult"></span><span ng-if="bed.boysPrice">,&nbsp;</span></span><span ng-if="bed.boysPrice"><span>{{bed.boysPrice|chCurrency}}&nbsp;</span><span translate="people.boy"></span><span ng-if="bed.childrenPrice">,&nbsp;</span></span><span ng-if="bed.childrenPrice"><span>{{bed.childrenPrice|chCurrency}}&nbsp;</span><span translate="people.child"></span><span ng-if="bed.kidsPrice">,&nbsp;</span></span><span ng-if="bed.kidsPrice"><span>{{bed.kidsPrice|chCurrency}}&nbsp;</span><span translate="people.kid"></span></span></div><div class="text-gray-light text-small"><span><span translate="common.for"></span>&nbsp;{{bed.maxPerson}}&nbsp;</span><span ng-if="bed.maxPerson == 1" class="text-lowercase" translate="people.person"></span><span ng-if="bed.maxPerson > 1" class="text-lowercase" translate="people.people"></span></div><div class="text-gray-light text-small"><em ng-if="bed.frequency == \'LUMP_SUM\'"><span translate="bed.price.question.info"></span><span class="text-lowercase" translate="common.entire.stay"></span></em><em ng-if="bed.frequency == \'DAILY\'" translate="bed.price.question.info.and.night"></em></div><div class="text-info" ng-if="bed.$$available && bed.$$blocked"><small translate="bed.remove.to.add.other"></small></div></div><div class="flex flex-order-xs-1 flex-order-sm-1" ng-if="!bed.$$available"><strong ng-click="$ctrl.$showBedInfo($event, bed)" aria-label="Bed info" class="clickable"><span translate="bed.bed"></span><span translate="bed.{{bed.bed.type}}"></span>&nbsp;<md-icon class="mdi mdi-information-outline md-14"></md-icon></strong><div class="text-gray-light text-small"><span translate="bed.{{bed.bed.type}}.description"></span></div><div class="text-gray-light text-small"><ch-people-summary people="bed.people"></ch-people-summary></div><div ng-if="bed.amount" class="md-subhead"><span ng-if="bed.amount.finalAmount > 0">{{bed.amount.finalAmount|chCurrency}}</span><span ng-if="bed.amount.finalAmount == 0" class="text-success"><span translate="common.free"></span></span></div></div><div class="layout-column layout-align-end-center flex-order-xs-2 flex-order-sm-2" ng-class="{\'text-center\': !$ctrl.$mdMedia(\'gt-sm\')}" ng-if="!bed.$$available"><div class="text-center"><md-icon class="mdi mdi-checkbox-marked-circle-outline text-success md-18"></md-icon>&nbsp;<small class="text-success" translate="common.booked.male"></small></div><md-button ng-if="$ctrl.configBed" hide show-gt-sm class="button-small text-blue-sea text-small" ng-class="$ctrl.$mdMedia(\'gt-sm\') ? \'auto-height row-1\' : \'only-border border-blue-sea\'" ng-click="$ctrl.$editBed(bed)" ng-disabled="$ctrl.$$editingBed" aria-label="Edit bed"><md-icon class="mdi mdi-pencil md-18 text-blue-sea"></md-icon><span translate="common.edit"></span></md-button></div><div class="no-padding-right flex-order-xs-3 flex-order-sm-3" ng-class="{\'flex-100 layout-column text-center\': !$ctrl.$mdMedia(\'gt-sm\')}" ng-if="bed.$$available && !$ctrl.$$editingBed"><md-button class="button-small only-border" aria-label="Select bed" ng-click="$ctrl.$selectBed(bed)" ng-disabled="bed.$$blocked" ng-class="{\'border-success text-success\': !bed.$$blocked}"><md-icon class="mdi mdi-plus md-18 text-white" ng-class="{\'text-success\': !bed.$$blocked}"></md-icon><small translate="common.select"></small></md-button></div><div class="no-padding-right flex-order-xs-3 flex-order-sm-3" ng-class="$ctrl.$mdMedia(\'gt-sm\') ? \'layout-row layout-align-end-center\' : \'flex-100 layout-column\'" ng-if="!bed.$$available"><md-button ng-if="$ctrl.configBed" hide-gt-sm class="button-small text-blue-sea text-small" ng-class="$ctrl.$mdMedia(\'gt-sm\') ? \'auto-height row-1\' : \'only-border border-blue-sea\'" ng-click="$ctrl.$editBed(bed)" ng-disabled="$ctrl.$$editingBed" aria-label="Edit bed"><md-icon class="mdi mdi-pencil md-18 text-blue-sea"></md-icon><span translate="common.edit"></span></md-button><md-button class="text-small" ng-class="{\'no-margin md-icon-button\': $ctrl.$mdMedia(\'gt-sm\')}" ng-click="$ctrl.$removeBed(bed)" ng-disabled="$ctrl.beds.length <= $ctrl.minCount || $ctrl.$$editingBed" aria-label="Remove bed"><md-icon class="mdi mdi-close md-18"></md-icon><span hide-gt-sm translate="common.remove"></span><md-tooltip hide show-gt-sm><span translate="common.remove"></span></md-tooltip></md-button></div></div><div ng-if="bed.$$editing && $ctrl.$$editingBed"><ch-bed-sold-edit class="md-whiteframe-z2 md-margin layout-column layout-padding-sm" bed-sold="$ctrl.$$editingBed" nights="$ctrl.nights" people-limits="$ctrl.$$peopleLimits" people-age-ranges="$ctrl.peopleAgeRanges" on-confirm="$ctrl.$confirmBedEdit($bedSold)" on-cancel="$ctrl.$cancelBedEdit($bedSold)"></ch-bed-sold-edit></div></div><div ng-if="!$last" class="no-margin no-padding"><md-divider></md-divider></div></md-list-item></md-list></div><div ng-if="!$ctrl.$$editingBed" ng-class="{\'layout-column layout-align-center-center\': !$ctrl.$mdMedia(\'gt-sm\'), \'layout-row\': $ctrl.$mdMedia(\'gt-sm\')}"><div flex class="text-danger layout-row layout-align-start-center" ng-if="$ctrl.$$availableBeds.length && $ctrl.$$errors.min" ng-switch on="$ctrl.minCount - $ctrl.beds.length"><span ng-switch-when="1" translate="error.beds.left.one"></span><span ng-switch-default translate="error.beds.left" translate-values="{num: $ctrl.minCount - $ctrl.beds.length}"></span></div><div flex class="layout-row layout-align-end-center"><md-button ng-class="{\'md-raised\': $ctrl.beds.length, \'bg-success\': !$ctrl.$$errors.min && !$ctrl.$$errors.max && $ctrl.beds.length, \'text-blue-sea\': !$ctrl.beds.length}" ng-disabled="$ctrl.$$errors.min || $ctrl.$$errors.max" ng-click="$ctrl.$confirm()" aria-label="Confirm beds"><md-icon ng-show="$ctrl.beds.length" class="mdi mdi-check md-24" ng-class="{\'text-white\': !$ctrl.$$errors.min && !$ctrl.$$errors.max}"></md-icon><md-icon ng-show="!$ctrl.beds.length" class="mdi mdi-chevron-up md-24 text-blue-sea"></md-icon><span ng-show="$ctrl.beds.length" translate="common.confirm"></span><span ng-show="!$ctrl.beds.length" translate="common.hide"></span></md-button></div></div></div></div>');
     $templateCache.put("/tpls/room-edit/room-edit-identity-documents.tpl", '<div><md-list><md-list-item ng-repeat="document in $ctrl.identityDocuments track by $index" class="am-fade-and-slide-right"><div flex layout="column"><div layout layout-wrap layout-align="start center"><div ng-switch="document.guestType"><md-icon ng-switch-when="GROUP_LEADER" class="mdi mdi-google-circles md-18 circle-icon bg-success text-white"></md-icon><md-icon ng-switch-when="HOUSEHOLDER" class="mdi mdi-account-multiple md-18 circle-icon bg-success text-white"></md-icon><md-icon ng-switch-default class="mdi md-18 circle-icon bg-gray-lighter text-gray-light" ng-class="document.name && document.surname ? \'mdi-account\': \'mdi-account-alert\'"></md-icon></div><div><strong><span translate="guest.guest"></span>&nbsp;{{$index+1}}:&nbsp;</strong></div><div flex ng-if="!document.$$editing" class="md-padding" ng-class="{\'flex\': $ctrl.$mdMedia(\'gt-sm\'), \'text-center\': !$ctrl.$mdMedia(\'gt-sm\')}"><span ng-if="document.name && document.surname"><span class="text-capitalize">{{document.name}}&nbsp;{{document.surname}}</span>&nbsp;<span ng-if="document.birthDate">-&nbsp;{{document.birthDate|utcDate:"shortDate"}}&nbsp;</span><span ng-class="document.guestType == \'GROUP_LEADER\' || document.guestType == \'HOUSEHOLDER\'? \'label label-xs bg-success\' : \'label label-xs bg-gray-light\'"><span ng-if="document.guestType == \'GROUP_LEADER\'" translate="common.GROUP_LEADER"></span><span ng-if="document.guestType == \'HOUSEHOLDER\'" translate="common.HOUSEHOLDER"></span><span ng-if="document.guestType == \'SINGLE_GUEST\'" translate="common.SINGLE_GUEST"></span><span ng-if="document.guestType == \'GROUP_MEMBER\'" translate="common.GROUP_MEMBER"></span><span ng-if="document.guestType == \'FAMILY_MEMBER\'" translate="common.FAMILY_MEMBER"></span></span></span><span ng-if="!document.name || !document.surname" class="text-gray-light"><span translate="reservation.text.identityDocuments.no.guest"></span>.&nbsp;<span translate="reservation.text.identityDocuments.add.question"></span></span></div><div ng-if="!document.$$editing" ng-class="{\'flex-100 layout-column\': !$ctrl.$mdMedia(\'gt-sm\')}"><md-button ng-class="document.name && document.surname ? \'text-blue-sea\' : \'only-border border-success text-success\'" class="button-small" ng-disabled="$ctrl.$$editingDocument" ng-click="$ctrl.$editDocument(document)" aria-label="{{document.name && document.surname ? \'Edit\' : \'Add\'}} document"><span ng-if="document.name && document.surname"><span class="mdi mdi-pencil md-24" ng-class="{\'text-blue-sea\': !$ctrl.$$editingDocument}"></span><small translate="common.edit"></small></span><span ng-if="!document.name || !document.surname"><span class="mdi mdi-plus md-24"></span><small translate="common.add"></small></span></md-button><md-button ng-if="document.name && document.surname" class="md-icon-button no-margin" ng-disabled="$ctrl.$$editingDocument" ng-click="$ctrl.$removeDocument(document)" aria-label="Remove document"><md-icon class="mdi mdi-close md-18"></md-icon><md-tooltip><span translate="common.remove"></span></md-tooltip></md-button></div></div><div flex ng-if="document.$$editing && $ctrl.$$editingDocument"><div><ch-identity-document-edit class="md-whiteframe-z2 md-margin layout-column layout-padding-sm" identity-document="$ctrl.$$editingDocument" on-confirm="$ctrl.$confirmDocumentEdit($document)" on-cancel="$ctrl.$cancelDocumentEdit($document)"></ch-identity-document-edit></div></div></div><md-divider class="no-padding" ng-if="!document.$$editing && !$last"></md-divider></md-list-item></md-list></div>');
     $templateCache.put("/tpls/room-edit/room-edit-people.tpl", '<div><md-list ng-show="!$ctrl.$$showDetails"><md-list-item ng-if="$ctrl.maxCount > 1" class="layout-row layout-wrap layout-padding layout-align-center-center no-padding-top no-padding-bottom no-padding-right"><div flex><ch-people-summary people="$ctrl.people"></ch-people-summary></div><div class="no-padding-right"><md-button class="button-small no-margin text-blue-sea" ng-click="$ctrl.$toggleDetails(true)" aria-label="Edit guests"><small><md-icon class="mdi mdi-pencil md-18 text-blue-sea"></md-icon><span translate="common.edit"></span></small></md-button></div></md-list-item><md-list-item ng-if="$ctrl.maxCount == 1" class="layout-row layout-wrap layout-padding layout-align-center-center no-padding-top no-padding-bottom no-padding-right"><div class="flex"><span><span translate="people.people.only.inroom"></span>&nbsp;</span><ch-people-summary people="$ctrl.people"></ch-people-summary></div></md-list-item></md-list><div class="layout-column" ng-class="{\'layout-align-center-center\': !$mdMedia(\'gt-sm\')}" ng-show="$ctrl.$$showDetails"><div><ch-people-counters ng-model="$ctrl.people" max-people="$ctrl.maxPeople" min="1" max="$ctrl.maxCount" limits="$ctrl.limits" age-ranges="$ctrl.ageRanges" on-change="$ctrl.$onPeopleChange($people)"></ch-people-counters></div><div ng-if="$ctrl.$$guestsCount.standard >= $ctrl.maxCount" class="md-padding no-padding-bottom no-padding-top"><span class="bg-info label label-inline-block text-wrap text-center" translate="people.max.room"></span></div><div class="text-right" ng-class="{\'layout-column\': !$mdMedia(\'gt-sm\')}"><md-button class="bg-success text-white md-raised" ng-click="$ctrl.$toggleDetails()" aria-label="Confirm guests"><md-icon class="mdi mdi-check md-24 text-white"></md-icon><span translate="common.confirm"></span></md-button></div></div></div>');
