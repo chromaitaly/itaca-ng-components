@@ -13,7 +13,8 @@
 
 	<div ng-if="$ctrl.promotion.valid && !$ctrl.promotion.hotelClosed">								
 		<div layout="column" flex>
-			<md-button ng-disabled="$ctrl.promotion.pastDate || $ctrl.promotion.availability.actual <= 0" ng-click="$ctrl.$toggleClosing()" aria-label="Enable/Disable promotion"
+			<md-button ng-disabled="$ctrl.promotion.pastDate || $ctrl.promotion.availability.actual <= 0 || $ctrl.promotion.roomClosed" 
+				ng-click="$ctrl.$toggleClosing()" aria-label="Enable/Disable promotion"
 				class="no-margin forced" ng-class="{'minimal-button': !$ctrl.$mdMedia('gt-xs'), 
 					'bg-success': !$ctrl.promotion.roomClosed && $ctrl.promotion.enabled && $ctrl.promotion.availability.actual > 0,
 					'bg-warn': !$ctrl.promotion.roomClosed && $ctrl.promotion.enabled && $ctrl.promotion.availability.actual == 0,
@@ -22,6 +23,7 @@
 				<div ng-show="!$ctrl.promotion.roomClosed" flex layout layout-xs="column" layout-align="center center">
 					<small ng-show="$ctrl.promotion.minStay > 1"><md-icon class="mdi mdi-calendar-today md-14 text-white"></md-icon></small>
 				</div>
+
 				<md-tooltip>
 					<span ng-if="$ctrl.promotion.roomClosed || !$ctrl.promotion.enabled">
 						<span ng-if="$ctrl.promotion.availability.actual > 0" translate="ratesheet.promos.promo.enable"></span>
