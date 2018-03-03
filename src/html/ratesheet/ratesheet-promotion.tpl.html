@@ -1,5 +1,4 @@
-<ng-form name="chRatesheetPromotionForm" flex layout="column">
-
+<div flex layout="column">
 	<div ng-if="$ctrl.promotion.hotelClosed" layout layout-align="center center" flex>
 		<md-button aria-label="Closed" class="md-icon-button no-margin no-padding auto-height cursor-help" tabindex="-1">
 			<md-icon class="mdi mdi-lock md-18"></md-icon>
@@ -34,25 +33,5 @@
 				</md-tooltip>
 			</md-button>
 		</div>
-		
-		<div ng-if="$ctrl.showDetails" ng-switch="$ctrl.type" layout="column" layout-align="center center">
-			<div ng-switch-when="MINIMUM_STAY">
-				<md-input-container flex class="no-margin-bottom minimal-input">
-	          		<label><span translate="common.nights"></span></label>
-		            <input value="{{$ctrl.promotion.minStay}}" class="text-center" disabled readonly>
-	          	</md-input-container>
-	    	</div>
-	    	
-	    	<div ng-switch-default>
-				<md-input-container flex class="no-margin-bottom minimal-input">
-					<label><span translate="common.nights"></span></label>
-		            <input type="number" class="text-center" name="minStay" ng-model="$ctrl.$$tempPromotion.minStay" ng-disabled="$ctrl.$$tempPromotion.pastDate || $ctrl.$$tempPromotion.roomClosed || !$ctrl.$$tempPromotion.enabled" min="0" step="1"
-		            	ng-blur="$ctrl.$saveMinStay()" tabindex="2">
-	            	<div ng-messages="chRatesheetPromotionForm.minStay.$error">
-		          		<div ng-message="min"><span translate="error.field.min" translate-values="{num: 1}"></span></div>
-			        </div>
-	          	</md-input-container>
-			</div>
-        </div>
 	</div>
-</ng-form>
+</div>

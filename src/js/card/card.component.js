@@ -102,7 +102,7 @@
 				"</div>"+
 				"<md-divider></md-divider>"+
 				"<div class=\"md-padding layout-column layout-padding-sm flex {{$ctrl.colorClass}}\">"+
-					"<div class=\"layout-column layout-align-center-center\">" +
+					"<div class=\"layout-column layout-padding-sm layout-align-center-center\">" +
 						"<div class=\"{{$ctrl.titleClass}} row-mini text-center\"><span>{{$ctrl.title}}</span></div>"+
 						"<small class=\"text-center\" ng-if=\"subtitle\">{{$ctrl.subtitle}}</small>"+
 					"</div>" +

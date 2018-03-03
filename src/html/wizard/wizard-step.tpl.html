@@ -1,0 +1,5 @@
+<div ng-if="$ctrl.$$step.$active" flex class="md-padding"
+	ng-class="{'animated fadeInUp': $ctrl.chWizardCtrl.direction == 'vertical' && !$ctrl.$$step.$stopAnimation, 
+		'animated fadeInRight': $ctrl.chWizardCtrl.direction == 'horizontal' && !$ctrl.$$step.$stopAnimation}"
+	ng-transclude>
+</div>

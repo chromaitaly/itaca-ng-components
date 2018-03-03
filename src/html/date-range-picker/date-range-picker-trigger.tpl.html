@@ -1,0 +1,71 @@
+<ng-form name="chDateRangePickerTriggerForm" class="flex no-padding layout-column">
+  	<md-button class="ch-date-range-picker-button flex minimal-button text-lowercase text-center {{$ctrl.buttonClass}}" ng-click="$ctrl.$openPanel($event)" aria-label="Change period" ng-disabled="$ctrl.ngDisabled">
+  		<div class="{{$ctrl.wrapperClass}}">
+  			<div ng-if="$ctrl.label || $ctrl.placeholder" class="layout-row layout-align-center-center" ng-class="{'no-padding-top': $ctrl.$mdMedia('gt-xs'), 'md-padding': !$ctrl.$mdMedia('gt-xs') || $ctrl.start || $ctrl.end}">
+	  			<div class="{{$ctrl.labelClass}} text-initial text-wrap row-1" ng-class="{'text-small': $ctrl.start || $ctrl.end}">
+	  				<span ng-if="$ctrl.placeholder && !$ctrl.start && !$ctrl.end" ng-bind-html="$ctrl.placeholder"></span>
+		  			<span ng-if="$ctrl.label && (($ctrl.start || $ctrl.end) || !$ctrl.placeholder)" ng-bind-html="$ctrl.label"></span>
+	  			</div>
+			</div>
+			<div ng-if="!$ctrl.largeTemplate">
+				<div ng-show="$ctrl.start || $ctrl.end" class="layout layout-wrap layout-align-center-center row-mini">
+					<span><span translate="date.from.abbr"></span>&nbsp;<span class="md-subhead"><strong>{{$ctrl.start|date:"shortDate":$ctrl.$$timezone}}</strong></span>&nbsp;</span>
+					<span><span translate="date.to.abbr"></span>&nbsp;<span class="md-subhead"><strong>{{$ctrl.end|date:"shortDate":$ctrl.$$timezone}}</strong></span></span>
+					<span ng-if="$ctrl.$$diff" class="{{$ctrl.labelClass}} text-small no-padding no-margin text-lowercase"> 
+					&nbsp;(<span ng-bind="$ctrl.$$diff"></span>&nbsp;
+			       		<span ng-show="$ctrl.$$diff == 1"><span ng-if="!$ctrl.$$diffLabelSingular" translate="date.day"></span><span ng-if="$ctrl.$$diffLabelSingular" ng-bind="$ctrl.$$diffLabelSingular"></span>)</span> 
+			       		<span ng-show="$ctrl.$$diff > 1"><span ng-if="!$ctrl.$$diffLabelPlural" translate="date.days"></span><span ng-if="$ctrl.$$diffLabelPlural" ng-bind="$ctrl.$$diffLabelPlural"></span>)</span> 
+			       	</span>
+				</div>
+			</div>
+			<div ng-if="$ctrl.largeTemplate" class="layout-row layout-wrap layout-align-center-center layout-padding-sm">
+				<div class="layout-column layout-padding-sm flex-45 row-1">
+					<span class="no-padding-bottom row-1 text-initial" ng-bind-html="$ctrl.startLabel"></span>
+					<div class="layout-align-center-center layout-row">
+						<span><md-icon class="mdi mdi-calendar md-32"></md-icon></span>
+						<span ng-if="$ctrl.start" class="md-display-1 layout-padding">{{$ctrl.start|date:"dd":$ctrl.$$timezone}}</span>
+						<span ng-if="$ctrl.start" class="layout-column row-mini">
+							<span>{{$ctrl.start|date:"MMM":$ctrl.$$timezone}}</span>
+							<span>{{$ctrl.start|date:"yyyy":$ctrl.$$timezone}}</span>
+						</span>
+					</div>
+				</div>
+				
+				<div class="layout-column flex text-bold">-</div>
+				
+				<div class="layout-column layout-padding-sm flex-45 row-1">
+					<span class="no-padding-bottom row-1 text-initial" ng-bind-html="$ctrl.endLabel"></span>
+					<div class="layout-align-center-center layout-row">
+						<span><md-icon class="mdi mdi-calendar md-32"></md-icon></span>
+						<span ng-if="$ctrl.end" class="md-display-1 layout-padding">{{$ctrl.end|date:"dd":$ctrl.$$timezone}}</span>
+						<span ng-if="$ctrl.end" class="layout-column row-mini">
+							<span>{{$ctrl.end|date:"MMM":$ctrl.$$timezone}}</span>
+							<span>{{$ctrl.end|date:"yyyy":$ctrl.$$timezone}}</span>
+						</span>
+					</div>
+				</div>
+				
+				<div ng-if="$ctrl.$$diff" class="layout-column flex-100 row-1">
+					<span class="{{$ctrl.labelClass}} text-small no-padding no-margin text-lowercase"> 
+			       		&nbsp;(<span ng-bind="$ctrl.$$diff">&nbsp;</span> 
+			       		<span ng-show="$ctrl.$$diff == 1"><span ng-if="!$ctrl.$$diffLabelSingular" translate="date.day"></span><span ng-if="$ctrl.$$diffLabelSingular" ng-bind="$ctrl.$$diffLabelSingular"></span>)</span> 
+			       		<span ng-show="$ctrl.$$diff > 1"><span ng-if="!$ctrl.$$diffLabelPlural" translate="date.days"></span><span ng-if="$ctrl.$$diffLabelPlural" ng-bind="$ctrl.$$diffLabelPlural"></span>)</span>
+			       	</span>
+		       	</div>
+			</div>
+		</div>
+	</md-button>
+	
+	<input type="hidden" name="{{$ctrl.startInputName}}" ng-model="$ctrl.start" required>
+	<input type="hidden" name="{{$ctrl.endInputName}}" ng-model="$ctrl.end" required>
+	
+	<div ng-messages="chDateRangePickerTriggerForm[$ctrl.startInputName].$error" class="font-12 text-center text-danger" ng-show="chDateRangePickerTriggerForm[$ctrl.startInputName].$dirty || chDateRangePickerTriggerForm.$submitted">
+   		<span ng-message="required"><span translate-once="error.required"></span></span>
+  		<span ng-if="$ctrl.startErrorMessages" ng-repeat="error in $ctrl.startErrorMessages" ng-message="error.key"><span translate="error.label"></span></span>
+  	</div>
+  	
+  	<div ng-messages="chDateRangePickerTriggerForm[$ctrl.endInputName].$error" class="font-12 text-center text-danger" ng-show="!chDateRangePickerTriggerForm[$ctrl.startInputName].$invalid && (chDateRangePickerTriggerForm[$ctrl.endInputName].$dirty || chDateRangePickerTriggerForm.$submitted)">
+  		<span ng-message="required"><span translate-once="error.required"></span></span>
+  		<span ng-if="$ctrl.endErrorMessages" ng-repeat="error in $ctrl.endErrorMessages" ng-message="error.key"><span translate="error.label"></span></span>
+  	</div>
+</ng-form>

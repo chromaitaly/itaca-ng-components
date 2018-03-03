@@ -1,0 +1,29 @@
+<div>
+	<div>
+<!-- 		ng-repeat="step in $ctrl.$$steps track by step.$uid" -->
+	
+		<ng-form name="chFormWizardForm">
+			<ch-wizard-steps-container ng-transclude></ch-wizard-steps-container>
+			
+			<div flex layout layout-padding-sm layout-align="start center">
+				<div flex layout layout-align="start center">
+					<md-button ng-if="!$ctrl.$$currentStep.$first" ng-click="$ctrl.$back()" aria-label="Go back">
+						<span translate="common.back"></span>
+					</md-button>
+				</div>
+				
+				<div flex layout layout-align="end center" ng-if="!$ctrl.$$currentStep.$last">
+					<md-button class="md-raised md-primary" ng-click="$ctrl.$forward()" aria-label="Go forward">
+						<span translate="common.forward"></span>
+					</md-button>
+				</div>
+				
+				<div flex layout layout-align="end center" ng-if="$ctrl.$$currentStep.$last">
+					<md-button class="md-raised md-primary" ng-click="$ctrl.$confirm()" aria-label="Confirm">
+						<span translate="common.confirm"></span>
+					</md-button>
+				</div>
+			</div>
+		</ng-form>
+	</div>	
+</div>

@@ -1,0 +1,68 @@
+<div flex class="ch-simple-steppers" ng-class="{ 
+    'ch-simple-steppers-linear': $ctrl.linear, 
+    'ch-simple-steppers-alternative': $ctrl.alternative,
+    'ch-simple-steppers-vertical': $ctrl.vertical,
+    'ch-simple-steppers-mobile-step-text': $ctrl.mobileStepText,
+    'ch-simple-steppers-has-feedback': $ctrl.hasFeedback
+    }">
+    <div class="ch-simple-steppers-header-region">
+        <ch-simple-steppers-header class="ch-simple-steppers-header ch-simple-steppers-horizontal ch-whiteframe-1dp">
+            <md-button class="ch-simple-stepper-indicator" ng-repeat="(stepNumber, $step) in $ctrl.steps track by $index" ng-class="{
+                'ch-active': stepNumber === $ctrl.currentStep.index,
+                'ch-completed': $ctrl.isCompleted(stepNumber),
+                'ch-error': $step.hasError,
+                'ch-simple-stepper-optional': $step.optional || $step.hasError
+            	}" ng-click="$ctrl.goto(stepNumber)" 
+            	ng-disabled="$ctrl.linear || stepNumber === $ctrl.currentStep.index || $step.ngDisabled"
+            	aria-label="Go to step">
+	            <div class="ch-simple-stepper-indicator-wrapper">
+	                <div class="ch-simple-stepper-number" ng-hide="$step.hasError">
+	                    <span ng-if="!$ctrl.isCompleted(stepNumber)">
+	                    	<span ng-if="!$step.iconClass" ng-bind="stepNumber+1"></span>
+	                    	<span ng-if="$step.iconClass">
+								<ch-icon class="{{$step.iconClass}}"></ch-icon>
+							</span>
+	                    </span>
+	                    <span ng-if="$ctrl.isCompleted(stepNumber)">
+	                    	<ch-icon class="ch-simple-stepper-icon material-icons mdi" 
+	                    		ng-class="$step.iconCompletedClass ? $step.iconCompletedClass : 'mdi-check ch-18'"></ch-icon>
+	                    </span>
+	                </div>
+	
+	                <div class="ch-simple-stepper-error-indicator" ng-show="$step.hasError">
+	                	<ch-icon class="steppers-warning mdi mdi-alert ch-24"></ch-icon>
+	                </div>
+	                
+	                <div class="ch-simple-stepper-title">
+	                    <span ng-bind-html="$step.label"></span>
+	                    <small ng-if="$step.optional" ng-show="!$step.hasError" ng-bind-html="$step.optionalLabel"></small>
+	                    <small class="ch-simple-stepper-error-message" ng-show="$step.hasError" ng-bind-html="$step.message"></small>
+	                </div>
+	            </div>
+            </md-button>
+        </ch-simple-steppers-header>
+        
+        <ch-simple-steppers-mobile-header class="ch-simple-steppers-mobile-header">
+            <md-toolbar flex="none" class="ch-whiteframe-1dp" style="background: #f6f6f6 !important; color: #202020 !important;">
+                <div class="md-toolbar-tools">
+                    <h3>
+                        <span ng-bind-html="$ctrl.labelStep"></span>&nbsp;<span ng-bind-html="$ctrl.currentStep.index+1"></span>&nbsp;
+                       	<span ng-bind-html="$ctrl.labelOf"></span>&nbsp;<span ng-bind-html="$ctrl.steps.length"></span>:
+                       	<span class="ch-simple-stepper-title">&nbsp;
+                       		<span ng-bind-html="$ctrl.currentStep.label"></span>
+                       		<small ng-if="$ctrl.currentStep.optional">&nbsp;(<span ng-bind-html="$ctrl.currentStep.optionalLabel"></span>)</small>
+                       	</span>                      	
+                    </h3>
+                </div>
+            </md-toolbar>
+        </ch-simple-steppers-mobile-header>
+        
+        <div class="ch-simple-stepper-feedback-message" ng-show="$ctrl.hasFeedback">
+            <span ng-bind-html="$ctrl.feedbackMessage"></span>
+        </div>
+    </div>
+    
+    <ch-simple-steppers-content class="ch-simple-steppers-content" ng-transclude></ch-simple-steppers-content>
+    
+    <div class="ch-simple-steppers-overlay"></div>
+</div>

@@ -1,6 +1,3 @@
-/**
- * Date Range
- */
 (function() {
 	'use strict';
 	
@@ -12,12 +9,14 @@
         	label: "@",
         	labelClass: "@",
         	startLabel: "@",
+        	startHintLabel: "@",
         	startInputName: "@",
         	start: "=",
         	startMinDate: "<?",
         	startMaxDate: "<?",
         	startErrorMessages: "<?",
         	endLabel: "@",
+        	endHintLabel: "@",
         	endInputName: "@",
         	end: "=",
     		endMinDate: "<?",
@@ -36,78 +35,13 @@
     		onClose: "&?",
     		ngDisabled: "<?"
         },
-        controller: DateRangePickerCtrl,
-        template: 
-        	"<ng-form name=\"chDateRangeForm\" class=\"flex no-padding layout-column\">" +
-			  	"<md-button class=\"ch-date-range-picker-button flex minimal-button text-lowercase text-center {{$ctrl.buttonClass}}\" ng-click=\"$ctrl.$openPanel($event)\" aria-label=\"Change period\" ng-disabled=\"$ctrl.ngDisabled\">" +
-			  		"<div class=\"{{$ctrl.wrapperClass}}\">" +
-			  			"<div ng-if=\"$ctrl.label || $ctrl.placeholder\" class=\"layout-row layout-align-center-center\" ng-class=\"{'no-padding-top': $ctrl.$mdMedia('gt-xs'), 'md-padding': !$ctrl.$mdMedia('gt-xs') || $ctrl.start || $ctrl.end}\">" +
-				  			"<div class=\"{{$ctrl.labelClass}} text-initial text-wrap row-1\" ng-class=\"{'text-small': $ctrl.start || $ctrl.end}\">"+
-				  				"<span ng-if=\"$ctrl.placeholder && !$ctrl.start && !$ctrl.end\" ng-bind-html=\"$ctrl.placeholder\"></span>" +
-					  			"<span ng-if=\"$ctrl.label && (($ctrl.start || $ctrl.end) || !$ctrl.placeholder)\" ng-bind-html=\"$ctrl.label\"></span>" +
-				  			"</div>"+
-						"</div>" +
-						"<div ng-if=\"!$ctrl.largeTemplate\">"+
-							"<div ng-show=\"$ctrl.start || $ctrl.end\" class=\"layout layout-wrap layout-align-center-center row-mini\">" +
-								"<span><span translate=\"date.from.abbr\"></span>&nbsp;<span class=\"md-subhead\"><strong>{{$ctrl.start|date:\"shortDate\":$ctrl.$$timezone}}</strong></span>&nbsp;</span>" +
-								"<span><span translate=\"date.to.abbr\"></span>&nbsp;<span class=\"md-subhead\"><strong>{{$ctrl.end|date:\"shortDate\":$ctrl.$$timezone}}</strong></span></span>" +
-								"<span ng-if=\"$ctrl.$$diff\" class=\"{{$ctrl.labelClass}} text-small no-padding no-margin text-lowercase\">" + 
-								"&nbsp;(<span ng-bind=\"$ctrl.$$diff\"></span>&nbsp;" + 
-						       		"<span ng-show=\"$ctrl.$$diff == 1\"><span ng-if=\"!$ctrl.$$diffLabelSingular\" translate=\"date.day\"></span><span ng-if=\"$ctrl.$$diffLabelSingular\" ng-bind=\"$ctrl.$$diffLabelSingular\"></span>)</span>" + 
-						       		"<span ng-show=\"$ctrl.$$diff > 1\"><span ng-if=\"!$ctrl.$$diffLabelPlural\" translate=\"date.days\"></span><span ng-if=\"$ctrl.$$diffLabelPlural\" ng-bind=\"$ctrl.$$diffLabelPlural\"></span>)</span>" + 
-						       	"</span>" +
-							"</div>" +
-						"</div>" +
-						"<div ng-if=\"$ctrl.largeTemplate\" class=\"layout-row layout-wrap layout-align-center-center \">"+
-							"<div class=\"layout-column flex-45 row-1\">" +
-								"<small class=\"row-1 text-initial\" translate=\"date.checkin\"></small>" +
-								"<div class=\"layout-align-center-center layout-row\">" +
-									"<span><md-icon class=\"mdi mdi-calendar md-32\"></md-icon></span>" +
-									"<span class=\"md-display-1 layout-padding\">{{$ctrl.start|date:\"dd\":$ctrl.$$timezone}}</span>" +
-									"<span class=\"layout-column row-mini\">" +
-										"<span>{{$ctrl.start|date:\"MMM\":$ctrl.$$timezone}}</span>" +
-										"<span>{{$ctrl.start|date:\"yyyy\":$ctrl.$$timezone}}</span>" +
-									"</span>" +
-								"</div>" +
-							"</div>" +
-							"<div class=\"layout-column flex text-bold\">-</div>"+
-							"<div class=\"layout-column flex-45 row-1\">" +
-								"<small class=\"row-mini text-initial\" translate=\"date.checkout\"></small>" +
-								"<div class=\"layout-align-center-center layout-row\">" +
-									"<span><md-icon class=\"mdi mdi-calendar md-32\"></md-icon></span>" +
-									"<span class=\"md-display-1 layout-padding\">{{$ctrl.end|date:\"dd\":$ctrl.$$timezone}}</span>" +
-									"<span class=\"layout-column row-mini\">" +
-										"<span>{{$ctrl.end|date:\"MMM\":$ctrl.$$timezone}}</span>" +
-										"<span>{{$ctrl.end|date:\"yyyy\":$ctrl.$$timezone}}</span>" +
-									"</span>" +
-								"</div>" +
-							"</div>" +
-							"<div class=\"layout-column flex-100 row-1\">" +
-								"<span ng-if=\"$ctrl.$$diff\" class=\"{{$ctrl.labelClass}} text-small no-padding no-margin text-lowercase\">" + 
-						       		"&nbsp;(<span ng-bind=\"$ctrl.$$diff\">&nbsp;</span>" + 
-						       		"<span ng-show=\"$ctrl.$$diff == 1\"><span ng-if=\"!$ctrl.$$diffLabelSingular\" translate=\"date.day\"></span><span ng-if=\"$ctrl.$$diffLabelSingular\" ng-bind=\"$ctrl.$$diffLabelSingular\"></span>)</span>" + 
-						       		"<span ng-show=\"$ctrl.$$diff > 1\"><span ng-if=\"!$ctrl.$$diffLabelPlural\" translate=\"date.days\"></span><span ng-if=\"$ctrl.$$diffLabelPlural\" ng-bind=\"$ctrl.$$diffLabelPlural\"></span>)</span>" +
-						       	"</span>" +
-					       	"</div>" +
-						"</div>" +
-					"</div>" +
-				"</md-button>" +
-				"<input type=\"hidden\" name=\"{{$ctrl.startInputName}}\" ng-model=\"$ctrl.start\" required>" +
-				"<input type=\"hidden\" name=\"{{$ctrl.endInputName}}\" ng-model=\"$ctrl.end\" required>" +
-				"<div ng-messages=\"chDateRangeForm[$ctrl.startInputName].$error\" class=\"font-12 text-center text-danger\" ng-show=\"chDateRangeForm[$ctrl.startInputName].$dirty || chDateRangeForm.$submitted\">"+
-	          		"<span ng-message=\"required\"><span translate-once=\"error.required\"></span></span>"+
-	          		"<span ng-if=\"$ctrl.startErrorMessages\" ng-repeat=\"error in $ctrl.startErrorMessages\" ng-message=\"error.key\"><span translate=\"error.label\"></span></span>"+
-	          	"</div>"+
-	          	
-	          	"<div ng-messages=\"chDateRangeForm[$ctrl.endInputName].$error\" class=\"font-12 text-center text-danger\" ng-show=\"!chDateRangeForm[$ctrl.startInputName].$invalid && (chDateRangeForm[$ctrl.endInputName].$dirty || chDateRangeForm.$submitted)\">"+
-	          		"<span ng-message=\"required\"><span translate-once=\"error.required\"></span></span>"+
-	          		"<span ng-if=\"$ctrl.endErrorMessages\" ng-repeat=\"error in $ctrl.endErrorMessages\" ng-message=\"error.key\"><span translate=\"error.label\"></span></span>"+
-	          	"</div>"+
-		    "</ng-form>"
+        controller: DateRangePickerTriggerCtrl,
+        templateUrl: "/tpls/date-range-picker/date-range-picker-trigger.tpl"
+        	
 	});
 
 	/* @ngInject */
-	function DateRangePickerCtrl($scope, $element, $mdPanel, $mdMedia, DateUtils) {
+	function DateRangePickerTriggerCtrl($scope, $element, $mdPanel, $mdMedia, DateUtils) {
 		var ctrl = this;
 		
 		this.$mdMedia = $mdMedia;
@@ -132,9 +66,9 @@
 					    	
 			ctrl.$$config = {
 				attachTo: angular.element(document.body),
-			    controller: "dateRangeCtrl",
-			    controllerAs: "ctrl",
-			    templateUrl: "/tpls/date-range.part",
+			    controller: DateRangePickerCtrl,
+			    controllerAs: "$ctrl",
+			    templateUrl: "/tpls/date-range-picker/date-range-picker.tpl",
 			    position: position,
 			    clickOutsideToClose: true,
 			    disableParentScroll: ctrl.disableParentScroll,
@@ -181,8 +115,8 @@
 				diffLabelSingular: ctrl.$$diffLabelSingular,
 				diffLabelPlural: ctrl.$$diffLabelPlural,
 				useUtc: _.isBoolean(ctrl.useUtc) ? ctrl.useUtc : false,
-				startTitle: ctrl.startLabel,
-				endTitle: ctrl.endLabel,
+				startTitle: ctrl.startHintLabel,
+				endTitle: ctrl.endHintLabel,
 				data: ctrl.$$data
 			 };
 	 		  	    		 
@@ -234,5 +168,121 @@
 				ctrl.$$diff = null;
 			}
 		 };
+	}
+	
+	/* @ngInject */
+	function DateRangePickerCtrl($scope, mdPanelRef, DateUtils, $timeout) {
+		
+		var _self = this;
+		
+		this.currentView = this.currentView || "start";
+		
+		this.init = function() {
+			_self.timezone = _.isBoolean(_self.useUtc) && _self.useUtc ? "UTC" : "";
+			_self.modelOptions = _.isBoolean(_self.useUtc) && _self.useUtc ? {timezone: 'UTC'} : {};
+			_self.showDiff = _.isBoolean(_self.showDiff) ? _self.showDiff : true;
+			
+			if (_self.showDiff) {
+				$scope.$watchGroup([function() { return _self.data.start;}, function() { return _self.data.end;}], function(newValues, oldValues) {
+					_self.calculateDiff();
+				});
+			}
+		};
+		
+		$scope.$on("md-calendar-change", function(event, date) {
+			_self.dateChanged = true;
+
+			if (_self.currentView == "end" && !_self.hasConfirm) {
+				_self.confirm();
+			}
+		});
+		
+		this.toggleView = function() {
+			_self.dateChanged = false;
+			
+			if (_self.currentView == "start") {
+				_self.currentView = "end";
+				
+			} else {
+				_self.currentView = "start";
+			}
+		};
+		
+		this.checkEndDate = function(fixEnd) {
+			if (!_self.data.start) return;
+			
+			var start = _self.$$getMoment(_self.data.start);
+			var end = _self.$$getMoment(_self.data.end);
+			var minEnd = _self.$$getMoment(start).add(1, "days");
+			
+			var maxEnd = null;
+			if (_self.data.maxRange) {	        		
+	    		maxEnd = _self.$$getMoment(start).add(_self.data.maxRange, "days");
+			}
+			
+			if (!_self.data.end || _self.$$getMoment(_self.data.end).isBefore(minEnd, "day")) {
+				fixEnd ? end = minEnd.toDate() : end = null;
+			
+			} else if (maxEnd && _self.data.end && _self.$$getMoment(_self.data.end).isAfter(maxEnd, "day")) {
+				fixEnd ? end = maxEnd.toDate() : end == null;
+			}
+			
+			_self.updateEnd(end, minEnd.toDate(), maxEnd && maxEnd.toDate());
+		};
+		
+		this.updateEnd = function(date, minDate, maxDate) {
+			_self.data.end = date ? _self.$$getMoment(date).toDate() : null;
+			
+			if (minDate) {
+				_self.data.endMinDate = minDate;
+			}
+			
+			if (maxDate) {
+				_self.data.endMaxDate = maxDate;
+			}
+		};
+		
+		this.calculateDiff = function() {
+			if (_self.showDiff && _self.data.end && _self.data.start) {
+				_self.data.diff = _self.$$getMoment(_self.data.end).diff(_self.$$getMoment(_self.data.start), 'days');
+			} else {
+				_self.data.diff = null;
+			}
+		};
+		
+		this.$$getMoment = function(date) {
+			if (_self.useUtc) {
+				return DateUtils.absoluteMoment(date);
+			
+			} else {
+				return moment(date);
+			}
+		};
+		
+		$scope.$watch(function() { return _self.data.start;}, function(newValue, oldValue) {
+			_self.checkEndDate();
+			_self.dateChanged && _self.toggleView();
+		});
+		
+		/**
+		 * Workaround per il timezone dell'ng-model-option non gestito negli md-calendar
+		 * 
+		 */
+		$scope.$watchGroup([function() { return _self.data.start;}, function() { return _self.data.end;}], function(newValues, oldValues) {
+			_self.$$startDate = _self.data.start ? _self.$$getMoment(_self.data.start).toDate() : null;
+			$scope.$$endDate = _self.data.end ? _self.$$getMoment(_self.data.end).toDate() : null;
+		});
+		
+		this.confirm = function() {
+			_self.checkEndDate(true);
+			mdPanelRef && mdPanelRef.close(true);
+	    };
+	    
+	    this.cancel = function() {
+			mdPanelRef && mdPanelRef.close(false);
+	    };
+	    
+	    // init
+	    this.init();
 	}
 })();

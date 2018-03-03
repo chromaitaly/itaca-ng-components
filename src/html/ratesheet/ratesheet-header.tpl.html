@@ -16,15 +16,15 @@
 				'bg-warn': !$ctrl.header.roomClosed && $ctrl.header.availability.actual == 0, 
 				'bg-gray-base text-white': !$ctrl.header.roomClosed && $ctrl.header.availability.actual < 0}">
 			
-			<small ng-if="$ctrl.header.roomClosed">
+			<div class="text-small" ng-if="$ctrl.header.roomClosed">
 				<strong hide-xs translate="common.closed.female"></strong>
 				<span hide show-xs><md-icon class="mdi mdi-lock md-24 text-white"></md-icon></span>
 				<md-tooltip>
 					<span translate="ratesheet.rate.room.open"></span>													
 				</md-tooltip>
-			</small>
+			</div>
 			
-			<small ng-if="!$ctrl.header.roomClosed">
+			<div class="text-small" ng-if="!$ctrl.header.roomClosed">
 				<strong>
 					<span ng-if="$ctrl.header.availability.actual > 0">
 						<span hide-xs translate="common.opened.female"></span>
@@ -45,7 +45,7 @@
 					<span ng-if="$ctrl.header.availability.actual == 0" translate="hotel.availability.none"></span>
 					<span ng-if="$ctrl.header.availability.actual < 0" translate="ratesheet.overbooking"></span>
 				</md-tooltip>
-			</small>
+			</div>
 		</md-button>
 	</div>	
 </div>

@@ -1,0 +1,37 @@
+<ng-form name="chRatesheetRateForm" flex layout="column">
+	<div ng-if="$ctrl.rate.hotelClosed" layout layout-align="center center" flex>
+		<md-button aria-label="Closed" class="md-icon-button no-margin no-padding auto-height cursor-help" tabindex="-1">
+			<md-icon class="mdi mdi-lock md-18"></md-icon>
+			<md-tooltip><span translate="hotel.closed"></span></md-tooltip>
+		</md-button>
+	</div>
+	<div ng-if="!$ctrl.rate.hotelClosed">
+		<div layout="column" layout-align="center center">
+			<div ng-if="!$ctrl.hideRate">
+				<md-input-container class="no-margin-bottom minimal-input no-padding-left" md-is-error="!$ctrl.rate[$ctrl.$$rateDataKey].amount.finalAmount">
+					<label flex><span translate="common.price"></span></label>
+					<md-icon ng-if="!$ctrl.rate[$ctrl.$$rateDataKey].amount.finalAmount" class="material-icons mdi mdi-alert" ng-class="$ctrl.$mdMedia('gt-xs') ? 'md-24' : 'md-18'"></md-icon>
+		            <input type="number" class="text-center" name="amount" ng-model="$ctrl.rate[$ctrl.$$rateDataKey].amount.finalAmount" 
+		            	ng-disabled="$ctrl.rate.pastDate || $ctrl.rate.roomClosed || !$ctrl.rate[$ctrl.$$rateDataKey].enabled" min="0.01" step="0.01"
+		            	aria-label="{{$ctrl.type}} Rate" ng-pattern="$ctrl.REGEXP.price" required ng-blur="$ctrl.$saveRate()"
+		            	ng-class="{'bg-warn opaque': !$ctrl.rate[$ctrl.$$rateDataKey].amount.finalAmount}">
+		            	
+	            	<div ng-messages="chRatesheetRateForm.minStay.$error">
+		          		<div ng-message="required"><span translate="ratesheet.rates.none"></span></div>
+			        </div>
+<!-- 	            	<md-tooltip ng-if="!$ctrl.rate[$ctrl.$$rateDataKey].amount.finalAmount"><span translate="ratesheet.rates.none"></span></md-tooltip> -->
+	          	</md-input-container>
+         	</div>
+			<div ng-if="!$ctrl.hideRestrictions">
+				<md-input-container class="minimal-input">
+					<label flex><span translate="common.nights"></span></label>
+		            <input type="number" class="text-center" name="minStay" ng-model="$ctrl.rate[$ctrl.$$rateDataKey].minStay" ng-disabled="$ctrl.rate.pastDate || $ctrl.rate.roomClosed || !$ctrl.rate[$ctrl.$$rateDataKey].enabled" min="1" step="1"	
+		            	ng-blur="$ctrl.$saveMinStay()" tabindex="2">
+	            	<div ng-messages="chRatesheetRateForm.minStay.$error">
+		          		<div ng-message="min"><span translate="error.field.min" translate-values="{num: 1}"></span></div>
+			        </div>
+	          	</md-input-container>
+	   		</div>
+		</div>
+	</div>
+</ng-form>

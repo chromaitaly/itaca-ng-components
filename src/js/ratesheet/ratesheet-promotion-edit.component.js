@@ -1,20 +1,21 @@
 (function() {
     'use strict';
     
-    angular.module('itaca.components').component('chRatesheetPromotion', {
+    angular.module('itaca.components').component('chRatesheetPromotionEdit', {
     	bindings: {
     		promotion: "<",
     		type: "@",
-    		onToggleClosing: "&?"
+    		onSaveMinStay: "&?"
     	},
-		controller: RatesheetPromotionCtrl,
-    	templateUrl: "/tpls/ratesheet/ratesheet-promotion.tpl"
+		controller: RatesheetPromotionEditCtrl,
+    	templateUrl: "/tpls/ratesheet/ratesheet-promotion-edit.tpl"
     });
     
     /* @ngInject */
-    function RatesheetPromotionCtrl($scope, $mdMedia) {
+    function RatesheetPromotionEditCtrl($scope, $mdMedia, REGEXP) {
     	
     	this.$mdMedia = $mdMedia;
+    	this.REGEXP = REGEXP;
     	
     	var ctrl = this;
     	
@@ -36,16 +37,19 @@
     		}
     	};
     	
-    	this.$toggleClosing = function(ev) {
-    		var close = _.isBoolean(ctrl.promotion.enabled) ? ctrl.promotion.enabled : false; 
+    	this.$saveMinStay = function() {
+    		var form = $scope.chRatesheetPromotionForm;
+    		form.$setSubmitted();
     		
-    		ctrl.onToggleClosing && ctrl.onToggleClosing({
-    			$event: ev,
+    		if (form.$invalid) {
+    			form.minStay.$setTouched();
+    			return;
+    		}
+    		
+    		ctrl.onSaveMinStay && ctrl.onSaveMinStay({
     			$promotion: ctrl.promotion, 
-    			$type: ctrl.type, 
-    			$closed: close
+    			$type: ctrl.type 
     		});
     	};
     }
-        
 })();

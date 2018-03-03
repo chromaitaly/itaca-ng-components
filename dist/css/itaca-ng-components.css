@@ -171,6 +171,418 @@ a.ch-review-hotel-info-link:not(.md-button):hover {
   background-color: rgba(0, 192, 239, 0.25);
   border-radius: 4px;
 }
+ch-simple-stepper {
+  display: block;
+}
+ch-simple-steppers-header,
+ch-simple-steppers-mobile-header,
+ch-simple-step-actions {
+  flex: 0 0 auto;
+  box-sizing: border-box;
+}
+.ch-simple-steppers-header-region {
+  z-index: 1;
+}
+@media (max-width: 599px) {
+  ch-simple-stepper {
+    display: flex;
+    flex-direction: row;
+  }
+  ch-simple-stepper > div {
+    min-width: 0px;
+    flex: 1;
+  }
+  .ch-simple-steppers-content {
+    min-height: 0px;
+    display: flex;
+    flex-direction: column;
+  }
+  ch-simple-step.ch-active {
+    min-height: 0px;
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+  }
+  ch-simple-step.ch-active .ch-simple-stepper {
+    display: flex;
+    flex-direction: column;
+    flex: 1;
+    min-height: 0px;
+  }
+  ch-simple-steppers-scope {
+    flex: 1;
+  }
+  ch-simple-step-body {
+    flex: 1;
+  }
+}
+.ch-simple-steppers {
+  display: flex;
+  flex-flow: column;
+}
+.ch-simple-steppers:not(.ch-simple-steppers-linear) .ch-simple-stepper-indicator:not(.ch-active):not(.ch-completed):hover,
+.ch-simple-steppers:not(.ch-simple-steppers-linear) .ch-simple-stepper-indicator.ch-editable.ch-completed:hover {
+  cursor: pointer;
+}
+.ch-simple-steppers:not(.ch-simple-steppers-linear) .ch-simple-stepper-indicator:not(.ch-active):not(.ch-completed):hover,
+.ch-simple-steppers:not(.ch-simple-steppers-linear) .ch-simple-stepper-indicator.ch-editable.ch-completed:hover,
+.ch-simple-steppers:not(.ch-simple-steppers-linear) .ch-simple-stepper-indicator:not(.ch-active):not(.ch-completed):hover .ch-simple-stepper-indicator-wrapper,
+.ch-simple-steppers:not(.ch-simple-steppers-linear) .ch-simple-stepper-indicator.ch-editable.ch-completed:hover .ch-simple-stepper-indicator-wrapper {
+  background-color: #F6F6F6;
+}
+.ch-simple-steppers-header {
+  margin: 0;
+  display: flex;
+  flex-flow: row nowrap;
+  border-radius: 0;
+  align-items: flex-start;
+}
+.ch-simple-steppers-horizontal .ch-simple-stepper-indicator {
+  min-height: 72px;
+}
+.ch-simple-steppers-horizontal .ch-simple-stepper-indicator:first-child .ch-simple-stepper-indicator-wrapper {
+  padding-left: 16px;
+}
+.ch-simple-steppers-horizontal .ch-simple-stepper-indicator:after {
+  width: 999em;
+  height: 1px;
+  margin-top: -1px;
+  position: absolute;
+  top: 50%;
+  left: 0;
+  z-index: 1;
+  background-color: #E8E8E8;
+  content: " ";
+}
+.ch-simple-stepper-indicator {
+  margin: 0;
+  padding: 0 16px;
+  position: relative;
+  display: flex;
+  flex: 1 0 auto;
+  align-content: flex-start;
+  align-items: flex-start;
+  overflow: hidden;
+  cursor: default;
+  background: none;
+  border: none;
+  transition: all 0.4s cubic-bezier(0.25, 0.8, 0.25, 1);
+}
+.ch-simple-stepper-indicator:focus {
+  outline: none;
+}
+.ch-simple-stepper-indicator.ch-completed .ch-simple-stepper-number,
+.ch-simple-stepper-indicator.ch-active .ch-simple-stepper-number {
+  background-color: #92278f;
+}
+.ch-simple-stepper-indicator.ch-completed .ch-simple-stepper-title,
+.ch-simple-stepper-indicator.ch-active .ch-simple-stepper-title {
+  color: rgba(0, 0, 0, 0.87);
+}
+.ch-simple-stepper-indicator.ch-active .ch-simple-stepper-title,
+.ch-simple-stepper-indicator.ch-editable .ch-simple-stepper-title {
+  font-weight: 500;
+}
+.ch-simple-stepper-indicator.ch-error .ch-simple-stepper-title {
+  color: #dd2c00;
+}
+.ch-simple-stepper-indicator:first-child {
+  padding-left: 0;
+}
+.ch-simple-stepper-indicator:last-child {
+  padding-right: 0;
+  justify-content: flex-end;
+}
+.ch-simple-stepper-indicator:last-child .ch-simple-stepper-indicator-wrapper {
+  padding-right: 24px;
+}
+.ch-simple-stepper-indicator .ch-ripple-container {
+  z-index: 3;
+}
+.ch-simple-stepper-indicator-wrapper {
+  padding: 0 8px 0 0;
+  position: relative;
+  z-index: 2;
+  display: flex;
+  align-items: center;
+  align-content: center;
+  transition: all 0.4s cubic-bezier(0.25, 0.8, 0.25, 1);
+}
+.ch-simple-stepper-number {
+  width: 24px;
+  height: 24px;
+  margin: 0 8px;
+  border-radius: 24px;
+  background-color: #BDBDBD;
+  transition: all 0.4s cubic-bezier(0.25, 0.8, 0.25, 1);
+  color: #fff;
+  font-size: 12px;
+  line-height: 24px;
+  text-align: center;
+}
+.ch-simple-stepper-number.ng-hide {
+  transition: none;
+}
+.ch-simple-stepper-number md-icon {
+  color: #fff !important;
+}
+.ch-error .ch-simple-stepper-error-indicator {
+  margin: 0 8px;
+  /*     background-color: @color-white; */
+}
+.ch-error .ch-simple-stepper-error-indicator md-icon {
+  color: #dd2c00;
+}
+.ch-error .ch-simple-stepper-error-message {
+  color: #dd2c00;
+  font-weight: 400;
+}
+.ch-simple-stepper-icon {
+  width: 18px;
+  height: 18px;
+  position: relative;
+  top: -1px;
+  color: #fff;
+  font-size: 18px;
+  font-weight: 700;
+}
+.ch-simple-stepper-icon.ch-simple-stepper-icon-edit {
+  width: 14px;
+  height: 14px;
+  font-size: 14px;
+  font-weight: 400;
+}
+.ch-simple-stepper-title {
+  display: flex;
+  flex-flow: column nowrap;
+  position: relative;
+  transition: all 0.4s cubic-bezier(0.25, 0.8, 0.25, 1);
+  font-size: 14px;
+  line-height: 24px;
+}
+.ch-simple-steppers-content {
+  position: relative;
+  flex: 1;
+}
+.ch-simple-stepper {
+  box-sizing: border-box;
+}
+.ch-simple-stepper.ch-active {
+  position: relative;
+  pointer-events: auto;
+}
+.ch-simple-steppers-actions {
+  display: flex;
+}
+.ch-simple-stepper-optional .ch-simple-stepper-title {
+  text-align: left;
+  white-space: nowrap;
+}
+.ch-simple-stepper-optional .ch-simple-stepper-title small:not(.ch-simple-stepper-error-message) {
+  color: rgba(0, 0, 0, 0.54);
+}
+.ch-simple-stepper-optional .ch-simple-stepper-title small {
+  transition: all 0.4s cubic-bezier(0.25, 0.8, 0.25, 1);
+  font-size: 12px;
+  line-height: 1em;
+}
+.ch-simple-steppers-linear .ch-simple-stepper-indicator {
+  cursor: default;
+}
+.ch-simple-steppers-linear .ch-simple-stepper-indicator.ch-editable.ch-completed:hover {
+  cursor: pointer;
+}
+.ch-simple-steppers-linear .ch-simple-stepper-indicator.ch-editable.ch-completed:hover,
+.ch-simple-steppers-linear .ch-simple-stepper-indicator.ch-editable.ch-completed:hover .ch-simple-stepper-indicator-wrapper {
+  background-color: #F6F6F6;
+}
+.ch-simple-steppers-linear .ch-simple-stepper-indicator.ch-editable.ch-completed:hover .ch-simple-stepper-number:before,
+.ch-simple-steppers-linear .ch-simple-stepper-indicator.ch-editable.ch-completed:hover .ch-simple-stepper-number:after {
+  background-color: #F6F6F6;
+}
+.ch-simple-steppers-linear .ch-simple-stepper-title {
+  color: rgba(0, 0, 0, 0.26);
+}
+.ch-simple-steppers-linear .ch-simple-stepper-title small:not(.ch-simple-stepper-error-message) {
+  color: rgba(0, 0, 0, 0.26);
+}
+.ch-simple-steppers-alternative:not(.ch-simple-steppers-linear) .ch-simple-stepper-indicator:not(.ch-active):not(.ch-completed):hover .ch-simple-stepper-indicator-wrapper {
+  background: none;
+}
+.ch-simple-steppers-alternative:not(.ch-simple-steppers-linear) .ch-simple-stepper-indicator:not(.ch-active):not(.ch-completed):hover .ch-simple-stepper-number:before,
+.ch-simple-steppers-alternative:not(.ch-simple-steppers-linear) .ch-simple-stepper-indicator:not(.ch-active):not(.ch-completed):hover .ch-simple-stepper-number:after {
+  background-color: #F6F6F6;
+}
+.ch-simple-steppers-alternative .ch-simple-steppers-horizontal .ch-simple-stepper-indicator {
+  min-height: 104px;
+  padding: 24px 16px;
+  flex: 1;
+  justify-content: center;
+}
+.ch-simple-steppers-alternative .ch-simple-steppers-horizontal .ch-simple-stepper-indicator .ch-simple-stepper-indicator-wrapper {
+  padding: 0;
+}
+.ch-simple-steppers-alternative .ch-simple-steppers-horizontal .ch-simple-stepper-indicator:first-child {
+  padding-left: 24px;
+}
+.ch-simple-steppers-alternative .ch-simple-steppers-horizontal .ch-simple-stepper-indicator:first-child:after {
+  left: 50%;
+}
+.ch-simple-steppers-alternative .ch-simple-steppers-horizontal .ch-simple-stepper-indicator:last-child {
+  padding-right: 24px;
+}
+.ch-simple-steppers-alternative .ch-simple-steppers-horizontal .ch-simple-stepper-indicator:last-child:after {
+  right: 50%;
+  left: auto;
+}
+.ch-simple-steppers-alternative .ch-simple-steppers-horizontal .ch-simple-stepper-indicator:after {
+  margin-top: 0;
+  top: 36px;
+}
+.ch-simple-steppers-alternative .ch-simple-steppers-horizontal .ch-simple-stepper-indicator-wrapper {
+  padding: 0 16px;
+  min-height: 50px;
+  flex-flow: column nowrap;
+  background: none;
+}
+.ch-simple-steppers-alternative .ch-simple-steppers-horizontal .ch-simple-stepper-number,
+.ch-simple-steppers-alternative .ch-simple-steppers-horizontal .ch-simple-stepper-error-indicator {
+  position: relative;
+}
+.ch-simple-steppers-alternative .ch-simple-steppers-horizontal .ch-simple-stepper-number:before,
+.ch-simple-steppers-alternative .ch-simple-steppers-horizontal .ch-simple-stepper-error-indicator:before,
+.ch-simple-steppers-alternative .ch-simple-steppers-horizontal .ch-simple-stepper-number:after,
+.ch-simple-steppers-alternative .ch-simple-steppers-horizontal .ch-simple-stepper-error-indicator:after {
+  width: 8px;
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  /*         background-color: @color-white; */
+  transition: all 0.4s cubic-bezier(0.25, 0.8, 0.25, 1);
+  content: " ";
+}
+.ch-simple-steppers-alternative .ch-simple-steppers-horizontal .ch-simple-stepper-number:before,
+.ch-simple-steppers-alternative .ch-simple-steppers-horizontal .ch-simple-stepper-error-indicator:before {
+  left: -8px;
+}
+.ch-simple-steppers-alternative .ch-simple-steppers-horizontal .ch-simple-stepper-number:after,
+.ch-simple-steppers-alternative .ch-simple-steppers-horizontal .ch-simple-stepper-error-indicator:after {
+  right: -8px;
+}
+.ch-simple-steppers-alternative .ch-simple-steppers-horizontal .ch-simple-stepper-title {
+  margin-top: 16px;
+  line-height: 18px;
+  text-align: center;
+}
+.ch-simple-steppers-alternative .ch-simple-steppers-horizontal .ch-simple-stepper-title small {
+  text-align: center;
+}
+.ch-simple-steppers:not(.ch-simple-steppers-vertical) .ch-simple-steppers-header.ch-simple-steppers-vertical {
+  display: none;
+}
+.ch-simple-steppers-vertical .ch-simple-stepper {
+  padding: 8px 24px;
+}
+.ch-simple-steppers-vertical .ch-simple-steppers-scope {
+  margin-left: 20px;
+  border-left: 1px solid  #E8E8E8;
+  padding-left: 20px;
+}
+.ch-simple-steppers-vertical .ch-simple-steppers-header.ch-simple-steppers-horizontal {
+  display: none;
+}
+.ch-simple-steppers-mobile-header,
+.ch-simple-stepper-feedback-message {
+  display: none;
+}
+@media (max-width: 599px) {
+  .ch-simple-steppers-mobile-step-text:not(.ch-simple-steppers-vertical) .ch-simple-stepper {
+    padding: 0;
+  }
+  .ch-simple-steppers-mobile-step-text:not(.ch-simple-steppers-vertical) .ch-simple-steppers-mobile-header {
+    display: block;
+  }
+  .ch-simple-steppers-mobile-step-text:not(.ch-simple-steppers-vertical) .ch-simple-stepper-feedback-message {
+    display: flex;
+  }
+  .ch-simple-steppers-mobile-step-text:not(.ch-simple-steppers-vertical) .ch-simple-steppers-header.ch-simple-steppers-horizontal {
+    display: none;
+  }
+  .ch-simple-steppers-mobile-step-text:not(.ch-simple-steppers-vertical) ch-simple-step-actions {
+    background: #f6f6f6 !important;
+    color: #202020 !important;
+    flex-direction: row;
+    box-sizing: border-box;
+    display: flex;
+    align-content: stretch;
+    align-items: stretch;
+    justify-content: space-between;
+    box-shadow: rgba(0, 0, 0, 0.2) 0px 1px 3px 0px, rgba(0, 0, 0, 0.137255) 0px 1px 1px 0px, rgba(0, 0, 0, 0.117647) 0px 2px 1px -1px;
+  }
+}
+.ch-simple-steppers-header-region {
+  position: relative;
+}
+.ch-simple-stepper-feedback-message {
+  position: absolute;
+  top: 0;
+  left: 0;
+  bottom: 0;
+  width: 100%;
+  /*   background-color: @color-white; */
+  align-items: center;
+  padding-left: 10px;
+  z-index: 2;
+  box-sizing: border-box;
+}
+.ch-simple-steppers {
+  position: relative;
+}
+ch-simple-step-body {
+  position: relative;
+  overflow: auto;
+  display: flex;
+  flex-direction: column;
+}
+.ch-simple-step-body-loading {
+  display: none;
+}
+.ch-simple-steppers-has-feedback .ch-simple-stepper-feedback-message {
+  display: flex;
+}
+.ch-simple-steppers-has-feedback .ch-simple-steppers-overlay {
+  position: absolute;
+  top: 0;
+  left: 0;
+  bottom: 0;
+  width: 100%;
+  z-index: 10;
+}
+.ch-simple-steppers-has-feedback .ch-simple-step-body-overlay {
+  position: absolute;
+  top: 0;
+  left: 0;
+  bottom: 0;
+  width: 100%;
+  z-index: 11;
+  opacity: 0.75;
+  background-color: white;
+}
+.ch-simple-steppers-has-feedback .ch-simple-step-body-loading {
+  display: flex;
+  position: absolute;
+  top: 0;
+  left: 0;
+  bottom: 0;
+  width: 100%;
+  z-index: 12;
+  flex-direction: column;
+  box-sizing: border-box;
+  align-items: center;
+  align-content: center;
+  max-width: 100%;
+  justify-content: center;
+}
 .ch-timeline {
   position: relative;
   overflow: hidden;

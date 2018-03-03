@@ -15,27 +15,32 @@
 				'bg-danger': $ctrl.availability.roomClosed, 
 				'bg-gray-base text-white': $ctrl.availability.counter.actual < 0 && !$ctrl.availability.hotelClosed && !$ctrl.availability.roomClosed, 
 				'bg-warn': $ctrl.availability.counter.actual == 0 && !$ctrl.availability.hotelClosed && !$ctrl.availability.roomClosed}">																		
-			<span layout layout-wrap layout-align="center center" class="md-margin" ng-class="{'text-small': $ctrl.$mdMedia('xs')}">
-				<span ng-if="$ctrl.availability.counter.actual > 0">
+			<div layout layout-wrap layout-align="center center" class="md-margin" ng-class="{'text-small': $ctrl.$mdMedia('xs')}">
+				<div ng-if="$ctrl.availability.counter.actual > 0">
 					<strong>{{$ctrl.availability.counter.actual}}</strong><small>/{{$ctrl.availability.counter.total}}</small>
-					<md-tooltip>
-						<span ng-if="!$ctrl.availability.pastDate" translate="ratesheet.availability.edit">Edit availability</span>
-						<span ng-if="$ctrl.availability.pastDate && $ctrl.availability.counter.actual == 1" translate="ratesheet.availability.rooms.one"></span>
-						<span ng-if="$ctrl.availability.pastDate && $ctrl.availability.counter.actual > 1" translate="ratesheet.availability.rooms" translate-values="{count: $ctrl.availability.counter.actual}"></span>
-					</md-tooltip>
-				</span>
-				<span ng-if="$ctrl.availability.counter.actual == 0">
+				</div>
+				<div ng-if="$ctrl.availability.counter.actual == 0">
 					<md-icon class="mdi mdi-calendar-remove md-18 text-white"></md-icon>
-					<md-tooltip><span translate="hotel.availability.none"></span></md-tooltip>
-				</span>
-				<span ng-if="$ctrl.availability.counter.actual < 0">
+				</div>
+				<div ng-if="$ctrl.availability.counter.actual < 0">
 					<md-icon class="mdi mdi-block-helper md-18 text-white"></md-icon>
-					<md-tooltip>
-						<span ng-if="$ctrl.availability.counter.actual == -1" translate="ratesheet.overbooking.rooms.one"></span>
-						<span ng-if="$ctrl.availability.counter.actual < -1" translate="ratesheet.overbooking.rooms" translate-values="{count: ($ctrl.availability.counter.actual|abs)}"></span>
-					</md-tooltip>
-				</span>
-			</span>
+				</div>
+			</div>
+			
+			<md-tooltip>
+				<div ng-if="$ctrl.availability.counter.actual > 0">
+					<span ng-if="!$ctrl.availability.pastDate" translate="ratesheet.availability.edit">Edit availability</span>
+					<span ng-if="$ctrl.availability.pastDate && $ctrl.availability.counter.actual == 1" translate="ratesheet.availability.rooms.one"></span>
+					<span ng-if="$ctrl.availability.pastDate && $ctrl.availability.counter.actual > 1" translate="ratesheet.availability.rooms" translate-values="{count: $ctrl.availability.counter.actual}"></span>
+				</div>
+				<div ng-if="$ctrl.availability.counter.actual == 0">
+					<span translate="hotel.availability.none"></span>
+				</div>
+				<div ng-if="$ctrl.availability.counter.actual < 0">
+					<span ng-if="$ctrl.availability.counter.actual == -1" translate="ratesheet.overbooking.rooms.one"></span>
+					<span ng-if="$ctrl.availability.counter.actual < -1" translate="ratesheet.overbooking.rooms" translate-values="{count: ($ctrl.availability.counter.actual|abs)}"></span>
+				</div>
+			</md-tooltip>
 		</md-button>
 	</div>
 </div>

@@ -1,0 +1,43 @@
+<div class="ch-simple-stepper" ng-class="{'ch-active': $ctrl.$active }">
+	<ch-simple-steppers-header class="ch-simple-steppers-header ch-simple-steppers-vertical">
+		<md-button class="ch-simple-stepper-indicator" ng-class="{
+	        'ch-active': $ctrl.$$stepNumber === $ctrl.chStepperCtrl.currentStep,
+	        'ch-completed': $ctrl.chStepperCtrl.isCompleted($ctrl.$$stepNumber),
+	        'ch-error': $ctrl.hasError,
+	        'ch-simple-stepper-optional': $ctrl.optional || $ctrl.hasError
+        	}" ng-click="$ctrl.chStepperCtrl.goto($ctrl.$$stepNumber)" 
+   			ng-disabled="$ctrl.chStepperCtrl.linear || $ctrl.$$stepNumber === $ctrl.chStepperCtrl.currentStep"
+       		aria-label="Go to step">
+          	<div class="ch-simple-stepper-indicator-wrapper">
+				<div class="ch-simple-stepper-number" ng-hide="$ctrl.hasError">
+					<span ng-if="!$ctrl.chStepperCtrl.isCompleted($ctrl.$$stepNumber)">
+						<span ng-if="!$ctrl.iconClass" ng-bind="$ctrl.$$stepNumber+1"></span>
+	                   	<span ng-if="$ctrl.iconClass">
+							<md-icon class="{{$ctrl.iconClass}}"></md-icon>
+						</span>
+					</span>
+					<span ng-if="$ctrl.chStepperCtrl.isCompleted($ctrl.$$stepNumber)">
+	                   	<md-icon class="ch-simple-stepper-icon material-icons mdi" 
+	                   		ng-class="$ctrl.iconCompletedClass ? $ctrl.iconCompletedClass : 'mdi-check ch-18'"></md-icon>
+	                </span>
+                </div>
+                 
+                <div class="ch-simple-stepper-error-indicator" ng-show="$ctrl.hasError">
+                    <md-icon class="steppers-warning mdi mdi-alert ch-24"></md-icon>
+                </div>
+
+                <div class="ch-simple-stepper-title">
+           			<span ng-bind-html="$ctrl.label"></span>
+                   	<small ng-if="$ctrl.optional" ng-show="!$ctrl.hasError" ng-bind-html="$ctrl.optionalLabel"></small>
+                   	<small class="ch-simple-stepper-error-message" ng-bind-html="$ctrl.message"></small>
+               </div>
+           	</div>
+		</md-button>
+      	
+        <div class="ch-simple-stepper-feedback-message" ng-show="$ctrl.chStepperCtrl.hasFeedback">
+            <span ng-bind-html="$ctrl.chStepperCtrl.feedbackMessage"></span>
+        </div>
+    </ch-simple-steppers-header>
+    
+    <ch-simple-steppers-scope layout="column" class="ch-simple-steppers-scope" ng-if="$ctrl.$active" ng-transclude></ch-simple-steppers-scope>
+</div>

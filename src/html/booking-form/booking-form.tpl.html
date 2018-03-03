@@ -8,11 +8,13 @@
 		<div flex layout="column">
 			<ch-date-range-picker 
 				label="{{'reservation.when.question'|translate}}"
-				start-label="{{'date.checkin.select.alt'|translate}}"
+				start-label="{{'date.checkin'|translate}}"
+				start-hint-label="{{'date.checkin.select.alt'|translate}}"
 				start="$ctrl.reservation.checkin"
 				start-min-date="$ctrl.minDate"
 				start-error-messages="{mindate: ('error.date.before.today'|translate)}"
-				end-label="{{'date.checkout.select.alt'|translate}}" 
+				end-label="{{'date.checkout'|translate}}"
+				end-hint-label="{{'date.checkout.select.alt'|translate}}"
 				end="$ctrl.reservation.checkout"
 				end-min-date="$ctrl.$$minEndDate" end-max-date="$ctrl.$$maxEndDate"
 				end-error-messages="{mindate: ('error.date.end.before.start'|translate), maxdate: ('error.reservation.search.maxdate'|translate)}" 

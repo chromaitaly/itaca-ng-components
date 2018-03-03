@@ -1,0 +1,14 @@
+<div ng-if="!$ctrl.$$step.$active" flex class="md-padding"
+	ng-class="{'animated fadeInUp': $ctrl.chWizardStepsDoneContentCtrl.chWizardCtrl.direction == 'vertical' && !$ctrl.$$step.$stopAnimation, 
+		'animated fadeInRight': $ctrl.chWizardStepsDoneContentCtrl.chWizardCtrl.direction == 'horizontal' && !$ctrl.$$step.$stopAnimation}">
+	<div ng-transclude></div>
+
+	<div flex layout layout-padding-sm layout-align="start center">
+		<div flex layout layout-align="start center">
+			<md-button class="md-primary" ng-click="$ctrl.$edit()" aria-label="Edit step">
+				<md-icon class="mdi mdi-pencil md-24"></md-icon>&nbsp;
+				<span translate="common.edit"></span>
+			</md-button>
+		</div>
+	</div>
+</div>
