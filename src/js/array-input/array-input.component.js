@@ -9,7 +9,8 @@
     	bindings: {
     		ngModel: "=",
 			ngRequired: "<?",
-			options: "<?"
+			options: "<?",
+			hideSelectedIcon: "<?"
     	},
 		controller: ArrayInputCtrl,
 		template: '<div class="layout-row layout-wrap" ng-transclude></div>',
@@ -21,7 +22,7 @@
     	var ctrl = this;
 		
 		this.$onInit = function() {
-			ctrl.ngModel = angular.isArray(ctrl.ngModel) ? ctrl.ngModel : [];
+//			ctrl.ngModel = angular.isArray(ctrl.ngModel) ? ctrl.ngModel : [];
 			ctrl.options = angular.isArray(ctrl.options) ? ctrl.options : [];
 			
 			if (ctrl.ngRequired) {
@@ -40,7 +41,17 @@
 			ctrl.options.push(option);
 		};
 		
+		this.$isSelected = function(value) {
+			if (!value) {
+				return false;
+			}
+			
+			return _.includes(ctrl.ngModel, value);
+		};
+		
 		this.toggleOption = function(option) {
+			ctrl.ngModel = angular.isArray(ctrl.ngModel) ? ctrl.ngModel : [];
+			
 			if (!option.selected) {
 				ctrl.ngModel.push(option.value);
 			
