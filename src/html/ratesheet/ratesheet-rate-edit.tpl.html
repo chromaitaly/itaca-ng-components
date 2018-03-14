@@ -16,7 +16,7 @@
 		            	aria-label="{{$ctrl.type}} Rate" ng-pattern="$ctrl.REGEXP.price" required ng-blur="$ctrl.$saveRate()"
 		            	ng-class="{'bg-warn opaque': !$ctrl.rate[$ctrl.$$rateDataKey].amount.finalAmount}">
 		            	
-	            	<div ng-messages="chRatesheetRateForm.minStay.$error">
+	            	<div ng-messages="chRatesheetRateForm.amount.$error">
 		          		<div ng-message="required"><span translate="ratesheet.rates.none"></span></div>
 			        </div>
 <!-- 	            	<md-tooltip ng-if="!$ctrl.rate[$ctrl.$$rateDataKey].amount.finalAmount"><span translate="ratesheet.rates.none"></span></md-tooltip> -->

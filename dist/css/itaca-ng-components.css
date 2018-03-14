@@ -258,6 +258,7 @@ ch-simple-step-actions {
   margin: 0;
   padding: 0 16px;
   position: relative;
+  max-width: 100%;
   display: flex;
   flex: 1 0 auto;
   align-content: flex-start;
@@ -279,6 +280,7 @@ ch-simple-step-actions {
   text-align: left;
   color: rgba(0, 0, 0, 0.54);
   line-height: 15px;
+  white-space: normal;
 }
 .ch-simple-stepper-indicator.ch-active .ch-simple-stepper-number {
   background-color: #92278f;

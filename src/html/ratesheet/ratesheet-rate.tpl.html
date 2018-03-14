@@ -21,7 +21,12 @@
 					<div ng-if="!$ctrl.rate[$ctrl.$$rateDataKey].amount.finalAmount">
 						<md-icon class="mdi mdi-currency-usd-off text-white md-24"></md-icon>
 					</div>
-					<small ng-show="$ctrl.rate[$ctrl.$$rateDataKey].minStay > 1"><md-icon class="mdi mdi-calendar-plus md-14 text-white"></md-icon></small>
+					<small ng-show="$ctrl.rate[$ctrl.$$rateDataKey].amount.finalAmount && $ctrl.rate[$ctrl.$$rateDataKey].minStay > 1">
+						<md-icon class="mdi mdi-calendar-plus md-14 text-white"></md-icon>
+						<md-tooltip>
+							<span translate="ratesheet.rate.minstay" translate-value-count="{{$ctrl.rate[$ctrl.$$rateDataKey].minStay}}"></span>
+						</md-tooltip>
+					</small>
 				</div>
 				
 				<md-tooltip>

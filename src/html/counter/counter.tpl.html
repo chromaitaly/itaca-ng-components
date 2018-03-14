@@ -1,0 +1,29 @@
+<div class="layout-column {{$ctrl.wrapperClass}}" ng-class="{'flex': $ctrl.flexible}" ng-style="{'display': $ctrl.flexible ? 'inherit' : 'inline-block'}" style="min-width: 150px;">
+	<div class="{{$ctrl.labelContClass}} layout-padding-sm no-padding">
+   		<div ng-if="$ctrl.label && ($ctrl.labelDirection == 'left' || $ctrl.labelDirection == 'top')" class="layout-row layout-align-center-center {{$ctrl.labelClass}}">
+   			<span ng-bind-html="$ctrl.label"></span>
+   		</div>
+	   	<div class="layout-row layout-align-center-center flex">
+			<md-button class="{{$ctrl.btnClass}} no-margin" ng-class="!$ctrl.$$decreaseDisabled ? $ctrl.btnActiveClass : ''" aria-label="Decrease" 
+				ng-disabled="$ctrl.ngDisabled || $ctrl.minusDisabled || ($ctrl.min && $ctrl.count <= $ctrl.min)" ng-click="$ctrl.$decrease($event)">
+	  			<md-icon class="material-icons mdi mdi-minus md-18 {{$ctrl.iconClass}}" ng-class="!$ctrl.$$decreaseDisabled ? $ctrl.iconActiveClass : ''"></md-icon>
+	  		</md-button>
+	  		<div class="layout-column layout-padding layout-align-center-center" ng-class="{'flex': $ctrl.flexible, 'text-gray-light': $ctrl.ngDisabled}">
+	  			<span class="{{$ctrl.countClass}} border-gray-lighter border-radius">{{$ctrl.count || 0}}</span>
+	  		</div>
+	  		<md-button class="{{$ctrl.btnClass}} no-margin" ng-class="!$ctrl.$$increaseDisabled ? $ctrl.btnActiveClass : ''" aria-label="Increase" 
+	  			ng-disabled="$ctrl.ngDisabled || $ctrl.plusDisabled || ($ctrl.max && $ctrl.count >= $ctrl.max)" ng-click="$ctrl.$increase($event)">
+	  			<md-icon class="material-icons mdi mdi-plus md-18 {{$ctrl.iconClass}}" ng-class="!$ctrl.$$increaseDisabled ? $ctrl.iconActiveClass : ''"></md-icon>
+	  		</md-button>
+	  	</div>
+	  	<div ng-if="$ctrl.label && ($ctrl.labelDirection == 'right' || $ctrl.labelDirection == 'bottom')" class="layout-row layout-align-center-center {{$ctrl.labelClass}}">
+	  		<span ng-bind-html="$ctrl.label"></span>
+		</div>
+ 	</div> 
+ 	<div class="no-padding">
+  		<md-input-container md-no-float class="md-block minimal-input no-margin no-padding">
+ 			<input ng-if="$ctrl.fieldName" type="hidden" name="{{$ctrl.fieldName}}" step="{{$ctrl.step}}" ng-min="$ctrl.min" ng-max="$ctrl.max">
+			<small ng-transclude class="no-padding text-center"></small>
+		</md-input-container>
+	</div>
+</div>

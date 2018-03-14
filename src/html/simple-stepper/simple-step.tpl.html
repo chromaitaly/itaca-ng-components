@@ -36,7 +36,7 @@
 						<span ng-if="$ctrl.subtitle" ng-show="!$ctrl.$completed || !$ctrl.completedSubtitle" ng-bind-html="$ctrl.subtitle"></span>
 	                    <span ng-if="$ctrl.completedSubtitle" ng-show="$ctrl.$completed" ng-bind-html="$ctrl.completedSubtitle"></span>
 					</div>
-                   	<small class="ch-simple-stepper-error-message" ng-bind-html="$ctrl.message"></small>
+                   	<small class="ch-simple-stepper-error-message" ng-show="$ctrl.hasError" ng-bind-html="$ctrl.message"></small>
                </div>
            	</div>
 		</md-button>

@@ -13,8 +13,8 @@
 			iconBg: '@',
 			iconClass: '@',
 			dateFormat: '@',
-			isNew: '=?',
-			ngDisabled: "=?"
+			isNew: '<?',
+			ngDisabled: "<?"
     	},
 		controller: EventCtrl,
 		template: 
