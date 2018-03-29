@@ -2,7 +2,7 @@
 	'use strict';
 	
 	angular.module("itaca.components").component("chTimelineEvent", {
-		require: {
+			require: {
 			chTimelineCtrl: '^chTimeline'
 		},
 		transclude: true,
@@ -67,24 +67,32 @@
 			
 			$element.addClass("ch-timeline-event flex-xs-100 relative layout-column");
 			$element.addClass(ctrl.event.align == 'CENTER' ? 'flex-50' : 'flex-100');
-			
-			ctrl.registerWatches();
 		};
 		
-		this.registerWatches = function() {
-			$scope.$watch(function() {
-				return ctrl.eventTitle;
-				
-			}, function(newVal, oldVal){
-				ctrl.event.title = newVal;
-			});
-		      
-			$scope.$watch(function() {
-				return ctrl.date;
-				
-			}, function(newVal,oldVal){
-				ctrl.event.date = newVal;
-			});
+		this.$onChanges = function(changesObj) {
+			if (!changesObj) {
+				return;
+			}
+			
+			if (changesObj.eventTitle) {
+				ctrl.event && (ctrl.event.title = ctrl.eventTitle);
+			}
+			
+			if (changesObj.date) {
+				ctrl.event && (ctrl.event.date = ctrl.date);
+			}
+			
+			if (changesObj.iconBg) {
+				ctrl.event && (ctrl.event.iconBg = ctrl.iconBg);
+			}
+			
+			if (changesObj.iconClass) {
+				ctrl.event && (ctrl.event.iconClass = ctrl.iconClass);
+			}
+			
+			if (changesObj.dateFormat) {
+				ctrl.event && (ctrl.event.dateFormat = ctrl.dateFormat);
+			}
 		};
 		
 		this.$onDestroy = function() {

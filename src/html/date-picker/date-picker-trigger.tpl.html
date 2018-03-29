@@ -12,5 +12,12 @@
 				</span>
 			</div>
 		</div>
+		<md-input-container>
+			<input type="hidden" name="date" ng-model="$ctrl.ngModel" ng-required="$ctrl.ngRequired">
+			
+			<div ng-messages="chDatePickerTriggerForm.date.$error">
+				
+			</div>
+		</md-input-container>
 	</md-button>
 </ng-form>

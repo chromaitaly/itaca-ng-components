@@ -1,0 +1,22 @@
+<ng-form name="chRatesheetRateDataForm" flex layout="column">
+	<md-input-container class="no-margin minimal-input no-padding-left text-center">
+		<label>
+			<span ng-if="$ctrl.label" ng-bind="$ctrl.label"></span>
+			<span ng-if="!$ctrl.label" translate="common.price"></span>
+		</label>
+		<md-icon ng-if="$ctrl.errorIcon" ng-show="!$ctrl.rate.amount.finalAmount" 
+			class="material-icons {{$ctrl.errorIcon}}" ng-class="$ctrl.$mdMedia('gt-xs') ? 'md-24' : 'md-18'"></md-icon>
+		<input type="number" name="amount" ng-model="$ctrl.rate.amount.finalAmount" ng-model-options="{updateOn: $ctrl.updateOn}"
+           	ng-disabled="$ctrl.ngDisabled" min="0.01" step="0.01"
+           	aria-label="{{$ctrl.type}} Rate" ng-pattern="$ctrl.REGEXP.price" ng-required="$ctrl.ngRequired" 
+           	ng-change="$ctrl.$onChange()" ng-class="$ctrl.errorBg && !$ctrl.rate.amount.finalAmount ? $ctrl.errorBg : ''">
+           	
+      	<div ng-messages="chRatesheetRateDataForm.amount.$error">
+       		<div ng-repeat="errorObj in $ctrl.errorMessages" ng-message="{{errorObj.error}}">
+				<span ng-if="errorObj.message" ng-bind="{{errorObj.message}}"></span>
+       			<span ng-if="!errorObj.message && errorObj.messageKey" translate="{{errorObj.messageKey}}" 
+       				translate-values="errorObj.messageKeyParams"></span>
+       		</div>
+        </div>
+  	</md-input-container>
+</ng-form>

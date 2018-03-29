@@ -31,8 +31,20 @@
 			ctrl.randomBg = _.isBoolean(ctrl.randomBg) ? ctrl.randomBg : true;
 			
 			ctrl.manageAlign();
+		};
+		
+		this.$onChanges = function(changesObj) {
+			if (!changesObj) {
+				return;
+			}
 			
-			ctrl.registerWatches();
+			if (changesObj.hideIcon) {
+				ctrl.hideIcon = _.isBoolean(ctrl.hideIcon) ? ctrl.hideIcon : false;
+			}
+			
+			if (changesObj.align) {
+				ctrl.manageAlign();
+			}
 		};
 		
 		this.manageAlign = function() {
@@ -42,6 +54,10 @@
 			ctrl.alignClass = 'ch-timeline-' + ctrl.align.toLowerCase();
 			
 			ctrl.animatedClass = ctrl.align == 'RIGHT' ? 'slideInRight' : ctrl.align == 'LEFT' ? 'slideInLeft' : 'slideInUp';
+			
+			_.forEach(ctrl.events, function(e){
+        		e.align = newVal;
+        	});
 		};
     	  
         this.manageIconBgColor = function(ev){
@@ -80,26 +96,6 @@
         	
         	//even or odd (per la posizione della barra)
         	ctrl.barClass = NumberUtils.isOdd(ctrl.events.length) ? 'ch-timeline-odd': 'ch-timeline-even';
-        };
-        
-        this.registerWatches = function() {
-	        $scope.$watch(function() {
-	        	return ctrl.hideIcon;
-	
-	        }, function(newVal,oldVal){
-	        	ctrl.hideIcon = _.isBoolean(newVal) ? newVal : false;
-	        });
-	          
-	        $scope.$watch(function() {
-	    		return ctrl.align;
-	
-	        }, function(newVal,oldVal){
-	        	ctrl.manageAlign();
-	        	  
-	        	_.forEach(ctrl.events, function(e){
-	        		e.align = newVal;
-	        	});
-	        });
         };
 	}
 })();

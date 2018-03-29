@@ -15,10 +15,9 @@
     });
     
     /* @ngInject */
-    function RatesheetRateEditCtrl($scope, $mdMedia, REGEXP) {
+    function RatesheetRateEditCtrl($scope, $mdMedia) {
     	
     	this.$mdMedia = $mdMedia;
-    	this.REGEXP = REGEXP;
     	
     	var ctrl = this;
     	

@@ -13,7 +13,7 @@
                 'ch-error': $step.hasError,
                 'ch-simple-stepper-optional': $step.optional || $step.hasError
             	}" ng-click="$ctrl.goto($stepNumber)" 
-            	ng-disabled="($ctrl.linear && ($stepNumber >= $ctrl.$$currentStep.index || !$ctrl.previousStepClick)) || $stepNumber === $ctrl.$$currentStep.index || $step.ngDisabled"
+            	ng-disabled="($ctrl.linear && ($stepNumber > $ctrl.$$currentStep.index || !$ctrl.previousStepClick)) || $step.ngDisabled"
             	aria-label="Go to step">
 	            <div class="ch-simple-stepper-indicator-wrapper">
 	                <div class="ch-simple-stepper-number" ng-hide="$step.hasError">
