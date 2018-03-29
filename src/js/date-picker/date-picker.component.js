@@ -25,6 +25,7 @@
     		disableParentScroll: "<?",
     		disableBodyScroll: "<?",
     		onClose: "&?",
+    		ngRequired: "<?",
     		ngDisabled: "<?",
     		ngReadonly: "<?",
     		size: "@"
@@ -64,6 +65,9 @@
 			    panelClass: "bg-white md-whiteframe-15dp",
 			    trapFocus: true,
 			    onCloseSuccess: function(panelRef, closeReason) {
+			    	// touch dell'input
+					$scope.chDatePickerTriggerForm.date.$setTouched();
+					
 			    	if (_.isBoolean(closeReason) && closeReason) {
 			    		ctrl.$updateOriginal();
 			    		ctrl.onClose && ctrl.onClose(ctrl.$$data);
@@ -87,7 +91,7 @@
 			if (ctrl.ngReadonly) {
 				return;
 			}
-
+			
 			ctrl.$$data = {
 				current : ctrl.ngModel,
 				min : ctrl.minDate,
@@ -116,6 +120,9 @@
 			 if (!ctrl.$$data) {
 				 return;
 			 }
+			 
+			// dirty dell'input
+			 $scope.chDatePickerTriggerForm.date.$setDirty();
 			 
 			 ctrl.ngModel = ctrl.$getDate(ctrl.$$data.current);
 			 ctrl.minDate = ctrl.$getDate(ctrl.$$data.min);

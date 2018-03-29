@@ -12,11 +12,15 @@
 				</span>
 			</div>
 		</div>
-		<md-input-container>
-			<input type="hidden" name="date" ng-model="$ctrl.ngModel" ng-required="$ctrl.ngRequired">
+		<md-input-container class="md-block no-margin">
+			<input type="hidden" style="visibility: hidden;" name="date" ng-model="$ctrl.ngModel" ng-required="$ctrl.ngRequired">
 			
-			<div ng-messages="chDatePickerTriggerForm.date.$error">
-				
+			<div ng-messages="chDatePickerTriggerForm.date.$error" ng-show="chDatePickerTriggerForm.$submitted || chDatePickerTriggerForm.date.$touched || chDatePickerTriggerForm.date.$dirty">
+				<div ng-repeat="errorObj in $ctrl.errorMessages" ng-message="{{errorObj.error}}" class="no-padding">
+					<span ng-if="errorObj.message" ng-bind="{{errorObj.message}}"></span>
+	       			<span ng-if="!errorObj.message && errorObj.messageKey" translate="{{errorObj.messageKey}}" 
+	       				translate-values="errorObj.messageKeyParams"></span>
+	       		</div>
 			</div>
 		</md-input-container>
 	</md-button>

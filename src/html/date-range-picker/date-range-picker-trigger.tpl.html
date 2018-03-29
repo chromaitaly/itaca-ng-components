@@ -56,16 +56,27 @@
 		</div>
 	</md-button>
 	
-	<input type="hidden" name="{{$ctrl.startInputName}}" ng-model="$ctrl.start" required>
-	<input type="hidden" name="{{$ctrl.endInputName}}" ng-model="$ctrl.end" required>
+	<md-input-container class="md-block no-margin">
+		<input type="hidden" style="visibility: hidden;" name="{{$ctrl.startInputName}}" ng-model="$ctrl.start" ng-required="$ctrl.ngRequired">
 	
-	<div ng-messages="chDateRangePickerTriggerForm[$ctrl.startInputName].$error" class="font-12 text-center text-danger" ng-show="chDateRangePickerTriggerForm[$ctrl.startInputName].$dirty || chDateRangePickerTriggerForm.$submitted">
-   		<span ng-message="required"><span translate-once="error.required"></span></span>
-  		<span ng-if="$ctrl.startErrorMessages" ng-repeat="error in $ctrl.startErrorMessages" ng-message="error.key"><span translate="error.label"></span></span>
-  	</div>
+		<div ng-messages="chDateRangePickerTriggerForm[$ctrl.startInputName].$error" class="font-12 text-center text-danger" ng-show="chDateRangePickerTriggerForm[$ctrl.startInputName].$dirty || chDateRangePickerTriggerForm[$ctrl.startInputName].$touched">
+	  		<div ng-repeat="errorObj in $ctrl.startErrorMessages" ng-message="{{errorObj.error}}" class="no-padding">
+				<span ng-if="errorObj.message" ng-bind="{{errorObj.message}}"></span>
+	 			<span ng-if="!errorObj.message && errorObj.messageKey" translate="{{errorObj.messageKey}}" 
+	 				translate-values="errorObj.messageKeyParams"></span>
+	 		</div>
+	  	</div>
+  	</md-input-container>
   	
-  	<div ng-messages="chDateRangePickerTriggerForm[$ctrl.endInputName].$error" class="font-12 text-center text-danger" ng-show="!chDateRangePickerTriggerForm[$ctrl.startInputName].$invalid && (chDateRangePickerTriggerForm[$ctrl.endInputName].$dirty || chDateRangePickerTriggerForm.$submitted)">
-  		<span ng-message="required"><span translate-once="error.required"></span></span>
-  		<span ng-if="$ctrl.endErrorMessages" ng-repeat="error in $ctrl.endErrorMessages" ng-message="error.key"><span translate="error.label"></span></span>
-  	</div>
+  	<md-input-container class="md-block no-margin">
+	  	<input type="hidden" style="visibility: hidden;" name="{{$ctrl.endInputName}}" ng-model="$ctrl.end" ng-required="$ctrl.ngRequired">
+	  	
+	  	<div ng-messages="chDateRangePickerTriggerForm[$ctrl.endInputName].$error" class="font-12 text-center text-danger" ng-show="!chDateRangePickerTriggerForm[$ctrl.startInputName].$invalid && (chDateRangePickerTriggerForm[$ctrl.endInputName].$dirty || chDateRangePickerTriggerForm[$ctrl.endInputName].$touched)">
+	  		<div ng-repeat="errorObj in $ctrl.endErrorMessages" ng-message="{{errorObj.error}}" class="no-padding">
+				<span ng-if="errorObj.message" ng-bind="{{errorObj.message}}"></span>
+	 			<span ng-if="!errorObj.message && errorObj.messageKey" translate="{{errorObj.messageKey}}" 
+	 				translate-values="errorObj.messageKeyParams"></span>
+	 		</div>
+	  	</div>
+  </md-input-container>
 </ng-form>
