@@ -8,7 +8,7 @@
     		easingClass: "@?",
     		easingClassLimit: "<",
     		opacityLimit: "<",
-    		ngDisabled: "<"
+    		chDisabled: "<"
     	},
 		controller: EasingBgCtrl,
 		template: 
@@ -19,11 +19,11 @@
 	});
 	
 	/* @ngInject */
-	function EasingBgCtrl($scope, $element, $window) {
+	function EasingBgCtrl($scope, $element, $window, $timeout) {
 		var ctrl = this;
     	
     	this.$onInit = function(){
-    		ctrl.ngDisabled = _.isBoolean(ctrl.ngDisabled) ? ctrl.ngDisabled : false;
+    		ctrl.chDisabled = _.isBoolean(ctrl.chDisabled) ? ctrl.chDisabled : false;
     		ctrl.bgClass = ctrl.bgClass || "bg-primary";
     		ctrl.easingClass = ctrl.easingClass || "text-white";
     		ctrl.easingClassLimit = isFinite(parseInt(ctrl.easingClassLimit)) ? parseInt(ctrl.easingClassLimit) : 0.5;
@@ -34,11 +34,27 @@
     		ctrl.$$transStyle = {"z-index": "1"};
     		ctrl.$$baseBgStyle = "position: absolute; z-index: -1; height: 100%; width: 100%; top: 0; left: 0;";
     		
-    		ctrl.$initWatchers();
+    		ctrl.$initWatches();
     	};
     	
     	this.$postLink = function() {
-    		if (ctrl.ngDisabled) {
+    		ctrl.$manageDisabled();
+    	};
+    	
+    	this.$onChanges = function(changesObj) {
+    		if (!changesObj) {
+    			return;
+    		}
+    		
+    		if (changesObj.chDisabled) {
+    			ctrl.$manageDisabled();
+    		}
+    	};
+    	
+    	this.$manageDisabled = function() {
+    		ctrl.chDisabled = _.isBoolean(ctrl.chDisabled) ? ctrl.chDisabled : false;
+    		
+    		if (ctrl.chDisabled) {
     			ctrl.$disableEasing();
     		
     		} else {    			
@@ -59,20 +75,33 @@
     	};
     	
     	this.$ease = function() {
-			if (ctrl.ngDisabled) {
+			if (ctrl.chDisabled) {
 				ctrl.$disableEasing();
 				return;
 			}
 			
-			var backdrop = angular.element(document.querySelectorAll('.md-select-backdrop, .md-menu-backdrop'));
-//			var backdrop = angular.element($element[0].querySelectorAll('md-select[aria-expanded="true"], .md-menu.md-open'));
-			var offset = 0 + $window.pageYOffset/(ctrl.opacityLimit - $element[0].childNodes[0].offsetHeight);
+			$timeout(ctrl.$doEase);
+    	};
+    	
+    	this.$doEase = function() {			
+			//fix per tutti gli elementi che applicano al body un top falsando l'offset
+			var windowsOffset = $window.pageYOffset;
+			if(document.body){
+				var style = window.getComputedStyle(document.body);
+				var top = style.getPropertyValue('top');
+				
+				windowsOffset += top ? Math.abs(parseInt(top)) : 0;
+			} 
+			
+			var offset = 0 + windowsOffset/(ctrl.opacityLimit - $element[0].childNodes[0].offsetHeight);
 			var alpha = offset >= 1 ? 1 : offset;
-    		 
+    		
 			/* fix per backdrop di angular material */
-			if(backdrop.length > 0){
-				alpha = 1;
-			}
+//			var backdrop = angular.element(document.querySelectorAll('.md-select-backdrop, .md-menu-backdrop'));
+//			var backdrop = angular.element($element[0].querySelectorAll('md-select[aria-expanded="true"], .md-menu.md-open'));
+//			if(backdrop.length > 0){
+//				alpha = 1;
+//			}
     	   	
     	   	ctrl.$$bgStyle = ctrl.$$baseBgStyle  + "opacity: " + alpha + "!important;";
     	   	
@@ -88,25 +117,15 @@
     	   	$scope.$apply();
     	};
     	
-    	this.$initWatchers = function() {
-    		$scope.$watch(function() {
-    			return ctrl.ngDisabled;
-    			
-    		}, function(newVal) {
-    			newVal = _.isBoolean(newVal) ? newVal : false;
-    			
-    			if (newVal) {
-    				ctrl.$disableEasing();    				
-    			
-    			} else {
-    				ctrl.$enableEasing();
-    			}
-    		});
-    	};
+    	this.$initWatches = function() { 
+	       	$scope.$watch(function() {
+	       		return document.body.scrollHeight;
+	       		
+	       	}, ctrl.$ease);
+       	};
     	
     	this.$onDestroy = function() {
     		ctrl.$disableEasing();
     	};
-    	
 	}
 })();

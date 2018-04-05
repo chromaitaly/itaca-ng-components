@@ -15,7 +15,7 @@
 	});
 	
 	 /* @ngInject */
-	function ShowOnScrollCtrl($scope, $element, $window) {
+	function ShowOnScrollCtrl($scope, $element, $window, $timeout) {
 		var ctrl = this;
     	
     	this.$onInit = function(){
@@ -31,15 +31,31 @@
     			ctrl.hideClass = ctrl.hideClass ? "zoomOut" : "";
     		}
     		
-    		ctrl.$initWatchers();
+    		angular.element($element.children()).addClass('hide');
     	};
     	
     	this.$postLink = function() {
+    		ctrl.$manageDisabled();
+    	};
+    	
+    	this.$manageDisabled = function() {
+    		ctrl.ngDisabled = _.isBoolean(ctrl.ngDisabled) ? ctrl.ngDisabled : false;
+    		
     		if (ctrl.ngDisabled) {
     			ctrl.$disableShow();
     		
     		} else {    			
     			ctrl.$enableShow();
+    		}
+    	};
+    	
+    	this.$onChanges = function(changesObj) {
+    		if (!changesObj) {
+    			return;
+    		}
+    		
+    		if (changesObj.ngDisabled) {
+    			ctrl.$manageDisabled();
     		}
     	};
     	
@@ -68,6 +84,10 @@
 				return;
 			}
 			
+			$timeout(ctrl.$doToggle);
+    	};
+    	
+    	this.$doToggle = function() {
 			var contEl = $element.children();
 			var transEl = angular.element(contEl.children());
 			
@@ -77,10 +97,19 @@
 			 * se l'elemento è presente e non è visibile oppure
 			 * se l'elemento non è presente e si supera l'offset dato mostro il pulsante
 			 */
-    	   	if($window.pageYOffset >= ctrl.offset && !ctrl.$checkVisible()){
+			var windowsOffset = $window.pageYOffset;
+			if(document.body){
+				var style = window.getComputedStyle(document.body);
+				var top = style.getPropertyValue('top');
+				
+				windowsOffset += top ? Math.abs(parseInt(top)) : 0;
+			} 
+			
+    	   	if(windowsOffset >= ctrl.offset && !ctrl.$checkVisible()){
     	   		if (transEl) {
     	   			transEl.addClass("visible " + ctrl.showClass);
     	   			transEl.removeClass(ctrl.hideClass);
+    	   			angular.element($element.children()).removeClass('hide');
     	   		}
     		   
     	   	} else {
@@ -91,22 +120,6 @@
     	   	}
     	   	
     	   	$scope.$apply();
-    	};
-    	
-    	this.$initWatchers = function() {
-    		$scope.$watch(function() {
-    			return ctrl.ngDisabled;
-    			
-    		}, function(newVal) {
-    			newVal = _.isBoolean(newVal) ? newVal : false;
-    			
-    			if (newVal) {
-    				ctrl.$disableShow();    				
-    			
-    			} else {
-    				ctrl.$enableShow();
-    			}
-    		});
     	};
     	
     	this.$onDestroy = function() {
