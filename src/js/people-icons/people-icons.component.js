@@ -4,7 +4,7 @@
 (function() {
 	'use strict';
 	
-	angular.module("itaca.components").component.directive('chPeopleIcons', {
+	angular.module("itaca.components").component('chPeopleIcons', {
         bindings: {
         	people: "<",
         	max: "<?",

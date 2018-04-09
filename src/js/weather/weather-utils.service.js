@@ -41,9 +41,9 @@
 				case "013n": label = "snowy"; icon="snowy"; break; // Neve - Snow
 				
 				case "050d":
-				case "050n": label = "variable"; icon= "material-icons md-160 mdi mdi-$$weather-windy text-white"; break; // Vario
+				case "050n": label = "variable"; icon= "material-icons md-160 mdi mdi-weather-windy text-white"; break; // Vario
 					
-				default	   : label = "variable"; icon="material-icons md-160 mdi mdi-$$weather-windy text-white"; break;
+				default	   : label = "variable"; icon="material-icons md-160 mdi mdi-weather-windy text-white"; break;
 			}
 			
 			return {
@@ -125,9 +125,9 @@
 				case "013n": icon="snowy"; break; // Neve - Snow
 				
 				case "050d":
-				case "050n": icon= "material-icons md-160 mdi mdi-$$weather-windy text-white"; break; // Vario
+				case "050n": icon= "material-icons md-160 mdi mdi-weather-windy text-white"; break; // Vario
 					
-				default	   : icon="material-icons md-160 mdi mdi-$$weather-windy text-white"; break;
+				default	   : icon="material-icons md-160 mdi mdi-weather-windy text-white"; break;
 			}
 			
 			return icon;

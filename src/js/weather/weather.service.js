@@ -11,7 +11,7 @@
 		};
 
 		this.$get = /* @ngInject */ function($resource, $q) {
-			return new Weather($resource, $q, appId);
+			return new Weather($resource, $q, $$appId);
 		};
 	}
 	
@@ -30,14 +30,14 @@
 			}
 			
 			var params = {
-				appId : $$service.appId,
+				appId : $$service.$$appId,
 				q : city + ',' + country,
 				mode : 'json',
 				units : 'metric'
 			};
 
 			$$service.API.get(params, function(response) {
-				deferred.resolve(response.data);
+				deferred.resolve(response);
 				
 			}, function(response) {
 				deferred.reject(response.data && response.data.message ? response.data.message : "Error getting weather for " + city + ", " + country);

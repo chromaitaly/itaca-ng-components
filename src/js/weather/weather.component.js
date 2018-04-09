@@ -10,12 +10,12 @@
 	    template: 
 	    	"<div>"+
 	    		"<div class=\"relative overflow-hidden weather-container\">"+
-	    			"<i ng-if=\"$ctrl.$$weather.label == \"partly.cloudy\"\" ng-class=\"$ctrl.$$weather.isNight ? \"starry\" : \"sunny\"\" class=\"cloud\"></i>"+
-	    			"<i class=\"{{$ctrl.$$weather.icon}}\"></i>"+
+	    		"<i ng-if=\"$ctrl.$$weather.label == 'partly.cloudy'\" ng-class=\"$ctrl.$$weather.isNight ? 'starry' : 'sunny'\" class=\"cloud\"></i>"+
+	    			"<md-icon class=\"{{$ctrl.$$weather.icon}}\"></md-icon>"+
 	    		"</div>"+
 	    		"<div class=\"text-white\"><span ng-if=\"$$weather.label\" translate=\"weather.{{$ctrl.$$weather.label}}\"></span></div>"+
-	    		"<div class=\"md-headline text-bold text-white\"><span>{{::$ctrl.city}}</span></div>"+
-	    		"<div class=\"md-body-2 text-white text-uppercase\"><span>{{::$ctrl.country}}</span></div>"+
+	    		"<div class=\"md-headline text-bold text-white\"><span>{{$ctrl.city}}</span></div>"+
+	    		"<div class=\"md-body-2 text-white text-uppercase\"><span>{{$ctrl.country}}</span></div>"+
 	    		"<div>"+
 	    			"<span class=\"md-headline text-bold text-white\">{{$$weather.temp}}</span>"+
 	    			"<mdi-icon class=\"mdi mdi-temperature-celsius material-icons text-white\"></md-icon>"+
@@ -29,8 +29,12 @@
 		
 		this.$onInit = function() {
 			ctrl.$reset();
-			
-			ctrl.$getWeather();
+		};
+		
+		this.$onChanges = function(changesObj) {
+			if (changesObj.city) {
+				ctrl.$getWeather();
+			}
 		};
 		
 		this.$reset = function() {
@@ -39,9 +43,9 @@
 		
 		this.$getWeather = function() {
 			Weather.get(ctrl.city, ctrl.country).then(function(response) {
-				if(!_.isNil(response.data)){
-		    		ctrl.$$weather.temp = NumberUtils.fixedDecimals(response.data.main.temp, 1);
-		    		ctrl.$getIcon(response.data.weather[0].icon);
+				if(!_.isNil(response)){
+		    		ctrl.$$weather.temp = NumberUtils.fixedDecimals(response.main.temp, 1);
+		    		ctrl.$getInfo(response.weather[0].icon);
 		    		
 		    	} else {
 		    		$log.error("Error getting weather");

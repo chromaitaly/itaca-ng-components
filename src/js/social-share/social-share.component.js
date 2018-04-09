@@ -175,7 +175,7 @@
 	});
 	
 	/* @ngInject */
-	function SocialShareCtrl($scope, UrlUtils) {
+	function SocialShareCtrl($scope, UrlUtils, AppOptions) {
 		var ctrl = this;
 		
 		this.$onInit = function() {
