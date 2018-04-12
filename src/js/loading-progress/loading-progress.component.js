@@ -3,10 +3,10 @@
 	
 	angular.module("itaca.components").component('chLoadingProgress', {
 		bindings: {
-			message: "<",
-			messageKey: "<",
-			errorMessage: "<",
-			errorMessageKey: "<",
+			message: "@",
+			messageKey: "@",
+			errorMessage: "@",
+			errorMessageKey: "@",
 			progressDiameter: "@",
 			contClass: "@",
 			hideSiblings: "<"
@@ -48,6 +48,12 @@
 		this.$onInit = function() {
 			ctrl.contClass = ctrl.contClass || "bg-primary text-white md-title";
 			ctrl.progressDiameter = ctrl.progressDiameter || 150;
+		};
+		
+		this.$onChanges = function(changesObj) {
+			if (changesObj.hideSiblings) {
+				ctrl.$hideSiblings(ctrl.hideSiblings);
+			}
 		};
 		
 		this.$onDestroy = function() {

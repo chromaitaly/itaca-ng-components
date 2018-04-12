@@ -1,10 +1,10 @@
 (function() {
 	'use strict';
 	
-	angular.module("itaca.components").component('chLoadingModal', {
+	angular.module("itaca.components").component('chLoading', {
 		bindings: {
-			message: "<",
-			messageKey: "<",
+			message: "@",
+			messageKey: "@",
 			progressDiameter: "@",
 			contClass: "@"
 		},
@@ -30,6 +30,7 @@
 		};
 		
 		this.$onInit = function() {
+			ctrl.contClass = ctrl.contClass || "md-title";
 			ctrl.progressDiameter = ctrl.progressDiameter || 80;
 		};
 		
