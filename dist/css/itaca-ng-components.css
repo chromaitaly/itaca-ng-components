@@ -96,22 +96,20 @@
   left: 50%;
   content: '';
 }
-.ch-loading-progress {
-  width: 100%;
-  height: 100%;
-  position: fixed;
-  top: 0;
-  left: 0;
-  z-index: 999999;
+.md-hover-icon:not(:hover) md-icon,
+.md-hover-icon:not(:hover) .md-icon-text {
+  color: #b0bec5 !important;
 }
-.ch-loading-modal {
-  width: 100%;
-  height: 100%;
-  position: fixed;
-  top: 0;
-  left: 0;
-  background: rgba(255, 255, 255, 0.7);
-  z-index: 999999;
+.card-footer:empty {
+  display: none;
+}
+.card-image {
+  height: 200px;
+}
+@media only screen and (max-width: 599px) {
+  .card-image {
+    height: 170px;
+  }
 }
 .ch-parallax {
   height: 600px;
