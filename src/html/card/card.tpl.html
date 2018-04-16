@@ -41,8 +41,8 @@
 					<div>
 						<span ng-if="$ctrl.iconLabel && $ctrl.iconLabelPosition == 'left'" class="{{$ctrl.iconLabelClass}}">{{$ctrl.iconLabel}}</span>
 						<span ng-if="$ctrl.iconSecondaryLabel && $ctrl.iconSecondaryLabelPosition == 'left'" class="{{$ctrl.iconSecondaryLabelClass}}">{{$ctrl.iconSecondaryLabel}}</span>
-						<md-icon class="{{$ctrl.iconClass}} material-icons"></md-icon>
-						<md-icon ng-if="$ctrl.otherIconClass" class="{{$ctrl.otherIconClass}} material-icons"></md-icon>
+						<md-icon md-font-set="{{$ctrl.iconFontSet}}" class="{{$ctrl.iconClass}}" ng-class="{'material-icons': !$ctrl.iconFontSet}"></md-icon>
+						<md-icon ng-if="$ctrl.otherIconClass" md-font-set="{{$ctrl.otherIconFontSet}}" class="{{$ctrl.otherIconClass}}" ng-class="{'material-icons': !$ctrl.otherIconFontSet}"></md-icon>
 						<span ng-if="$ctrl.iconLabel && $ctrl.iconLabelPosition == 'right'" class="{{$ctrl.iconLabelClass}}">{{$ctrl.iconLabel}}</span>
 						<span ng-if="$ctrl.iconSecondaryLabel && $ctrl.iconSecondaryLabelPosition == 'right'" class="{{$ctrl.iconSecondaryLabelClass}}">{{$ctrl.iconSecondaryLabel}}</span>
 					</div>
