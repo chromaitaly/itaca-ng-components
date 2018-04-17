@@ -10,11 +10,14 @@
      					<md-icon class="mdi mdi-dots-vertical text-white"></md-icon>
         		</md-button>
 		      	<md-menu-content width="4">
-		      		<md-menu-item ng-repeat="item in $ctrl.menuItems" ng-if="!item.hide">
-						<md-button ng-click="$ctrl.$menuClick(item)" aria-label="{{item.label | translate}}" class="{{item.labelClass}}" ng-disabled="item.disabled">
-				      		<md-icon class="{{item.icon}} material-icons"></md-icon>&nbsp;<span translate-once="{{item.label}}"></span>		      		
-			          	</md-button>
-			   		</md-menu-item>
+		      		<div ng-repeat="item in $ctrl.menuItems" ng-if="!item.hide" layout="column">
+		      			<md-menu-divider ng-if="item.type == 'divider'"></md-menu-divider>
+			      		<md-menu-item ng-if="item.type != 'divider'">
+							<md-button ng-click="$ctrl.$menuClick($event, item)" aria-label="{{item.label | translate}}" class="{{item.labelClass}}" ng-disabled="item.disabled">
+					      		<md-icon class="{{item.icon}} material-icons"></md-icon>&nbsp;<span translate-once="{{item.label}}"></span>		      		
+				          	</md-button>
+				   		</md-menu-item>
+		   	 		</div>
 				</md-menu-content>
 			</md-menu>
 			<md-menu class="md-secondary" ng-if="$ctrl.disabledMenuItems && $ctrl.ngDisabled">
@@ -22,11 +25,14 @@
      					<md-icon class="mdi mdi-dots-vertical text-white"></md-icon>
         		</md-button>
 		      	<md-menu-content width="4">
-		      		<md-menu-item ng-repeat="item in $ctrl.disabledMenuItems" ng-if="!item.hide">
-						<md-button ng-click="$ctrl.$menuClick(item)" aria-label="{{item.label | translate}}" class="{{item.labelClass}}" ng-disabled="item.disabled">
-				      		<md-icon class="{{item.icon}} material-icons"></md-icon>&nbsp;<span translate-once="{{item.label}}"></span>		      		
-			          	</md-button>
-			   		</md-menu-item>
+		      		<div ng-repeat="item in $ctrl.disabledMenuItems" ng-if="!item.hide" layout="column">
+		      			<md-menu-divider ng-if="item.type == 'divider'"></md-menu-divider>
+			      		<md-menu-item ng-if="item.type != 'divider'">
+							<md-button ng-click="$ctrl.$menuClick($event, item)" aria-label="{{item.label | translate}}" class="{{item.labelClass}}" ng-disabled="item.disabled">
+					      		<md-icon class="{{item.icon}} material-icons"></md-icon>&nbsp;<span translate-once="{{item.label}}"></span>		      		
+				          	</md-button>
+				   		</md-menu-item>
+				   	</div>
 				</md-menu-content>
 			</md-menu>
 		</div>

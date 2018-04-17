@@ -12,13 +12,13 @@
 			imgUrl: "@",
 			imgClass: "@",
 			imgContClass: "@",
-			showAvatar: "=?",
+			showAvatar: "<?",
 			iconClass: "@",
 			iconFontSet: "@",
-			iconLabel: "<?",
+			iconLabel: "@",
 			iconLabelClass: "@",
 			iconLabelPosition: "@",
-			iconSecondaryLabel: "<?",
+			iconSecondaryLabel: "@",
 			iconSecondaryLabelClass: "@",
 			iconSecondaryLabelPosition: "@",
 			otherIconClass: "@",
@@ -27,7 +27,7 @@
 			titleClass: "@",
 			subtitle: "@",
 			colorClass: "@",
-			ngDisabled: "=?",
+			ngDisabled: "<?",
 			disabledLabel: "@",
 			disabledClass: "@",
 			disabledBarClass: "@",
@@ -80,9 +80,9 @@
 			}
 		};
 		
-		this.$menuClick = function(menu){
+		this.$menuClick = function(ev, menu){
 			if(!_.isNil(menu.fn) && angular.isFunction(menu.fn)){
-				menu.fn.apply(this, menu.fnParams);
+				menu.fn.apply(this, _.concat([ev], menu.fnParams));
 				
 			} else {
 				if(!_.isNil(menu.state)){

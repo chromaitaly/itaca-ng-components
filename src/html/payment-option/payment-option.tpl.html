@@ -1,0 +1,49 @@
+<span>
+	<span ng-if="!$ctrl.paymentOption.amount.finalAmount">
+		<span translate="common.free"></span>
+	</span>
+	
+	<span ng-if="$ctrl.paymentOption.amount.finalAmount">
+		<span>{{$ctrl.paymentOption.amount|chAmount}}</span>&nbsp;
+		
+		<span ng-switch="$ctrl.paymentOption.frequency">
+			<span ng-switch-when="DAILY">
+				/<span ng-if="$ctrl.frequencyLabel" ng-bind-html="$ctrl.frequencyLabel"></span>
+				<span ng-if="!$ctrl.frequencyLabel" translate="date.day"></span>
+			</span>
+			<span ng-switch-when="NIGHTLY">
+				/<span ng-if="$ctrl.frequencyLabel" ng-bind-html="$ctrl.frequencyLabel"></span>
+				<span ng-if="!$ctrl.frequencyLabel" translate="common.night"></span>
+			</span>
+			<span ng-switch-when="MONTHLY">
+				/<span ng-if="$ctrl.frequencyLabel" ng-bind-html="$ctrl.frequencyLabel"></span>
+				<span ng-if="!$ctrl.frequencyLabel" translate="date.month"></span>
+			</span>
+			<span ng-switch-when="YEARLY">
+				/<span ng-if="$ctrl.frequencyLabel" ng-bind-html="$ctrl.frequencyLabel"></span>
+				<span ng-if="!$ctrl.frequencyLabel" translate="date.year"></span>
+			</span>
+			<span ng-switch-default></span>
+		</span>									          							
+		
+		<span ng-switch="$ctrl.paymentOption.size">
+			<span ng-switch-when="PER_ADULT">
+				/<span ng-if="$ctrl.sizeLabel" ng-bind-html="$ctrl.sizeLabel"></span>
+				<span ng-if="!$ctrl.sizeLabel" translate="people.adult"></span>
+			</span>
+			<span ng-switch-when="PER_BOY">
+				/<span ng-if="$ctrl.sizeLabel" ng-bind-html="$ctrl.sizeLabel"></span>
+				<span ng-if="!$ctrl.sizeLabel" translate="people.boy"></span>
+			</span>
+			<span ng-switch-when="PER_CHILD">
+				/<span ng-if="$ctrl.sizeLabel" ng-bind-html="$ctrl.sizeLabel"></span>
+				<span ng-if="!$ctrl.sizeLabel" translate="people.child"></span>
+			</span>
+			<span ng-switch-when="PER_KID">
+				/<span ng-if="$ctrl.sizeLabel" ng-bind-html="$ctrl.sizeLabel"></span>
+				<span ng-if="!$ctrl.sizeLabel" translate="people.kid"></span>
+			</span>
+			<span ng-switch-default></span>
+		</span>
+	</span>
+</span>
