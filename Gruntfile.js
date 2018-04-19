@@ -10,7 +10,10 @@ module.exports = function(grunt) {
 					src : 'src',
 					dist : 'dist',
 					components : 'bower_components',
-					tmp : '.tmp'
+					npmComponents : 'node_modules',
+					tmp : '.tmp',
+
+					assets : [ '<%= vars.npmComponents %>/material-design-inspired-color-picker/dist/md-color-picker.js' ]
 				},
 				clean : {
 					tmp : [ '<%= vars.tmp %>' ],
@@ -63,6 +66,7 @@ module.exports = function(grunt) {
 						},
 						files : {
 							'<%= vars.dist %>/js/<%= pkg.name %>.js' : [
+									'<%= vars.assets %>',
 									'<%= vars.tmp %>/js/<%= pkg.name %>.module.js',
 									'<%= vars.tmp %>/js/**/*.js',
 									'<%= vars.tmp %>/templates/**/*.js' ]
@@ -78,6 +82,7 @@ module.exports = function(grunt) {
 						},
 						files : {
 							'<%= vars.dist %>/js/<%= pkg.name %>.min.js' : [
+									'<%= vars.assets %>',
 									'<%= vars.tmp %>/js/<%= pkg.name %>.module.js',
 									'<%= vars.tmp %>/js/**/*.js',
 									'<%= vars.tmp %>/templates/**/*.js' ]
@@ -122,7 +127,7 @@ module.exports = function(grunt) {
 						existingModule : true,
 						htmlmin : {
 							collapseWhitespace : true,
-							collapseInlineTagWhitespace: true,
+							collapseInlineTagWhitespace : true,
 							removeComments : true
 						},
 						rename : function(moduleName) {

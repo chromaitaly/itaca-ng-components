@@ -1,0 +1,31 @@
+<span>
+	<ch-color-picker-inline ng-if="$ctrl.inline"
+		ng-model="$ctrl.ngModel"
+		colors-per-row="{{$ctrl.colorsPerRow}}"
+		color-margin="{{$ctrl.colorMargin}}" 
+		color-size="{{$ctrl.colorSize}}" 
+		palette="{{$ctrl.palette}}"
+		default-tint="{{$ctrl.defaultTint}}"
+		hide-sub-palette="$ctrl.hideSubPalette"
+		flexible="$ctrl.flexible"
+		show-code="$ctrl.showCode">
+	</ch-color-picker-inline>
+	
+	<ch-color-picker-button ng-if="!$ctrl.inline"
+		ng-model="$ctrl.ngModel"
+		label="{{$ctrl.label}}"
+		colors-per-row="{{$ctrl.colorsPerRow}}"
+		color-margin="{{$ctrl.colorMargin}}" 
+		color-size="{{$ctrl.colorSize}}" 
+		palette="{{$ctrl.palette}}"
+		default-tint="{{$ctrl.defaultTint}}"
+		hide-sub-palette="$ctrl.hideSubPalette"
+		flexible="$ctrl.flexible"
+		ng-disabled="$ctrl.ngDisabled"
+		ng-readonly="$ctrl.ngReadonly"
+		has-confirm="$ctrl.hasConfirm"
+		has-backdrop="$ctrl.hasBackdrop"
+		disable-parent-scroll="$ctrl.disableParentScroll"
+		show-code="$ctrl.showCode">
+	</ch-color-picker-button>
+</span>

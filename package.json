@@ -14,7 +14,7 @@
 	},
 	"registration": {
 		"number": "21-11-2016/011058",
-		"year": "2016"
+		"year": "2016-2018"
 	},
 	"contributors": [
 		{
@@ -48,7 +48,8 @@
 		"jit-grunt": "latest",
 		"jshint-stylish": "latest",
 		"pixrem": "^4.0.1",
-		"time-grunt": "latest"
+		"time-grunt": "latest",
+		"material-design-inspired-color-picker": "latest"
 	},
 	"engines": {
 		"node": ">=4.2.4"

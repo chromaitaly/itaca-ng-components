@@ -1,0 +1,32 @@
+<div>
+	<div>
+		<ch-color-picker-inline
+			ng-model="$ctrl.$$data.color"
+			colors-per-row="{{$ctrl.colorsPerRow}}"
+			color-margin="{{$ctrl.colorMargin}}" 
+			color-size="{{$ctrl.colorSize}}" 
+			palette="{{$ctrl.palette}}"
+			default-tint="{{$ctrl.defaultTint}}"
+			hide-sub-palette="$ctrl.hideSubPalette"
+			flexible="$ctrl.flexible"
+			show-code="$ctrl.showCode"
+			ng-change="$ctrl.onChange($event)">
+		</ch-color-picker-inline>
+	</div>
+	
+	<div ng-if="$ctrl.hasConfirm">
+		<md-divider></md-divider>
+	
+		<div layout>
+			<div flex></div>
+			
+			<md-button class="no-margin-top no-margin-bottom" ng-click="$ctrl.cancel()" aria-label="Cancel">
+		      	<small translate="common.cancel"></small>
+		     </md-button>
+		     	
+		     <md-button class="md-primary no-margin-top no-margin-bottom" ng-click="$ctrl.confirm()" aria-label="Confirm">
+		   		<small translate="common.confirm"></small>
+		     </md-button>
+		</div> 
+	</div>
+</div>

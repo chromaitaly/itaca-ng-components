@@ -1,0 +1,19 @@
+<div layout-padding-sm>
+	<div>
+		<md-color-picker 
+			class="ch-color-picker-inline"
+			ng-attr-colors-per-row="{{$ctrl.colorsPerRow || 5}}"
+			ng-attr-color-margin="{{$ctrl.colorMargin || 5}}" 
+			ng-attr-color-size="{{$ctrl.colorSize || 50}}" 
+			ng-attr-palette="{{$ctrl.palette}}" 
+			ng-attr-default-tint="{{$ctrl.defaultTint || 500}}" 
+			ng-attr-use-spectrum-picker="{{!$ctrl.hideSubPalette}}" 
+			ng-attr-fixed-min-height="{{!$ctrl.flexible}}" 
+			value="{{$ctrl.ngModel}}">
+		</md-color-picker>
+	</div>
+
+	<div ng-if="$ctrl.showCode" class="text-center md-subhead">
+		<strong ng-bind="$ctrl.ngModel"></strong>
+	</div>
+</div>
