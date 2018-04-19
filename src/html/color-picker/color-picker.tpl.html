@@ -8,7 +8,8 @@
 		default-tint="{{$ctrl.defaultTint}}"
 		hide-sub-palette="$ctrl.hideSubPalette"
 		flexible="$ctrl.flexible"
-		show-code="$ctrl.showCode">
+		show-code="$ctrl.showCode"
+		ng-change="$ctrl.$update()">
 	</ch-color-picker-inline>
 	
 	<ch-color-picker-button ng-if="!$ctrl.inline"
@@ -26,6 +27,7 @@
 		has-confirm="$ctrl.hasConfirm"
 		has-backdrop="$ctrl.hasBackdrop"
 		disable-parent-scroll="$ctrl.disableParentScroll"
-		show-code="$ctrl.showCode">
+		show-code="$ctrl.showCode"
+		ng-change="$ctrl.$update()">
 	</ch-color-picker-button>
 </span>

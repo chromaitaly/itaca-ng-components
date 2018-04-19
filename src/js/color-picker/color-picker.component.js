@@ -31,5 +31,9 @@
 	function ColorPickerCtrl($scope, $element) {
 		var ctrl = this;
 		
+		this.$update = function() {
+			ctrl.ngModelCtrl.$setViewValue(ctrl.ngModel);
+		};
+		
 	}
 })();
