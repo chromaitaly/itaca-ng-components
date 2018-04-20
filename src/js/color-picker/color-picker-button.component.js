@@ -44,9 +44,8 @@
 			    templateUrl: "/tpls/color-picker/color-picker-panel.tpl",
 			    position: position,
 			    clickOutsideToClose: true,
-			    disableParentScroll: ctrl.disableParentScroll,
+			    disableParentScroll: !$mdMedia('gt-xs') || ctrl.disableParentScroll,
 			    hasBackdrop: !$mdMedia('gt-xs') || ctrl.hasBackdrop,
-			    fullscreen: !$mdMedia('gt-xs'),
 			    panelClass: "md-whiteframe-15dp bg-gray-lighter",
 			    trapFocus: true,
 			    onCloseSuccess: function(panelRef, closeReason) {
@@ -101,8 +100,8 @@
 			};
 
 			ctrl.$$config.openFrom = ev;
+			ctrl.$$config.disableParentScroll = !$mdMedia('gt-xs') || ctrl.disableParentScroll;
 			ctrl.$$config.hasBackdrop = !$mdMedia('gt-xs') || ctrl.hasBackdrop;
-			ctrl.$$config.fullscreen = !$mdMedia('gt-xs');
 			ctrl.$$config.locals = locals;
 
 			// apro il pannello
