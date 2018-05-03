@@ -3,9 +3,8 @@
 		<span translate="common.free"></span>
 	</span>
 	
-	<span ng-if="$ctrl.paymentOption.amount.finalAmount">
-		<span>{{$ctrl.paymentOption.amount|chAmount}}</span>&nbsp;
-		
+	<span ng-if="$ctrl.paymentOption.amount.finalAmount" class="text-lowercase">
+		<span class="{{$ctrl.amountClass}}" ng-bind-html="($ctrl.paymentOption.amount|chAmount)"></span>
 		<span ng-switch="$ctrl.paymentOption.frequency">
 			<span ng-switch-when="DAILY">
 				/<span ng-if="$ctrl.frequencyLabel" ng-bind-html="$ctrl.frequencyLabel"></span>
@@ -14,6 +13,10 @@
 			<span ng-switch-when="NIGHTLY">
 				/<span ng-if="$ctrl.frequencyLabel" ng-bind-html="$ctrl.frequencyLabel"></span>
 				<span ng-if="!$ctrl.frequencyLabel" translate="common.night"></span>
+			</span>
+			<span ng-switch-when="WEEKLY">
+				/<span ng-if="$ctrl.frequencyLabel" ng-bind-html="$ctrl.frequencyLabel"></span>
+				<span ng-if="!$ctrl.frequencyLabel" translate="date.week"></span>
 			</span>
 			<span ng-switch-when="MONTHLY">
 				/<span ng-if="$ctrl.frequencyLabel" ng-bind-html="$ctrl.frequencyLabel"></span>
@@ -25,7 +28,6 @@
 			</span>
 			<span ng-switch-default></span>
 		</span>									          							
-		
 		<span ng-switch="$ctrl.paymentOption.size">
 			<span ng-switch-when="PER_ADULT">
 				/<span ng-if="$ctrl.sizeLabel" ng-bind-html="$ctrl.sizeLabel"></span>
@@ -44,6 +46,29 @@
 				<span ng-if="!$ctrl.sizeLabel" translate="people.kid"></span>
 			</span>
 			<span ng-switch-default></span>
+		</span>
+		<span ng-if="$ctrl.paymentOption.minLength && $ctrl.$$paymentOption.frequency != 'LUMP_SUM'" ng-switch="$ctrl.paymentOption.frequency">
+			&nbsp;
+			<span ng-switch-when="DAILY">
+				<span ng-if="$ctrl.paymentOption.minLength == 1" translate="date.length.minimum.description" translate-value-length="{{$ctrl.paymentOption.minLength + ' ' + ('date.day'|translate)}}"></span>
+				<span ng-if="$ctrl.paymentOption.minLength != 1" translate="date.length.minimum.description" translate-value-length="{{$ctrl.paymentOption.minLength + ' ' + ('date.days'|translate)}}"></span>
+			</span>
+			<span ng-switch-when="NIGHTLY">
+				<span ng-if="$ctrl.paymentOption.minLength == 1" translate="date.length.minimum.description" translate-value-length="{{$ctrl.paymentOption.minLength + ' ' + ('common.night'|translate)}}"></span>
+				<span ng-if="$ctrl.paymentOption.minLength != 1" translate="date.length.minimum.description" translate-value-length="{{$ctrl.paymentOption.minLength + ' ' + ('common.nights'|translate)}}"></span>
+			</span>
+			<span ng-switch-when="WEEKLY">
+				<span ng-if="$ctrl.paymentOption.minLength == 1" translate="date.length.minimum.description" translate-value-length="{{$ctrl.paymentOption.minLength + ' ' + ('date.week'|translate)}}"></span>
+				<span ng-if="$ctrl.paymentOption.minLength != 1" translate="date.length.minimum.description" translate-value-length="{{$ctrl.paymentOption.minLength + ' ' + ('date.weeks'|translate)}}"></span>
+			</span>
+			<span ng-switch-when="MONTHLY">
+				<span ng-if="$ctrl.paymentOption.minLength == 1" translate="date.length.minimum.description" translate-value-length="{{$ctrl.paymentOption.minLength + ' ' + ('date.month'|translate)}}"></span>
+				<span ng-if="$ctrl.paymentOption.minLength != 1" translate="date.length.minimum.description" translate-value-length="{{$ctrl.paymentOption.minLength + ' ' + ('date.months'|translate)}}"></span>
+			</span>
+			<span ng-switch-when="YEARLY">
+				<span ng-if="$ctrl.paymentOption.minLength == 1" translate="date.length.minimum.description" translate-value-length="{{$ctrl.paymentOption.minLength + ' ' + ('date.year'|translate)}}"></span>
+				<span ng-if="$ctrl.paymentOption.minLength != 1" translate="date.length.minimum.description" translate-value-length="{{$ctrl.paymentOption.minLength + ' ' + ('date.years'|translate)}}"></span>
+			</span>					
 		</span>
 	</span>
 </span>

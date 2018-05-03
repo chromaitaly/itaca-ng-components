@@ -13,8 +13,7 @@
 			class="no-margin row-1 forced" ng-class="{'minimal-button': !$ctrl.$mdMedia('gt-xs'), 
 				'bg-success': !$ctrl.header.roomClosed && $ctrl.header.availability.actual > 0, 
 				'bg-danger': $ctrl.header.roomClosed, 
-				'bg-warn': !$ctrl.header.roomClosed && $ctrl.header.availability.actual == 0, 
-				'bg-gray-base text-white': !$ctrl.header.roomClosed && $ctrl.header.availability.actual < 0}">
+				'bg-warn': !$ctrl.header.roomClosed && $ctrl.header.availability.actual <= 0">
 			
 			<div class="text-small" ng-if="$ctrl.header.roomClosed">
 				<strong hide-xs translate="common.closed.female"></strong>
@@ -30,20 +29,15 @@
 						<span hide-xs translate="common.opened.female"></span>
 						<span hide show-xs><md-icon class="mdi mdi-lock-open md-24 text-white"></md-icon></span>
 					</span>
-					<span ng-if="$ctrl.header.availability.actual == 0">
+					<span ng-if="$ctrl.header.availability.actual <= 0">
 						<span hide-xs translate="hotel.availability.none.abbr"></span>
 						<span hide show-xs><md-icon class="mdi mdi-close md-24 text-white"></md-icon></span>
-					</span>
-					<span ng-if="$ctrl.header.availability.actual < 0">
-						<span hide-xs translate="ratesheet.overbooking"></span>
-						<span hide show-xs><md-icon class="mdi mdi-block-helper md-24 text-white"></md-icon></span>
 					</span>
 				</strong>
 				
 				<md-tooltip>
 					<span ng-if="$ctrl.header.availability.actual > 0" translate="ratesheet.rate.room.close"></span>
-					<span ng-if="$ctrl.header.availability.actual == 0" translate="hotel.availability.none"></span>
-					<span ng-if="$ctrl.header.availability.actual < 0" translate="ratesheet.overbooking"></span>
+					<span ng-if="$ctrl.header.availability.actual <= 0" translate="hotel.availability.none"></span>
 				</md-tooltip>
 			</div>
 		</md-button>

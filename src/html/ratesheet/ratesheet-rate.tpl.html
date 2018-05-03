@@ -11,8 +11,7 @@
 				ng-click="$ctrl.$toggleRateClosing($event)" aria-label="Enable/Disable rate"
 				class="no-margin button-label forced" ng-class="{'minimal-button': !$ctrl.$mdMedia('gt-xs'), 
 					'bg-success': !$ctrl.rate.roomClosed && $ctrl.rate[$ctrl.$$rateDataKey].enabled && $ctrl.rate[$ctrl.$$rateDataKey].amount.finalAmount && $ctrl.rate.availability.actual > 0, 
-					'bg-warn': !$ctrl.rate.roomClosed && $ctrl.rate[$ctrl.$$rateDataKey].enabled && (!$ctrl.rate[$ctrl.$$rateDataKey].amount.finalAmount || $ctrl.rate.availability.actual == 0),
-					'bg-gray-base text-white': !$ctrl.rate.roomClosed && $ctrl.rate[$ctrl.$$rateDataKey].enabled && (!$ctrl.rate[$ctrl.$$rateDataKey].amount.finalAmount || $ctrl.rate.availability.actual < 0),
+					'bg-warn': !$ctrl.rate.roomClosed && $ctrl.rate[$ctrl.$$rateDataKey].enabled && (!$ctrl.rate[$ctrl.$$rateDataKey].amount.finalAmount || $ctrl.rate.availability.actual <= 0),
 					'bg-danger': $ctrl.rate.roomClosed || !$ctrl.rate[$ctrl.$$rateDataKey].enabled}" tabindex="-1">
 				<div ng-show="!$ctrl.rate.roomClosed && $ctrl.rate[$ctrl.$$rateDataKey].enabled" flex layout layout-xs="column" layout-align="center center">
 					<div flex ng-show="$ctrl.rate[$ctrl.$$rateDataKey].amount.finalAmount">
@@ -41,8 +40,7 @@
 						
 						<div ng-if="!$ctrl.rate.roomClosed && $ctrl.rate[$ctrl.$$rateDataKey].enabled">
 							<span ng-if="$ctrl.rate.availability.actual > 0" translate="ratesheet.rate.disable"></span>
-							<span ng-if="$ctrl.rate.availability.actual == 0" translate="hotel.availability.none"></span>
-							<span ng-if="$ctrl.rate.availability.actual < 0" translate="ratesheet.overbooking"></span>
+							<span ng-if="$ctrl.rate.availability.actual <= 0" translate="hotel.availability.none"></span>
 						</div>
 					</div>
 				</md-tooltip>

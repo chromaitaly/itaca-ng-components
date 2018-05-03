@@ -5,7 +5,8 @@
     	bindings: {
     		paymentOption: "<",
     		frequencyLabel: "@",
-    		sizeLabel: "@"
+    		sizeLabel: "@",
+    		amountClass: "@"
     	},
 		controller: PaymentOptionCtrl,
 		templateUrl: "/tpls/payment-option/payment-option.tpl"

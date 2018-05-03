@@ -16,8 +16,7 @@
 				ng-click="$ctrl.$toggleClosing()" aria-label="Enable/Disable promotion"
 				class="no-margin forced" ng-class="{'minimal-button': !$ctrl.$mdMedia('gt-xs'), 
 					'bg-success': !$ctrl.promotion.roomClosed && $ctrl.promotion.enabled && $ctrl.promotion.availability.actual > 0,
-					'bg-warn': !$ctrl.promotion.roomClosed && $ctrl.promotion.enabled && $ctrl.promotion.availability.actual == 0,
-					'bg-gray-base text-white': !$ctrl.promotion.roomClosed && $ctrl.promotion.enabled && $ctrl.promotion.availability.actual < 0,
+					'bg-warn': !$ctrl.promotion.roomClosed && $ctrl.promotion.enabled && $ctrl.promotion.availability.actual <= 0,
 					'bg-danger': $ctrl.promotion.roomClosed || !$ctrl.promotion.enabled}" tabindex="-1">
 				<div ng-show="!$ctrl.promotion.roomClosed" flex layout layout-xs="column" layout-align="center center">
 					<small ng-show="$ctrl.promotion.minStay > 1"><md-icon class="mdi mdi-calendar-today md-14 text-white"></md-icon></small>
@@ -26,8 +25,7 @@
 				<md-tooltip>
 					<span ng-if="$ctrl.promotion.roomClosed || !$ctrl.promotion.enabled">
 						<span ng-if="$ctrl.promotion.availability.actual > 0" translate="ratesheet.promos.promo.enable"></span>
-						<span ng-if="$ctrl.promotion.availability.actual == 0" translate="hotel.availability.none.abbr"></span>
-						<span ng-if="promoDailyDetaile.availability.actual < 0" translate="ratesheet.overbooking"></span>
+						<span ng-if="$ctrl.promotion.availability.actual <= 0" translate="hotel.availability.none.abbr"></span>
 					</span>
 					<span ng-if="!$ctrl.promotion.roomClosed && $ctrl.promotion.enabled" translate="ratesheet.promos.promo.disable"></span>
 				</md-tooltip>
