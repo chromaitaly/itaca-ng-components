@@ -13,11 +13,11 @@
 	    		"<i ng-if=\"$ctrl.$$weather.label == 'partly.cloudy'\" ng-class=\"$ctrl.$$weather.isNight ? 'starry' : 'sunny'\" class=\"cloud\"></i>"+
 	    			"<md-icon class=\"{{$ctrl.$$weather.icon}}\"></md-icon>"+
 	    		"</div>"+
-	    		"<div class=\"text-white\"><span ng-if=\"$$weather.label\" translate=\"weather.{{$ctrl.$$weather.label}}\"></span></div>"+
-	    		"<div class=\"md-headline text-bold text-white\"><span>{{$ctrl.city}}</span></div>"+
+	    		"<div class=\"text-white\"><span ng-if=\"$ctrl.$$weather.label\" translate=\"weather.{{$ctrl.$$weather.label}}\"></span></div>"+
+	    		"<div class=\"md-headline text-bold text-white text-capitalize\"><span>{{$ctrl.city}}</span></div>"+
 	    		"<div class=\"md-body-2 text-white text-uppercase\"><span>{{$ctrl.country}}</span></div>"+
 	    		"<div>"+
-	    			"<span class=\"md-headline text-bold text-white\">{{$$weather.temp}}</span>"+
+	    			"<span class=\"md-headline text-bold text-white\">{{$ctrl.$$weather.temp}}</span>"+
 	    			"<mdi-icon class=\"mdi mdi-temperature-celsius material-icons text-white\"></md-icon>"+
 	    		"</div>"+
 	    	"</div>"

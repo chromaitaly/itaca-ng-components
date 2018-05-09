@@ -82,7 +82,7 @@
 			ctrl.$$frequencies = [];
 			
 			_.forEach(frequencies, function(frequency) {
-				ctrl.$$frequencies.push({value: frequency, disabled: _.includes(ctrl.disabledSizes, frequency) && !(ctrl.paymentOption && ctrl.paymentOption.frequency == frequency)});
+				ctrl.$$frequencies.push({value: frequency, disabled: _.includes(ctrl.disabledFrequencies, frequency) && !(ctrl.paymentOption && ctrl.paymentOption.frequency == frequency)});
 			});
 		};
 		
@@ -131,11 +131,11 @@
 		};
 		
 		this.$initManualMinLengthValidator = function() {
-			if (!$scope.paymentOptionForm) {
+			if (!$scope.chPaymentOptionForm) {
 				return;
 			}
 			
-			var minLengthModelCtrl = $scope.paymentOptionForm.minLength;
+			var minLengthModelCtrl = $scope.chPaymentOptionForm.minLength;
 			
 			if (!minLengthModelCtrl) {
 				return;
@@ -155,11 +155,11 @@
 		};
 		
 		this.$checkMinLength = function() {
-			if (!$scope.paymentOptionForm) {
+			if (!$scope.chPaymentOptionForm) {
 				return;
 			}
 			
-			var minLengthModelCtrl = $scope.paymentOptionForm.minLength;
+			var minLengthModelCtrl = $scope.chPaymentOptionForm.minLength;
 			
 			if (!minLengthModelCtrl) {
 				return;
@@ -177,7 +177,7 @@
 		this.$confirm = function(ev) {
 			ctrl.$checkMinLength();
 			
-			var form = $scope.paymentOptionForm;
+			var form = $scope.chPaymentOptionForm;
 			form.$setSubmitted();
 			
 			if (form.$invalid) {

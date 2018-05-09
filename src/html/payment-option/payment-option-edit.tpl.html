@@ -1,6 +1,6 @@
 <md-whiteframe>
 	<div class="md-whiteframe-5dp bg-gray-lighter md-padding">
-		<ng-form name="paymentOptionForm" flex>
+		<ng-form name="chPaymentOptionForm" flex>
 			<div ng-if="$ctrl.title">
 				<h3 class="md-subhead no-margin-top text-center">
 					<strong ng-bind="$ctrl.title"></strong>
@@ -16,12 +16,12 @@
 						<md-input-container md-no-float>
 							<md-select name="size" placeholder="{{::('payment.option.size'|translate)}}" ng-model="$ctrl.$$paymentOption.size" 
 								ng-required="true" aria-label="Payment size">
-				         		<md-option ng-repeat="size in $ctrl.$$sizes" ng-value="size.value" ng-disabled="size.disabled" 
+				         		<md-option ng-repeat="size in $ctrl.$$sizes track by $index" ng-value="size.value" ng-disabled="size.disabled" 
 				         			ng-selected="$ctrl.$$sizes.length == 1 || $ctrl.$$paymentOption.size == size.value">
 				         			<span translate-once="payment.option.size.{{size.value}}"></span>
 				         		</md-option>
 					        </md-select>
-					        <div ng-messages="paymentOptionForm.size.$error">
+					        <div ng-messages="chPaymentOptionForm.size.$error">
 				         		<div ng-message="required"><span translate-once="error.required"></span></div>
 					        </div>
 						</md-input-container>
@@ -37,12 +37,12 @@
 						<md-input-container md-no-float>
 							<md-select name="frequency" placeholder="{{::('payment.option.frequency'|translate)}}" ng-model="$ctrl.$$paymentOption.frequency" 
 								ng-required="true" aria-label="Payment frequency">
-				         		<md-option ng-repeat="frequency in $ctrl.$$frequencies" ng-value="frequency.value" ng-disabled="frequency.disabled"
+				         		<md-option ng-repeat="frequency in $ctrl.$$frequencies track by $index" ng-value="frequency.value" ng-disabled="frequency.disabled"
 				         			ng-selected="$ctrl.$$frequencies.length == 1 || $ctrl.$$paymentOption.frequency == frequency.value">
 				         			<span translate-once="payment.option.frequency.{{frequency.value}}"></span>
 				         		</md-option>
 					        </md-select>
-					        <div ng-messages="paymentOptionForm.frequency.$error">
+					        <div ng-messages="chPaymentOptionForm.frequency.$error">
 				         		<div ng-message="required"><span translate-once="error.required"></span></div>
 					        </div>
 						</md-input-container>
@@ -81,7 +81,7 @@
 								<input type="number" name="amount" placeholder="{{::('common.free'|translate)}}" ng-model="$ctrl.$$paymentOption.amount.finalAmount" min="1" step="0.50" ng-max="$ctrl.$$paymentOption.amount.type == 'PERCENTAGE' ? 100 : null" 
 									ng-pattern="$ctrl.$$paymentOption.amount.type == 'PERCENTAGE' ? null : $ctrl.$$REGEXP.price" aria-label="Amount">
 						        
-						        <div ng-messages="paymentOptionForm.amount.$error">
+						        <div ng-messages="chPaymentOptionForm.amount.$error">
 					         		<div ng-message="min"><span translate="error.field.min" translate-value-num="1"></span></div>
 					         		<div ng-message="max"><span translate="error.field.max" translate-value-num="100"></span></div>
 					         		<div ng-message="step"><span translate-once="error.amount.invalid"></span></div>
@@ -99,7 +99,7 @@
 					         			<md-icon class="mdi mdi-percent md-14"></md-icon>
 					         		</md-option>
 						        </md-select>
-						        <div ng-messages="paymentOptionForm.amountType.$error">
+						        <div ng-messages="chPaymentOptionForm.amountType.$error">
 					         		<div ng-message="required"><span translate-once="error.required"></span></div>
 						        </div>
 							</md-input-container>
@@ -116,7 +116,7 @@
 						<md-input-container md-no-float>
 							<md-select name="minLength" placeholder="{{::('payment.option.minLength'|translate)}}" ng-model="$ctrl.$$paymentOption.minLength" 
 								ng-required="true" aria-label="Payment min length">
-				         		<md-option ng-repeat="length in $ctrl.$$lengths" ng-value="length.value" ng-disabled="length.disabled">
+				         		<md-option ng-repeat="length in $ctrl.$$lengths track by $index" ng-value="length.value" ng-disabled="length.disabled">
 				         			<span ng-bind="length.value"></span>&nbsp;
 				         			<span class="text-lowercase" ng-switch="$ctrl.$$paymentOption.frequency">
 				         				<span ng-switch-when="DAILY">
@@ -145,13 +145,13 @@
 				         			<span translate-once="common.other"></span>
 				         		</md-option>
 					        </md-select>
-					        <div ng-messages="paymentOptionForm.minLength.$error">
+					        <div ng-messages="chPaymentOptionForm.minLength.$error">
 				         		<div ng-message="required"><span translate-once="error.required"></span></div>
 					        </div>
 						</md-input-container>
 					</div>
 					
-					<div ng-if="$ctrl.$$manualMinLength" layout>
+					<div ng-if="$ctrl.$$manualMinLength">
 						<div>
 							<md-input-container class="md-icon-right">
 								<label ng-switch="$ctrl.$$paymentOption.frequency">
@@ -176,9 +176,9 @@
 						        	<md-tooltip><span translate-once="common.cancel"></span></md-tooltip>
 						        </md-icon>
 						        
-						        <div ng-messages="paymentOptionForm.minLength.$error">
+						        <div ng-messages="chPaymentOptionForm.minLength.$error">
 					         		<div ng-message="required"><span translate-once="error.required"></span></div>
-					         		<div ng-message="min"><span translate="error.field.min" translate-value-num="2"></span></div>
+					         		<div ng-message="min"><span translate="error.field.min" translate-value-num="1"></span></div>
 						        	<div ng-message="step"><span translate-once="error.filed.invalid"></span></div>
 						        </div>
 							</md-input-container>

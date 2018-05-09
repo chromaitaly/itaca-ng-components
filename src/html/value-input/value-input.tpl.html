@@ -1,0 +1,82 @@
+<ng-form name="chValueForm">
+	<div layout layout-padding class="no-padding">
+		<div ng-if="!$ctrl.$$manualCount">
+			<md-input-container md-no-float>
+				<md-select name="count" ng-model="$ctrl.ngModel.count" ng-required="$ctrl.ngRequired" ng-readonly="$ctrl.readonly" 
+					ng-change="$ctrl.$update()" aria-label="Value count">
+	         		<md-option ng-repeat="count in $ctrl.$$counts track by $index" ng-value="count.value" ng-disabled="count.disabled"
+	         			ng-selected="$ctrl.$$counts.length == 1 || $ctrl.ngModel.count == count.value || (!$ctrl.ngModel.count && $first)">
+	         			<span ng-bind="count.value"></span>
+	         		</md-option>
+	         		<md-option ng-click="$ctrl.$toggleManualCount()" aria-label="Open manual count input">
+	         			<span translate-once="common.other"></span>
+	         		</md-option>
+		        </md-select>
+		        <div ng-messages="chValueForm.count.$error">
+	         		<div ng-message="required"><span translate-once="error.required"></span></div>
+		        </div>
+			</md-input-container>
+		</div>
+		
+		<div ng-if="$ctrl.$$manualCount">
+			<md-input-container md-no-float class="md-icon-right">
+				<input type="number" name="count" ng-model="$ctrl.ngModel.count" ng-min="$ctrl.ngMin" ng-step="$ctrl.ngStep" ng-max="$ctrl.ngMax"
+					ng-required="$ctrl.ngRequired" ng-readonly="$ctrl.readonly" ng-change="$ctrl.$update()">
+		        <md-icon class="mdi mdi-close md-24 clickable" ng-click="$ctrl.$toggleManualCount()" aria-label="Close manual count input">
+		        	<md-tooltip><span translate-once="common.cancel"></span></md-tooltip>
+		        </md-icon>
+		        
+		        <div ng-messages="chValueForm.count.$error">
+	         		<div ng-message="required"><span translate-once="error.required"></span></div>
+	         		<div ng-message="min"><span translate="error.field.min" translate-value-num="{{$ctrl.ngMin}}"></span></div>
+	         		<div ng-message="max"><span translate="error.field.min" translate-value-num="{{$ctrl.ngMax}}"></span></div>
+		        	<div ng-message="step"><span translate-once="error.filed.invalid"></span></div>
+		        </div>
+			</md-input-container>
+		</div>
+				
+		<div>
+			<md-input-container md-no-float>
+				<md-select name="unit" ng-model="$ctrl.ngModel.unit" ng-required="$ctrl.ngRequired" ng-readonly="$ctrl.readonly" 
+					ng-change="$ctrl.$update()" aria-label="Value unit">
+	         		<md-option ng-repeat="unit in $ctrl.$$units track by $index" ng-value="unit.value" ng-disabled="unit.disabled"
+	         			ng-selected="$ctrl.$$units.length == 1 || $ctrl.ngModel.unit == unit.value || (!$ctrl.ngModel.unit && $first)">
+	         			<span ng-switch="unit.value">
+	         				<span ng-switch-when="NUMBERS">
+	         					<span ng-if="$ctrl.ngModel.count == 1" translate-once="common.unit"></span>
+	         					<span ng-if="$ctrl.ngModel.count != 1" translate-once="common.units"></span>
+	         				</span>
+	         				<span ng-switch-when="HOURS">
+	         					<span ng-if="$ctrl.ngModel.count == 1" translate-once="date.hour"></span>
+	         					<span ng-if="$ctrl.ngModel.count != 1" translate-once="date.hours"></span>
+	         				</span>
+	         				<span ng-switch-when="DAYS">
+	         					<span ng-if="$ctrl.ngModel.count == 1" translate-once="date.day"></span>
+	         					<span ng-if="$ctrl.ngModel.count != 1" translate-once="date.days"></span>
+	         				</span>
+	         				<span ng-switch-when="NIGHTS">
+	         					<span ng-if="$ctrl.ngModel.count == 1" translate-once="common.night"></span>
+	         					<span ng-if="$ctrl.ngModel.count != 1" translate-once="common.nights"></span>
+	         				</span>
+	         				<span ng-switch-when="WEEKS">
+	         					<span ng-if="$ctrl.ngModel.count == 1" translate-once="date.week"></span>
+	         					<span ng-if="$ctrl.ngModel.count != 1" translate-once="date.weeks"></span>
+	         				</span>
+	         				<span ng-switch-when="MONTHS">
+	         					<span ng-if="$ctrl.ngModel.count == 1" translate-once="date.month"></span>
+	         					<span ng-if="$ctrl.ngModel.count != 1" translate-once="date.months"></span>
+	         				</span>
+	         				<span ng-switch-when="YEARS">
+	         					<span ng-if="$ctrl.ngModel.count == 1" translate-once="date.year"></span>
+	         					<span ng-if="$ctrl.ngModel.count != 1" translate-once="date.years"></span>
+	         				</span>
+	         			</span>
+	         		</md-option>
+		        </md-select>
+		        <div ng-messages="chValueForm.unit.$error">
+	         		<div ng-message="required"><span translate-once="error.required"></span></div>
+		        </div>
+			</md-input-container>
+		</div>
+	</div>
+</ng-form>
