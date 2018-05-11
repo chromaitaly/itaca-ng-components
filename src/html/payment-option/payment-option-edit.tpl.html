@@ -5,12 +5,18 @@
 				<h3 class="md-subhead no-margin-top text-center">
 					<strong ng-bind="$ctrl.title"></strong>
 				</h3>
+				<div ng-if="$ctrl.subtitle" class="text-gray-light">
+					<span ng-bind="$ctrl.subtitle"></span>
+				</div>
 			</div>
 			<div layout layout-wrap layout-padding>
 				<div flex="100" flex-gt-sm="50" flex-gt-lg="25">
 					<div>
 						<span ng-if="!$ctrl.sizeTitle" translate-once="payment.option.size.title"></span>
 						<span ng-if="$ctrl.sizeTitle" ng-bind="$ctrl.sizeTitle"></span>
+					</div>
+					<div ng-if="$ctrl.sizeSubtitle" class="text-gray-light">
+						<small ng-bind="$ctrl.sizeSubtitle"></small>
 					</div>
 					<div>
 						<md-input-container md-no-float>
@@ -33,10 +39,13 @@
 						<span ng-if="!$ctrl.frequencyTitle" translate-once="payment.option.frequency.title"></span>
 						<span ng-if="$ctrl.frequencyTitle" ng-bind="$ctrl.frequencyTitle"></span>
 					</div>
+					<div ng-if="$ctrl.frequencySubtitle" class="text-gray-light">
+						<small ng-bind="$ctrl.frequencySubtitle"></small>
+					</div>
 					<div>
 						<md-input-container md-no-float>
 							<md-select name="frequency" placeholder="{{::('payment.option.frequency'|translate)}}" ng-model="$ctrl.$$paymentOption.frequency" 
-								ng-required="true" aria-label="Payment frequency">
+								ng-required="true" ng-change="$ctrl.$onFrequencyChange()" aria-label="Payment frequency">
 				         		<md-option ng-repeat="frequency in $ctrl.$$frequencies track by $index" ng-value="frequency.value" ng-disabled="frequency.disabled"
 				         			ng-selected="$ctrl.$$frequencies.length == 1 || $ctrl.$$paymentOption.frequency == frequency.value">
 				         			<span translate-once="payment.option.frequency.{{frequency.value}}"></span>
@@ -53,6 +62,9 @@
 					<div>
 						<span ng-if="!$ctrl.amountTitle" translate-once="payment.option.amount.title"></span>
 						<span ng-if="$ctrl.amountTitle" ng-bind="$ctrl.amountTitle"></span>
+					</div>
+					<div ng-if="$ctrl.amountSubtitle" class="text-gray-light">
+						<small ng-bind="$ctrl.amountSubtitle"></small>
 					</div>
 					<div layout>
 						<div>
@@ -109,80 +121,21 @@
 				
 				<div flex="100" flex-gt-sm="50" flex-gt-lg="25" ng-if="$ctrl.$$paymentOption.frequency != 'LUMP_SUM'">
 					<div>
-						<span ng-if="!$ctrl.minLengthTitle" translate-once="payment.option.minLength.title"></span>
-						<span ng-if="$ctrl.minLengthTitle" ng-bind="$ctrl.minLengthTitle"></span>
+						<span ng-if="!$ctrl.lengthTitle" translate-once="payment.option.minLength.title"></span>
+						<span ng-if="$ctrl.lengthTitle" ng-bind="$ctrl.lengthTitle"></span>
 					</div>
-					<div ng-if="!$ctrl.$$manualMinLength">
-						<md-input-container md-no-float>
-							<md-select name="minLength" placeholder="{{::('payment.option.minLength'|translate)}}" ng-model="$ctrl.$$paymentOption.minLength" 
-								ng-required="true" aria-label="Payment min length">
-				         		<md-option ng-repeat="length in $ctrl.$$lengths track by $index" ng-value="length.value" ng-disabled="length.disabled">
-				         			<span ng-bind="length.value"></span>&nbsp;
-				         			<span class="text-lowercase" ng-switch="$ctrl.$$paymentOption.frequency">
-				         				<span ng-switch-when="DAILY">
-				         					<span ng-if="length.value == 1" translate-once="date.day"></span>
-				         					<span ng-if="length.value != 1" translate-once="date.days"></span>
-				         				</span>
-				         				<span ng-switch-when="NIGHTLY">
-				         					<span ng-if="length.value == 1" translate-once="common.night"></span>
-				         					<span ng-if="length.value != 1" translate-once="common.nights"></span>
-				         				</span>
-				         				<span ng-switch-when="WEEKLY">
-				         					<span ng-if="length.value == 1" translate-once="date.week"></span>
-				         					<span ng-if="length.value != 1" translate-once="date.weeks"></span>
-				         				</span>
-				         				<span ng-switch-when="MONTHLY">
-				         					<span ng-if="length.value == 1" translate-once="date.month"></span>
-				         					<span ng-if="length.value != 1" translate-once="date.months"></span>
-				         				</span>
-				         				<span ng-switch-when="YEARLY">
-				         					<span ng-if="length.value == 1" translate-once="date.year"></span>
-				         					<span ng-if="length.value != 1" translate-once="date.years"></span>
-				         				</span>
-				         			</span>
-				         		</md-option>
-				         		<md-option ng-click="$ctrl.$toggleManualMinLength()" aria-label="Open manual min length input">
-				         			<span translate-once="common.other"></span>
-				         		</md-option>
-					        </md-select>
-					        <div ng-messages="chPaymentOptionForm.minLength.$error">
-				         		<div ng-message="required"><span translate-once="error.required"></span></div>
-					        </div>
-						</md-input-container>
+					<div ng-if="$ctrl.lengthSubtitle" class="text-gray-light">
+						<small ng-bind="$ctrl.lengthSubtitle"></small>
 					</div>
-					
-					<div ng-if="$ctrl.$$manualMinLength">
-						<div>
-							<md-input-container class="md-icon-right">
-								<label ng-switch="$ctrl.$$paymentOption.frequency">
-									<span ng-switch-when="DAILY">
-			         					<span translate-once="date.days"></span>
-			         				</span>
-			         				<span ng-switch-when="NIGHTLY">
-			         					<span translate-once="common.nights"></span>
-			         				</span>
-			         				<span ng-switch-when="WEEKLY">
-			         					<span translate-once="date.weeks"></span>
-			         				</span>
-			         				<span ng-switch-when="MONTHLY">
-			         					<span translate-once="date.months"></span>
-			         				</span>
-			         				<span ng-switch-when="YEARLY">
-			         					<span translate-once="date.years"></span>
-			         				</span>
-								</label>
-								<input type="number" name="minLength" ng-model="$ctrl.$$paymentOption.minLength" min="1" step="1" required>
-						        <md-icon class="mdi mdi-close md-24 clickable" ng-click="$ctrl.$toggleManualMinLength()" aria-label="Close manual min length input">
-						        	<md-tooltip><span translate-once="common.cancel"></span></md-tooltip>
-						        </md-icon>
-						        
-						        <div ng-messages="chPaymentOptionForm.minLength.$error">
-					         		<div ng-message="required"><span translate-once="error.required"></span></div>
-					         		<div ng-message="min"><span translate="error.field.min" translate-value-num="1"></span></div>
-						        	<div ng-message="step"><span translate-once="error.filed.invalid"></span></div>
-						        </div>
-							</md-input-container>
-						</div>
+					<div>
+						<ch-value-input
+							ng-model="$ctrl.$$paymentOption.minLength"
+							units="$ctrl.$$minLengthUnits"
+							disabled-units="$ctrl.$$disabledMinLengthUnits"
+							counts="$ctrl.lengths"
+							disabled-counts="$ctrl.disabledLengths"
+							ng-min="1" ng-step="1">
+						</ch-value-input>
 					</div>
 				</div>
 			</div>

@@ -24,7 +24,7 @@
 	    			"<div ng-if=\"!$ctrl.$$hideSelectedIcon\" class=\"no-padding\">" +
 			    		"<md-icon ng-if=\"$ctrl.iconClass\" ng-show=\"!$ctrl.$$option.selected || !$ctrl.selectedIconClass\" " +
 			    			"class=\"material-icons {{$ctrl.iconClass}}\"></md-icon>" +
-			    		"<md-icon ng-show=\"$ctrl.selectedIconClass && $ctrl.$$option.selected\" " +
+			    		"<md-icon ng-if=\"$ctrl.selectedIconClass\" ng-show=\"$ctrl.$$option.selected\" " +
 			    			"class=\"material-icons {{$ctrl.selectedIconClass}}\"></md-icon>" +
 	    			"</div>" +		
 	    			"<div>" +

@@ -7,12 +7,14 @@
 		},
 		bindings: {
 			ngModel: "<",
+			counts: "<?", // ha precedenza su ngMin e ngMax
 			disabledCounts: "<?",
 			units: "<?",
 			disabledUnits: "<?",
-			ngMin: "<?",
+			hideUnit: "<?",
+			ngMin: "<?", // viene ignorato se presente counts
 			ngStep: "<?",
-			ngMax: "<?",
+			ngMax: "<?", // viene ignorato se presente counts
 			ngDisabled: "<?",
 			ngReadonly: "<?",
 			errorMessages: "<?"
@@ -24,7 +26,7 @@
 	function ValueInputCtrl($scope, rangeFilter) {
 		var ctrl = this;
 		
-		this.$$defaultUnits = ["NUMBER", "HOURS", "DAYS", "MONTHS", "YEARS"];
+		this.$$defaultUnits = ["NUMBERS", "HOURS", "DAYS", "WEEKS", "MONTHS", "YEARS"];
 		
 		this.$onInit = function() {
 			ctrl.ngModel = _.isPlainObject(ctrl.ngModel) ? ctrl.ngModel : {};
@@ -36,7 +38,15 @@
 		};
 		
 		this.$onChanges = function(changesObj) {
-			if (changesObj.disabledCounts || changesObj.ngMin || changesObj.ngStep || changesObj.ngMax) {
+			if (changesObj.ngModel) {
+				ctrl.ngModel = _.isPlainObject(ctrl.ngModel) ? ctrl.ngModel : {};
+				
+				if (changesObj.ngModel.isFirstChange()) {
+					ctrl.$$initialValue = angular.copy(ctrl.ngModel); 
+				}
+			}			
+			
+			if (changesObj.counts || changesObj.disabledCounts || changesObj.ngMin || changesObj.ngStep || changesObj.ngMax) {
 				ctrl.$initCounts();
 			}
 			
@@ -46,26 +56,35 @@
 		};
 		
 		this.$initCounts = function() {
-			var start = 1, end = 10, step = 1;
+			var arr = []; 
 			
-			if (ctrl.ngMin && _.isFinite(parseFloat(ctrl.ngMin))) {
-				var $$min = parseFloat(ctrl.ngMin);
-				start = $$min >= 0 ? $$min : start;
+			if (_.isArray(ctrl.counts) && !_.isEmpty(ctrl.counts)) {
+				arr = angular.copy(ctrl.lengths);
+			
+			} else {
+				var start = 1, end = 10, step = 1;
+				
+				if (ctrl.ngMin && _.isFinite(parseFloat(ctrl.ngMin))) {
+					var $$min = parseFloat(ctrl.ngMin);
+					start = $$min >= 0 ? $$min : start;
+				}
+				
+				if (ctrl.ngStep && _.isFinite(parseFloat(ctrl.ngStep))) {
+					step = parseFloat(ctrl.ngStep);
+				}
+				
+				if (ctrl.ngMax && _.isFinite(parseFloat(ctrl.ngMax))) {
+					end = parseFloat(ctrl.ngMax);
+				}
+				
+				var size = end/step;
+				size = size < 10 ? size : 10;
+				
+				arr = rangeFilter([], size, start, step);
 			}
 			
-			if (ctrl.ngStep && _.isFinite(parseFloat(ctrl.ngStep))) {
-				step = parseFloat(ctrl.ngStep);
-			}
-			
-			if (ctrl.ngMax && _.isFinite(parseFloat(ctrl.ngMax))) {
-				end = parseFloat(ctrl.ngMax);
-			}
-			
-			var size = end/step;
-			size = size < 10 ? size : 10;
-			
-			ctrl.$$counts = rangeFilter([], size, start, step, function(i) {
-				return {value: i, disabled: _.includes(ctrl.disabledCounts, i) && !(ctrl.ngModel && ctrl.ngModel.count == i)};
+			ctrl.$$counts = _.map(arr, function(i) {
+				return {value: i, disabled: _.includes(ctrl.disabledCounts, i) && !(ctrl.$$initialValue && ctrl.$$initialValue.count == i)};
 			});
 			
 			ctrl.$manageManualCount();
@@ -80,7 +99,7 @@
 			ctrl.$$units = [];
 			
 			_.forEach(units, function(unit) {
-				ctrl.$$units.push({value: unit, disabled: _.includes(ctrl.disabledUnits, unit) && !(ctrl.ngModel && ctrl.ngModel.unit == unit)});
+				ctrl.$$units.push({value: unit, disabled: _.includes(ctrl.disabledUnits, unit) && !(ctrl.$$initialValue && ctrl.$$initialValue.unit == unit)});
 			});
 		};
 		
@@ -155,7 +174,7 @@
 					
 					var num = Number(modelValue);
 					
-					return !(_.includes(ctrl.disabledCounts, num) && !(ctrl.ngModel && ctrl.ngModel.count == num));
+					return !(_.includes(ctrl.disabledCounts, num) && !(ctrl.$$initialValue && ctrl.$$initialValue.count == num));
 				};
 			}
 		};

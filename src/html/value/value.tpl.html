@@ -1,0 +1,32 @@
+<span ng-switch="$ctrl.value.unit" class="text-lowercase">
+	<span ng-bind="$ctrl.value.count"></span>&nbsp;
+	
+	<span ng-switch-when="NUMBERS">
+		<span ng-show="$ctrl.value.count == 1" translate="common.unit"></span>
+		<span ng-show="$ctrl.value.count != 1" translate="common.units"></span>
+	</span>
+	<span ng-switch-when="HOURS">
+		<span ng-show="$ctrl.value.count == 1" translate="date.hour"></span>
+		<span ng-show="$ctrl.value.count != 1" translate="date.hours"></span>
+	</span>
+	<span ng-switch-when="DAYS">
+		<span ng-show="$ctrl.value.count == 1" translate="date.day"></span>
+		<span ng-show="$ctrl.value.count != 1" translate="date.days"></span>
+	</span>
+	<span ng-switch-when="NIGHTS">
+		<span ng-show="$ctrl.value.count == 1" translate="common.night"></span>
+		<span ng-show="$ctrl.value.count != 1" translate="common.nights"></span>
+	</span>
+	<span ng-switch-when="WEEKS">
+		<span ng-show="$ctrl.value.count == 1" translate="date.week"></span>
+		<span ng-show="$ctrl.value.count != 1" translate="date.weeks"></span>
+	</span>
+	<span ng-switch-when="MONTHS">
+		<span ng-show="$ctrl.value.count == 1" translate="date.month"></span>
+		<span ng-show="$ctrl.value.count != 1" translate="date.months"></span>
+	</span>
+	<span ng-switch-when="YEARS">
+		<span ng-show="$ctrl.value.count == 1" translate="date.year"></span>
+		<span ng-show="$ctrl.value.count != 1" translate="date.years"></span>
+	</span>
+</span>
