@@ -13,7 +13,7 @@
 			class="no-margin row-1 forced" ng-class="{'minimal-button': !$ctrl.$mdMedia('gt-xs'), 
 				'bg-success': !$ctrl.header.roomClosed && $ctrl.header.availability.actual > 0, 
 				'bg-danger': $ctrl.header.roomClosed, 
-				'bg-warn': !$ctrl.header.roomClosed && $ctrl.header.availability.actual <= 0">
+				'bg-warn': !$ctrl.header.roomClosed && $ctrl.header.availability.actual <= 0}">
 			
 			<div class="text-small" ng-if="$ctrl.header.roomClosed">
 				<strong hide-xs translate="common.closed.female"></strong>

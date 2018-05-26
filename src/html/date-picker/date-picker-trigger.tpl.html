@@ -1,4 +1,4 @@
-<ng-form name="chDatePickerTriggerForm" class="flex no-padding layout-column">
+<ng-form name="chDatePickerTriggerForm" class="flex no-padding layout-column layout-fill">
 	<md-button class="ch-date-picker-button flex minimal-button text-lowercase text-center {{$ctrl.buttonClass}}" 
 		ng-click="$ctrl.$openPanel($event)" aria-label="Change date" ng-disabled="$ctrl.ngDisabled" ng-readonly="$ctrl.ngReadonly">
 		<div class="{{$ctrl.wrapperClass}} layout-align-center-center" ng-class="$ctrl.labelPosition == 'top' ? 'layout-column' : 'layout-row'">
@@ -12,7 +12,8 @@
 				</span>
 			</div>
 		</div>
-		<md-input-container class="md-block no-margin">
+		
+		<md-input-container class="md-block no-margin no-padding">
 			<input type="hidden" style="visibility: hidden;" name="date" ng-model="$ctrl.ngModel" ng-required="$ctrl.ngRequired">
 			
 			<div ng-messages="chDatePickerTriggerForm.date.$error" ng-show="chDatePickerTriggerForm.$submitted || chDatePickerTriggerForm.date.$touched || chDatePickerTriggerForm.date.$dirty">

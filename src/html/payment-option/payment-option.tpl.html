@@ -6,6 +6,11 @@
 	<span ng-if="$ctrl.paymentOption.amount.finalAmount" class="text-lowercase">
 		<span class="{{$ctrl.amountClass}}" ng-bind-html="($ctrl.paymentOption.amount|chAmount)"></span>
 		<span ng-switch="$ctrl.paymentOption.frequency">
+			<span ng-switch-when="LUMP_SUM" ng-show="!$ctrl.showLumpSumLabel">
+				&nbsp;
+				<span ng-if="$ctrl.lumpSumLabel" ng-bind-html="$ctrl.lumpSumLabel"></span>
+				<span ng-if="!$ctrl.lumpSumLabel" translate="payment.option.frequency.LUMP_SUM"></span>
+			</span>
 			<span ng-switch-when="DAILY">
 				/<span ng-if="$ctrl.frequencyLabel" ng-bind-html="$ctrl.frequencyLabel"></span>
 				<span ng-if="!$ctrl.frequencyLabel" translate="date.day"></span>
@@ -48,7 +53,7 @@
 		</span>
 		<span ng-switch-default></span>
 	</span>
-	<span ng-if="$ctrl.paymentOption.minLength.count && $ctrl.paymentOption.frequency != 'LUMP_SUM'" class="text-lowercase">
+	<span ng-if="$ctrl.paymentOption.minLength.count" class="text-lowercase">
 		&nbsp;
 		(<span translate="date.length.minimum.of"></span>&nbsp;<ch-value value="$ctrl.paymentOption.minLength"></ch-value>)
 	</span>

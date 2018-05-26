@@ -1,5 +1,5 @@
-<ng-form name="chDateRangePickerTriggerForm" class="flex no-padding layout-column">
-  	<md-button class="ch-date-range-picker-button flex minimal-button text-lowercase text-center {{$ctrl.buttonClass}}" ng-click="$ctrl.$openPanel($event)" aria-label="Change period" ng-disabled="$ctrl.ngDisabled">
+<ng-form name="chDateRangePickerTriggerForm" class="flex no-padding layout-column layout-fill">
+  	<md-button class="ch-date-range-picker-button minimal-button flex text-lowercase text-center {{$ctrl.buttonClass}}" ng-click="$ctrl.$openPanel($event)" aria-label="Change period" ng-disabled="$ctrl.ngDisabled">
   		<div class="{{$ctrl.wrapperClass}}">
   			<div ng-if="$ctrl.label || $ctrl.placeholder" class="layout-row layout-align-center-center" ng-class="{'no-padding-top': $ctrl.$mdMedia('gt-xs'), 'md-padding': !$ctrl.$mdMedia('gt-xs') || $ctrl.start || $ctrl.end}">
 	  			<div class="{{$ctrl.labelClass}} text-initial text-wrap row-1" ng-class="{'text-small': $ctrl.start || $ctrl.end}">
@@ -11,7 +11,7 @@
 				<div ng-show="$ctrl.start || $ctrl.end" class="layout layout-wrap layout-align-center-center row-mini">
 					<span><span translate="date.from.abbr"></span>&nbsp;<span class="md-subhead"><strong>{{$ctrl.start|date:"shortDate":$ctrl.$$timezone}}</strong></span>&nbsp;</span>
 					<span><span translate="date.to.abbr"></span>&nbsp;<span class="md-subhead"><strong>{{$ctrl.end|date:"shortDate":$ctrl.$$timezone}}</strong></span></span>
-					<span ng-if="$ctrl.$$diff" class="{{$ctrl.labelClass}} text-small no-padding no-margin text-lowercase"> 
+					<span ng-if="$ctrl.showDiff && $ctrl.$$diff" class="{{$ctrl.labelClass}} text-small no-padding no-margin text-lowercase"> 
 					&nbsp;(<span ng-bind="$ctrl.$$diff"></span>&nbsp;
 			       		<span ng-show="$ctrl.$$diff == 1"><span ng-if="!$ctrl.$$diffLabelSingular" translate="date.day"></span><span ng-if="$ctrl.$$diffLabelSingular" ng-bind="$ctrl.$$diffLabelSingular"></span>)</span> 
 			       		<span ng-show="$ctrl.$$diff > 1"><span ng-if="!$ctrl.$$diffLabelPlural" translate="date.days"></span><span ng-if="$ctrl.$$diffLabelPlural" ng-bind="$ctrl.$$diffLabelPlural"></span>)</span> 
@@ -45,7 +45,7 @@
 					</div>
 				</div>
 				
-				<div ng-if="$ctrl.$$diff" class="layout-column flex-100 row-1">
+				<div ng-if="$ctrl.showDiff && $ctrl.$$diff" class="layout-column flex-100 row-1">
 					<span class="{{$ctrl.labelClass}} text-small no-padding no-margin text-lowercase"> 
 			       		&nbsp;(<span ng-bind="$ctrl.$$diff">&nbsp;</span> 
 			       		<span ng-show="$ctrl.$$diff == 1"><span ng-if="!$ctrl.$$diffLabelSingular" translate="date.day"></span><span ng-if="$ctrl.$$diffLabelSingular" ng-bind="$ctrl.$$diffLabelSingular"></span>)</span> 
@@ -54,29 +54,30 @@
 		       	</div>
 			</div>
 		</div>
-	</md-button>
-	
-	<md-input-container class="md-block no-margin">
-		<input type="hidden" style="visibility: hidden;" name="{{$ctrl.startInputName}}" ng-model="$ctrl.start" ng-required="$ctrl.ngRequired">
-	
-		<div ng-messages="chDateRangePickerTriggerForm[$ctrl.startInputName].$error" class="font-12 text-center text-danger" ng-show="chDateRangePickerTriggerForm[$ctrl.startInputName].$dirty || chDateRangePickerTriggerForm[$ctrl.startInputName].$touched">
-	  		<div ng-repeat="errorObj in $ctrl.startErrorMessages" ng-message="{{errorObj.error}}" class="no-padding">
-				<span ng-if="errorObj.message" ng-bind="{{errorObj.message}}"></span>
-	 			<span ng-if="!errorObj.message && errorObj.messageKey" translate="{{errorObj.messageKey}}" 
-	 				translate-values="errorObj.messageKeyParams"></span>
-	 		</div>
-	  	</div>
-  	</md-input-container>
-  	
-  	<md-input-container class="md-block no-margin">
-	  	<input type="hidden" style="visibility: hidden;" name="{{$ctrl.endInputName}}" ng-model="$ctrl.end" ng-required="$ctrl.ngRequired">
+
+		<md-input-container class="md-block no-margin no-padding">
+			<input type="hidden" style="visibility: hidden;" name="{{$ctrl.startInputName}}" ng-model="$ctrl.start" ng-required="$ctrl.ngRequired">
+		
+			<div ng-messages="chDateRangePickerTriggerForm[$ctrl.startInputName].$error" class="font-12 text-center text-danger">
+		  		<div ng-repeat="errorObj in $ctrl.startErrorMessages" ng-message="{{errorObj.error}}" class="no-padding">
+					<span ng-if="errorObj.message" ng-bind="{{errorObj.message}}"></span>
+		 			<span ng-if="!errorObj.message && errorObj.messageKey" translate="{{errorObj.messageKey}}" 
+		 				translate-values="errorObj.messageKeyParams"></span>
+		 		</div>
+		  	</div>
+	  	</md-input-container>
 	  	
-	  	<div ng-messages="chDateRangePickerTriggerForm[$ctrl.endInputName].$error" class="font-12 text-center text-danger" ng-show="!chDateRangePickerTriggerForm[$ctrl.startInputName].$invalid && (chDateRangePickerTriggerForm[$ctrl.endInputName].$dirty || chDateRangePickerTriggerForm[$ctrl.endInputName].$touched)">
-	  		<div ng-repeat="errorObj in $ctrl.endErrorMessages" ng-message="{{errorObj.error}}" class="no-padding">
-				<span ng-if="errorObj.message" ng-bind="{{errorObj.message}}"></span>
-	 			<span ng-if="!errorObj.message && errorObj.messageKey" translate="{{errorObj.messageKey}}" 
-	 				translate-values="errorObj.messageKeyParams"></span>
-	 		</div>
-	  	</div>
-  </md-input-container>
+	  	<md-input-container class="md-block no-margin no-padding">
+		  	<input type="hidden" style="visibility: hidden;" name="{{$ctrl.endInputName}}" ng-model="$ctrl.end" ng-required="$ctrl.ngRequired">
+		  	
+		  	<div ng-messages="chDateRangePickerTriggerForm[$ctrl.endInputName].$error" class="font-12 text-center text-danger" 
+		  		ng-show="!chDateRangePickerTriggerForm[$ctrl.startInputName].$invalid && (chDateRangePickerTriggerForm[$ctrl.endInputName].$dirty || chDateRangePickerTriggerForm[$ctrl.endInputName].$touched)">
+		  		<div ng-repeat="errorObj in $ctrl.endErrorMessages" ng-message="{{errorObj.error}}" class="no-padding">
+					<span ng-if="errorObj.message" ng-bind="{{errorObj.message}}"></span>
+		 			<span ng-if="!errorObj.message && errorObj.messageKey" translate="{{errorObj.messageKey}}" 
+		 				translate-values="errorObj.messageKeyParams"></span>
+		 		</div>
+		  	</div>
+	  	</md-input-container>
+ 	</md-button>
 </ng-form>

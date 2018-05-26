@@ -21,7 +21,7 @@
 				max-range="$ctrl.maxRange"
 				diff-label-singular="{{'common.night'|translate}}"
 				diff-label-plural="{{'common.nights'|translate}}"
-				use-utc="true" disable-body-scroll="false"></ch-date-range-picker>
+				disable-body-scroll="false"></ch-date-range-picker>
 		</div>
 		
 		<md-divider class="no-padding"></md-divider>
@@ -47,8 +47,8 @@
 					<span>{{'reservation.when.question'|translate}}</span> 
 				</div>
 				<div class="layout layout-wrap layout-align-center-center row-mini text-lowercase no-padding-bottom"> 
-					<span><span translate="date.from.abbr"></span>&nbsp;<span class="md-subhead"><strong>{{$ctrl.reservation.checkin|utcDate:"shortDate"}}</strong></span>&nbsp;</span> 
-					<span><span translate="date.to.abbr"></span>&nbsp;<span class="md-subhead"><strong>{{$ctrl.reservation.checkout|utcDate:"shortDate"}}</strong></span></span> 
+					<span><span translate="date.from.abbr"></span>&nbsp;<span class="md-subhead"><strong>{{$ctrl.reservation.checkin|date:"shortDate"}}</strong></span>&nbsp;</span> 
+					<span><span translate="date.to.abbr"></span>&nbsp;<span class="md-subhead"><strong>{{$ctrl.reservation.checkout|date:"shortDate"}}</strong></span></span> 
 					<span ng-if="$ctrl.reservation.nights" class="text-gray-light text-small no-padding no-margin text-lowercase">  
 			       		&nbsp;(<span>{{$ctrl.reservation.nights}}&nbsp;</span>
 			       		<span ng-show="$ctrl.reservation.nights == 1" translate="common.night"></span> 
@@ -224,7 +224,7 @@
 						<md-icon class="mdi mdi-chevron-right text-white animated infinite wobble"></md-icon>	
 					</div>
 					<small ng-if="$ctrl.reservation.guest.email" class="ng-binding ng-scope no-padding text-initial text-wrap">
-						<span><span translate="reservation.email.confirm.to"></span>:</span>
+						<span><span translate="reservation.email.confirm.to"></span>:&nbsp;</span>
 						<span>{{$ctrl.reservation.guest.email}}</span>
 					</small>
 				</div>

@@ -1,0 +1,63 @@
+<div flex layout="column" layout-fill>	
+	<div ng-show="$ctrl.$$exists && !$ctrl.$$showIcons" flex layout="column" layout-padding layout-fill layout-align="center center" class="no-padding">
+		<div>
+			<md-icon md-font-set="{{$ctrl.ngModel.fontSet}}" class="{{$ctrl.ngModel.cssClass}} md-94"></md-icon>
+		</div>
+		
+		<div>
+			<md-button class="md-primary" ng-click="$ctrl.$showIconSelect()" aria-label="Change icon">
+				<small translate-once="common.icon.change"></small>
+			</md-button>
+		</div>
+	</div>
+	
+	<div ng-show="!$ctrl.$$exists || $ctrl.$$showIcons" flex layout="column" layout-fill layout-padding class="no-padding">
+		<div class="text-center text-gray-light" ng-if="$ctrl.label">
+			<span ng-bind="$ctrl.label"></span>
+		</div>
+		
+		<div class="no-padding" flex layout="column">
+			<div ng-if="!$ctrl.hideFilter">
+				<md-input-container md-no-float class="md-icon-right md-icon-left md-block no-margin">
+					<md-icon class="mdi mdi-magnify md-24"></md-icon>
+					<input type="text" ng-model="$ctrl.$$loader.params.filter" placeholder="{{'search.filter'|translate}}...">
+					<md-icon class="mdi mdi-close md-24 clickable" ng-show="$ctrl.$$loader.params.filter" ng-click="$ctrl.$$loader.params.filter = ''"></md-icon> 
+				</md-input-container>
+			</div>
+		    
+			<md-content flex id="chIconSelectCont">
+				<div layout-fill infinite-scroll="$ctrl.$$loader.nextPage()" infinite-scroll-container="'#chIconSelectCont'" 
+					infinite-scroll-disabled="$ctrl.loader.busy" infinite-scroll-distance="0.5">
+					
+					<div layout layout-wrap>
+						<md-button ng-repeat="icon in $ctrl.$$loader.items track by icon.cssClass" 
+							class="minimal-button" ng-click="$ctrl.$selectIcon(icon)" aria-label="{{icon.label || icon.cssClass}}">
+							<md-icon md-font-set="{{icon.fontSet}}" class="{{icon.cssClass}} md-32"></md-icon>
+						</md-button>
+					</div>
+			
+					<div ng-show="$ctrl.$$loader.busy" layout layout-align="space-around">	    			
+						<md-progress-circular class="md-primary ch-progress" md-mode="indeterminate" md-diameter="30"></md-progress-circular>
+					</div>
+					
+					<div ng-if="!$ctrl.$$loader.busy && !$ctrl.$$loader.items.length"
+						flex layout="column" layout-padding layout-align="center center" class="text-opaque">
+						<md-icon class="mdi mdi-shape md-56 text-opaque"></md-icon>
+						<div><span translate-once="common.icon.list.none"></span></div>
+					</div>
+					
+					<div ng-if="$ctrl.$$error" class="text-danger text-center">
+						<span ng-bind="$ctrl.$$error"></span>
+					</div>					
+				</div>
+			</md-content>
+		 			
+			 <div ng-if="$ctrl.$$exists" class="text-center">
+				<md-button ng-click="$ctrl.$cancelIconSelect()" aria-label="Cancel icon select">
+					<md-icon class="mdi mdi-close md-18"></md-icon>
+					<small translate-once="common.cancel"></small>
+				</md-button>
+			</div>
+		</div>
+	</div>
+</div>

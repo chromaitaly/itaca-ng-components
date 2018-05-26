@@ -31,8 +31,8 @@
     	},
 		controller: PeoplePickerCtrl,
 		template: 
-			"<ng-form name=\"chPeoplePickerForm\" class=\"flex no-padding layout-column\">" +
-			  	"<md-button class=\"ch-people-picker-button flex minimal-button text-lowercase text-center {{$ctrl.buttonClass}}\" aria-label=\"Change people\" ng-disabled=\"$ctrl.ngDisabled\" ng-click=\"$ctrl.$openPanel($event)\">" +
+			"<ng-form name=\"chPeoplePickerForm\" class=\"flex no-padding layout-column layout-fill\">" +
+			  	"<md-button class=\"ch-people-picker-button minimal-button flex text-lowercase text-center {{$ctrl.buttonClass}}\" aria-label=\"Change people\" ng-disabled=\"$ctrl.ngDisabled\" ng-click=\"$ctrl.$openPanel($event)\">" +
 			  		"<div class=\"{{$ctrl.wrapperClass}}\">" +
 			  			"<div ng-if=\"$ctrl.label\" class=\"layout-row layout-align-center-center\" ng-class=\"{'no-padding-top': $ctrl.$mdMedia('gt-xs'), 'md-padding': !$ctrl.$mdMedia('gt-xs') || $ctrl.$$hasPeople}\">" +
 							"<div class=\"{{$ctrl.labelClass}} text-initial text-wrap row-1\" ng-class=\"{'text-small': $ctrl.$$hasPeople}\"><span ng-bind-html=\"$ctrl.label\"></span></div>" +
@@ -67,7 +67,7 @@
 	    	ctrl.fieldName = ctrl.fieldName || "people";
 	    	ctrl.clickOutsideToClose = ctrl.clickOutsideToClose || true;
 	    	ctrl.hasBackdrop = _.isNil(ctrl.hasBackdrop) ? false : ctrl.hasBackdrop;
-	    	ctrl.buttonClass = ctrl.buttonClass || "no-margin";
+	    	ctrl.buttonClass = ctrl.buttonClass || "no-padding no-margin layout-padding";
 	    	ctrl.wrapperClass = ctrl.wrapperClass || "md-padding";
 //	    	ctrl.counterBtnClass = ctrl.counterBtnClass || "md-fab md-mini";
 //        	ctrl.counterBtnActiveClass = ctrl.counterBtnActiveClass || "md-primary";
@@ -96,7 +96,7 @@
 			    	
 			    	if (!tbc || (_.isBoolean(closeReason) && closeReason)) {
 			    		_.assign(ctrl.people, ctrl.$$workingData.people);
-			    		ctrl.onClose && ctrl.onClose({people: ctrl.people});
+			    		ctrl.onClose && ctrl.onClose({$people: ctrl.people});
 			    	}
 			    	
 			    	// sblocco scroll body

@@ -52,9 +52,11 @@
 			ctrl.endInputName = ctrl.endInputName || "end";
 			ctrl.wrapperClass = ctrl.wrapperClass || "md-padding";
 			ctrl.buttonClass = ctrl.buttonClass || "no-padding no-margin layout-padding";
-			ctrl.hasBackdrop = _.isNil(ctrl.hasBackdrop) ? false : ctrl.hasBackdrop;
+			ctrl.hasBackdrop = _.isBoolean(ctrl.hasBackdrop) ? ctrl.hasBackdrop : false;
 			ctrl.$$timezone = _.isBoolean(ctrl.useUtc) && ctrl.useUtc ? "UTC" : "";
 			ctrl.labelClass = ctrl.labelClass || "text-gray-light";
+			ctrl.showDiff = _.isBoolean(ctrl.showDiff) ? ctrl.showDiff : true;
+			ctrl.showDiffInCalendar = _.isBoolean(ctrl.showDiffInCalendar) ? ctrl.showDiffInCalendar : true;
 			
 			//mostro un layout piu grande
 			ctrl.largeTemplate = ctrl.largeTemplate || false;
@@ -78,13 +80,9 @@
 			    panelClass: "bg-white md-whiteframe-15dp",
 			    trapFocus: true,
 			    onCloseSuccess: function(panelRef, closeReason) {
-			    	// touch degli input
-			    	$scope.chDateRangePickerTriggerForm[$ctrl.startInputName].$setTouched();
-			    	$scope.chDateRangePickerTriggerForm[$ctrl.endInputName].$setTouched();
-					
 			    	if (_.isBoolean(closeReason) && closeReason) {
 			    		ctrl.$updateOriginal();
-			    		ctrl.onClose && ctrl.onClose(ctrl.$$data);
+			    		ctrl.onClose && ctrl.onClose({$start: ctrl.$$data.start, $end: ctrl.$$data.end});
 			    	}
 			    	
 			    	// sblocco scroll body
@@ -98,6 +96,24 @@
 			
 			// init diff
 			ctrl.calculateDiff();
+		};
+		
+		this.$onChanges = function(changesObj) {
+			if (changesObj.startErrorMessages) {
+				ctrl.startErrorMessages = _.isArray(ctrl.startErrorMessages) ? ctrl.startErrorMessages : [];
+				
+				if (!_.some(ctrl.startErrorMessages, ["error", "required"])) {
+					ctrl.startErrorMessages.push({error: "required", messageKey: "error.required"});
+				}
+			}
+			
+			if (changesObj.endErrorMessages) {
+				ctrl.endErrorMessages = _.isArray(ctrl.endErrorMessages) ? ctrl.endErrorMessages : [];
+				
+				if (!_.some(ctrl.endErrorMessages, ["error", "required"])) {
+					ctrl.endErrorMessages.push({error: "required", messageKey: "error.required"});
+				}
+			}
 		};
 		
 		this.$$toggleBodyScroll = function(block) {
@@ -138,10 +154,6 @@
 			 if (!ctrl.$$data) {
 				 return;
 			 }
-			 
-			 // dirty degli input
-			 $scope.chDateRangePickerTriggerForm[$ctrl.startInputName].$setDirty();
-			 $scope.chDateRangePickerTriggerForm[$ctrl.endInputName].$setDirty();
 			 
 			 ctrl.start = ctrl.$getDate(ctrl.$$data.start);
 			 ctrl.startMinDate = ctrl.$getDate(ctrl.$$data.startMinDate);
@@ -189,7 +201,7 @@
 		this.init = function() {
 			_self.timezone = _.isBoolean(_self.useUtc) && _self.useUtc ? "UTC" : "";
 			_self.modelOptions = _.isBoolean(_self.useUtc) && _self.useUtc ? {timezone: 'UTC'} : {};
-			_self.showDiff = _.isBoolean(_self.showDiff) ? _self.showDiff : true;
+			_self.showDiff = _.isBoolean(_self.shshowDiffowDiff) ? _self.showDiff : true;
 			
 			if (_self.showDiff) {
 				$scope.$watchGroup([function() { return _self.data.start;}, function() { return _self.data.end;}], function(newValues, oldValues) {

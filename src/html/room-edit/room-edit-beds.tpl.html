@@ -15,7 +15,7 @@
 				ng-repeat="bedSold in $ctrl.beds">
 				<div class="flex">
 					<strong ng-click="$ctrl.$showBedInfo($event, bedSold)" aria-label="Bed info" class="clickable">
-						<span translate="bed.bed"></span>
+						<span translate="bed.bed"></span>&nbsp;
 						<span translate="bed.{{bedSold.bed.type}}"></span>&nbsp;
 						<md-icon class="mdi mdi-information-outline md-14"></md-icon>
 					</strong>

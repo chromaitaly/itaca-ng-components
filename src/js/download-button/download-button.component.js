@@ -34,7 +34,7 @@
 	});
 			
 	/* @ngInject */
-	function DownloadButtonCtrl($scope, $http, $timeout, $log, Dialog) {
+	function DownloadButtonCtrl($scope, $element, $http, $timeout, $log, Dialog) {
 		var ctrl = this;	
 		
 		this.$onInit = function() {
@@ -115,7 +115,7 @@
 		};
 		
 		this.$getLinkEl = function() {
-			var linkEl = element[0].querySelector(".ch-download-button-link");
+			var linkEl = $element[0].querySelector(".ch-download-button-link");
 			
 			if (linkEl == null) {
 				// se non esiste, viene creato

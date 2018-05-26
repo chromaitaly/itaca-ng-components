@@ -22,32 +22,32 @@
         controller: PeopleIconsCtrl,
         template: 
         	"<div flex layout=\"column\">" +
-	        	"<md-button class=\"minimal-button no-margin\" ng-class=\"{\"layout-padding-sm\": $ctrl.size == \"big\"}\" ng-click=\"$ctrl.$openDetails($event)\" aria-label=\"Show pax details\">" +
+	        	"<md-button class=\"minimal-button no-margin\" ng-class=\"{'layout-padding-sm': $ctrl.size == 'big'}\" ng-click=\"$ctrl.$openDetails($event)\" aria-label=\"Show pax details\">" +
 		        	"<span layout layout-wrap layout-align=\"center center\">" + 
 						"<small ng-if=\"!$ctrl.hidePeople && $ctrl.people.adults\">" + 
-							"<span ng-if=\"$ctrl.size == \"small\"\">{{$ctrl.people.adults}}</span>" +
-							"<md-icon class=\"material-icons mdi {{$ctrl.iconClass}}\" ng-class=\"{\"mdi-account-multiple\" : $ctrl.people.adults > 1, \"mdi-account\": $ctrl.people.adults == 1, \"md-18\": $ctrl.size == \"small\", \"md-48\": $ctrl.size == \"big\"}\"></md-icon>" +
-							"<span ng-if=\"$ctrl.size == \"big\" && !$ctrl.hideDetails && !$ctrl.hideInfoIcon\">&nbsp;<md-icon class=\"material-icons mdi mdi-information-outline md-14 {{$ctrl.iconClass}}\"></md-icon></span>" +
-							"<div ng-if=\"$ctrl.size == \"big\"\" class=\"row-1 text-wrap\">" +
+							"<span ng-if=\"$ctrl.size == 'small'\">{{$ctrl.people.adults}}</span>" +
+							"<md-icon class=\"material-icons mdi {{$ctrl.iconClass}}\" ng-class=\"{'mdi-account-multiple' : $ctrl.people.adults > 1, 'mdi-account': $ctrl.people.adults == 1, 'md-18': $ctrl.size == 'small', 'md-48': $ctrl.size == 'big'}\"></md-icon>" +
+							"<span ng-if=\"$ctrl.size == 'big' && !$ctrl.hideDetails && !$ctrl.hideInfoIcon\">&nbsp;<md-icon class=\"material-icons mdi mdi-information-outline md-14 {{$ctrl.iconClass}}\"></md-icon></span>" +
+							"<div ng-if=\"$ctrl.size == 'big'\" class=\"row-1 text-wrap\">" +
 								"<ch-people-summary class=\"text-lowercase\" people=\"$ctrl.$$peopleDetails\"></ch-people-summary>&nbsp;" +
 								"<span class=\"text-lowercase\" translate=\"bed.beds.principal.into\"></span>" +
 							"</div>" +
 						"</small>" +
 						"<small ng-if=\"!$ctrl.hideExtraPeople && ($ctrl.extraPeople.adults || $ctrl.extraPeople.boys || $ctrl.extraPeople.children || $ctrl.extraPeople.kids)\">" +
 							"<span ng-if=\"!$ctrl.hidePeople\">&nbsp;+&nbsp;</span>" +
-							"<span ng-if=\"$ctrl.size == \"small\"\">" +
+							"<span ng-if=\"$ctrl.size == 'small'\">" +
 								"<span ng-if=\"$ctrl.extraPeople.adults\">{{$ctrl.extraPeople.adults}}</span>" +
 								"<span ng-if=\"!$ctrl.extraPeople.adults && $$extra$$maxUnderages\">{{$ctrl.$$extra$$maxUnderages}}</span>" +
 							"</span>" +
-							"<md-icon ng-if=\"$ctrl.extraPeople.adults\" class=\"material-icons mdi {{$ctrl.iconClass}}\" ng-class=\"{\"mdi-account-multiple\" : $ctrl.extraPeople.adults > 1, \"mdi-account\": $ctrl.extraPeople.adults == 1, \"md-18\": $ctrl.size == \"small\", \"md-48\": $ctrl.size == \"big\"}\"></md-icon>" +
-							"<md-icon ng-if=\"!$ctrl.extraPeople.adults && $ctrl.$$extra$$maxUnderages\" class=\"material-icons mdi mdi-human-child {{$ctrl.iconClass}}\" ng-class=\"{\"md-14\": $ctrl.size == \"small\", \"md-36\": $ctrl.size == \"big\"}\"></md-icon>" +
-							"<span ng-if=\"$ctrl.size == \"big\" && !$ctrl.hideDetails && !$ctrl.hideInfoIcon\">&nbsp;<md-icon class=\"material-icons mdi mdi-information-outline md-14 {{$ctrl.iconClass}}\"></md-icon></span>" +
-							"<div ng-if=\"$ctrl.size == \"big\"\" class=\"row-1 text-wrap\">" +
+							"<md-icon ng-if=\"$ctrl.extraPeople.adults\" class=\"material-icons mdi {{$ctrl.iconClass}}\" ng-class=\"{'mdi-account-multiple' : $ctrl.extraPeople.adults > 1, 'mdi-account': $ctrl.extraPeople.adults == 1, 'md-18': $ctrl.size == 'small', 'md-48': $ctrl.size == 'big'}\"></md-icon>" +
+							"<md-icon ng-if=\"!$ctrl.extraPeople.adults && $ctrl.$$extra$$maxUnderages\" class=\"material-icons mdi mdi-human-child {{$ctrl.iconClass}}\" ng-class=\"{'md-14': $ctrl.size == 'small', 'md-36': $ctrl.size == 'big'}\"></md-icon>" +
+							"<span ng-if=\"$ctrl.size == 'big' && !$ctrl.hideDetails && !$ctrl.hideInfoIcon\">&nbsp;<md-icon class=\"material-icons mdi mdi-information-outline md-14 {{$ctrl.iconClass}}\"></md-icon></span>" +
+							"<div ng-if=\"$ctrl.size == 'big'\" class=\"row-1 text-wrap\">" +
 								"<ch-people-summary class=\"text-lowercase\" people=\"$ctrl.$$extraPeopleDetails\"></ch-people-summary>&nbsp;" + 
 								"<span class=\"text-lowercase\" translate=\"bed.otherbeds.into\"></span>" +
 							"</div>" +
 						"</small>" +
-						"<span ng-if=\"$ctrl.size == \"small\" && !$ctrl.hideDetails && !$ctrl.hideInfoIcon\">&nbsp;<md-icon class=\"material-icons mdi mdi-information-outline md-14 {{$ctrl.iconClass}}\"></md-icon></span>" +
+						"<span ng-if=\"$ctrl.size == 'small' && !$ctrl.hideDetails && !$ctrl.hideInfoIcon\">&nbsp;<md-icon class=\"material-icons mdi mdi-information-outline md-14 {{$ctrl.iconClass}}\"></md-icon></span>" +
 						"<md-tooltip ng-if=\"!$ctrl.hideTooltip\" class=\"auto-height text-wrap row-mini\">" + 
 							"<div class=\"text-wrap\">" +  
 								"<span ng-if=\"!$ctrl.hidePeople && $ctrl.people.adults\">" +

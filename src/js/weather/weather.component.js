@@ -10,10 +10,10 @@
 	    template: 
 	    	"<div>"+
 	    		"<div class=\"relative overflow-hidden weather-container\">"+
-	    		"<i ng-if=\"$ctrl.$$weather.label == 'partly.cloudy'\" ng-class=\"$ctrl.$$weather.isNight ? 'starry' : 'sunny'\" class=\"cloud\"></i>"+
-	    			"<md-icon class=\"{{$ctrl.$$weather.icon}}\"></md-icon>"+
+	    			"<i ng-if=\"$ctrl.$$weather.label == 'partly.cloudy'\" ng-class=\"$ctrl.$$weather.isNight ? 'starry' : 'sunny'\" class=\"cloud\"></i>"+
+	    			"<i class=\"{{$ctrl.$$weather.icon}}\"></i>"+
 	    		"</div>"+
-	    		"<div class=\"text-white\"><span ng-if=\"$ctrl.$$weather.label\" translate=\"weather.{{$ctrl.$$weather.label}}\"></span></div>"+
+	    		"<div ng-if=\"$ctrl.$$weather.label\" class=\"text-white\"><span translate=\"weather.{{$ctrl.$$weather.label}}\"></span></div>"+
 	    		"<div class=\"md-headline text-bold text-white text-capitalize\"><span>{{$ctrl.city}}</span></div>"+
 	    		"<div class=\"md-body-2 text-white text-uppercase\"><span>{{$ctrl.country}}</span></div>"+
 	    		"<div>"+
