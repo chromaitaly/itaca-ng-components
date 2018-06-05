@@ -5,13 +5,13 @@
 		</div>
 		
 		<div>
-			<md-button class="md-primary" ng-click="$ctrl.$showIconSelect()" aria-label="Change icon">
+			<md-button class="md-primary" ng-click="$ctrl.$showIconSelect()" ng-disabled="$ctrl.ngDisabled" aria-label="Change icon">
 				<small translate-once="common.icon.change"></small>
 			</md-button>
 		</div>
 	</div>
 	
-	<div ng-show="!$ctrl.$$exists || $ctrl.$$showIcons" flex layout="column" layout-fill layout-padding class="no-padding">
+	<div ng-if="!$ctrl.ngDisabled" ng-show="!$ctrl.$$exists || $ctrl.$$showIcons" flex layout="column" layout-fill layout-padding class="no-padding">
 		<div class="text-center text-gray-light" ng-if="$ctrl.label">
 			<span ng-bind="$ctrl.label"></span>
 		</div>

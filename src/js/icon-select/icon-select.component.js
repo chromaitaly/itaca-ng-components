@@ -10,7 +10,9 @@
 			label: "@",
 			icons: "<?",
 			hideFilter: "<?",
-			iconsSourcesUrls: "<?"
+			iconsSourcesUrls: "<?",
+			ngDisabled: "<?",
+			ngReadonly: "<?"
 		},
 		controller: IconSelectCtrl,
 		templateUrl: "/tpls/icon-select/icon-select.tpl"
@@ -28,7 +30,7 @@
 		};
 		
 		this.$onChanges = function(changesObj) {
-			if (changesObj.ngModel) {
+			if (changesObj.ngModel || changesObj.ngDisabled) {
 				ctrl.$initModel();
 			}
 			
@@ -38,7 +40,7 @@
 		};
 		
 		this.$initModel = function() {
-			if (_.isPlainObject(ctrl.ngModel) && ctrl.ngModel.cssClass) {
+			if (ctrl.ngDisabled || (_.isPlainObject(ctrl.ngModel) && ctrl.ngModel.cssClass)) {
 				ctrl.$$exists = true;
 				ctrl.$cancelIconSelect();
 				
@@ -110,7 +112,7 @@
 		};
 		
 		this.$selectIcon = function(icon) {
-			if (!icon || !icon.cssClass) {
+			if (ctrl.ngDisabled || ctrl.ngReadonly || !icon || !icon.cssClass) {
 				return false;
 			}
 			
