@@ -1,9 +1,29 @@
 <div layout-fill class="md-whiteframe-1dp bg-white flex layout-column" ng-click="$ctrl.$goTo()"
 	ng-class="{'clickable': !$ctrl.ngDisabled && ($ctrl.url || $ctrl.state || $ctrl.onClick), 'cursor-disabled': $ctrl.ngDisabled}">
-	<div class="md-padding relative">
+	<div class="relative">
 		<div ng-if="$ctrl.ngDisabled" class="disabled-box {{$ctrl.disabledClass}}">
 			<span ng-if="$ctrl.disabledLabel" class="disabled-box-bar {{$ctrl.disabledBarClass}}">{{$ctrl.disabledLabel}}</span>
 		</div>
+		
+		
+		<div ng-if="$ctrl.isCompleted || $ctrl.isRequired || $ctrl.isSuggested" class="absolute full-width ng-scope text-right">
+			<div ng-if="$ctrl.isCompleted" class="bg-success label label-inline-block md-margin">
+				<md-icon class="mdi mdi-checkbox-marked-circle-outline text-white"></md-icon>
+				<span translate-once="common.full.alt"></span>
+			</div>
+
+			<div ng-if="$ctrl.isRequired && !$ctrl.isCompleted" class="bg-danger label label-inline-block md-margin">
+				<md-icon class="mdi mdi-alert-circle-outline text-white"></md-icon>
+				<span translate-once="common.to.complete"></span>
+			</div>
+			
+			<div ng-if="$ctrl.isSuggested && !$ctrl.isRequired && !$ctrl.isCompleted" class="bg-info label label-inline-block md-margin">
+				<md-icon class="mdi mdi-information-outline text-white"></md-icon>
+				<span translate-once="common.hint"></span>
+			</div>
+		</div>
+		
+		
 		<div class="layout-padding no-padding-right absolute position-right position-top" style="z-index:2">
 			<md-menu class="md-secondary" ng-if="$ctrl.menuItems && !$ctrl.ngDisabled">
      				<md-button aria-label="Open user interactions menu" class="md-icon-button {{$ctrl.menuClass}}" ng-click="$mdMenu.open($event)">
