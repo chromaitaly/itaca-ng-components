@@ -38,7 +38,10 @@
 			menuItems: "<?",
 			disabledMenuItems: "<?",
 			menuClass: "@",
-			noHover: "<?"
+			noHover: "<?",
+			isRequired: "<?",
+			isCompleted: "<?",
+			isSuggested: "<?",
 		},
 		controller: CardCtrl,
 		templateUrl: "/tpls/card/card.tpl"
@@ -57,6 +60,10 @@
 			ctrl.menuClass = ctrl.menuClass || null;
 			ctrl.showAvatar = _.isBoolean(ctrl.showAvatar) ? ctrl.showAvatar : false;
 			//	ctrl.imgContClass = ctrl.imgContClass || "menu-user-avatar menu-user-avatar-big";
+			
+			ctrl.isRequired = _.isBoolean(ctrl.isRequired) ? ctrl.isRequired : false;
+			ctrl.isSuggested = _.isBoolean(ctrl.isSuggested) ? ctrl.isSuggested : false;
+			ctrl.isCompleted = _.isBoolean(ctrl.isCompleted) ? ctrl.isCompleted : false;
 		};
 		
 		this.$goTo = function(){
