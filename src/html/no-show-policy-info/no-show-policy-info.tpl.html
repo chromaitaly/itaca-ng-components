@@ -6,11 +6,11 @@
 		</strong>
 	</h4>
 	
-	<div ng-if="!$ctrl.noShowPolicy">
+	<div ng-if="!$ctrl.noShowPolicy || !$ctrl.noShowPolicy.cancellation">
 		<span translate="reservation.cancellation.room.no.condition"></span>
 	</div>
 	
-	<div flex ng-if="$ctrl.noShowPolicy">
+	<div flex ng-if="$ctrl.noShowPolicy && $ctrl.noShowPolicy.cancellation">
 		<!-- No-show Policy -->
 		<div>
 			<span translate="reservation.noshow.room.conditions"></span>

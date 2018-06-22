@@ -29,36 +29,12 @@
 	    	errorMessages: "<?",
 	    	showErrorIcon: "<?"
     	},
-		controller: PeoplePickerCtrl,
-		template: 
-			"<ng-form name=\"chPeoplePickerForm\" class=\"flex no-padding layout-column layout-fill\">" +
-			  	"<md-button class=\"ch-people-picker-button minimal-button flex text-lowercase text-center {{$ctrl.buttonClass}}\" aria-label=\"Change people\" ng-disabled=\"$ctrl.ngDisabled\" ng-click=\"$ctrl.$openPanel($event)\">" +
-			  		"<div class=\"{{$ctrl.wrapperClass}}\">" +
-			  			"<div ng-if=\"$ctrl.label\" class=\"layout-row layout-align-center-center\" ng-class=\"{'no-padding-top': $ctrl.$mdMedia('gt-xs'), 'md-padding': !$ctrl.$mdMedia('gt-xs') || $ctrl.$$hasPeople}\">" +
-							"<div class=\"{{$ctrl.labelClass}} text-initial text-wrap row-1\" ng-class=\"{'text-small': $ctrl.$$hasPeople}\"><span ng-bind-html=\"$ctrl.label\"></span></div>" +
-						"</div>" +
-						"<div ng-show=\"$ctrl.$$hasPeople\" class=\"md-subhead text-wrap row-mini\">" +
-							"<strong><ch-people-summary people=\"$ctrl.people\"></ch-people-summary></strong>" +
-						"</div>" +
-					"</div>" +
-					"<div ng-messages=\"chPeoplePickerForm[$ctrl.fieldName].$error\" ng-show=\"chPeoplePickerForm[$ctrl.fieldName].$dirty\" class=\"text-danger text-small text-center row-1 no-padding layout-column layout-padding-sm\">"+
-						"<div ng-message=\"required\">"+
-	          				"<md-icon ng-if=\"$ctrl.showErrorIcon\" class=\"mdi mdi-alert-outline material-icons md-18 text-danger\"></md-icon>"+
-	          				"<span class=\"text-wrap\" translate=\"error.required\"></span>"+
-	          			"</div>"+
-	          			"<div ng-message=\"min\">"+
-	          				"<md-icon ng-if=\"$ctrl.showErrorIcon\" class=\"mdi mdi-alert-outline material-icons md-18 text-danger\"></md-icon>"+
-	          				"<span class=\"text-wrap\" ng-if=\"$ctrl.errorMessages.min\" ng-bind=\"$ctrl.errorMessages.min\">"+
-	          				"</span><span class=\"text-wrap\" ng-if=\"!$ctrl.errorMessages.min\" translate=\"error.field.min\" translate-value-num=\"{{$ctrl.minCount}}\"></span>"+
-	          			"</div>"+
-			        "</div>"+
-				"</md-button>" +
-				"<input type=\"hidden\" name=\"{{$ctrl.fieldName}}\" ng-model=\"$ctrl.people\" ng-required=\"$ctrl.ngRequired\">" +
-		    "</ng-form>"
+		controller: PeoplePickerTriggerCtrl,
+		templateUrl: "/tpls/people-picker/people-picker-trigger.tpl"			
 	});
 
 	/* @ngInject */
-	function PeoplePickerCtrl($scope, $element, $mdPanel, $mdMedia, ReservationUtils) {
+	function PeoplePickerTriggerCtrl($scope, $element, $mdPanel, $mdMedia, ReservationUtils) {
 		var ctrl = this;
 		
 		this.$mdMedia = $mdMedia;
@@ -81,9 +57,9 @@
 	    	
 	    	ctrl.$$panelConfig = {
 				attachTo: angular.element(document.body),
-			    controller: "basePeopleCountPanelCtrl",
-			    controllerAs: 'ctrl',
-			    templateUrl: '/tpls/pax-counters.part',
+			    controller: PeoplePickerCtrl,
+			    controllerAs: '$ctrl',
+			    templateUrl: '/tpls/people-picker/people-picker.tpl',
 			    position: position,
 			    clickOutsideToClose: ctrl.clickOutsideToClose,
 			    disableParentScroll: ctrl.disableParentScroll,
@@ -168,5 +144,51 @@
 	    		 ctrl.$checkPeople();
 	    	 });
     	};
+	}
+	
+	/* @ngInject */
+	function PeoplePickerCtrl($scope, mdPanelRef){
+		var ctrl = this;
+		
+		this.$init = function(){
+			ctrl.$peopleCount(ctrl.data.people);
+		};
+		
+		this.$peopleCount = function(peopleObj){
+			if(!ctrl.maxCount || !peopleObj){
+				return;
+			}
+			
+			var tot = 0;
+			if(!_.isNil(peopleObj.adults) && peopleObj.adults > 0){
+				tot += parseInt(peopleObj.adults);
+			}
+			if(!_.isNil(peopleObj.children) && peopleObj.children > 0){
+				tot += parseInt(peopleObj.children);
+			}
+			if(!_.isNil(peopleObj.boys) && peopleObj.boys > 0){
+				tot += parseInt(peopleObj.boys);
+			}
+			if(!_.isNil(peopleObj.kids) && peopleObj.kids > 0){
+				tot += parseInt(peopleObj.kids);
+			}
+			
+			ctrl.data.plusDisabled = tot >= ctrl.maxCount ? true: false;
+		};
+		
+		$scope.$watchCollection(function() {
+			return ctrl.data.people;
+		}, ctrl.$init);
+		
+		// Init
+		ctrl.$init();
+		
+		this.cancel = function() {
+			mdPanelRef && mdPanelRef.close(false);
+	    };
+	    
+	    this.confirm = function() {
+			mdPanelRef && mdPanelRef.close(true);
+	    };
 	}
 })();

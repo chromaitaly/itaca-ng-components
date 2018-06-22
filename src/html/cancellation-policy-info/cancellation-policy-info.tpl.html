@@ -6,11 +6,11 @@
 		</strong>
 	</h4>
 	
-	<div ng-if="!$ctrl.cancellationPolicy">
+	<div ng-if="!$ctrl.cancellationPolicy || !$ctrl.cancellationPolicy.cancellation">
 		<span translate="reservation.cancellation.room.no.condition"></span>
 	</div>
 	
-	<div flex ng-if="$ctrl.cancellationPolicy">
+	<div flex ng-if="$ctrl.cancellationPolicy && $ctrl.cancellationPolicy.cancellation">
 		<!-- Cancellation Policy -->
 		<div class="layout-column" ng-if="!$ctrl.cancellationPolicy.cancellation.deposit">
 			<div ng-switch="$ctrl.rateType">

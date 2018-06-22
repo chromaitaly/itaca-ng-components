@@ -4,7 +4,7 @@
 (function() {
 	'use strict';
 	
-	angular.module("itaca.components").component('chDatePicker', {
+	angular.module("itaca.components").component('chMonthPicker', {
         require: {
         	ngModelCtrl: 'ngModel' 
         },
@@ -12,7 +12,6 @@
         	buttonClass: "@",
         	wrapperClass: "@",
         	label: "@",
-        	hideLabel: "<?",
         	labelPosition: "@",
         	ngModel: "=",
         	minDate: "<?",
@@ -26,26 +25,24 @@
     		onClose: "&?",
     		ngRequired: "<?",
     		ngDisabled: "<?",
-    		ngReadonly: "<?",
     		size: "@"
         },
-        controller: DatePickerTriggerCtrl,
-        templateUrl: "/tpls/date-picker/date-picker-trigger.tpl"
+        controller: MonthPickerTriggerCtrl,
+        templateUrl: "/tpls/month-picker/month-picker-trigger.tpl"
 	});
 
 	/* @ngInject */
-	function DatePickerTriggerCtrl($scope, $element, $mdPanel, $mdMedia, DateUtils) {
+	function MonthPickerTriggerCtrl($scope, $element, $mdPanel, $mdMedia, DateUtils) {
 		var ctrl = this;
 		
 		this.$onInit = function() {
 			ctrl.labelPosition = _.includes(["top", "left"], ctrl.labelPosition) ? ctrl.labelPosition : "top";
-			ctrl.hideLabel = _.isBoolean(ctrl.hideLabel) ? ctrl.hideLabel : false;
 			ctrl.size = _.includes(["small", "medium", "big"], ctrl.size) ? ctrl.size : "big";
 			ctrl.buttonClass = ctrl.buttonClass || "no-margin";
 			ctrl.hasBackdrop = _.isNil(ctrl.hasBackdrop) ? false : ctrl.hasBackdrop;
 			ctrl.timezone = _.isBoolean(ctrl.useUtc) && ctrl.useUtc ? "UTC" : "";
 			
-			var targetEl = $element[0].querySelector(".ch-date-picker-button");
+			var targetEl = $element[0].querySelector(".ch-month-picker-button");
 			
 			var position = $mdPanel.newPanelPosition()
 		        .relativeTo(angular.element(targetEl))
@@ -53,9 +50,9 @@
 					    	
 			ctrl.$$config = {
 				attachTo: angular.element(document.body),
-			    controller: DatePickerCtrl,
+			    controller: MonthPickerCtrl,
 			    controllerAs: "$ctrl",
-			    templateUrl: "/tpls/date-picker/date-picker.tpl",
+			    templateUrl: "/tpls/month-picker/month-picker.tpl",
 			    position: position,
 			    clickOutsideToClose: true,
 			    disableParentScroll: ctrl.disableParentScroll,
@@ -65,7 +62,7 @@
 			    trapFocus: true,
 			    onCloseSuccess: function(panelRef, closeReason) {
 			    	// touch dell'input
-					$scope.chDatePickerTriggerForm.date.$setTouched();
+					$scope.chMonthPickerTriggerForm.date.$setTouched();
 					
 			    	if (_.isBoolean(closeReason) && closeReason) {
 			    		ctrl.$updateOriginal();
@@ -118,7 +115,7 @@
 			 }
 			 
 			// dirty dell'input
-			 $scope.chDatePickerTriggerForm.date.$setDirty();
+			 $scope.chMonthPickerTriggerForm.date.$setDirty();
 			 
 			 ctrl.ngModel = ctrl.$getDate(ctrl.$$data.current);
 			 ctrl.minDate = ctrl.$getDate(ctrl.$$data.min);
@@ -145,7 +142,7 @@
 	}
 	
 	/* @ngInject */
-	function DatePickerCtrl($scope, mdPanelRef, DateUtils, $timeout) {
+	function MonthPickerCtrl($scope, mdPanelRef, DateUtils, $timeout) {
 		
 		var _self = this;
 		

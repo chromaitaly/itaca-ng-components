@@ -17,7 +17,7 @@
 		     			ng-class="{'flex': $ctrl.$mdMedia('gt-sm'), 'text-center': !$ctrl.$mdMedia('gt-sm')}">
 		     			<span ng-if="document.name && document.surname">
 		     				<span class="text-capitalize">{{document.name}}&nbsp;{{document.surname}}</span>&nbsp;
-		     				<span ng-if="document.birthDate">-&nbsp;{{document.birthDate|utcDate:"shortDate"}}&nbsp;</span>
+		     				<span ng-if="document.birthDate">-&nbsp;{{document.birthDate|date:"shortDate"}}&nbsp;</span>
 	     					<span ng-class="document.guestType == 'GROUP_LEADER' || document.guestType == 'HOUSEHOLDER'? 'label label-xs bg-success' : 'label label-xs bg-gray-light'">
 	     						<span ng-if="document.guestType == 'GROUP_LEADER'" translate="common.GROUP_LEADER"></span>
 	     						<span ng-if="document.guestType == 'HOUSEHOLDER'" translate="common.HOUSEHOLDER"></span>
