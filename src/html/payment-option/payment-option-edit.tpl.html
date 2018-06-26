@@ -118,7 +118,7 @@
 				</div>
 			</div>
 			
-			<div flex="100" flex-gt-sm="50" flex-gt-lg="25">
+			<div flex="100" flex-gt-sm="50" flex-gt-lg="25" ng-if="$ctrl.hideLengths">
 				<div>
 					<span ng-if="!$ctrl.lengthTitle" translate-once="payment.option.minLength.title"></span>
 					<span ng-if="$ctrl.lengthTitle" ng-bind="$ctrl.lengthTitle"></span>
