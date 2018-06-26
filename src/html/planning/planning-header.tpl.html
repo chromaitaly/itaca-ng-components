@@ -1,0 +1,14 @@
+<div layout layout-padding>
+	<md-menu md-position-mode="target bottom">
+ 		<md-button ng-click="$mdMenu.open($event)" aria-label="Change month">
+	   		<span ng-bind="($ctrl.planningCtrl.$$monthLabel)"></span>
+	 	</md-button>
+	 	<md-menu-content>
+	   		<md-menu-item ng-repeat="month in $ctrl.months">
+	   			<md-button ng-click="$ctrl.$changeMonth(month)" aria-label="Set month">
+	   			
+	   			</md-button>
+	   		</md-menu-item>
+	 	</md-menu-content>
+	</md-menu>
+</div>

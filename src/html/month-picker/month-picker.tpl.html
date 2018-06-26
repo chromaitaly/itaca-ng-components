@@ -1,0 +1,22 @@
+<div>
+	<div>
+		<md-calendar class="no-today-selection" 
+			ng-model="$ctrl.data.current" 
+			ng-model-options="$ctrl.modelOptions" 
+			md-min-date="$ctrl.data.min" 
+			md-max-date="$ctrl.data.max"
+			md-mode="month"></md-calendar>
+	</div>
+	
+	<div ng-if="$ctrl.hasConfirm" layout class="no-padding">
+		<div flex></div>
+		
+		<md-button class="no-margin-top no-margin-bottom" ng-click="$ctrl.cancel()" aria-label="Cancel">
+	      	<small translate="common.cancel"></small>
+	     </md-button>
+	     	
+	     <md-button class="md-primary no-margin-top no-margin-bottom" ng-click="$ctrl.confirm()" aria-label="Confirm">
+	   		<small translate="common.confirm"></small>
+	     </md-button> 
+	</div>
+</div>

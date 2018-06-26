@@ -1,0 +1,26 @@
+<ng-form name="chPeoplePickerForm" class="flex no-padding layout-column layout-fill">
+ 	<md-button class="ch-people-picker-button minimal-button flex text-lowercase text-center {{$ctrl.buttonClass}}" aria-label="Change people" 
+ 		ng-disabled="$ctrl.ngDisabled" ng-click="$ctrl.$openPanel($event)">
+ 		<div class="{{$ctrl.wrapperClass}}">
+ 			<div ng-if="$ctrl.label" class="layout-row layout-align-center-center" ng-class="{'no-padding-top': $ctrl.$mdMedia('gt-xs'), 'md-padding': !$ctrl.$mdMedia('gt-xs') || $ctrl.$$hasPeople}">
+				<div class="{{$ctrl.labelClass}} text-initial text-wrap row-1" ng-class="{'text-small': $ctrl.$$hasPeople}"><span ng-bind-html="$ctrl.label"></span></div>
+			</div>
+			<div ng-show="$ctrl.$$hasPeople" class="md-subhead text-wrap row-mini">
+				<strong><ch-people-summary people="$ctrl.people"></ch-people-summary></strong>
+			</div>
+		</div>
+		<div ng-messages="chPeoplePickerForm[$ctrl.fieldName].$error" ng-show="chPeoplePickerForm[$ctrl.fieldName].$dirty" class="text-danger text-small text-center row-1 no-padding layout-column layout-padding-sm">
+			<div ng-message="required">
+	       				<md-icon ng-if="$ctrl.showErrorIcon" class="mdi mdi-alert-outline material-icons md-18 text-danger"></md-icon>
+	       				<span class="text-wrap" translate="error.required"></span>
+	       			</div>
+	       			<div ng-message="min">
+	       				<md-icon ng-if="$ctrl.showErrorIcon" class="mdi mdi-alert-outline material-icons md-18 text-danger"></md-icon>
+	       				<span class="text-wrap" ng-if="$ctrl.errorMessages.min" ng-bind="$ctrl.errorMessages.min">
+	       				</span><span class="text-wrap" ng-if="!$ctrl.errorMessages.min" translate="error.field.min" translate-value-num="{{$ctrl.minCount}}"></span>
+	       			</div>
+	       </div>
+	</md-button>
+	
+	<input type="hidden" name="{{$ctrl.fieldName}}" ng-model="$ctrl.people" ng-required="$ctrl.ngRequired">
+</ng-form>

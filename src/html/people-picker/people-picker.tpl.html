@@ -1,0 +1,49 @@
+<div layout="column" layout-padding>
+	<div class="text-center" ng-if="!$ctrl.data.noTitle">
+		<strong>
+			<span ng-if="!$ctrl.data.title" translate="reservation.people.question"></span>
+			<span ng-if="$ctrl.data.title" ng-bind-html="$ctrl.data.title"></span>
+		</strong>				
+	</div>
+	
+	<div class="no-padding">
+	   	<div layout layout-align="center center" class="md-margin">
+			<ch-counter label="<div class='text-center'>{{::('people.adults'|translate)}}</div><small>({{'date.years.min.range.abbr'| translate:'{min:18}'}})</small>" label-direction="{{$mdMedia('xs') ? 'top' : 'left'}}" label-class="md-body-1 text-gray-light flex-40" 
+				flexible="true" ng-model="$ctrl.data.people.adults" min="1" plus-disabled="$ctrl.data.plusDisabled" aria-label="Adults"></ch-counter>
+	    </div>
+	   	
+	   	<div layout layout-align="center center" class="md-margin">
+	   		<ch-counter label="<div class='text-center'>{{::('people.boys'|translate)}}</div><small>({{'date.years.range.abbr'| translate:'{min:13,max:17}'}})</small>" label-direction="{{$mdMedia('xs') ? 'top' : 'left'}}" label-class="md-body-1 text-gray-light flex-40" 
+	   			flexible="true" ng-model="$ctrl.data.people.boys" min="0" plus-disabled="$ctrl.data.plusDisabled" aria-label="Boys"></ch-counter>
+	    </div>
+	    
+	    <div layout layout-align="center center" class="md-margin">
+	    	<ch-counter label="<div class=' text-center'>{{::('people.children'|translate)}}</div><small>({{'date.years.range.abbr'| translate:'{min:3,max:12}'}})</small>" label-direction="{{$mdMedia('xs') ? 'top' : 'left'}}" label-class="md-body-1 text-gray-light flex-40" 
+	   			flexible="true" ng-model="$ctrl.data.people.children" min="0" plus-disabled="$ctrl.data.plusDisabled" aria-label="Children"></ch-counter>
+	    </div>
+	    
+	    <div layout layout-align="center center" class="md-margin">
+	    	<ch-counter label="<div class='text-center'>{{::('people.kids'|translate)}}</div><small>({{'date.years.range.abbr'| translate:'{min:0,max:2}'}})</small>" label-direction="{{$mdMedia('xs') ? 'top' : 'left'}}" label-class="md-body-1 text-gray-light flex-40" 
+	   			flexible="true" ng-model="$ctrl.data.people.kids" min="0" plus-disabled="$ctrl.data.plusDisabled" aria-label="Kids"></ch-counter>
+	    </div>
+	</div>
+	
+	<div ng-if="$ctrl.hasConfirm" class="no-padding layout-row layout-align-center-center">
+		
+		<md-button class="no-margin-top no-margin-bottom md-raised" ng-click="$ctrl.cancel()" aria-label="Cancel">
+       		<small translate="common.cancel"></small>
+      	</md-button>
+      	
+      	<md-button class="md-primary md-raised no-margin-top no-margin-bottom" ng-click="$ctrl.confirm()" aria-label="Confirm">
+    		<small translate="common.confirm"></small>
+      	</md-button> 
+	</div>
+	
+	<div layout ng-if="!$ctrl.hasConfirm && $ctrl.hasClose" class="no-padding">
+		<div flex></div>
+		
+		<md-button class="md-primary no-margin-top no-margin-bottom" ng-click="$ctrl.confirm()" aria-label="Close">
+    		<small translate="common.close"></small>
+      	</md-button>
+	</div>
+</div>
