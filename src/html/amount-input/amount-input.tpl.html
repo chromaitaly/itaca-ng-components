@@ -12,8 +12,8 @@
 					'mdi-currency-usd': $ctrl.amountCurrency == 'USD'}"></md-icon>
 		        <md-icon ng-if="$ctrl.amountType == 'PERCENTAGE'" class="mdi mdi-percent md-18"></md-icon>
 		        
-				<input type="number" name="{{$ctrl.inputName}}" placeholder="{{$ctrl.label}}" ng-model="$ctrl.ngModel.finalAmount" 
-					ng-required="$ctrl.ngRequired" ng-readonly="$ctrl.readonly" ng-change="$ctrl.$update()" 
+				<input type="text" name="{{$ctrl.inputName}}" placeholder="{{$ctrl.label}}" ng-model="$ctrl.ngModel.finalAmount" 
+					ng-required="$ctrl.ngRequired" ng-readonly="$ctrl.readonly" ng-change="$ctrl.$update()" ng-disabled="$ctrl.ngDisabled"
 					ng-min="$ctrl.ngMin" ng-step="$ctrl.ngStep" ng-max="$ctrl.ngModel.type == 'PERCENTAGE' ? 100 : $ctrl.ngMax" 
 					ng-pattern="$ctrl.allowNegative ? $ctrl.$$REGEXP.priceNoStrict : $ctrl.$$REGEXP.price" aria-label="Amount">
 		        
@@ -30,7 +30,7 @@
 		<div ng-if="!$ctrl.amountType">
 			<md-input-container md-no-float>
 				<md-select name="amountType" placeholder="{{::('common.amount.type'|translate)}}" ng-model="$ctrl.ngModel.type"
-					ng-required="$ctrl.ngRequired" ng-readonly="$ctrl.readonly" ng-change="$ctrl.$update()" aria-label="Amount type">
+					ng-required="$ctrl.ngRequired" ng-readonly="$ctrl.readonly" ng-change="$ctrl.$update()" aria-label="Amount type" ng-disabled="$ctrl.ngDisabled">
 	         		<md-option value="PRICE" ng-selected="!$ctrl.ngModel.type || $ctrl.ngModel.type == 'PRICE'">
 	         			<md-icon class="mdi md-14" ng-class="{
 	         				'mdi-currency-eur': !$ctrl.amountCurrency || $ctrl.amountCurrency == 'EUR', 

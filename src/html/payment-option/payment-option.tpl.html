@@ -4,7 +4,11 @@
 	</span>
 	
 	<span ng-if="$ctrl.paymentOption.amount.finalAmount" class="text-lowercase">
-		<span class="{{$ctrl.amountClass}}" ng-bind-html="($ctrl.paymentOption.amount|chAmount)"></span>
+		<span ng-if="$ctrl.discount">
+			<del ng-if="$ctrl.$$finalAmount != $ctrl.$$initialAmount">{{$ctrl.$$initialAmount|chCurrency}}&nbsp;</del>
+			<span>{{$ctrl.$$finalAmount|chCurrency}}</span>
+		</span>
+		<span ng-if="!$ctrl.discount" class="{{$ctrl.amountClass}}" ng-bind-html="($ctrl.paymentOption.amount|chAmount)"></span>
 		<span ng-switch="$ctrl.paymentOption.frequency">
 			<span ng-switch-when="LUMP_SUM" ng-show="!$ctrl.showLumpSumLabel">
 				&nbsp;
