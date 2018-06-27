@@ -10,6 +10,7 @@
 			disabledFrequencies: "<?",
 			lengths: "<?",
 			disabledLengths: "<?",
+			hideLengths: "<?",
 			amountType: "@?",
 			title: "@?",
 			subtitle: "@?",
@@ -40,6 +41,8 @@
 		
 		this.$onInit = function() {
 			ctrl.$$paymentOption = angular.copy(ctrl.paymentOption || {});
+			
+			ctrl.hideLengths = _.isBoolean(ctrl.hideLengths) ?  ctrl.hideLengths : false;
 		};
 		
 		this.$postLink = function() {
@@ -60,9 +63,14 @@
 				ctrl.$initFrequencies();
 			}
 			
-			if (changesObj.disabledLengths) {
-				ctrl.$initLengths();
+//			if (changesObj.disabledLengths) {
+//				ctrl.$initLengths();
+//			}
+			
+			if(changesObj.hideLengths){
+				ctrl.$$paymentOption.minLength = null;
 			}
+			
 		};
 		
 		this.$initSizes = function() {
