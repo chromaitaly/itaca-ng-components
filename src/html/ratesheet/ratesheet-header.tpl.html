@@ -18,15 +18,12 @@
 			<div class="text-small" ng-if="$ctrl.header.roomClosed">
 				<strong hide-xs translate="common.closed.female"></strong>
 				<span hide show-xs><md-icon class="mdi mdi-lock md-24 text-white"></md-icon></span>
-				<md-tooltip>
-					<span translate="ratesheet.rate.room.open"></span>													
-				</md-tooltip>
 			</div>
 			
 			<div class="text-small" ng-if="!$ctrl.header.roomClosed">
 				<strong>
 					<span ng-if="$ctrl.header.availability.actual > 0">
-						<span hide-xs translate="common.opened.female"></span>
+						<span hide-xs translate="ratesheet.available"></span>
 						<span hide show-xs><md-icon class="mdi mdi-lock-open md-24 text-white"></md-icon></span>
 					</span>
 					<span ng-if="$ctrl.header.availability.actual <= 0">
@@ -34,12 +31,13 @@
 						<span hide show-xs><md-icon class="mdi mdi-close md-24 text-white"></md-icon></span>
 					</span>
 				</strong>
-				
-				<md-tooltip>
-					<span ng-if="$ctrl.header.availability.actual > 0" translate="ratesheet.rate.room.close"></span>
-					<span ng-if="$ctrl.header.availability.actual <= 0" translate="hotel.availability.none"></span>
-				</md-tooltip>
 			</div>
+			
+			<md-tooltip>
+				<span ng-if="$ctrl.header.roomClosed" translate="ratesheet.rate.room.open"></span>
+				<span ng-if="!$ctrl.header.roomClosed && $ctrl.header.availability.actual > 0" translate="ratesheet.rate.room.close"></span>
+				<span ng-if="!$ctrl.header.roomClosed && $ctrl.header.availability.actual <= 0" translate="hotel.availability.none"></span>
+			</md-tooltip>
 		</md-button>
 	</div>	
 </div>

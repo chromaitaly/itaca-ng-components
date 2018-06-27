@@ -182,6 +182,10 @@
   position: absolute;
   z-index: 3;
 }
+.ch-planning-header {
+  height: 150px;
+  width: 100%;
+}
 md-progress-circular.ch-progress {
   background: url('../img/favicon-194x194.png') center center no-repeat;
 }

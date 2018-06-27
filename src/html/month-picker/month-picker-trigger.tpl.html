@@ -1,5 +1,5 @@
-<ng-form name="chMonthPickerTriggerForm" flex layout="column" layout-fill class="no-padding">
-	<md-button class="ch-month-picker-button flex minimal-button text-lowercase text-center {{$ctrl.buttonClass}}" 
+<ng-form name="chMonthPickerTriggerForm" flex class="no-padding">
+	<md-button class="ch-month-picker-button flex minimal-button text-initial text-center {{$ctrl.buttonClass}}" 
 		ng-click="$ctrl.$openPanel($event)" ng-disabled="$ctrl.ngDisabled" aria-label="Change month">
 		
 		<div class="{{$ctrl.wrapperClass}}" layout-align="center center" ng-class="$ctrl.labelPosition == 'top' ? 'layout-column' : 'layout-row'">
@@ -10,8 +10,15 @@
 				<span ng-if="!$ctrl.hideIcon">
 					<md-icon class="mdi mdi-calendar" ng-class="{'md-32': $ctrl.size == 'big', 'md-24': $ctrl.size == 'medium', 'md-18': $ctrl.size == 'small'}"></md-icon>
 				</span>
-				<span ng-class="$ctrl.size == 'small' ? 'text-small row-1' : 'row-mini'">
-					<span class="text-lowercase">{{$ctrl.ngModel|date:"MMM"}}</span>
+				<small ng-show="!$ctrl.ngModel" class="text-gray-light">
+					<em><span ng-if="!$ctrl.placeholder">...</span><span ng-if="$ctrl.placeholder" ng-bind="$ctrl.placeholder"></span></em>
+				</small>
+				<span ng-show="$ctrl.ngModel" ng-class="$ctrl.size == 'small' ? 'text-small row-1' : 'row-mini'">
+					<span class="text-capitalize" ng-bind="($ctrl.ngModel|date:'MMMM')"></span>
+					<span ng-show="$ctrl.$$showYear">&nbsp;<span ng-bind="($ctrl.ngModel|date:'yyyy')"></span></span>
+				</span>
+				<span>
+					<md-icon class="mdi mdi-chevron-down md-18"></md-icon>
 				</span>
 			</div>
 		</div>

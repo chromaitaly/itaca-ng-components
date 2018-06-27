@@ -1,6 +1,86 @@
-<div layout="column" layout-fill>
+<div flex layout="column" layout-fill>
 
-	<ch-planning-header>	
-	</ch-planning-header>
-
+	<ch-planning-header></ch-planning-header>
+	
+	<div flex layout="column" ng-switch="$ctrl.$$currentView">
+	
+		<md-content ng-switch-when="W" flex id="planningCont" ng-switch="$ctrl.$$roomsType">
+			<md-subheader class="no-padding bg-gray-lighter">
+		  		<div layout flex>
+					<div hide show-gt-sm flex="25" layout layout-padding layout-align="center center" class="border-right-white">
+						<strong class="text-uppercase text-gray-light">
+							<span translate-once="room.room"></span>
+						</strong>
+					</div>
+					<div flex layout="column">
+						<div layout layout-padding-sm class="no-padding-right no-padding-left">
+							<div flex layout="column" class="border-right-white"
+								ng-repeat="viewDate in $ctrl.$$viewDates track by viewDate.uid">
+								
+								<md-button tabindex="-1" ng-click="$ctrl.toggleAllRoomsClosing(viewDate.date)"
+									ng-disabled="viewDate.hotelStatus.hotelClosed"
+									class="no-margin row-mini" ng-class="{'minimal-button': !$ctrl.$mdMedia('gt-xs'),
+									'text-gray-light': !viewDate.hotelStatus.roomsClosed,
+									'bg-danger text-white': viewDate.hotelStatus.roomsClosed}">
+									<div layout="column">
+										<small class="text-capitalize">{{viewDate.date|date:"EEE"}}</small>
+										<div><strong>{{viewDate.date|date:"dd"}}</strong></div>
+										<small hide show-gt-sm class="text-capitalize">{{viewDate.date|date:"MMM"}}</small>
+									</div>
+									
+									<md-tooltip>
+										<span ng-show="viewDate.hotelStatus.roomsClosed" translate-once="hotel.availability.open.day"></span>	
+										<span ng-show="!viewDate.hotelStatus.roomsClosed" translate-once="hotel.availability.close.day"></span>														
+									</md-tooltip>
+								</md-button>
+							</div>			
+						</div>
+					</div>
+				</div>
+			 </md-subheader>
+		
+			<div ng-switch-when="2" infinite-scroll="$ctrl.rooms.nextPage()" infinite-scroll-container="'#planningCont'" 
+				infinite-scroll-disabled="$ctrl.rooms.busy" infinite-scroll-distance="1">
+				
+				<div class="layout-padding no-padding" 
+		  			ng-repeat="room in $ctrl.rooms.items track by room.id">
+		  			
+					<div class="no-padding-bottom no-padding-x-sides" layout-padding-sm>
+						<md-subheader class="md-no-sticky no-padding">
+				    		<div layout-gt-sm="row" layout-sm="column" layout-xs="column">
+								<div flex-xs="100" flex-sm="100" flex-gt-sm="25" layout="column" layout-padding-sm>
+									<div flex layout="column" layout-align="center center">
+										<strong class="text-primary text-uppercase text-center no-padding-bottom" ng-bind="room.name"></strong>
+									</div>
+								</div>
+								
+<!-- 								<div hide-gt-sm class="md-margin no-margin-top no-margin-x-sides"> -->
+<!-- 									<div th:replace="secure/partials/hotel/rates/ratesheet/ratesheet-related-rooms"></div> -->
+<!-- 									<md-divider></md-divider> -->
+<!-- 								</div> -->
+								
+						  		<span ng-if="!room.enabled" class="locked-string bg-warn opaque text-uppercase"><span translate-once="common.disabled.female"></span></span>
+						  		
+								<div flex layout="column">
+									<div layout layout-padding-sm layout-align="center center">
+										<div class="flex border-right-white no-padding"
+											ng-repeat="header in rtRatesheet.headers track by header.date.getTime()">
+											<ch-ratesheet-header 
+												header="header"
+												on-toggle-closing="$ctrl.toggleRoomTypeClosing(rtRatesheet.roomType.id, $date, $closed)">
+											</ch-ratesheet-header>
+										</div>
+									</div>
+								</div>
+				    		</div>
+						</md-subheader>
+					</div>
+				</div>
+			</div>
+			
+			<div ng-switch-default>
+				
+			</div>
+		</md-content>
+	</div>
 </div>

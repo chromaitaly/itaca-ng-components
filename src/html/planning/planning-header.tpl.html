@@ -1,14 +1,56 @@
-<div layout layout-padding>
-	<md-menu md-position-mode="target bottom">
- 		<md-button ng-click="$mdMenu.open($event)" aria-label="Change month">
-	   		<span ng-bind="($ctrl.planningCtrl.$$monthLabel)"></span>
-	 	</md-button>
-	 	<md-menu-content>
-	   		<md-menu-item ng-repeat="month in $ctrl.months">
-	   			<md-button ng-click="$ctrl.$changeMonth(month)" aria-label="Set month">
-	   			
-	   			</md-button>
-	   		</md-menu-item>
-	 	</md-menu-content>
-	</md-menu>
+<div class="ch-planning-header" flex layout layout-padding ng-style="background-image: $ctrl.$$bgImage">
+	<div flex>
+		<ch-month-picker
+			ng-model="$ctrl.$$startDate"
+			hide-icon="true"
+			ng-change="$ctrl.$onMonthChange()">
+		</ch-month-picker>
+	</div>
+	<div>
+		<md-button class="md-icon-button" ng-click="$ctrl.$goToToday()" aria-label="Go to today">
+			<md-icon class="mdi mdi-calendar-today md-24"></md-icon>
+		</md-button>
+	</div>
+	<div>
+		<md-menu>
+	 		<md-button ng-click="$mdMenu.open($event)" aria-label="Switch view">
+		   		<span ng-switch="$ctrl.$$currentView">
+		   			<span ng-switch-when="D" translate="date.day"></span>
+		   			<span ng-switch-when="W" translate="date.week"></span>
+		   			<span ng-switch-when="M" translate="date.month"></span>
+		   		</span>
+		 	</md-button>
+		 	<md-menu-content>
+		   		<md-menu-item>
+		   			<md-button ng-click="$ctrl.$dailyView()" aria-label="Switch to daily view">
+		   				<span translate="date.day"></span>
+		   			</md-button>
+		   		</md-menu-item>
+		   		<md-menu-item>
+		   			<md-button ng-click="$ctrl.$weeklyView()" aria-label="Switch to weekly view">
+		   				<span translate="date.week"></span>
+		   			</md-button>
+		   		</md-menu-item>
+		   		<md-menu-item>
+		   			<md-button ng-click="$ctrl.$monthlyView()" aria-label="Switch to monthly view">
+		   				<span translate="date.month"></span>
+		   			</md-button>
+		   		</md-menu-item>
+		 	</md-menu-content>
+		</md-menu>
+	</div>
+	<div>
+		<md-menu>
+	 		<md-button class="md-icon-button" ng-click="$mdMenu.open($event)" aria-label="Open planning menu">
+		   		<md-icon class="mdi mdi-dots-vertical md-24"></md-icon>
+		 	</md-button>
+		 	<md-menu-content>
+		   		<md-menu-item>
+		   			<md-button ng-click="$ctrl.$doSomething()" aria-label="Do something">
+		   				Do Something
+		   			</md-button>
+		   		</md-menu-item>
+		 	</md-menu-content>
+		</md-menu>
+	</div>
 </div>

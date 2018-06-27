@@ -13,7 +13,10 @@
         	wrapperClass: "@",
         	label: "@",
         	labelPosition: "@",
-        	ngModel: "=",
+        	placeholder: "@",
+        	hideIcon: "<?",
+        	showYear: "<?",
+        	ngModel: "<",
         	minDate: "<?",
         	maxDate: "<?",
         	errorMessages: "<?",
@@ -37,7 +40,7 @@
 		
 		this.$onInit = function() {
 			ctrl.labelPosition = _.includes(["top", "left"], ctrl.labelPosition) ? ctrl.labelPosition : "top";
-			ctrl.size = _.includes(["small", "medium", "big"], ctrl.size) ? ctrl.size : "big";
+			ctrl.size = _.includes(["small", "medium", "big"], ctrl.size) ? ctrl.size : "medium";
 			ctrl.buttonClass = ctrl.buttonClass || "no-margin";
 			ctrl.hasBackdrop = _.isNil(ctrl.hasBackdrop) ? false : ctrl.hasBackdrop;
 			ctrl.timezone = _.isBoolean(ctrl.useUtc) && ctrl.useUtc ? "UTC" : "";
@@ -70,16 +73,44 @@
 			    	}
 			    	
 			    	// sblocco scroll body
-			    	(ctrl.hasBackdrop || ctrl.disableBodyScroll) && ctrl.$$toggleBodyScroll(false);
+			    	(ctrl.hasBackdrop || ctrl.disableBodyScroll) && ctrl.$toggleBodyScroll(false);
 			    },
 			    onOpenComplete: function() {
 			    	// blocco scroll body
-			    	(ctrl.hasBackdrop || ctrl.disableBodyScroll) && ctrl.$$toggleBodyScroll(true);
+			    	(ctrl.hasBackdrop || ctrl.disableBodyScroll) && ctrl.$toggleBodyScroll(true);
 			    }
-			 };
+			};
+			
+			ctrl.ngModelCtrl.$formatters.push(formatter);
+            ctrl.ngModelCtrl.$parsers.push(parser);
+
+            function parser(value) {
+                var m = moment(value);
+                var valid = m.isValid();
+                ctrl.ngModelCtrl.$setValidity("date", valid);
+                return valid ? m.toDate() : value;
+            }
+
+            function formatter(value) {
+                var m = moment(value);
+                var valid = m.isValid();
+                return valid ? m.format("MMM") : value;
+            }
 		};
 		
-		this.$$toggleBodyScroll = function(block) {
+		this.$onChanges = function(changesObj) {
+			if (changesObj.ngModel) {
+				ctrl.$manageShowYear();
+			}
+		};
+		
+		this.$manageShowYear = function() {
+			if (_.isNil(ctrl.showYear) || !_.isBoolean(ctrl.showYear)) {
+				ctrl.$$showYear = !moment(ctrl.ngModelCtrl.$modelValue).isSame(moment(), "years");
+			}
+		};
+		
+		this.$toggleBodyScroll = function(block) {
 			angular.element(document.body).css({overflow: block ? "hidden" : "auto"});
 		};
 		
@@ -95,7 +126,7 @@
 			};
 
 			var locals = {
-				hasConfirm : _.isBoolean(ctrl.hasConfirm) ? ctrl.hasConfirm : true,
+				hasConfirm : _.isBoolean(ctrl.hasConfirm) ? ctrl.hasConfirm : false,
 				useUtc : _.isBoolean(ctrl.useUtc) ? ctrl.useUtc : false,
 				data : ctrl.$$data
 			};
@@ -108,7 +139,7 @@
 			// apro il pannello
 			$mdPanel.open(ctrl.$$config);
 		};
-		 
+		
 		this.$updateOriginal = function() {
 			 if (!ctrl.$$data) {
 				 return;
@@ -117,7 +148,10 @@
 			// dirty dell'input
 			 $scope.chMonthPickerTriggerForm.date.$setDirty();
 			 
-			 ctrl.ngModel = ctrl.$getDate(ctrl.$$data.current);
+//			 ctrl.ngModel = ctrl.$getDate(ctrl.$$data.current);
+			 ctrl.ngModelCtrl.$setViewValue(ctrl.$getDate(ctrl.$$data.current));
+			 ctrl.$manageShowYear();
+			 
 			 ctrl.minDate = ctrl.$getDate(ctrl.$$data.min);
 			 ctrl.maxDate = ctrl.$getDate(ctrl.$$data.max);
 		};
@@ -157,7 +191,7 @@
 			}
 		});
 		
-		this.$$getMoment = function(date) {
+		this.$getMoment = function(date) {
 			if (_self.useUtc) {
 				return DateUtils.absoluteMoment(date);
 			
@@ -171,7 +205,7 @@
 		 * 
 		 */
 		$scope.$watch(function() { return _self.data.current;}, function(newValue, oldValue) {
-			$scope.currentDate = _self.data.end ? _self.$$getMoment(_self.data.end).toDate() : null;
+			$scope.currentDate = _self.data.end ? _self.$getMoment(_self.data.end).toDate() : null;
 		});
 		
 		this.confirm = function() {
