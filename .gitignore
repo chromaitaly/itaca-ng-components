@@ -4,3 +4,4 @@
 /.settings/
 /.tmp/
 /npm-debug.log
+/dist/

@@ -20,7 +20,8 @@
 			ngDisabled: "<?",
 			ngReadonly: "<?",
 			allowNegative: "<?",
-			errorMessages: "<?"
+			errorMessages: "<?",
+			ngDisabled: "<?"
 	    },
 	    controller: AmountInputCtrl,
 	    templateUrl: "/tpls/amount-input/amount-input.tpl"
@@ -36,6 +37,8 @@
 		   ctrl.allowNegative = _.isBoolean(ctrl.allowNegative) ? ctrl.allowNegative : false;
 		   ctrl.ngMin = ctrl.ngMin < 0 && !ctrl.allowNegative ? 0 : ctrl.ngMin;
 		   ctrl.ngStep = _.isFinite(ctrl.ngStep) ? ctrl.ngStep : 0.01; 
+		   
+		   ctrl.ngDisabled = _.isBoolean(ctrl.ngDisabled) ? ctrl.ngDisabled : false;
 	   };
 	   
 	   this.$update = function() {

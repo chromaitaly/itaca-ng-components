@@ -1,0 +1,39 @@
+<ng-form name="chRichEditorForm" class="display-block no-padding-left no-padding-bottom no-padding-right">
+	<ng-quill-editor 
+		name="chRichEditorText" 
+		ng-model="$ctrl.ngModel" 
+		max-length="$ctrl.maxLength" 
+		min-length="$ctrl.minLength" 
+		modules="$ctrl.modules" 
+		read-only="$ctrl.ngDisabled" 
+		placeholder="{{$ctrl.placeholder}}" 
+		ng-required="$ctrl.ngRequired" 
+		on-editor-created="$ctrl.onEditorCreated(editor)" 
+		on-selection-changed="$ctrl.onSelectionChanged(editor, range, oldRange, source)" 
+		on-content-changed="$ctrl.onEditorChanged(editor, html, text, delta, oldDelta, source)">
+	</ng-quill-editor>
+	<div ng-if="!$ctrl.hideCharsCounter || !$ctrl.hideWordsCounter" ng-show="$ctrl.counter.chars" class="layout-padding-md no-padding-bottom text-right text-small" ng-class="{'text-danger': ($ctrl.maxLength && $ctrl.counter.chars > $ctrl.maxLength) || ($ctrl.minLength && $ctrl.counter.chars < $ctrl.minLength)}">
+		<div class="no-padding">
+			<span ng-if="!$ctrl.hideCharsCounter">
+				<span translate-once="common.chars"></span>:&nbsp;
+				<strong><span ng-bind="$ctrl.counter.chars"></span><span ng-if="$ctrl.maxLength">/<span ng-bind="$ctrl.maxLength"></span></span></strong>
+			</span>
+			<span ng-if="!$ctrl.hideWordsCounter" ng-show="$ctrl.counter.words">
+				<span ng-if="!$ctrl.hideCharsCounter">&nbsp;-&nbsp;</span>
+				<span translate-once="common.words"></span>:&nbsp;
+				<strong><span ng-bind="$ctrl.counter.words"></span></strong>
+			</span>
+		</div>
+	</div>
+	<div ng-messages="chRichEditorForm.chRichEditorText.$error" class="ch-messages-animation">
+		<div ng-message="required" class="ch-message-animation">
+			<span translate-once="error.required"></span>
+		</div>
+		<div ng-message="maxlength" class="ch-message-animation">
+			<span translate="error.field.generic.maxlength" translate-values="{count: $ctrl.maxLength}"></span>
+		</div>
+		<div ng-message="minlength" class="ch-message-animation">
+			<span translate="error.field.generic.minlength" translate-values="{count: $ctrl.minLength}"></span>
+		</div>
+	</div>
+</ng-form>

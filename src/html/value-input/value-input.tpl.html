@@ -3,7 +3,7 @@
 		<div ng-if="!$ctrl.$$manualCount">
 			<md-input-container md-no-float>
 				<md-select name="count" ng-model="$ctrl.ngModel.count" ng-required="$ctrl.ngRequired" ng-readonly="$ctrl.readonly" 
-					ng-change="$ctrl.$update()" aria-label="Value count">
+					ng-change="$ctrl.$update()" aria-label="Value count" ng-disabled="$ctrl.ngDisabled">
 	         		<md-option ng-repeat="count in $ctrl.$$counts track by $index" ng-value="count.value" ng-disabled="count.disabled"
 	         			ng-selected="$ctrl.$$counts.length == 1 || $ctrl.ngModel.count == count.value || (!$ctrl.ngModel.count && $first)">
 	         			<span ng-bind="count.value"></span>
@@ -21,7 +21,7 @@
 		<div ng-if="$ctrl.$$manualCount">
 			<md-input-container md-no-float class="md-icon-right">
 				<input type="number" name="count" placeholder="{{'common.value'|translate}}" ng-model="$ctrl.ngModel.count" ng-min="$ctrl.ngMin" ng-step="$ctrl.ngStep" ng-max="$ctrl.ngMax"
-					ng-required="$ctrl.ngRequired" ng-readonly="$ctrl.ngReadonly" ng-change="$ctrl.$update()">
+					ng-required="$ctrl.ngRequired" ng-readonly="$ctrl.ngReadonly" ng-change="$ctrl.$update()"  ng-disabled="$ctrl.ngDisabled">
 		        <md-icon class="mdi mdi-close md-24 clickable" ng-click="$ctrl.$toggleManualCount()" aria-label="Close manual count input">
 		        	<md-tooltip><span translate-once="common.cancel"></span></md-tooltip>
 		        </md-icon>
@@ -37,7 +37,7 @@
 				
 		<div ng-if="!$ctrl.hideUnit">
 			<md-input-container md-no-float>
-				<md-select name="unit" ng-model="$ctrl.ngModel.unit" ng-required="$ctrl.ngRequired" ng-readonly="$ctrl.readonly" 
+				<md-select name="unit" ng-model="$ctrl.ngModel.unit" ng-required="$ctrl.ngRequired" ng-readonly="$ctrl.readonly" ng-disabled="$ctrl.ngDisabled"
 					ng-change="$ctrl.$update()" aria-label="Value unit">
 	         		<md-option ng-repeat="unit in $ctrl.$$units track by $index" ng-value="unit.value" ng-disabled="unit.disabled"
 	         			ng-selected="$ctrl.$$units.length == 1 || $ctrl.ngModel.unit == unit.value || (!$ctrl.ngModel.unit && $first)">

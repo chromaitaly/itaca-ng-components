@@ -30,6 +30,8 @@
 		
 		this.$onInit = function() {
 			ctrl.ngModel = _.isPlainObject(ctrl.ngModel) ? ctrl.ngModel : {};
+			
+			ctrl.ngDisabled = _.isBoolean(ctrl.ngDisabled) ? ctrl.ngDisabled : false;
 		};
 		
 		this.$postLink = function() {

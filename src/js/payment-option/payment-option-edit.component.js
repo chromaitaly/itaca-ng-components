@@ -23,14 +23,15 @@
 			amountTitle: "@?",
 			amountSubtitle: "@?",
 			onSave: "&?",
-			onCancel: "&?"
+			onCancel: "&?",
+			ngDisabled: "<?",
 		},
 		controller: PaymentOptionEditCtrl,
 		templateUrl: "/tpls/payment-option/payment-option-edit.tpl"
 	});
 	
 	 /* @ngInject */
-	function PaymentOptionEditCtrl($scope, REGEXP, rangeFilter, FormUtils) {
+	function PaymentOptionEditCtrl($scope, AppOptions, REGEXP, rangeFilter, FormUtils) {
 		var ctrl = this;
 		
 		this.$$REGEXP = REGEXP;
@@ -42,7 +43,10 @@
 		this.$onInit = function() {
 			ctrl.$$paymentOption = angular.copy(ctrl.paymentOption || {});
 			
+			ctrl.appOptions = AppOptions;
+			
 			ctrl.hideLengths = _.isBoolean(ctrl.hideLengths) ?  ctrl.hideLengths : false;
+			ctrl.ngDisabled = _.isBoolean(ctrl.ngDisabled) ? ctrl.ngDisabled : false;
 		};
 		
 		this.$postLink = function() {
