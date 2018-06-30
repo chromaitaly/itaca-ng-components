@@ -1,0 +1,142 @@
+<div layout-padding>
+	<div>
+		<md-whiteframe class="md-whiteframe-2dp" flex layout="column">
+			<md-toolbar class="md-accent auto-height" layout-padding-sm>
+	      		<div class="md-toolbar-tools auto-height" layout-padding-sm>
+		        	<span translate="order.items"></span>
+	      		</div>
+		    </md-toolbar>
+	 			
+			<div layout="column">
+				<!-- head -->
+				<div layout layout-padding layout-align="center center" class="bg-gray-lighter">
+					<div hide-xs flex="10" class="text-center">
+						<strong translate="order.item.code.abbr">Cod. articolo</strong>
+					</div>
+					<div flex class="text-left">
+						<strong translate="common.description">Descrizione</strong>
+					</div>
+					<div flex="10" class="text-center">
+						<strong translate="common.quantity.abbr">Quantità</strong>
+					</div>
+					<div hide-xs flex="20" class="text-right">
+						<strong translate="common.price.unit">Importo unitario</strong>
+					</div>
+					<div flex="20" class="text-right">
+						<strong translate="common.amount">Importo</strong>
+					</div>
+					<div flex="10" flex-xs="15" class="text-center">
+						<strong><span translate="common.vat.alt">IVA</span>&nbsp;(%)</strong>
+					</div>
+				</div>
+				
+				<md-divider></md-divider>
+				
+				<!-- content -->
+				<div>
+					<div ng-repeat="productSold in $ctrl.invoice.order.products track by productSold.product.id"
+						layout layout-padding ng-class="{'bg-gray-lighter': $odd}">
+						<div hide-xs flex="10" class="text-center">
+							<span ng-bind="productSold.product.serial"></span>
+						</div>
+						<div flex class="text-left">
+							<span ng-bind="productSold.product.name"></span>
+							<span hide show-xs>&nbsp;(<span ng-bind="productSold.product.serial"></span>)</span>
+							<div ng-if="productSold.product.category.type == 'FREE_LOAN'" class="text-gray-light">
+								<small>(<span translate="common.freeloan"></span>)</small>
+							</div>
+						</div>
+						<div flex="10" class="text-center">
+							<span ng-bind="productSold.counter.actual"></span>
+						</div>
+						<div hide-xs flex="20" class="text-right">
+							<span ng-if="productSold.product.paymentOption.amount != null && productSold.product.paymentOption.amount.finalAmount != null">{{productSold.product.paymentOption.amount.finalAmount|chCurrency}}</span>
+							<span ng-if="productSold.product.paymentOption.amount == null || productSold.product.paymentOption.amount.finalAmount == null">{{0|chCurrency}}</span>
+						</div>
+						<div flex="20" class="text-right">
+							<span ng-if="productSold.amount != null && productSold.amount.finalAmount != null">{{productSold.amount.finalAmount|chCurrency}}</span>
+							<span ng-if="productSold.amount == null || productSold.amount.finalAmount == null">{{0|chCurrency}}</span>
+						</div>
+						<div flex="10" flex-xs="15" class="text-center">
+							<span ng-if="productSold.amount != null && productSold.amount.vatRate != null" ng-bind="productSold.amount.vatRate"></span>
+							<span ng-if="productSold.amount == null || productSold.amount.vatRate == null">-</span>
+						</div>
+					</div>
+			<!-- 		<div hide-xs ng-repeat="i in [] | range: (15 - $ctrl.invoice.order.products.length)" layout-padding -->
+			<!-- 			ng-class="{'bg-gray-lighter': $ctrl.invoice.order.products.length % 2 == 0 ? $odd : $even }">&nbsp;</div> -->
+				</div>
+				
+				<md-divider></md-divider>
+				
+				<!-- footer -->
+				<div layout-padding-sm>
+					<div ng-if="$ctrl.invoice.order.amount.initialAmount && $ctrl.invoice.order.amount.initialAmount > 0 && $ctrl.invoice.order.amount.initialAmount != $ctrl.invoice.order.amount.finalAmount"
+						layout layout-padding-sm>
+				    	<div flex>&nbsp;</div>
+				    	<div flex="20" flex-xs="70" class="text-left">
+				    		<span translate="common.subtotal">SUBTOTALE</span>
+				    	</div>
+				    	<div flex="20" class="text-right">
+			    			<span ng-bind="$ctrl.invoice.order.amount.initialAmount|chCurrency"></span>
+				    	</div>
+				    	<div flex="10" flex-xs="15">&nbsp;</div>
+					</div>
+					
+					<div ng-if="$ctrl.invoice.order.amount.discountAmount && $ctrl.invoice.order.amount.discountAmount > 0"
+						layout layout-padding-sm>
+				    	<div flex>&nbsp;</div>
+				    	<div flex="20" flex-xs="70" class="text-left">
+				    		<span translate="common.discount">SCONTO</span>
+				    	</div>
+				    	<div flex="20" class="text-right">
+				    		<small ng-if="$ctrl.invoice.order.amount.discountRate && $ctrl.invoice.order.amount.discountRate > 0">
+				    			 (<span ng-bind="$ctrl.invoice.order.amount.discountRate + '%'"></span>)&nbsp;
+			    			</small>
+			    			<span ng-bind="$ctrl.invoice.order.amount.discountAmount|chCurrency"></span>
+				    	</div>
+				    	<div flex="10" flex-xs="15">&nbsp;</div>
+					</div>
+				
+					<div layout layout-padding-sm>
+						<div flex>&nbsp;</div>
+				    	<div flex="20" flex-xs="70" class="text-left">
+							<span translate="common.taxable">Imponibile</span>
+						</div>
+						<div flex="20" class="text-right">
+							<span ng-if="$ctrl.invoice.order.amount && $ctrl.invoice.order.amount.finalAmount">
+				    			<span ng-if="$ctrl.invoice.order.amount.vatAmount" ng-bind="($ctrl.invoice.order.amount.finalAmount - $ctrl.invoice.order.amount.vatAmount)|chCurrency"></span>
+				    			<span ng-if="!$ctrl.invoice.order.amount.vatAmount" ng-bind="$ctrl.invoice.order.amount.finalAmount|chCurrency"></span>
+				    		</span>
+				    		<span ng-if="!$ctrl.invoice.order.amount || !$ctrl.invoice.order.amount.finalAmount" ng-bind="0|chCurrency"></span>
+						</div>
+						<div flex="10" flex-xs="15">&nbsp;</div>
+					</div>
+					
+					<div ng-repeat="(vatRate, vatAmount) in $ctrl.invoice.order.vatMap track by vatRate"
+						layout layout-padding-sm>
+				    	<div flex>&nbsp;</div>
+				    	<div flex="20" flex-xs="70" class="text-left">
+				    		<span translate="common.vat.alt">IVA</span>&nbsp;<span ng-bind="vatRate"></span>%
+				    	</div>
+				    	<div flex="20" class="text-right">
+				    		<span ng-bind="vatAmount|chCurrency"></span>
+				    	</div>
+				    	<div flex="10" flex-xs="15">&nbsp;</div>
+					</div>
+					
+					<div layout layout-padding-sm class="md-subhead text-primary">	
+						<div flex>&nbsp;</div>
+				    	<div flex="20" flex-xs="70" class="text-left only-border no-border-bottom no-border-right no-border-left">
+				    		<strong translate="billing.invoice.price.total">TOTALE FATTURA</strong>
+				    	</div>
+				    	<div flex="20" class="text-right text-primary only-border no-border-bottom no-border-right no-border-left">
+				    		<strong ng-if="$ctrl.invoice.order.amount && $ctrl.invoice.order.amount.finalAmount" ng-bind="$ctrl.invoice.order.amount.finalAmount|chCurrency"></strong>
+				    		<strong ng-if="!$ctrl.invoice.order.amount || !$ctrl.invoice.order.amount.finalAmount" ng-bind="0|chCurrency"></strong>
+				    	</div>
+				    	<div flex="10" flex-xs="15"	>&nbsp;</div>
+					</div>
+				</div>
+			</div>
+		</md-whiteframe>
+	</div>
+</div>

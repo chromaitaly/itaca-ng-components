@@ -1,4 +1,38 @@
 .ch-planning-header {
 	height: 150px;
-	width: 100%; 
+	width: 100%;
+	background-size: cover !important;
+    background-position: center !important;
+    background-repeat: no-repeat !important;
+	transition: all 1s ease-in-out;
+    -webkit-transition: all 1s ease-in-out;
+}
+
+.ch-planning-header-content {
+    width: 100%;
+    height: 100%;
+}
+
+.ch-planning-row {
+	height: 100px;
+	overflow: hidden;
+}
+
+.ch-planning-cell {
+	border: 1px solid @gray-medium;
+	border-top: none;
+	border-left: none;
+	position: relative;
+}
+
+.ch-planning-row .ch-planning-cell:last-child {
+	border-right: none;
+}
+
+.ch-planning-reservation {
+    position: absolute;
+    min-height: 50px;
+    padding-right: 10px;
+    transition: all 1s ease-in-out;
+    -webkit-transition: all 1s ease-in-out;
 }

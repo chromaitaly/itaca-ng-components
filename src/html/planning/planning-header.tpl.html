@@ -1,56 +1,92 @@
-<div class="ch-planning-header" flex layout layout-padding ng-style="background-image: $ctrl.$$bgImage">
-	<div flex>
-		<ch-month-picker
-			ng-model="$ctrl.$$startDate"
-			hide-icon="true"
-			ng-change="$ctrl.$onMonthChange()">
-		</ch-month-picker>
-	</div>
-	<div>
-		<md-button class="md-icon-button" ng-click="$ctrl.$goToToday()" aria-label="Go to today">
-			<md-icon class="mdi mdi-calendar-today md-24"></md-icon>
-		</md-button>
-	</div>
-	<div>
-		<md-menu>
-	 		<md-button ng-click="$mdMenu.open($event)" aria-label="Switch view">
-		   		<span ng-switch="$ctrl.$$currentView">
-		   			<span ng-switch-when="D" translate="date.day"></span>
-		   			<span ng-switch-when="W" translate="date.week"></span>
-		   			<span ng-switch-when="M" translate="date.month"></span>
-		   		</span>
-		 	</md-button>
-		 	<md-menu-content>
-		   		<md-menu-item>
-		   			<md-button ng-click="$ctrl.$dailyView()" aria-label="Switch to daily view">
-		   				<span translate="date.day"></span>
-		   			</md-button>
-		   		</md-menu-item>
-		   		<md-menu-item>
-		   			<md-button ng-click="$ctrl.$weeklyView()" aria-label="Switch to weekly view">
-		   				<span translate="date.week"></span>
-		   			</md-button>
-		   		</md-menu-item>
-		   		<md-menu-item>
-		   			<md-button ng-click="$ctrl.$monthlyView()" aria-label="Switch to monthly view">
-		   				<span translate="date.month"></span>
-		   			</md-button>
-		   		</md-menu-item>
-		 	</md-menu-content>
-		</md-menu>
-	</div>
-	<div>
-		<md-menu>
-	 		<md-button class="md-icon-button" ng-click="$mdMenu.open($event)" aria-label="Open planning menu">
-		   		<md-icon class="mdi mdi-dots-vertical md-24"></md-icon>
-		 	</md-button>
-		 	<md-menu-content>
-		   		<md-menu-item>
-		   			<md-button ng-click="$ctrl.$doSomething()" aria-label="Do something">
-		   				Do Something
-		   			</md-button>
-		   		</md-menu-item>
-		 	</md-menu-content>
-		</md-menu>
+<div class="ch-planning-header" ng-style="{'background-image': $ctrl.$$bgImage}">
+	<div class="ch-planning-header-content bg-opaque-4" layout="column">
+		<div flex layout layout-padding-sm>
+			<div flex>
+				<ch-month-picker
+					ng-model="$ctrl.chPlanningCtrl.$$startDate"
+					hide-icon="true"
+					wrapper-class="text-white text-bold"
+					icon-color-class="text-white"
+					selected-text="$ctrl.$getMonthLabel()"
+					ng-change="$ctrl.$onMonthChange()">
+				</ch-month-picker>
+			</div>
+			<div>
+				<md-button class="md-icon-button" ng-click="$ctrl.$goToToday()" aria-label="Go to today">
+					<md-icon class="mdi mdi-calendar-today md-24 text-white"></md-icon>
+					<md-tooltip><span translate="date.today.go.to"></span></md-tooltip>
+				</md-button>
+			</div>
+			<div>
+				<md-menu md-position-mode="target bottom">
+			 		<md-button ng-class="{'no-padding no-margin-x-sides minimal-button': !$ctrl.$mdMedia('gt-sm')}"
+			 			ng-click="$mdMenu.open($event)" aria-label="Switch view">
+				   		<span ng-switch="$ctrl.chPlanningCtrl.$$currentView" class="text-white text-bold">
+				   			<span ng-switch-when="D" translate="date.day"></span>
+				   			<span ng-switch-when="W" translate="date.week"></span>
+				   			<span ng-switch-when="M" translate="date.month"></span>
+				   		</span>
+				   		<md-icon class="mdi mdi-menu-down md-24 text-white"></md-icon>
+				   		<md-tooltip><span translate="planning.view.change"></span></md-tooltip>
+				 	</md-button>
+				 	<md-menu-content>
+				   		<md-menu-item>
+				   			<md-button ng-click="$ctrl.$dailyView()" aria-label="Switch to daily view">
+				   				<span translate="date.day"></span>
+				   			</md-button>
+				   		</md-menu-item>
+				   		<md-menu-item>
+				   			<md-button ng-click="$ctrl.$weeklyView()" aria-label="Switch to weekly view">
+				   				<span translate="date.week"></span>
+				   			</md-button>
+				   		</md-menu-item>
+				   		<md-menu-item>
+				   			<md-button ng-click="$ctrl.$monthlyView()" aria-label="Switch to monthly view">
+				   				<span translate="date.month"></span>
+				   			</md-button>
+				   		</md-menu-item>
+				 	</md-menu-content>
+				</md-menu>
+			</div>
+			<div>
+				<md-menu md-position-mode="target bottom">
+			 		<md-button class="md-icon-button" ng-class="{'no-margin-x-sides': !$ctrl.$mdMedia('gt-sm')}"
+			 			ng-click="$mdMenu.open($event)" aria-label="Open planning menu">
+				   		<md-icon class="mdi mdi-dots-vertical md-24 text-white"></md-icon>
+				 	</md-button>
+				 	<md-menu-content>
+				   		<md-menu-item>
+				   			<md-button ng-click="$ctrl.$openSettings()" aria-label="Open planning settings">
+				   				<span translate="menu.settings"></span>
+				   			</md-button>
+				   		</md-menu-item>
+				 	</md-menu-content>
+				</md-menu>
+			</div>
+		</div>
+		
+		<div layout>
+			<div>
+				<md-button ng-class="{'no-margin-x-sides minimal-button': !$ctrl.$mdMedia('gt-sm')}" 
+					ng-click="$ctrl.$prevWeek()" aria-label="Go to previous week">
+					<md-icon class="mdi mdi-chevron-left md-24 text-white"></md-icon>
+					<span hide-xs class="text-white text-bold" translate="date.week.previous"></span>
+					<span hide-gt-xs class="text-white text-bold" translate="common.previous"></span>
+					<md-tooltip hide show-xs show-sm><span class="text-uppercase" translate="date.week.previous"></span></md-tooltip>
+				</md-button>
+			</div>
+			
+			<div flex></div>
+			
+			<div>
+				<md-button ng-class="{'no-margin-x-sides minimal-button': !$ctrl.$mdMedia('gt-sm')}" 
+		    		ng-click="$ctrl.$nextWeek()" aria-label="Go to next week">
+		    		<span hide-xs class="text-white text-bold" translate="date.week.next"></span>
+		    		<span hide-gt-xs class="text-white text-bold" translate="common.next.female"></span>
+					<md-icon class="mdi mdi-chevron-right md-24 text-white"></md-icon>
+					<md-tooltip hide show-xs show-sm><span class="text-uppercase" translate="date.week.next"></span></md-tooltip>
+				</md-button>
+			</div>
+		</div>
 	</div>
 </div>

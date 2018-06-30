@@ -2,11 +2,12 @@
 	'use strict';
 	
 	angular.module("itaca.components").component("chInvoice", {
+		transclude: true,
 		bindings: {
 			invoice: "<"
     	},
 		controller: InvoiceCtrl,
-		templateUrl: "/tpls/invoice/invoice.tpl"
+		template: "<div flex layout-fill ng-transclude></div>"
 	});
 	
 	 /* @ngInject */

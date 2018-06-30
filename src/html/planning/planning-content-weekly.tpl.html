@@ -1,0 +1,51 @@
+<md-content id="planningCont" flex layout="column" layout-fill ng-switch="$ctrl.$$roomsType">
+	<md-subheader class="no-padding bg-gray-lighter">
+  		<div layout flex>
+			<div hide show-gt-sm flex="25" layout layout-padding layout-align="center center" class="border-right-white">
+				<strong class="text-uppercase text-gray-light">
+					<span translate="room.room"></span>
+				</strong>
+			</div>
+			<div flex layout layout-padding-sm>
+				<div flex layout="column" class="border-right-white"
+					ng-repeat="viewDate in $ctrl.$$viewDates track by viewDate.uid">
+					
+					<md-button tabindex="-1" ng-click="$ctrl.toggleAllRoomsClosing(viewDate.date)"
+						ng-disabled="viewDate.isPast || viewDate.hotelStatus.hotelClosed"
+						class="no-margin row-mini text-left" ng-class="{'minimal-button': !$ctrl.$mdMedia('gt-xs'),
+						'text-gray-light': !viewDate.hotelStatus.roomsClosed,
+						'bg-danger text-white': viewDate.hotelStatus.roomsClosed}">
+						<div layout="column" ng-class="{'text-primary': (viewDate.date|amDifference:$ctrl.$$today:'days') == 0}">
+							<small class="text-capitalize">{{viewDate.date|date:"EEE"}}</small>
+							<strong ng-class="{'md-display-1': $ctrl.$mdMedia('gt-xs'), 'md-title': $ctrl.$mdMedia('xs')}">{{viewDate.date|date:"d"}}</strong>
+						</div>
+						
+						<md-tooltip>
+							<span ng-show="viewDate.hotelStatus.roomsClosed" translate="hotel.availability.open.day"></span>	
+							<span ng-show="!viewDate.hotelStatus.roomsClosed" translate="hotel.availability.close.day"></span>														
+						</md-tooltip>
+					</md-button>
+				</div>			
+			</div>
+		</div>
+ 	</md-subheader>
+
+	<div ng-switch-when="2" flex layout="column" infinite-scroll="$ctrl.rooms.nextPage()" infinite-scroll-container="'#planningCont'" 
+		infinite-scroll-disabled="$ctrl.rooms.busy" infinite-scroll-distance="1">
+		
+		<ch-planning-room ng-repeat="room in $ctrl.rooms.items track by room.id"
+			room="room"
+			dates="$ctrl.$$viewDates"
+			reservations="$ctrl.reservations[room.id]">
+		</ch-planning-room>
+		
+		<div flex ng-show="$ctrl.rooms.busy" flex layout="column" layout-padding layout-align="center center">
+   	 		<div><md-progress-circular class="md-primary ch-progress" md-mode="indeterminate" md-diameter="40"></md-progress-circular></div>
+   	 		<div class="text-gray-light"><span translate="room.rooms.yours.loading"></span>...</div>
+	  	</div>
+	</div>
+	
+	<div ng-switch-default flex layout="column">
+		
+	</div>
+</md-content>

@@ -1,0 +1,108 @@
+<div layout layout-wrap layout-padding>
+	<div flex="50" flex-xs="100" layout-padding class="no-padding">
+		<div>
+			<md-whiteframe class="md-whiteframe-2dp" flex layout="column">
+				<md-toolbar class="md-accent auto-height" layout-padding-sm>
+		      		<div class="md-toolbar-tools auto-height" layout-padding-sm>
+			        	<span translate="billing.invoice.details"></span>
+		      		</div>
+			    </md-toolbar>
+		 			
+			    <div layout-padding-sm>
+			    	<div>
+						<div layout layout-padding-sm>
+							<div flex="40">
+								<span translate="billing.invoice.number"></span>
+							</div>
+							<div flex>
+								<span ng-bind="$ctrl.invoice.number"></span>&nbsp;/&nbsp;<span ng-bind="$ctrl.invoice.year"></span>
+							</div>
+						</div>
+						<div layout layout-padding-sm>
+							<div flex="40">
+								<span translate="billing.invoice.date"></span>
+							</div>
+							<div flex>
+								<span ng-bind="$ctrl.invoice.issueDate|date:'shortDate'"></span>
+							</div>
+						</div>
+					</div>
+			    </div>			
+			</md-whiteframe>
+		</div>
+		
+		<div>
+			<md-whiteframe class="md-whiteframe-2dp" flex layout="column">
+				<md-toolbar class="md-accent auto-height" layout-padding-sm>
+		      		<div class="md-toolbar-tools auto-height" layout-padding-sm>
+			        	<span translate="order.details"></span>
+		      		</div>
+			    </md-toolbar>
+		 			
+			    <div layout-padding-sm>
+			    	<div>
+						<div layout layout-padding-sm>
+							<div flex="40">
+								<span translate="order.order.number"></span>
+							</div>
+							<div flex>
+								<span ng-bind="$ctrl.invoice.order.serial"></span>
+							</div>
+						</div>
+						<div layout layout-padding-sm>
+							<div flex="40">
+								<span translate="order.date"></span>
+							</div>
+							<div flex>
+								<span ng-bind="$ctrl.invoice.order.createdDate|date:'shortDate'"></span>
+							</div>
+						</div>
+						<div layout layout-padding-sm ng-if="$ctrl.invoice.order.customer">
+							<div flex="40">
+								<span translate="customer.name"></span>
+							</div>
+							<div flex>
+								<span ng-bind="$ctrl.invoice.order.customer.name"></span>&nbsp;<span ng-bind="$ctrl.invoice.order.customer.surname"></span>
+							</div>
+						</div>
+					</div>
+			    </div>			
+			</md-whiteframe>
+		</div>
+	</div>
+	
+	<div flex="50" flex-xs="100">
+		<md-whiteframe class="md-whiteframe-2dp" flex layout="column">
+			<md-toolbar class="md-accent auto-height" layout-padding-sm>
+	      		<div class="md-toolbar-tools auto-height" layout-padding-sm>
+		        	<span translate="billing.invoice.header"></span>
+	      		</div>
+		    </md-toolbar>
+	 			
+		    <div layout-padding-sm>
+		    	<div layout-padding-sm>	
+			    	<div>
+						<span ng-bind="$ctrl.invoice.customerBillingData.name"></span>
+					</div>
+					<div flex>
+						<span ng-bind="$ctrl.invoice.customerBillingData.addressInfo.address"></span>
+					</div>
+					<div>
+						<span ng-bind="$ctrl.invoice.customerBillingData.addressInfo.zipcode"></span>,&nbsp;
+						<span ng-bind="$ctrl.invoice.customerBillingData.addressInfo.city"></span>,&nbsp;
+						<span ng-bind="$ctrl.invoice.customerBillingData.addressInfo.province"></span>,&nbsp;
+						<span ng-if="$ctrl.invoice.customerBillingData.addressInfo.country" ng-bind="$ctrl.invoice.customerBillingData.addressInfo.country"></span>
+					</div>
+					<div>
+						<span translate="common.vat.abbr"></span>:&nbsp;
+						<span ng-bind="$ctrl.invoice.customerBillingData.vat"></span>
+					</div>
+					<div ng-if="$ctrl.invoice.customerBillingData.fiscalCode">
+						<span translate="common.fiscalCode.abbr"></span>:&nbsp;
+						<span ng-bind="$ctrl.invoice.customerBillingData.fiscalCode"></span>
+					</div>
+				</div>
+		    </div>			
+		</md-whiteframe>
+	</div>
+</div>

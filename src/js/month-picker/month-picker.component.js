@@ -14,7 +14,9 @@
         	label: "@",
         	labelPosition: "@",
         	placeholder: "@",
+        	selectedText: "&",
         	hideIcon: "<?",
+        	iconColorClass: "@",
         	showYear: "<?",
         	ngModel: "<",
         	minDate: "<?",
@@ -44,6 +46,8 @@
 			ctrl.buttonClass = ctrl.buttonClass || "no-margin";
 			ctrl.hasBackdrop = _.isNil(ctrl.hasBackdrop) ? false : ctrl.hasBackdrop;
 			ctrl.timezone = _.isBoolean(ctrl.useUtc) && ctrl.useUtc ? "UTC" : "";
+			ctrl.$manageShowYear();
+			ctrl.$manageSelectedLabel();
 			
 			var targetEl = $element[0].querySelector(".ch-month-picker-button");
 			
@@ -60,7 +64,7 @@
 			    clickOutsideToClose: true,
 			    disableParentScroll: ctrl.disableParentScroll,
 			    hasBackdrop: !$mdMedia('gt-xs') || ctrl.hasBackdrop,
-			    fullscreen: !$mdMedia('gt-xs'),
+			    fullscreen: false,
 			    panelClass: "bg-white md-whiteframe-15dp",
 			    trapFocus: true,
 			    onCloseSuccess: function(panelRef, closeReason) {
@@ -69,7 +73,7 @@
 					
 			    	if (_.isBoolean(closeReason) && closeReason) {
 			    		ctrl.$updateOriginal();
-			    		ctrl.onClose && ctrl.onClose(ctrl.$$data);
+			    		ctrl.onClose && ctrl.onClose({$date: ctrl.ngModel});
 			    	}
 			    	
 			    	// sblocco scroll body
@@ -101,12 +105,13 @@
 		this.$onChanges = function(changesObj) {
 			if (changesObj.ngModel) {
 				ctrl.$manageShowYear();
+				ctrl.$manageSelectedLabel();
 			}
 		};
 		
 		this.$manageShowYear = function() {
 			if (_.isNil(ctrl.showYear) || !_.isBoolean(ctrl.showYear)) {
-				ctrl.$$showYear = !moment(ctrl.ngModelCtrl.$modelValue).isSame(moment(), "years");
+				ctrl.$$showYear = !moment(ctrl.ngModel).isSame(moment(), "years");
 			}
 		};
 		
@@ -151,9 +156,16 @@
 //			 ctrl.ngModel = ctrl.$getDate(ctrl.$$data.current);
 			 ctrl.ngModelCtrl.$setViewValue(ctrl.$getDate(ctrl.$$data.current));
 			 ctrl.$manageShowYear();
+			 ctrl.$manageSelectedLabel();
 			 
 			 ctrl.minDate = ctrl.$getDate(ctrl.$$data.min);
 			 ctrl.maxDate = ctrl.$getDate(ctrl.$$data.max);
+		};
+		
+		this.$manageSelectedLabel = function() {
+			if (angular.isFunction(ctrl.selectedText)) {
+				ctrl.$$selectedText = ctrl.selectedText({$date: ctrl.ngModel});
+			}
 		};
 		 
 		this.$getDate = function(date) {

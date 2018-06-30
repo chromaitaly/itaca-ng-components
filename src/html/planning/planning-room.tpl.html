@@ -1,0 +1,32 @@
+<div layout-gt-sm="row" layout-sm="column" layout-xs="column" class="ch-planning-row">
+	
+	<span ng-if="!$ctrl.room.enabled" class="locked-string bg-warn opaque text-uppercase"><span translate="common.disabled.female"></span></span>
+	
+	<div flex-xs="100" flex-sm="100" flex-gt-sm="25" layout="column" layout-padding class="ch-planning-cell">
+		<div flex layout="column" layout-padding-sm layout-align="center center" class="text-center">
+			<strong class="text-primary text-uppercase text-center" ng-bind="$ctrl.room.name"></strong>
+			
+			<md-truncate class="text-wrap">
+				<small class="text-gray-light">
+					(<span ng-repeat="roomType in $ctrl.room.types track by roomType.id">
+						<span translate="{{roomType.roomType.nameKey}}"></span>&nbsp;
+						<span class="text-uppercase" translate="room.category.{{roomType.category}}"></span>
+						<span ng-if="!$last">,&nbsp;</span>
+					</span>)
+				</small>
+			</md-truncate>
+		</div>
+	</div>
+	
+	<div flex layout>
+		<div flex layout="column" layout-padding class="ch-planning-cell"
+			ng-repeat="viewDate in $ctrl.$$viewDates track by viewDate.uid">
+			
+			<div ng-repeat="reservation in viewDate.$reservations track by reservation.id"
+				class="ch-planning-reservation" ng-style="{left: reservation.left + '%', width: reservation.width + '%'}">
+				
+				<div class="full-width bg-blue-sea">AAAAAAAA</div>			
+			</div>
+		</div>
+	</div>
+</div>

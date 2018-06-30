@@ -6,19 +6,22 @@
  			<div ng-if="$ctrl.label" class="no-padding row-mini">
  				<small class="row-mini text-initial" ng-bind-html="$ctrl.label"></small>
  			</div>
-			<div layout layout-padding-sm layout-align="center center">
+			<div layout layout-align="center center">
 				<span ng-if="!$ctrl.hideIcon">
-					<md-icon class="mdi mdi-calendar" ng-class="{'md-32': $ctrl.size == 'big', 'md-24': $ctrl.size == 'medium', 'md-18': $ctrl.size == 'small'}"></md-icon>
+					<md-icon class="mdi mdi-calendar {{$ctrl.iconColorClass}}" ng-class="{'md-32': $ctrl.size == 'big', 'md-24': $ctrl.size == 'medium', 'md-18': $ctrl.size == 'small'}"></md-icon>
 				</span>
 				<small ng-show="!$ctrl.ngModel" class="text-gray-light">
 					<em><span ng-if="!$ctrl.placeholder">...</span><span ng-if="$ctrl.placeholder" ng-bind="$ctrl.placeholder"></span></em>
 				</small>
 				<span ng-show="$ctrl.ngModel" ng-class="$ctrl.size == 'small' ? 'text-small row-1' : 'row-mini'">
-					<span class="text-capitalize" ng-bind="($ctrl.ngModel|date:'MMMM')"></span>
+					<span class="text-capitalize">
+						<span ng-show="!$ctrl.$$selectedText" ng-bind="($ctrl.ngModel|date:'MMMM')"></span>
+						<span ng-show="$ctrl.$$selectedText" ng-bind-html="$ctrl.$$selectedText"></span>						
+					</span>
 					<span ng-show="$ctrl.$$showYear">&nbsp;<span ng-bind="($ctrl.ngModel|date:'yyyy')"></span></span>
 				</span>
 				<span>
-					<md-icon class="mdi mdi-chevron-down md-18"></md-icon>
+					<md-icon class="mdi mdi-menu-down md-24 {{$ctrl.iconColorClass}}"></md-icon>
 				</span>
 			</div>
 		</div>

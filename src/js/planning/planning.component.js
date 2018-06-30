@@ -5,19 +5,25 @@
     	transclude: true,
     	bindings: {
     		rooms: "<",
-    		reservations: "<",
+    		reservations: "<", // mappa di prenotazioni per camera {<id_camera>: <lista_prenotazioni>}
     		view: "<?",
-    		startDate: "<?"
+    		startDate: "<?",
+    		onPeriodChange: "&?"
     	},
 		controller: PlanningCtrl,
 		templateUrl: "/tpls/planning/planning.tpl"
     });
     
     /* @ngInject */
-    function PlanningCtrl($scope, InfinitePaging){
+    function PlanningCtrl($scope, $mdMedia, InfinitePaging){
     	var ctrl = this;
     	
+    	this.$mdMedia = $mdMedia;
+    	
     	this.$onInit = function(){
+    		ctrl.$initRooms();
+    		ctrl.$setView(ctrl.view);
+    		ctrl.$setStartDate(ctrl.startDate);
     	};
     	
     	this.$onChanges = function(changesObj) {
@@ -49,20 +55,37 @@
     	
     	this.$setView = function(type) {
     		ctrl.$$currentView = _.includes(["D", "W", "M"], type) ? type : "W";
+    		ctrl.$setStartDate(ctrl.$$startDate);
     	};
     	
-    	this.$setStartDate = function(date) {
-    		ctrl.$$startDate = angular.isDate(date) ? date : (moment.isMoment(date) && date.isValid() ? date.toDate() : moment().startOf("day").toDate());
+    	this.$setStartDate = function(date, notRefresh) {
+    		date = angular.isDate(date) ? date : (moment.isMoment(date) && date.isValid() ? date.toDate() : moment().startOf("day").toDate());
     		
-    		if (ctrl.$$currentView == "W") {
-    			ctrl.$$endDate = moment(ctrl.$$startDate).add(7, "days").toDate();
+    		switch (ctrl.$$currentView) {
+    		case "D":
+    			ctrl.$$startDate = date;
+    			ctrl.$$endDate = moment(date).endOf("day").toDate();
+    			break;    		
+    		case "W":
+    			ctrl.$$startDate = date;
+    			ctrl.$$endDate = moment(date).add(6, "days").toDate();
+    			break;
+    		case "M":
+    			ctrl.$$startDate = moment(date).startOf("month").toDate();
+	    		ctrl.$$endDate = moment(date).endOf("month").toDate();
+				break;
     		}
     		
-    		ctrl.$createDates();
+    		if (!notRefresh) {
+    			ctrl.$createDates();
+    			ctrl.onPeriodChange && ctrl.onPeriodChange({$start: ctrl.$$startDate, $end: ctrl.$$endDate})
+    		}
     	};
     	
     	this.$createDates = function() {
 			ctrl.$$loading = true;
+			
+			ctrl.$$today = moment().startOf("day").toDate();
 			
 			// periodo
 			var range = moment.range(moment(ctrl.$$startDate), moment(ctrl.$$endDate));
@@ -90,15 +113,30 @@
 			// uniq months
 			months = _.uniq(months);
 			
-			var idx, monthLabel = "";
-			for (idx in months) {
+			var monthLabel = "";
+			_.forEach(months, function(month, idx) {
 				var month = moment({month: months[idx], day: 1}).format("MMMM");
-				monthLabel += idx > 0 ? " - " + month : month; 
-			}
+				monthLabel += idx > 0 ? " - " + month : month;
+			});
 			
+			ctrl.$$multiMonths = _.size(months) > 1;
 			ctrl.$$monthLabel = monthLabel;
 			
 			ctrl.$$loading = false;
+		};
+		
+		this.$getSelectedMonths = function() {
+			ctrl.$setStartDate(ctrl.$$startDate, true);
+			
+			var range = moment.range(moment(ctrl.$$startDate), moment(ctrl.$$endDate));
+			
+			var months = [];
+			
+			Array.from(range.by("days"), function(m) {
+				this.push(m.month());
+			}, months);
+			
+			return _.uniq(months);
 		};
     }
 })();
