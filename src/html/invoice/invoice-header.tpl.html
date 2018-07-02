@@ -1,10 +1,30 @@
-<div layout layout-wrap layout-padding>
-	<div flex="50" flex-xs="100" layout-padding class="no-padding">
+<ng-form name="chInvoiceForm" layout layout-wrap layout-padding>
+	<div flex="50" flex-xs="100" layout="column" layout-padding class="no-padding">
 		<div>
-			<md-whiteframe class="md-whiteframe-2dp" flex layout="column">
+			<md-whiteframe class="md-whiteframe-2dp" flex layout="column" layout-fill>
 				<md-toolbar class="md-accent auto-height" layout-padding-sm>
 		      		<div class="md-toolbar-tools auto-height" layout-padding-sm>
-			        	<span translate="billing.invoice.details"></span>
+			        	<div flex>
+			        		<span translate="billing.invoice.details"></span>
+			        	</div>
+			        	
+			        	<div>
+				        	<md-button ng-show="!$ctrl.$$invoiceDetailsEdit" class="md-icon-button" ng-click="$ctrl.$editInvoiceDetails()" 
+				        		ng-disabled="$ctrl.$$customerBillingDataEdit" aria-label="Edit invoice details">
+				        		<md-icon class="mdi mdi-pencil md-24"></md-icon>
+				        		<md-tooltip><span translate="common.edit"></span></md-tooltip>
+				        	</md-button>
+				        	
+				        	<md-button ng-show="$ctrl.$$invoiceDetailsEdit" class="md-icon-button" ng-click="$ctrl.$cancelEditInvoiceDetails()" aria-label="Cancel edit invoice details">
+				        		<md-icon class="mdi mdi-close md-24"></md-icon>
+				        		<md-tooltip><span translate="common.cancel"></span></md-tooltip>
+				        	</md-button>
+				        	
+				        	<md-button ng-show="$ctrl.$$invoiceDetailsEdit" class="md-icon-button md-primary" ng-click="$ctrl.$saveInvoiceDetails()" aria-label="Save invoice details">
+				        		<md-icon class="mdi mdi-checkbox-marked-circle-outline md-24"></md-icon>
+				        		<md-tooltip><span translate="common.confirm"></span></md-tooltip>
+				        	</md-button>
+				        </div>
 		      		</div>
 			    </md-toolbar>
 		 			
@@ -15,15 +35,34 @@
 								<span translate="billing.invoice.number"></span>
 							</div>
 							<div flex>
-								<span ng-bind="$ctrl.invoice.number"></span>&nbsp;/&nbsp;<span ng-bind="$ctrl.invoice.year"></span>
+								<span ng-show="!$ctrl.$$invoiceDetailsEdit" ng-bind="$ctrl.invoice.number"></span>
+								
+								<md-input-container ng-if="$ctrl.$$invoiceDetailsEdit" md-no-float class="width-50 minimal-input no-margin">
+									<input type="number" name="invoiceNumber" class="text-right" ng-model="$ctrl.invoice.number" 
+										placeholder="{{'billing.invoice.number'|translate}}" required>
+									
+									<div ng-messages="chInvoiceForm.invoiceNumber.$error" role="alert">
+              							<div ng-message="required"><span translate="error.required"></span></div>
+              						</div>
+								</md-input-container>
+								
+								&nbsp;/&nbsp;<span ng-bind="$ctrl.invoice.year"></span>
 							</div>
 						</div>
 						<div layout layout-padding-sm>
 							<div flex="40">
 								<span translate="billing.invoice.date"></span>
 							</div>
-							<div flex>
-								<span ng-bind="$ctrl.invoice.issueDate|date:'shortDate'"></span>
+							<div>
+								<span ng-show="!$ctrl.$$invoiceDetailsEdit" ng-bind="$ctrl.invoice.issueDate|date:'shortDate'"></span>
+								
+								<ch-date-picker ng-if="$ctrl.$$invoiceDetailsEdit"
+			  						ng-model="$ctrl.invoice.issueDate"
+			  						size="medium"
+			  						has-confirm="false"
+			  						ng-required="true"
+			  						error-messages="[{error: 'required', messageKey: 'error.required'}]">
+			  					</ch-date-picker>
 							</div>
 						</div>
 					</div>
@@ -31,8 +70,8 @@
 			</md-whiteframe>
 		</div>
 		
-		<div>
-			<md-whiteframe class="md-whiteframe-2dp" flex layout="column">
+		<div flex>
+			<md-whiteframe class="md-whiteframe-2dp" flex layout="column" layout-fill>
 				<md-toolbar class="md-accent auto-height" layout-padding-sm>
 		      		<div class="md-toolbar-tools auto-height" layout-padding-sm>
 			        	<span translate="order.details"></span>
@@ -72,17 +111,37 @@
 	</div>
 	
 	<div flex="50" flex-xs="100">
-		<md-whiteframe class="md-whiteframe-2dp" flex layout="column">
+		<md-whiteframe class="md-whiteframe-2dp" flex layout="column" layout-fill>
 			<md-toolbar class="md-accent auto-height" layout-padding-sm>
 	      		<div class="md-toolbar-tools auto-height" layout-padding-sm>
-		        	<span translate="billing.invoice.header"></span>
+		        	<div flex>
+		        		<span translate="billing.invoice.header"></span>
+		        	</div>
+		        	
+		        	<div>
+			        	<md-button ng-show="!$ctrl.$$customerBillingDataEdit" class="md-icon-button" ng-click="$ctrl.$editCustomerBillingData()" 
+			        		ng-disabled="$ctrl.$$invoiceDetailsEdit" aria-label="Edit customer billing data">
+			        		<md-icon class="mdi mdi-pencil md-24"></md-icon>
+			        		<md-tooltip><span translate="common.edit"></span></md-tooltip>
+			        	</md-button>
+			        	
+			        	<md-button ng-show="$ctrl.$$customerBillingDataEdit" class="md-icon-button" ng-click="$ctrl.$cancelEditCustomerBillingData()" aria-label="Cancel edit customer billing data">
+			        		<md-icon class="mdi mdi-close md-24"></md-icon>
+			        		<md-tooltip><span translate="common.cancel"></span></md-tooltip>
+			        	</md-button>
+			        	
+			        	<md-button ng-show="$ctrl.$$customerBillingDataEdit" class="md-icon-button md-primary" ng-click="$ctrl.$saveCustomerBillingData()" aria-label="Save customer billing data">
+			        		<md-icon class="mdi mdi-checkbox-marked-circle-outline md-24"></md-icon>
+			        		<md-tooltip><span translate="common.confirm"></span></md-tooltip>
+			        	</md-button>
+			        </div>
 	      		</div>
 		    </md-toolbar>
 	 			
 		    <div layout-padding-sm>
-		    	<div layout-padding-sm>	
+		    	<div layout-padding-sm ng-show="!$ctrl.$$customerBillingDataEdit">	
 			    	<div>
-						<span ng-bind="$ctrl.invoice.customerBillingData.name"></span>
+						<strong ng-bind="$ctrl.invoice.customerBillingData.name"></strong>
 					</div>
 					<div flex>
 						<span ng-bind="$ctrl.invoice.customerBillingData.addressInfo.address"></span>
@@ -102,7 +161,113 @@
 						<span ng-bind="$ctrl.invoice.customerBillingData.fiscalCode"></span>
 					</div>
 				</div>
+		    
+			    <div layout layout-wrap layout-padding-sm ng-if="$ctrl.$$customerBillingDataEdit">
+			    	<div flex="100">					    		   		
+						<md-input-container class="md-block minimal-input no-margin-bottom">
+					        <label><span translate="company.name">Company Name</span></label>
+					        <input type="text" name="name" ng-model="$ctrl.invoice.customerBillingData.name" required autofocus>
+				
+					        <div ng-messages="chInvoiceForm.name.$error">
+				          		<div ng-message="required"><span translate="error.required"></span></div>
+					        </div>
+				      	</md-input-container>
+				    </div>
+				    
+				    <div flex="100">
+				      	<md-input-container class="md-block minimal-input no-margin-bottom">
+					        <label><span translate="common.address">Address</span></label>
+					        <input type="text" name="address" ng-model="$ctrl.invoice.customerBillingData.addressInfo.address" required>
+					        
+					        <div ng-messages="chInvoiceForm.address.$error">
+				          		<div ng-message="required"><span translate="error.required"></span></div>
+					        </div>
+				      	</md-input-container>
+			      	</div>
+			      	
+			      	<div flex-gt-sm="20" flex="40">
+				      	<md-input-container class="md-block minimal-input no-margin-bottom">
+					        <label><span translate="common.zip">Zip Code</span></label>
+					        <input type="text" name="zip" ng-model="$ctrl.invoice.customerBillingData.addressInfo.zipcode" ng-pattern="$ctrl.REGEXP.zip" md-maxlength="5" maxlength="5" required>
+		
+					        <div ng-messages="chInvoiceForm.zip.$error">
+				          		<div ng-message="required"><span translate="error.required"></span></div>
+				          		<div ng-message="pattern"><span translate="error.field.generic.invalid"></span></div>
+				          		<div ng-message="md-maxlength"><span translate="error.field.generic.maxlength" translate-value-count="5"></span></div>
+					        </div>
+				      	</md-input-container>
+			      	</div>
+			      	
+			      	<div flex-gt-sm="30" flex="60">
+				      	<md-input-container class="md-block minimal-input no-margin-bottom">
+					        <label><span translate="common.city">City</span></label>
+					        <input type="text" name="city" ng-model="$ctrl.invoice.customerBillingData.addressInfo.city" required>
+					        
+					        <div ng-messages="chInvoiceForm.city.$error">
+				          		<div ng-message="required"><span translate="error.required"></span></div>
+					        </div>
+				      	</md-input-container>
+			      	</div>
+			      	
+			      	<div flex-gt-sm="20" flex="40">
+				      	<md-input-container class="md-block minimal-input no-margin-bottom">
+					        <label><span translate="common.province">Province</span></label>
+					        <input type="text" name="province" ng-model="$ctrl.invoice.customerBillingData.addressInfo.province" ng-pattern="$ctrl.REGEXP.province" md-maxlength="2" maxlength="2" required>
+					        
+					        <div ng-messages="chInvoiceForm.province.$error">
+				          		<div ng-message="required"><span translate="error.required"></span></div>
+				          		<div ng-message="pattern"><span translate="error.field.generic.invalid"></span></div>
+				          		<div ng-message="md-maxlength"><span translate="error.field.generic.maxlength" translate-value-count="2"></span></div>
+					        </div>
+				      	</md-input-container>
+		   			</div>
+		   			
+		   			<div flex-gt-sm="30" flex="60">
+						<md-input-container class="md-block minimal-input no-margin-bottom">
+							<label><span translate="common.country">Country</span></label>
+							<input type="text" name="country" ng-model="$ctrl.invoice.customerBillingData.addressInfo.country" required>
+							
+							<div ng-messages="chInvoiceForm.country.$error">
+				          		<div ng-message="required"><span translate="error.required"></span></div>
+					        </div>	        
+						</md-input-container>
+					</div>
+			      	
+			      	<div flex-gt-sm="50" flex="100">
+				      	<md-input-container class="md-block minimal-input no-margin-bottom">
+					        <label><span translate="common.vat">Vat</span></label>
+					        <input type="text" name="vat" ng-model="$ctrl.invoice.customerBillingData.vat" ng-pattern="$ctrl.REGEXP.vat" required>
+					        
+					        <div ng-messages="chInvoiceForm.vat.$error">
+				          		<div ng-message="required"><span translate="error.required"></span></div>
+				          		<div ng-message="pattern"><span translate="error.field.generic.invalid"></span></div>
+					        </div>
+				      	</md-input-container>
+			      	</div>
+					
+					<div flex-gt-sm="50" flex="100">
+						<div flex layout>
+							<div flex>      	
+						      	<md-input-container class="md-block minimal-input no-margin-bottom">
+							        <label><span translate="common.fiscalCode">Fiscal code</span></label>
+							        <input type="text" text-uppercase name="fiscalCode" ng-model="$ctrl.invoice.customerBillingData.fiscalCode" ng-pattern="$ctrl.REGEXP.fiscalCode" required>
+							        
+							        <div ng-messages="chInvoiceForm.fiscalCode.$error">
+							        	<div ng-message="required"><span translate="error.required"></span></div>
+						          		<div ng-message="pattern"><span translate="error.field.generic.invalid"></span></div>
+							        </div>
+						      	</md-input-container>
+					     	</div>
+					     	<div>
+					     		<md-button class="md-icon-button no-margin" ng-click="$ctrl.invoice.customerBillingData.fiscalCode = $ctrl.invoice.customerBillingData.vat" aria-label="Copy from vat">
+					     			<md-icon class="mdi mdi-content-copy md-18"></md-icon>
+					     			<md-tooltip><span translate="common.vat.copy.from"></span></md-tooltip>
+					     		</md-button>
+					     	</div>
+				      	</div>
+			      	</div>
+				</div>
 		    </div>			
 		</md-whiteframe>
 	</div>
-</div>
+</ng-form>

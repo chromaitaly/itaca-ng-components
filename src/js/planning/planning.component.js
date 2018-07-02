@@ -8,7 +8,8 @@
     		reservations: "<", // mappa di prenotazioni per camera {<id_camera>: <lista_prenotazioni>}
     		view: "<?",
     		startDate: "<?",
-    		onPeriodChange: "&?"
+    		hideLegend: "<?",
+    		onPeriodChange: "&"
     	},
 		controller: PlanningCtrl,
 		templateUrl: "/tpls/planning/planning.tpl"
@@ -31,12 +32,12 @@
     			ctrl.$initRooms();
     		}
     		
-    		if (changesObj.startDate) {
-    			ctrl.$setStartDate(ctrl.startDate);
-    		}
-    		
     		if (changesObj.view) {
     			ctrl.$setView(ctrl.view);
+    		}
+    		
+    		if (changesObj.startDate) {
+    			ctrl.$setStartDate(ctrl.startDate);
     		}
     	};
     	
