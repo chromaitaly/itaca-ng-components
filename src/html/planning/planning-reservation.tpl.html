@@ -1,0 +1,43 @@
+<div class="ch-planning-reservation" ng-class="{
+		'ch-planning-reservation-continue-start': $ctrl.reservation.$startEarlier, 
+		'ch-planning-reservation-continue-end': $ctrl.reservation.$endLater
+	}" ng-style="$ctrl.reservation.$position">
+	
+	<div class="ch-planning-reservation-content bg-blue-sea">
+		<md-button class="text-small" ng-class="{'no-padding-x-sides': $ctrl.reservation.$days < 2}" 
+			ng-click="$ctrl.$openReservation(reservation)" aria-label="Open reservation details">
+			<div layout-padding-sm>
+				<div layout layout-wrap class="no-padding-x-sides" ng-class="{'no-padding': $ctrl.$mdMedia('gt-xs')}">
+					<div hide-xs>
+						<md-icon class="{{$ctrl.$$portalIcons[$ctrl.reservation.source]}} text-white" 
+							ng-class="{'channel-icon-mini': $ctrl.reservation.$days > 1, 'channel-icon-micro': $ctrl.reservation.$days < 2}"></md-icon>&nbsp;
+					</div>
+					
+					<div flex layout layout-align="center center">
+						<strong>
+							<span ng-bind="$ctrl.reservation.guest.name"></span>&nbsp;<span ng-bind="$ctrl.reservation.guest.surname"></span>
+						</strong>
+						
+						<span ng-if="$ctrl.reservation.$days > 1" class="text-small">&nbsp;
+							(<ch-people-summary
+								people="$ctrl.reservation.people" 
+								extra-people="$ctrl.reservation.extraPeople" 
+								no-details="true">
+							</ch-people-summary>)
+						</span>
+					</div>
+				</div>
+				<div class="no-padding-x-sides no-padding-top">
+					<strong>
+						<span ng-bind="$ctrl.reservation.checkin|date:'shortDate'"></span>&nbsp;-&nbsp;
+						<span ng-bind="$ctrl.reservation.checkout|date:'shortDate'"></span>
+					</strong>
+				</div>
+			</div>
+			
+			<md-tooltip>
+				<span translate="common.details.view"></span>
+			</md-tooltip>
+		</md-button>
+	</div>
+</div>

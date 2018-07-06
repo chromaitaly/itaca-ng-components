@@ -15,11 +15,10 @@
 	});
 
 	/* @ngInject */
-	function PlanningRoomCtrl($scope, $mdMedia, IconUtils) {
+	function PlanningRoomCtrl($scope, $mdMedia) {
 		var ctrl = this;
 		
 		this.$mdMedia = $mdMedia;
-		this.$$portalIcons = IconUtils.portalIcons();
 		
 		this.$onInit = function() {
 			ctrl.$initDates();
@@ -53,11 +52,12 @@
 		};
 		
 		this.$initReservations = function() {
-			var start = moment(ctrl.$$startDate);
-			var end = moment(ctrl.$$endDate);
+			var start = moment(ctrl.$$startDate).startOf("day");
+			var end = moment(ctrl.$$endDate).startOf("day");
 			var daySize = 100/_.size(ctrl.$$viewDates);
 			var h = 50; // altezza div prenotazione
 			var startTop = 15;
+			var padding = 3;
 			
 			_.forEach(ctrl.$$viewDates, function(viewDate) {
 				viewDate.$reservations = _.filter(ctrl.reservations, function(res, index) {
@@ -72,20 +72,27 @@
 						return false;
 					}
 					
-					var checkin = moment(res.checkin);
-					var checkout = moment(res.checkout);
+					var checkin = moment(res.checkin).startOf("day");
+					var checkout = moment(res.checkout).startOf("day");
 					res.$startEarlier = checkin.isBefore(start, "days");
 					res.$endLater = checkout.isAfter(end, "days");
-					res.$days = Math.abs((res.$startEarlier ? start : checkin).diff(res.$endLater ? end : checkout, "days")) || 1;
+					res.$days = Math.abs((res.$endLater ? moment(end).add(1, "days") : checkout).diff(res.$startEarlier ? start : checkin, "days")) || 1;
 					
 					if (checkin.isSame(moment(viewDate.date), "days") || (res.$startEarlier && moment(viewDate.date).isSame(start, "days"))) {
 						// posizionamento prenotazione (in %) 
 						res.$position = {
-//							left: daySize * Math.abs(start.diff(checkin, "days")),
 							width: daySize * res.$days + "%"
 //							top: h * index + "px"			
 						};
 						
+						if (!res.$startEarlier) {
+							var daysFromStart = checkin.diff(start, "days");
+							if (daysFromStart >= 0) {
+								res.$position.left = "calc(" + (daySize * daysFromStart) + "% + " + padding + "px)";
+							}
+						}
+						
+						res.$position.width = "calc(" + (daySize * res.$days) + "% - " + (res.$startEarlier || res.$endLater ? padding : padding*2) + "px)";
 						
 						return true;
 					} else {
@@ -98,6 +105,5 @@
 				});		
 			});
 		};
-		
 	}
 })();

@@ -18,6 +18,12 @@
 				</md-button>
 			</div>
 			<div>
+				<md-button class="md-icon-button" ng-click="$ctrl.$goToToday()" aria-label="Go to today">
+					<md-icon class="mdi mdi-calendar-today md-24 text-white"></md-icon>
+					<md-tooltip><span translate="date.today.go.to"></span></md-tooltip>
+				</md-button>
+			</div>
+			<div>
 				<md-menu md-position-mode="target bottom">
 			 		<md-button ng-class="{'no-padding no-margin-x-sides minimal-button': !$ctrl.$mdMedia('gt-sm')}"
 			 			ng-click="$mdMenu.open($event)" aria-label="Switch view">

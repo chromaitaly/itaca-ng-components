@@ -9,7 +9,8 @@
     		view: "<?",
     		startDate: "<?",
     		hideLegend: "<?",
-    		onPeriodChange: "&"
+    		onPeriodChange: "&?",
+			onViewChange: "&?"
     	},
 		controller: PlanningCtrl,
 		templateUrl: "/tpls/planning/planning.tpl"
@@ -57,6 +58,7 @@
     	this.$setView = function(type) {
     		ctrl.$$currentView = _.includes(["D", "W", "M"], type) ? type : "W";
     		ctrl.$setStartDate(ctrl.$$startDate);
+    		ctrl.onViewChange && ctrl.onViewChange({$view: ctrl.$$currentView});
     	};
     	
     	this.$setStartDate = function(date, notRefresh) {
@@ -64,11 +66,11 @@
     		
     		switch (ctrl.$$currentView) {
     		case "D":
-    			ctrl.$$startDate = date;
+    			ctrl.$$startDate = moment(date).startOf("day").toDate();
     			ctrl.$$endDate = moment(date).endOf("day").toDate();
     			break;    		
     		case "W":
-    			ctrl.$$startDate = date;
+    			ctrl.$$startDate = moment(date).startOf("day").toDate();
     			ctrl.$$endDate = moment(date).add(6, "days").toDate();
     			break;
     		case "M":
