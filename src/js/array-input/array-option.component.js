@@ -9,6 +9,7 @@
     	bindings: {
     		ngValue: "<",
     		ngSelected: "<",
+    		ngDisabled: "<?",
 	  		buttonClass: "@",
 	  		iconClass : "@",
 	  		selectedIconClass : "@",
@@ -19,7 +20,7 @@
 		controller: ArrayOptionCtrl,
 		template: 
 	    	"<md-button class=\"{{$ctrl.buttonClass}}\" ng-class=\"$ctrl.$$option.selected ? $ctrl.selectedClass : ''\" " +
-	    		"ng-click=\"$ctrl.$toggle()\" aria-label=\"Toggle option\">" +
+	    		"ng-click=\"$ctrl.$toggle()\" aria-label=\"Toggle option\" ng-disabled=\"$ctrl.ngDisabled\">" +
 	    		"<div layout layout-padding-sm layout-align=\"center center\">" +
 	    			"<div ng-if=\"!$ctrl.$$hideSelectedIcon\" class=\"no-padding\">" +
 			    		"<md-icon ng-if=\"$ctrl.iconClass\" ng-show=\"!$ctrl.$$option.selected || !$ctrl.selectedIconClass\" " +
@@ -48,6 +49,8 @@
 			ctrl.$$hideSelectedIcon = ctrl.chArrayInputCtrl.hideSelectedIcon;			
 			ctrl.$$option =  {value: ctrl.ngValue};
 			ctrl.$manageSelected();
+			
+			ctrl.ngDisabled = _.isBoolean(ctrl.ngDisabled) ? ctrl.ngDisabled : false;
 		};
 		
 		this.$postLink = function () {
