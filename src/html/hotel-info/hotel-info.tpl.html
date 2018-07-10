@@ -1,0 +1,229 @@
+<ng-form name="$ctrl.hotelForm">
+	<div class="layout-padding" ng-if="($ctrl.type == 'ONE' || $ctrl.type == 'MORE') && !$ctrl.isDisabled">
+		<md-input-container class="md-block no-padding">
+			<label><span translate="hotel.name"></span><em ng-if="!$ctrl.nameRequired">&nbsp;(<span class="text-lowercase" translate="common.optional"></span>)</em></label>
+			<input name="name" ng-model="$ctrl.hotel.name" ng-disabled="$ctrl.isDisabled" ng-required="$ctrl.nameRequired">
+			<div ng-messages="$ctrl.hotelForm.name.$error">
+          		<div ng-message="required"><span translate="error.required"></span></div>
+	        </div>
+	        <div>
+	        	<small class="text-gray-light" translate="join.quote.hotel.name.text"></small>
+	        </div>	        
+		</md-input-container>
+		<div class="bg-info border-radius text-bold text-white" th:if="${#strings.equals(@mainProps.joinType,'QUOTE')}">
+			<md-icon class="mdi mdi-information-outline text-white"></md-icon>
+			<span translate="join.quote.hotel.name.quote.text" translate-values="{company: $ctrl.appOptions.about.name}"></span>
+		</div>
+	</div>
+	
+	<div class="layout-row layout-wrap layout-align-center-center layout-align-gt-sm-start-center" ng-if="!$ctrl.isDisabled">
+		<div class="flex-100 flex-gt-sm-60 layout-padding">
+			<md-input-container class="md-block no-padding">
+	    		<label>
+	    			<span translate="hotel.type.select">Type</span>
+	    			<span ng-if="$ctrl.type == 'NON_RECEPTIVE'">&nbsp;(<span translate="common.optional"></span>)</span>
+	    		</label>
+				<md-select name="hotelType" ng-model="$ctrl.hotel.type" ng-required="$ctrl.type != 'NON_RECEPTIVE'" aria-label="Hotel Type" ng-disabled="$ctrl.isDisabled">
+	          		<md-option ng-repeat="type in $ctrl.$hotelTypes" value="{{::type}}">
+	          			<span translate="{{::('hotel.type.'+ type)}}"></span>
+	          		</md-option>
+		        </md-select>
+		        <div ng-messages="$ctrl.hotelForm.hotelType.$error">
+	          		<div ng-message="required"><span translate="error.required"></span></div>
+		        </div>
+       		</md-input-container>	
+		</div>
+		<div class="flex-100 flex-gt-sm-40">
+			<div class="bg-info-light border-radius md-padding text-gray-3" ng-if="$ctrl.hotel.type">
+				<small translate="{{('hotel.type.'+ $ctrl.hotel.type)}}"></small>
+				<p translate="{{('hotel.type.'+ $ctrl.hotel.type +'.description')}}"></p>
+			</div>
+		</div>
+	</div>
+	
+	<div class="layout-row layout-wrap layout-align-center-center layout-align-gt-sm-start-center" ng-if="!$ctrl.isDisabled">
+		<div class="layout-column flex-100 layout-padding" ng-if="$ctrl.hotel.type == 'APARTMENT' || $ctrl.hotel.type == 'COUNTRY_HOUSE' || $ctrl.hotel.type == 'VILLA' || $ctrl.hotel.type == 'HOLIDAY_HOME' || $ctrl.hotel.type == 'CHALET' || $ctrl.hotel.type == 'LODGE' || $ctrl.hotel.type == 'RIAD'">
+			<div class="layout-row layout-wrap layout-align-center-center layout-align-gt-sm-start-center no-padding">
+	          	<div class="layout-column flex flex-xs-100 flex-sm-100">
+					<span translate="hotel.entire.accommodation.question"></span>
+		   		</div>
+		   		<div>
+		   			<md-button ng-click="$ctrl.$setApartment(false)" aria-label="private rooms" ng-class="!$ctrl.$$isApartment ? 'bg-success' : 'only-border'">
+						<md-icon class="mdi mdi-checkbox-marked-circle-outline text-white md-24" ng-if="!$ctrl.$$isApartment"></md-icon>
+						<span translate="hotel.private.rooms"></span>
+					</md-button>
+					<md-button ng-click="$ctrl.$setApartment(true)" aria-label="only appartment" ng-class="$ctrl.$$isApartment ? 'bg-success' : 'only-border'">
+						<md-icon class="mdi mdi-checkbox-marked-circle-outline text-white md-24" ng-if="$ctrl.$$isApartment"></md-icon>
+						<span translate="hotel.entire.accommodation"></span>
+					</md-button>
+		   		</div>
+			</div>
+		</div>
+	
+		<div class="flex-100 flex-gt-sm-60 layout-padding" ng-if="!$ctrl.$$isApartment && ($ctrl.hotel.type == 'APARTMENT' || $ctrl.hotel.type == 'COUNTRY_HOUSE' || $ctrl.hotel.type == 'VILLA' || $ctrl.hotel.type == 'HOLIDAY_HOME' || $ctrl.hotel.type == 'CHALET' || $ctrl.hotel.type == 'LODGE' || $ctrl.hotel.type == 'RIAD')">
+			<span class="no-padding" translate="hotel.private.rooms.question"></span>
+		</div>
+		<div class="flex-100 flex-gt-sm-40 layout-padding" ng-if="!$ctrl.$$isApartment">
+			<md-input-container class="md-block no-padding">
+	    		<label>
+	    			<span translate="room.rooms.number">Number</span>
+	    			<span ng-if="$ctrl.type == 'NON_RECEPTIVE'">&nbsp;(<span translate="common.optional"></span>)</span>
+	    		</label>
+				<md-select name="hotelRooms" ng-model="$ctrl.hotel.roomsNumber" ng-required="$ctrl.type != 'NON_RECEPTIVE'" aria-label="Hotel rooms"  ng-disabled="$ctrl.isDisabled">
+	          		<md-option ng-repeat="n in [1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20]" value="{{::n}}">
+	          			<span>{{::n}}&nbsp;</span>
+	          			<span ng-if="n == 1" translate="room.room"></span>
+	          			<span ng-if="n != 1" translate="room.rooms"></span>
+	          		</md-option>
+	          		<md-option  value="21">
+	          			<span>20+&nbsp;</span>
+	          			<span translate="room.rooms"></span>
+	          		</md-option>
+		        </md-select>
+		        <div ng-messages="$ctrl.hotelForm.hotelRooms.$error">
+	          		<div ng-message="required"><span translate="error.required"></span></div>
+		        </div>
+       		</md-input-container>	
+		</div>
+		
+		<div class="flex-100 flex-gt-sm-40 layout-padding" ng-if="$ctrl.hotel.type == 'HOTEL'">
+			<md-input-container class="md-block no-padding">
+	    		<label>
+	    			<span translate="common.stars">Number</span>
+	    			<span ng-if="$ctrl.type == 'NON_RECEPTIVE'">&nbsp;(<span translate="common.optional"></span>)</span>
+	    		</label>
+				<md-select name="hotelStars" ng-model="$ctrl.hotel.stars" ng-required="$ctrl.type != 'NON_RECEPTIVE'" aria-label="Hotel stars" ng-disabled="$ctrl.isDisabled">
+	          		<md-option ng-repeat="n in [1,2,3,4,5]" value="{{::n}}">
+	          			<span>{{::n}}&nbsp;</span>
+	          			<span ng-if="n == 1" translate="common.star"></span>
+	          			<span ng-if="n != 1" translate="common.stars"></span>
+	          		</md-option>
+		        </md-select>
+		        <div ng-messages="$ctrl.hotelForm.hotelStars.$error">
+	          		<div ng-message="required"><span translate="error.required"></span></div>
+		        </div>
+       		</md-input-container>	
+		</div>
+		
+	</div>
+	
+	<div ng-if="$ctrl.isDisabled" class="layout-row layout-wrap layout-padding">
+    	<div class="layout-column flex-100 flex-gt-sm-25">
+			<small><span translate="hotel.type"></span>:&nbsp;</small>
+			<strong class="md-title text-bold">{{('hotel.type.'+ $ctrl.hotel.type |translate)}}</strong>
+		</div>
+		
+		<div class="layout-column flex-100" ng-class="$ctrl.hotel.type == 'HOTEL' ? 'flex-gt-sm-50' : 'flex-gt-sm-75'">
+			<small><span translate="common.name"></span>:&nbsp;</small>
+			<strong class="md-title text-bold">
+				<span ng-if="$ctrl.hotel.name">{{::$ctrl.hotel.name}}</span>
+				<span ng-if="!$ctrl.hotel.name" translate="join.quote.list.hotel.unnamed"></span>
+			</strong>
+		</div>
+		
+		<div class="layout-column flex-100 flex-gt-sm-25" ng-if="$ctrl.hotel.type == 'HOTEL'">
+			<small><span translate="common.stars"></span>:&nbsp;</small>
+			<span>
+				<md-icon class="mdi mdi-star text-yellow md-24 material-icons" ng-repeat="n in $ctrl.stars"></md-icon>
+			</span>
+		</div>
+		
+		<div class="layout-column flex-100 flex-gt-sm-25" ng-if="!$ctrl.$$isApartment">
+			<small><span translate="room.rooms.number"></span>:&nbsp;</small>
+			<strong class="md-title text-bold">
+				<span>{{::$ctrl.hotel.roomsNumber}}&nbsp;</span>
+				<span ng-if="$ctrl.hotel.roomsNumber == 1" translate="room.room"></span>
+       			<span ng-if="$ctrl.hotel.roomsNumber != 1" translate="room.rooms"></span>
+			</strong>
+		</div>
+		
+		<div class="layout-column flex-100 flex-gt-sm-75">
+			<small><span translate="common.address"></span>:&nbsp;</small>
+			<strong class="md-title text-bold">
+				<span class="text-capitalize">{{::$ctrl.hotel.addressInfo.address}},&nbsp;{{::$ctrl.hotel.addressInfo.city}}&nbsp;{{::$ctrl.hotel.addressInfo.zipcode}},&nbsp;{{::$ctrl.hotel.addressInfo.country}}</span>
+			</strong>
+		</div>
+	</div>
+	
+	<div class="layout-row layout-wrap">
+		<div class="layout-column flex-100" ng-if="!$ctrl.isDisabled">
+			<ch-address-autocomplete ng-model="$ctrl.hotel.addressInfo" is-required="true" dropdown-position="BOTTOM" clear-button="true" is-disabled="$ctrl.isDisabled"></ch-address-autocomplete>
+			
+			<div class="layout-row layout-wrap" ng-if="$ctrl.hotel.addressInfo.addressComplete">
+				<div class="layout-padding layout-column flex-xs-100 flex-sm-100 flex no-padding-y-sides" ng-if="::(!$ctrl.hotel.addressInfo.district)">
+					<md-input-container class="md-block no-padding">
+						<label class="text-capitalize"><span translate="common.district"></span></label>
+						<input name="district" ng-model="$ctrl.hotel.addressInfo.district">
+						<div ng-messages="$ctrl.hotelForm.district.$error">
+			          		<div ng-message="required"><span translate="error.required"></span></div>
+				        </div>
+					</md-input-container>
+				</div>
+			
+				<div class="layout-padding layout-column flex-xs-100 flex-sm-100 flex no-padding-y-sides" ng-if="::(!$ctrl.hotel.addressInfo.city) && !$ctrl.isDisabled">
+					<md-input-container class="md-block no-padding">
+						<label class="text-capitalize"><span translate="common.city"></span></label>
+						<input name="city" ng-model="$ctrl.hotel.addressInfo.city">
+						<div ng-messages="$ctrl.hotelForm.city.$error">
+			          		<div ng-message="required"><span translate="error.required"></span></div>
+				        </div>
+					</md-input-container>
+				</div>
+	
+				<div class="layout-padding layout-column flex-xs-100 flex-sm-100 flex no-padding-y-sides" ng-if="::(!$ctrl.hotel.addressInfo.zipcode) && !$ctrl.isDisabled">
+					<md-input-container class="md-block no-padding">
+						<label class="text-capitalize"><span translate="common.zipcode"></span></label>
+						<input name="zipcode" ng-model="$ctrl.hotel.addressInfo.zipcode">
+						<div ng-messages="$ctrl.hotelForm.zipcode.$error">
+			          		<div ng-message="required"><span translate="error.required"></span></div>
+				        </div>
+					</md-input-container>
+				</div>
+				
+				<div class="layout-padding layout-column flex-xs-100 flex-sm-100 flex no-padding-y-sides" ng-if="::(!$ctrl.hotel.addressInfo.province) && !$ctrl.isDisabled">
+					<md-input-container class="md-block no-padding">
+						<label class="text-capitalize"><span translate="common.province"></span></label>
+						<input name="province" ng-model="$ctrl.hotel.addressInfo.province">
+						<div ng-messages="$ctrl.hotelForm.province.$error">
+			          		<div ng-message="required"><span translate="error.required"></span></div>
+				        </div>
+					</md-input-container>
+				</div>
+				
+				<div class="layout-padding layout-column flex-xs-100 flex-sm-100 flex no-padding-y-sides" ng-if="::(!$ctrl.hotel.addressInfo.country) && !$ctrl.isDisabled">
+					<md-input-container class="md-block no-padding">
+						<label class="text-capitalize"><span translate="common.country"></span></label>
+						<input name="country" ng-model="$ctrl.hotel.addressInfo.country">
+						<div ng-messages="$ctrl.hotelForm.country.$error">
+			          		<div ng-message="required"><span translate="error.required"></span></div>
+				        </div>
+					</md-input-container>
+				</div>
+			</div>
+		</div>
+		
+		<div id="maps" class="layout-column flex-100" ng-if="$ctrl.hotel.addressInfo.lat && $ctrl.hotel.addressInfo.lng">
+		
+			<div class="md-padding text-center no-padding-top wow slideInLeft text-success" ng-if="!$ctrl.isDisabled">
+				<md-icon class="mdi mdi-checkbox-marked-circle-outline text-success"></md-icon>
+				<span translate="join.quote.hotel.address.ok"></span>
+			</div>
+		
+			<ng-map zoom="15" center="{{$ctrl.hotel.addressInfo.lat}},{{$ctrl.hotel.addressInfo.lng}}">
+		    	<marker position="{{$ctrl.hotel.addressInfo.lat}},{{$ctrl.hotel.addressInfo.lng}}" icon="{{$ctrl.mapMarker}}">
+		    	</marker>
+			</ng-map>
+			<div class="layout-padding bg-info md-margin no-margin-x-sides border-radius wow slideInUp" ng-if="!$ctrl.isDisabled">
+				<span class="no-padding" translate="join.quote.hotel.address.label"></span>
+			</div>
+		</div>
+		<div class="layout-column flex-100" ng-if="!$ctrl.hotel.addressInfo.lat || !$ctrl.hotel.addressInfo.lng">
+		
+			<div class="md-padding bg-info layout-align-start-center layout-row md-margin no-margin-x-sides border-radius wow slideInUp">
+				<span class="flex-xs-100 flex-sm-100"><md-icon class="mdi mdi-map-marker-radius md-48 text-white"></md-icon></span>
+				<span class="flex-xs-100 flex-sm-100" translate="join.quote.hotel.address.info"></span>
+			</div>
+		
+		</div>
+	</div>
+</ng-form>
