@@ -1,5 +1,5 @@
 <ng-form name="$ctrl.hotelForm">
-	<div class="layout-padding" ng-if="($ctrl.type == 'ONE' || $ctrl.type == 'MORE') && !$ctrl.isDisabled">
+	<div class="layout-padding" ng-if="($ctrl.type == 'HOTEL' || $ctrl.type == 'MULTIPLE_HOTELS') && !$ctrl.isDisabled">
 		<md-input-container class="md-block no-padding">
 			<label><span translate="hotel.name"></span><em ng-if="!$ctrl.nameRequired">&nbsp;(<span class="text-lowercase" translate="common.optional"></span>)</em></label>
 			<input name="name" ng-model="$ctrl.hotel.name" ng-disabled="$ctrl.isDisabled" ng-required="$ctrl.nameRequired">
@@ -10,8 +10,8 @@
 	        	<small class="text-gray-light" translate="join.quote.hotel.name.text"></small>
 	        </div>	        
 		</md-input-container>
-		<div class="bg-info border-radius text-bold text-white" th:if="${#strings.equals(@mainProps.joinType,'QUOTE')}">
-			<md-icon class="mdi mdi-information-outline text-white"></md-icon>
+		<div class="bg-info border-radius layout-padding text-white" th:if="${#strings.equals(@mainProps.joinType,'QUOTE')}">
+			<md-icon class="mdi mdi-information-outline text-white no-padding"></md-icon>
 			<span translate="join.quote.hotel.name.quote.text" translate-values="{company: $ctrl.appOptions.about.name}"></span>
 		</div>
 	</div>
@@ -21,15 +21,18 @@
 			<md-input-container class="md-block no-padding">
 	    		<label>
 	    			<span translate="hotel.type.select">Type</span>
-	    			<span ng-if="$ctrl.type == 'NON_RECEPTIVE'">&nbsp;(<span translate="common.optional"></span>)</span>
+	    			<span ng-if="$ctrl.type == 'BUILDING'">&nbsp;(<span translate="common.optional"></span>)</span>
 	    		</label>
-				<md-select name="hotelType" ng-model="$ctrl.hotel.type" ng-required="$ctrl.type != 'NON_RECEPTIVE'" aria-label="Hotel Type" ng-disabled="$ctrl.isDisabled">
+				<md-select name="hotelType" ng-model="$ctrl.hotel.type" ng-required="$ctrl.type != 'BUILDING'" aria-label="Hotel Type" ng-disabled="$ctrl.isDisabled">
 	          		<md-option ng-repeat="type in $ctrl.$hotelTypes" value="{{::type}}">
 	          			<span translate="{{::('hotel.type.'+ type)}}"></span>
 	          		</md-option>
 		        </md-select>
 		        <div ng-messages="$ctrl.hotelForm.hotelType.$error">
 	          		<div ng-message="required"><span translate="error.required"></span></div>
+		        </div>
+		        <div ng-if="$ctrl.type == 'BUILDING'">
+		        	<small class="text-gray-light" translate="join.quote.hotel.type.text"></small>
 		        </div>
        		</md-input-container>	
 		</div>
@@ -67,9 +70,9 @@
 			<md-input-container class="md-block no-padding">
 	    		<label>
 	    			<span translate="room.rooms.number">Number</span>
-	    			<span ng-if="$ctrl.type == 'NON_RECEPTIVE'">&nbsp;(<span translate="common.optional"></span>)</span>
+	    			<span ng-if="$ctrl.type == 'BUILDING'">&nbsp;(<span translate="common.optional"></span>)</span>
 	    		</label>
-				<md-select name="hotelRooms" ng-model="$ctrl.hotel.roomsNumber" ng-required="$ctrl.type != 'NON_RECEPTIVE'" aria-label="Hotel rooms"  ng-disabled="$ctrl.isDisabled">
+				<md-select name="hotelRooms" ng-model="$ctrl.hotel.roomsNumber" ng-required="$ctrl.type != 'BUILDING'" aria-label="Hotel rooms"  ng-disabled="$ctrl.isDisabled">
 	          		<md-option ng-repeat="n in [1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20]" value="{{::n}}">
 	          			<span>{{::n}}&nbsp;</span>
 	          			<span ng-if="n == 1" translate="room.room"></span>
@@ -90,9 +93,9 @@
 			<md-input-container class="md-block no-padding">
 	    		<label>
 	    			<span translate="common.stars">Number</span>
-	    			<span ng-if="$ctrl.type == 'NON_RECEPTIVE'">&nbsp;(<span translate="common.optional"></span>)</span>
+	    			<span ng-if="$ctrl.type == 'BUILDING'">&nbsp;(<span translate="common.optional"></span>)</span>
 	    		</label>
-				<md-select name="hotelStars" ng-model="$ctrl.hotel.stars" ng-required="$ctrl.type != 'NON_RECEPTIVE'" aria-label="Hotel stars" ng-disabled="$ctrl.isDisabled">
+				<md-select name="hotelStars" ng-model="$ctrl.hotel.stars" ng-required="$ctrl.type != 'BUILDING'" aria-label="Hotel stars" ng-disabled="$ctrl.isDisabled">
 	          		<md-option ng-repeat="n in [1,2,3,4,5]" value="{{::n}}">
 	          			<span>{{::n}}&nbsp;</span>
 	          			<span ng-if="n == 1" translate="common.star"></span>

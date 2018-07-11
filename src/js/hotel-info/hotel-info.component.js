@@ -23,7 +23,7 @@
     		ctrl.navigator = Navigator;
     		
     		ctrl.hotel = ctrl.hotel || {};
-    		ctrl.type = ctrl.type || 'ONE';
+    		ctrl.type = ctrl.type || 'HOTEL';
     		
     		ctrl.isDisabled = _.isBoolean(ctrl.isDisabled) ? ctrl.isDisabled : false;
     		
