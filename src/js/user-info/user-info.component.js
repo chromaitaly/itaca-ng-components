@@ -6,6 +6,7 @@
 			user: "<",
 			isDisabled: "<?",
 			isClickable: "<?",
+			hideTitle: "<?"
 		},
 		controller: UserInfoCtrl,
 		templateUrl : "/tpls/user-info/user-info.tpl",
@@ -24,6 +25,7 @@
     		
     		ctrl.isDisabled = _.isBoolean(ctrl.isDisabled) ? ctrl.isDisabled : false;
     		ctrl.isClickable = _.isBoolean(ctrl.isClickable) ? ctrl.isClickable : false;
+    		ctrl.hideTitle = _.isBoolean(ctrl.hideTitle) ? ctrl.hideTitle : false;
     		
     		ctrl.$adeguateUser();
     	};
