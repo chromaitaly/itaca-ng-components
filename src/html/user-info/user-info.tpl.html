@@ -1,0 +1,86 @@
+<ng-form name="userForm">
+	<div class="layout-padding">
+		<h2 class="md-title no-margin no-padding">
+			<md-icon class="mdi mdi-account"></md-icon>
+			<span translate="join.quote.you.title"></span>
+		</h2>
+		<h4 class="md-body-1 no-margin no-padding text-gray-7">
+			<span ng-if="!$ctrl.isDisabled" translate="join.quote.you.subtitle"></span>
+			<span ng-if="$ctrl.isDisabled" translate="join.quote.you.subtitle.alt"></span>
+		</h4>
+	</div>
+	
+	<div class="layout-row layout-wrap layout-padding" ng-if="!$ctrl.isDisabled">	
+		<div class="flex-100 flex-gt-sm-50">
+  			<md-input-container class="md-block">
+				<label translate="common.name">Name</label>
+				<input type="text" name="name" ng-model="$ctrl.user.name" required ng-disabled="$ctrl.isDisabled">
+				<div ng-messages="userForm.name.$error">
+	          		<div ng-message="required"><span translate="error.required"></span></div>
+		        </div>						        
+			</md-input-container>
+		</div>
+		
+		<div class="flex-100 flex-gt-sm-50">
+  			<md-input-container class="md-block">
+				<label translate="common.surname">Surname</label>
+				<input type="text" name="surname" ng-model="$ctrl.user.surname" required  ng-disabled="$ctrl.isDisabled">
+				<div ng-messages="userForm.surname.$error">
+	          		<div ng-message="required"><span translate="error.required"></span></div>
+		        </div>
+			</md-input-container>
+		</div>
+		
+		<div class="flex-100 flex-gt-sm-50">
+			<ch-phone-input 
+				label="{{'contact.phone.primary'|translate}}"
+				prefix-label="{{'common.prefix'|translate}}"
+				search-placeholder="{{('search.search'|translate) + '...'}}"
+				input-name="phone"
+				ng-model="$ctrl.user.phone"
+				ng-pattern="$ctrl.REGEXP.phone"
+				ng-required="true"
+				ng-disabled="$ctrl.isDisabled"
+				prefix-error-messages="[{error: 'required', message: ('error.required'|translate)}]"
+				error-messages="[{error: 'pattern', message: ('error.phone.number'|translate)}]"></ch-phone-input>
+		</div>
+
+	   	<div class="flex-100 flex-gt-sm-50">
+		    <ch-country-autocomplete 
+		    	ng-model="$ctrl.user.countryIso" 
+		    	is-required="true" 
+		    	dropdown-position="BOTTOM" 
+		    	clear-button="true"
+		    	current-lang="$ctrl.appOptions.currentLang"
+		    	is-disabled="$ctrl.isDisabled">
+		    </ch-country-autocomplete>
+		</div>
+      	
+	</div>
+	<div ng-if="$ctrl.isDisabled"  class="layout-row layout-wrap layout-padding">
+		<div class="layout-column flex-100 flex-gt-sm-50">
+			<small><span translate="common.name"></span>:&nbsp;</small>
+			<strong class="md-title text-bold">{{::$ctrl.user.name}}</strong>
+		</div>
+		<div class="layout-column flex-100 flex-gt-sm-50">
+			<small><span translate="common.surname"></span>:&nbsp;</small>
+			<strong class="md-title text-bold">{{::$ctrl.user.surname}}</strong>
+		</div>
+		<div class="layout-column flex-100 flex-gt-sm-50">
+			<small><span translate="common.email"></span>:&nbsp;</small>
+			<strong class="md-title text-bold" ng-if="!$ctrl.isClickable">{{::$ctrl.user.email}}</strong>
+			<a ng-href="{{'mailto:' + $ctrl.user.email}}" title="send email" class="text-blue-sea" ng-if="$ctrl.isClickable"><strong class="md-title text-bold">{{::$ctrl.user.email}}</strong></a>
+		</div>
+		<div class="layout-column flex-100 flex-gt-sm-25">
+			<small><span translate="common.phone"></span>:&nbsp;</small>
+			<strong class="md-title text-bold" ng-if="!$ctrl.isClickable">{{::$ctrl.user.phone}}</strong>
+			<a ng-href="{{'tel:' + $ctrl.user.phone}}" title="call" class="text-blue-sea" ng-if="$ctrl.isClickable"><strong class="md-title text-bold">{{::$ctrl.user.phone}}</strong></a>
+		</div>
+		<div class="layout-column flex-100 flex-gt-sm-25">
+			<small><span translate="common.nationality"></span>:&nbsp;</small>
+			<strong class="md-title text-bold">
+				<ch-country-iso iso="$ctrl.user.countryIso" current-lang="$ctrl.appOptions.currentLang"></ch-country-iso>
+			</strong>
+		</div>
+	</div>
+</ng-form>

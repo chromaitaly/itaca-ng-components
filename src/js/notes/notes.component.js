@@ -1,10 +1,11 @@
 (function() {
 	'use strict';
 	
-	angular.module("itaca-cp").component("chNotes", {
+	angular.module("itaca.component").component("chNotes", {
 		bindings: {
 			notes: "<?",
 			ngDisabled: "<?",
+			label: "@",
 			onEdit: "&?",
 			onConfirm: "&?",
 			onCancel: "&?",
@@ -15,7 +16,7 @@
 	});
 	
 	 /* @ngInject */
-	function NotesCtrl($scope, $mdMedia, Locale, REGEXP, AppOptions, Navigator, Notification, Loading, TempHotels) {
+	function NotesCtrl($scope, $mdMedia, $translate, REGEXP, AppOptions, Navigator, Notification, Loading, TempHotels) {
 		var ctrl = this;
 		
 		this.$mdMedia = $mdMedia;
@@ -25,12 +26,13 @@
 		this.$onInit = function() {
 			ctrl.notes = ctrl.notes || [];
 			ctrl.today = moment().toDate();
+			ctrl.label = ctrl.label || $translate.instant('common.notes.internal');
 			ctrl.$$temp = null;
 		};
 		
 		//add
 		this.$add = function(){
-			ctrl.notes.push({createdNow: true, text: '', createdDate: ctrl.today, createdBy: AppOptions.user});
+			ctrl.notes.push({createdNow: true, edit: true, text: '', createdDate: ctrl.today, createdBy: AppOptions.user});
 		};
 		
 		//edit
@@ -42,12 +44,11 @@
 		};
 		
 		//confirm
-		this.$confirm = function(note){
-			var form = this.hotelNotesForm[$scope.$index];
+		this.$confirm = function(idx, note){
+			var form = $scope.notesForm[idx];
 			form.$setSubmitted();
 			
 			if (form.$valid) {			
-				note.text = angular.copy(ctrl.$$temp.text);
 				note.edit = false;
 				note.editedNow = !note.createdNow;
 				note.createdNow = false;
@@ -59,19 +60,20 @@
 		
 		//cancel
 		this.$cancel = function(note){
-			if(note.createdNow){
-				ctrl.$remove();
+			if(note.createdNow || !ctrl.$$temp || !ctrl.$$temp.text){
+				ctrl.$remove(note);
 			}else{
+				note.text = angular.copy(ctrl.$$temp.text);
 				note.edit = false;
+				ctrl.onCancel && ctrl.onCancel();
 			}
-			ctrl.$$temp = null;
-			
-			ctrl.onCancel && ctrl.onCancel();
 		};
 		
 		//remove
 		this.$remove = function(note){
 			_.pull(ctrl.notes, note);
+			
+			ctrl.$$temp = null;
 			
 			ctrl.onRemove && ctrl.onRemove();
 		};

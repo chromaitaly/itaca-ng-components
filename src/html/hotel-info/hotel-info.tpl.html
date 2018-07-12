@@ -113,7 +113,7 @@
 	<div ng-if="$ctrl.isDisabled" class="layout-row layout-wrap layout-padding">
     	<div class="layout-column flex-100 flex-gt-sm-25">
 			<small><span translate="hotel.type"></span>:&nbsp;</small>
-			<strong class="md-title text-bold">{{('hotel.type.'+ $ctrl.hotel.type |translate)}}</strong>
+			<strong class="md-title text-bold" ng-if="$ctrl.hotel.type">{{('hotel.type.'+ $ctrl.hotel.type |translate)}}</strong>
 		</div>
 		
 		<div class="layout-column flex-100" ng-class="$ctrl.hotel.type == 'HOTEL' ? 'flex-gt-sm-50' : 'flex-gt-sm-75'">
@@ -133,7 +133,7 @@
 		
 		<div class="layout-column flex-100 flex-gt-sm-25" ng-if="!$ctrl.$$isApartment">
 			<small><span translate="room.rooms.number"></span>:&nbsp;</small>
-			<strong class="md-title text-bold">
+			<strong class="md-title text-bold" ng-if="$ctrl.hotel.roomsNumber">
 				<span>{{::$ctrl.hotel.roomsNumber}}&nbsp;</span>
 				<span ng-if="$ctrl.hotel.roomsNumber == 1" translate="room.room"></span>
        			<span ng-if="$ctrl.hotel.roomsNumber != 1" translate="room.rooms"></span>
@@ -142,7 +142,7 @@
 		
 		<div class="layout-column flex-100 flex-gt-sm-75">
 			<small><span translate="common.address"></span>:&nbsp;</small>
-			<strong class="md-title text-bold">
+			<strong class="md-title text-bold" ng-if="$ctrl.hotel.addressInfo.address">
 				<span class="text-capitalize">{{::$ctrl.hotel.addressInfo.address}},&nbsp;{{::$ctrl.hotel.addressInfo.city}}&nbsp;{{::$ctrl.hotel.addressInfo.zipcode}},&nbsp;{{::$ctrl.hotel.addressInfo.country}}</span>
 			</strong>
 		</div>
@@ -220,7 +220,7 @@
 				<span class="no-padding" translate="join.quote.hotel.address.label"></span>
 			</div>
 		</div>
-		<div class="layout-column flex-100" ng-if="!$ctrl.hotel.addressInfo.lat || !$ctrl.hotel.addressInfo.lng">
+		<div class="layout-column flex-100" ng-if="!$ctrl.isDisabled && (!$ctrl.hotel.addressInfo.lat || !$ctrl.hotel.addressInfo.lng)">
 		
 			<div class="md-padding bg-info layout-align-start-center layout-row md-margin no-margin-x-sides border-radius wow slideInUp">
 				<span class="flex-xs-100 flex-sm-100"><md-icon class="mdi mdi-map-marker-radius md-48 text-white"></md-icon></span>

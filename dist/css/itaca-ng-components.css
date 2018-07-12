@@ -19,6 +19,22 @@
 ********************************************************************************
 ********************************************************************************
 *******************************************************************************/
+.ch-address-autocomplete {
+  position: relative;
+}
+/*.ch-address-autocomplete md-input-container {
+	margin-bottom: 0 !important;
+}*/
+.ch-address-autocomplete:after {
+  position: absolute;
+  right: 0;
+  bottom: 0px;
+  content: '';
+  width: 114px;
+  height: 18px;
+  background: url('../img/powered_by_google_on_white_hdpi.png') no-repeat center center;
+  background-size: 108px 14px;
+}
 .ch-cancellation-bar-container {
   width: 100%;
   min-height: 90px;
@@ -145,6 +161,15 @@
   .card-image {
     height: 170px;
   }
+}
+.ch-country-autocomplete {
+  position: relative;
+}
+.ch-country-autocomplete-flag {
+  width: 32px;
+  border-radius: 2px;
+  vertical-align: middle;
+  padding-right: 2px;
 }
 .ch-parallax {
   height: 600px;
