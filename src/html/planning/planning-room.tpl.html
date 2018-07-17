@@ -19,30 +19,11 @@
 	</div>
 	
 	<div flex layout class="ch-planning-days-content">
-		<div flex layout="column" class="ch-planning-cell" ng-class="{'bg-gray-base': viewDate.$reservations.length > 1}"
-			ng-repeat="viewDate in $ctrl.$$viewDates track by viewDate.uid">
-			
-			<ch-planning-reservation ng-if="viewDate.$reservations.length"
-				reservation="viewDate.$reservations[0]">
-			</ch-planning-reservation>
-			
-			<div ng-if="viewDate.$reservations.length > 1" flex layout layout-align="center end">
-				<md-button class="auto-height minimal-button no-margin text-initial" ng-click="$ctrl.$showOverbookings()" aria-label="Show overbookings">
-					<div layout>
-						<div>
-							<md-icon hide-xs class="mdi mdi-alert md-18 text-warn"></md-icon>&nbsp;
-						</div>
-						<div>
-							<small class="text-lowercase">
-								<em>
-									<span ng-if="viewDate.$reservations.length == 2" translate="reservations.other.one""></span>
-									<span ng-if="viewDate.$reservations.length > 3" translate="reservations.other.num" translate-value-num="{{viewDate.$reservations.length - 1}}"></span>
-								</em>
-							</small>
-						</div>
-					</div>
-				</md-button>				
-			</div>
-		</div>
+		<ch-planning-cell flex ng-repeat="viewDate in $ctrl.$$viewDates track by viewDate.uid" 
+			view-date="viewDate"
+			on-open-room="$ctrl.$openRoom($date)"
+			on-close-room="$ctrl.$closeRoom($date)"
+			on-view-rates="$ctrl.$viewRates($date)">
+		</ch-planning-cell>
 	</div>
 </div>

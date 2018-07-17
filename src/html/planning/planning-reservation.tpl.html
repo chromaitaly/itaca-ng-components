@@ -1,36 +1,42 @@
 <div class="ch-planning-reservation" ng-class="{
-		'ch-planning-reservation-continue-start': $ctrl.reservation.$startEarlier, 
-		'ch-planning-reservation-continue-end': $ctrl.reservation.$endLater
-	}" ng-style="$ctrl.reservation.$position">
+		'ch-planning-reservation-continue-start': $ctrl.reservation.$startsEarlier, 
+		'ch-planning-reservation-continue-end': $ctrl.reservation.$endsLater
+	}" ng-style="$ctrl.reservation.$style">
 	
-	<div class="ch-planning-reservation-content bg-blue-sea">
+	<div class="ch-planning-reservation-content bg-blue-sea border-blue-sea">
 		<md-button class="text-small" ng-class="{'no-padding-x-sides': $ctrl.reservation.$days < 2}" 
-			ng-click="$ctrl.$openReservation(reservation)" aria-label="Open reservation details">
+			ng-click="$ctrl.$openReservation()" aria-label="Open reservation details">
 			<div layout-padding-sm>
-				<div layout layout-wrap class="no-padding-x-sides" ng-class="{'no-padding': $ctrl.$mdMedia('gt-xs')}">
-					<div hide-xs>
-						<md-icon class="{{$ctrl.$$portalIcons[$ctrl.reservation.source]}} text-white" 
-							ng-class="{'channel-icon-mini': $ctrl.reservation.$days > 1, 'channel-icon-micro': $ctrl.reservation.$days < 2}"></md-icon>&nbsp;
-					</div>
-					
-					<div flex layout layout-align="center center">
+				<div flex layout layout-align="center center">
+					<div class="text-no-wrap">
 						<strong>
-							<span ng-bind="$ctrl.reservation.guest.name"></span>&nbsp;<span ng-bind="$ctrl.reservation.guest.surname"></span>
+							<span>
+								<span ng-if="$ctrl.reservation.$days > ($ctrl.$mdMedia('gt-xs') ? 2 : 3)">
+									<span ng-bind="$ctrl.reservation.guest.name"></span>&nbsp;
+								</span>
+								<span ng-if="$ctrl.reservation.$days <= ($ctrl.$mdMedia('gt-xs') ? 1 : 2)">
+									<span ng-bind="$ctrl.reservation.guest.name.charAt(0)"></span>.&nbsp;
+								</span>
+							</span>
+							<span ng-bind="$ctrl.reservation.guest.surname"></span>
 						</strong>
 						
-						<span ng-if="$ctrl.reservation.$days > 1" class="text-small">&nbsp;
+						<span class="text-small">&nbsp;
 							(<ch-people-summary
-								people="$ctrl.reservation.people" 
-								extra-people="$ctrl.reservation.extraPeople" 
+								people="$ctrl.roomPeople" 
+								extra-people="$ctrl.roomExtraPeople" 
 								no-details="true">
 							</ch-people-summary>)
 						</span>
+						
+						<small>&nbsp;#<span ng-bind="$ctrl.reservation.serial"></span></small>
 					</div>
 				</div>
 				<div class="no-padding-x-sides no-padding-top">
 					<strong>
-						<span ng-bind="$ctrl.reservation.checkin|date:'shortDate'"></span>&nbsp;-&nbsp;
-						<span ng-bind="$ctrl.reservation.checkout|date:'shortDate'"></span>
+						<span ng-if="$ctrl.reservation.$differentMonths" ng-bind="$ctrl.reservation.checkin|date:'d MMM'"></span>
+						<span ng-if="!$ctrl.reservation.$differentMonths" ng-bind="$ctrl.reservation.checkin|date:'d'"></span>&nbsp;-&nbsp;
+						<span ng-bind="$ctrl.reservation.checkout|date:'d MMM'"></span>
 					</strong>
 				</div>
 			</div>

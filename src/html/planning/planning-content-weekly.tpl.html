@@ -11,18 +11,18 @@
 					ng-repeat="viewDate in $ctrl.$$viewDates track by viewDate.uid">
 					
 					<md-button tabindex="-1" ng-click="$ctrl.toggleAllRoomsClosing(viewDate.date)"
-						ng-disabled="viewDate.isPast || viewDate.hotelStatus.hotelClosed"
+						ng-disabled="viewDate.isPast || viewDate.$planning.hotelClosed || $ctrl.chPlanningCtrl.$$actionInProgress"
 						class="no-margin row-mini text-left" ng-class="{'minimal-button': !$ctrl.$mdMedia('gt-xs'),
-						'text-gray-light': !viewDate.hotelStatus.roomsClosed,
-						'bg-danger text-white': viewDate.hotelStatus.roomsClosed}">
+						'text-gray-light': !viewDate.$planning.roomsClosed,
+						'bg-danger text-white': viewDate.$planning.roomsClosed}">
 						<div layout="column" ng-class="{'text-primary': (viewDate.date|amDifference:$ctrl.$$today:'days') == 0}">
 							<small class="text-capitalize">{{viewDate.date|date:"EEE"}}</small>
 							<strong ng-class="{'md-display-1': $ctrl.$mdMedia('gt-xs'), 'md-title': $ctrl.$mdMedia('xs')}">{{viewDate.date|date:"d"}}</strong>
 						</div>
 						
 						<md-tooltip>
-							<span ng-show="viewDate.hotelStatus.roomsClosed" translate="hotel.availability.open.day"></span>	
-							<span ng-show="!viewDate.hotelStatus.roomsClosed" translate="hotel.availability.close.day"></span>														
+							<span ng-show="viewDate.$planning.roomsClosed" translate="hotel.availability.open.day"></span>	
+							<span ng-show="!viewDate.$planning.roomsClosed" translate="hotel.availability.close.day"></span>														
 						</md-tooltip>
 					</md-button>
 				</div>			
@@ -36,12 +36,12 @@
 		<ch-planning-room ng-repeat="room in $ctrl.rooms.items track by room.id"
 			room="room"
 			dates="$ctrl.$$viewDates"
-			reservations="$ctrl.reservations[room.id]">
+			planning="$ctrl.planning[room.id]">
 		</ch-planning-room>
 		
 		<div flex ng-show="$ctrl.rooms.busy" flex layout="column" layout-padding layout-align="center center">
    	 		<div><md-progress-circular class="md-primary ch-progress" md-mode="indeterminate" md-diameter="40"></md-progress-circular></div>
-   	 		<div class="text-gray-light"><span translate="room.rooms.yours.loading"></span>...</div>
+   	 		<div class="text-gray-light"><span translate="planning.loading"></span>...</div>
 	  	</div>
 	</div>
 	

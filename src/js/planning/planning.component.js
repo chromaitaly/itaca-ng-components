@@ -5,22 +5,29 @@
     	transclude: true,
     	bindings: {
     		rooms: "<",
-    		reservations: "<", // mappa di prenotazioni per camera {<id_camera>: <lista_prenotazioni>}
+    		planning: "<", // planning per camera {<id_camera>: <planning_camera>}
     		view: "<?",
     		startDate: "<?",
     		hideLegend: "<?",
     		onPeriodChange: "&?",
-			onViewChange: "&?"
+			onViewChange: "&?",
+			onOpenRoom: "&?",
+			onCloseRoom: "&?",
+			onViewRates: "&?",
+			onReservationClick: "&?",
+			onOverbookingsClick: "&?"
     	},
 		controller: PlanningCtrl,
 		templateUrl: "/tpls/planning/planning.tpl"
     });
     
     /* @ngInject */
-    function PlanningCtrl($scope, $mdMedia, InfinitePaging){
+    function PlanningCtrl($scope, $q, $mdMedia, InfinitePaging){
     	var ctrl = this;
     	
     	this.$mdMedia = $mdMedia;
+    	
+    	this.$$actionInProgress = false;
     	
     	this.$onInit = function(){
     		ctrl.$initRooms();
@@ -29,15 +36,15 @@
     	};
     	
     	this.$onChanges = function(changesObj) {
-    		if (changesObj.rooms) {
+    		if (changesObj.rooms && !changesObj.rooms.isFirstChange()) {
     			ctrl.$initRooms();
     		}
     		
-    		if (changesObj.view) {
+    		if (changesObj.view && !changesObj.view.isFirstChange()) {
     			ctrl.$setView(ctrl.view);
     		}
     		
-    		if (changesObj.startDate) {
+    		if (changesObj.startDate && !changesObj.startDate.isFirstChange()) {
     			ctrl.$setStartDate(ctrl.startDate);
     		}
     	};
@@ -64,24 +71,35 @@
     	this.$setStartDate = function(date, notRefresh) {
     		date = angular.isDate(date) ? date : (moment.isMoment(date) && date.isValid() ? date.toDate() : moment().startOf("day").toDate());
     		
+    		var m = moment(date).startOf("day");
+    		
     		switch (ctrl.$$currentView) {
     		case "D":
-    			ctrl.$$startDate = moment(date).startOf("day").toDate();
+    			ctrl.$$startDate = ctrl.$$startDate && m.isSame(ctrl.$$startDate, "days") ? ctrl.$$startDate : m.toDate();
     			ctrl.$$endDate = moment(date).endOf("day").toDate();
     			break;    		
     		case "W":
-    			ctrl.$$startDate = moment(date).startOf("day").toDate();
+    			ctrl.$$startDate = ctrl.$$startDate && m.isSame(ctrl.$$startDate, "days") ? ctrl.$$startDate : m.toDate();
     			ctrl.$$endDate = moment(date).add(6, "days").toDate();
     			break;
     		case "M":
-    			ctrl.$$startDate = moment(date).startOf("month").toDate();
+    			ctrl.$$startDate = ctrl.$$startDate && m.startOf("month").isSame(ctrl.$$startDate, "days") ? ctrl.$$startDate : m.toDate();
 	    		ctrl.$$endDate = moment(date).endOf("month").toDate();
 				break;
     		}
     		
     		if (!notRefresh) {
+    			ctrl.$$actionInProgress = true;
     			ctrl.$createDates();
-    			ctrl.onPeriodChange && ctrl.onPeriodChange({$start: ctrl.$$startDate, $end: ctrl.$$endDate})
+    			
+    			if (ctrl.onPeriodChange) {
+    				$q.when(ctrl.onPeriodChange({$start: ctrl.$$startDate, $end: ctrl.$$endDate})).finally(function() {
+	    				ctrl.$$actionInProgress = false;
+    				});
+    				
+    			} else {
+    				ctrl.$$actionInProgress = false;
+    			}
     		}
     	};
     	
@@ -93,11 +111,9 @@
 			// periodo
 			var range = moment.range(moment(ctrl.$$startDate), moment(ctrl.$$endDate));
 			
-			var months = [];
 			var viewDates = [];
 			
 			Array.from(range.by('days'), function(m) {
-				months.push(m.month());
 				var d = m.toDate();
 				this.push({
 					uid: d.getTime(), 
@@ -112,18 +128,6 @@
 			
 			// carico stato hotel per ogni giorno (asynch)
 //			$timeout(ctrl.$insertHotelStatus);
-			
-			// uniq months
-			months = _.uniq(months);
-			
-			var monthLabel = "";
-			_.forEach(months, function(month, idx) {
-				var month = moment({month: months[idx], day: 1}).format("MMMM");
-				monthLabel += idx > 0 ? " - " + month : month;
-			});
-			
-			ctrl.$$multiMonths = _.size(months) > 1;
-			ctrl.$$monthLabel = monthLabel;
 			
 			ctrl.$$loading = false;
 		};

@@ -1,0 +1,79 @@
+<div class="ch-planning-reservation ch-planning-overbooking" ng-class="{
+		'ch-planning-reservation-continue-start': $ctrl.overbookings.length == 1 && $ctrl.overbookings[0].reservation.$startsEarlier, 
+		'ch-planning-reservation-continue-end': $ctrl.overbookings.length == 1 && $ctrl.overbookings[0].reservation.$endsLater
+	}" ng-style="($ctrl.overbookings.length == 1 ? $ctrl.overbookings[0].reservation.$style : {'width': $ctrl.daySize + '%'})">
+	
+	<div class="ch-planning-reservation-content">
+		<md-button ng-if="$ctrl.overbookings.length == 1" class="text-small" ng-class="{'no-padding-x-sides': $ctrl.overbookings[0].reservation.$days < 2}" 
+			ng-click="$ctrl.$openReservation()" aria-label="Open reservation details">
+			<div layout-padding-sm>
+				<div layout layout-wrap>
+					<div ng-show="$ctrl.$mdMedia('gt-xs') || $ctrl.overbookings[0].reservation.$days > 2" layout layout-align="center center">
+						<md-icon class="mdi mdi-alert md-18 text-warn"></md-icon>
+						<md-tooltip>
+							<span translate="ratesheet.overbooked"></span>
+						</md-tooltip>
+					</div>
+					
+					<div flex layout layout-padding-sm layout-align="center center">
+						<div class="text-no-wrap">
+							<strong>
+								<span>
+									<span ng-if="$ctrl.overbookings[0].reservation.$days > ($ctrl.$mdMedia('gt-xs') ? 2 : 3)">
+										<span ng-bind="$ctrl.overbookings[0].reservation.guest.name"></span>&nbsp;
+									</span>
+									<span ng-if="$ctrl.overbookings[0].reservation.$days <= ($ctrl.$mdMedia('gt-xs') ? 1 : 2)">
+										<span ng-bind="$ctrl.overbookings[0].reservation.guest.name.charAt(0)"></span>.&nbsp;
+									</span>
+								</span>
+								<span ng-bind="$ctrl.overbookings[0].reservation.guest.surname"></span>
+							</strong>
+							
+							<span class="text-small">&nbsp;
+								(<ch-people-summary
+									people="$ctrl.overbookings[0].people" 
+									extra-people="$ctrl.overbookings[0].extraPeople" 
+									no-details="true">
+								</ch-people-summary>)
+							</span>
+							
+							<small>&nbsp;#<span ng-bind="$ctrl.overbookings[0].reservation.serial"></span></small>
+						</div>
+					</div>
+				</div>
+				<div class="no-padding-x-sides no-padding-top">
+					<strong>
+						<span ng-if="$ctrl.overbookings[0].reservation.$differentMonths" ng-bind="$ctrl.overbookings[0].reservation.checkin|date:'d MMM'"></span>
+						<span ng-if="!$ctrl.overbookings[0].reservation.$differentMonths" ng-bind="$ctrl.overbookings[0].reservation.checkin|date:'d'"></span>&nbsp;-&nbsp;
+						<span ng-bind="$ctrl.overbookings[0].reservation.checkout|date:'d MMM'"></span>
+					</strong>
+				</div>
+			</div>
+			
+			<md-tooltip>
+				<span translate="common.details.view"></span>
+			</md-tooltip>
+		</md-button>
+		
+		<md-button ng-if="$ctrl.overbookings.length > 1" class="text-small"	ng-click="$ctrl.$showOverbookings()" aria-label="Show overbookings">
+			<div layout-padding-sm>
+				<div layout layout-wrap class="no-padding-x-sides" ng-class="{'no-padding': $ctrl.$mdMedia('gt-xs')}">
+					<div>
+						<md-icon hide-xs class="mdi mdi-alert md-18 text-warn"></md-icon>&nbsp;
+					</div>
+					
+					<div flex layout layout-padding-sm layout-align="center center" class="text-lowercase">
+						<em>
+							<span hide show-xs>+&nbsp;<span ng-bind="$ctrl.overbookings.length"></span></span>
+							<span hide-xs><span translate="reservations.other.num" translate-value-num="{{$ctrl.overbookings.length}}"></span></span>
+						</em>
+					</div>
+				</div>
+			</div>
+			
+			<md-tooltip>
+				<span translate="ratesheet.overbookings.show"></span>
+			</md-tooltip>
+		</md-button>
+	</div>
+</div>

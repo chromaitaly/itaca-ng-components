@@ -6,7 +6,9 @@
 			chPlanningCtrl : "^^chPlanning"
 		},
 		bindings : {
-			reservation: "<"
+			reservation: "<",
+			roomPeople: "<?",
+			roomExtraPeople: "<?"
 		},
 		controller : PlanningReservationCtrl,
 		templateUrl : "/tpls/planning/planning-reservation.tpl"
@@ -20,9 +22,6 @@
 		this.$$portalIcons = IconUtils.portalIcons();
 		
 		this.$onInit = function() {
-		};
-		
-		this.$onChanges = function(changesObj) {
 		};
 	}
 })();
