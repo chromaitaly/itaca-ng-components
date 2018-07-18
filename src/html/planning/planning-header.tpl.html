@@ -25,6 +25,7 @@
 					ng-model="$ctrl.chPlanningCtrl.$$startDate"
 					hide-label="true"
 					size="medium"
+					tooltip="{{'common.go.to'|translate}}"
 					button-class="md-icon-button"
 					icon-class="mdi mdi-calendar-search text-white"
 					hide-value="true"
@@ -32,7 +33,6 @@
 					ng-change="$ctrl.$onMonthChange()"
 					ng-disabled="$ctrl.chPlanningCtrl.$$actionInProgress">
 				</ch-date-picker>
-				<md-tooltip><span translate="common.go.to"></span></md-tooltip>
 			</div>
 			
 			<div>

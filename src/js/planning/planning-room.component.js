@@ -70,6 +70,9 @@
 			var end = moment(ctrl.$$endDate).startOf("day");
 			
 			_.forEach(ctrl.$$viewDates, function(viewDate) {
+				// dimensione cella
+				viewDate.$daySize = ctrl.$$config.daySize;
+				// planning
 				viewDate.$planning = _.find(ctrl.planning, function(p) {
 					return moment(p.date).isSame(moment(viewDate.date), "days");
 				});
@@ -88,7 +91,7 @@
 		};
 		
 		this.$manageDatePlanningReservation = function(start, end, date, planning) {
-			var activeStart = moment(planning.startDate), activeEnd = moment(planning.endDate);;
+			var activeStart = moment(planning.startDate), activeEnd = moment(planning.endDate);
 			var res = planning.reservation;
 				
 			var checkin = moment(res.checkin).startOf("day");

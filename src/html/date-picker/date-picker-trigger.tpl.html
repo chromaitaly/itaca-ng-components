@@ -25,5 +25,9 @@
 	       		</div>
 			</div>
 		</md-input-container>
+		
+		<md-tooltip ng-if="$ctrl.tooltip">
+			<span ng-bind="$ctrl.tooltip"></span>
+		</md-tooltip>
 	</md-button>
 </ng-form>

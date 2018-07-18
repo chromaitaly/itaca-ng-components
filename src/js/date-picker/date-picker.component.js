@@ -15,6 +15,7 @@
         	label: "@",
         	hideLabel: "<?",
         	labelPosition: "@",
+        	tooltip: "@",
         	ngModel: "<",
         	hideValue: "<?",
         	minDate: "<?",

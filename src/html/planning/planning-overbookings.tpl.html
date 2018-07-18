@@ -19,7 +19,7 @@
 						<div class="text-no-wrap">
 							<strong>
 								<span>
-									<span ng-if="$ctrl.overbookings[0].reservation.$days > ($ctrl.$mdMedia('gt-xs') ? 2 : 3)">
+									<span ng-if="$ctrl.overbookings[0].reservation.$days >= ($ctrl.$mdMedia('gt-xs') ? 2 : 3)">
 										<span ng-bind="$ctrl.overbookings[0].reservation.guest.name"></span>&nbsp;
 									</span>
 									<span ng-if="$ctrl.overbookings[0].reservation.$days <= ($ctrl.$mdMedia('gt-xs') ? 1 : 2)">
