@@ -36,7 +36,9 @@
 		<ch-planning-room ng-repeat="room in $ctrl.rooms.items track by room.id"
 			room="room"
 			dates="$ctrl.$$viewDates"
-			planning="$ctrl.planning[room.id]">
+			planning="$ctrl.planning[room.id]"
+			on-reservation-click="$ctrl.onReservationClick({'$reservation': $reservation})"
+			on-overbookings-click="$ctrl.onOverbookingsClick({'$overbookings': $overbookings})">
 		</ch-planning-room>
 		
 		<div flex ng-show="$ctrl.rooms.busy" flex layout="column" layout-padding layout-align="center center">

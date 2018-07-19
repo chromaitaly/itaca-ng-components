@@ -8,7 +8,8 @@
 		bindings : {
 			reservation: "<",
 			roomPeople: "<?",
-			roomExtraPeople: "<?"
+			roomExtraPeople: "<?",
+			onClick: "&?"
 		},
 		controller : PlanningReservationCtrl,
 		templateUrl : "/tpls/planning/planning-reservation.tpl"

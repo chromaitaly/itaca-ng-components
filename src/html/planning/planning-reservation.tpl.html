@@ -5,7 +5,7 @@
 	
 	<div class="ch-planning-reservation-content bg-blue-sea border-blue-sea">
 		<md-button class="text-small" ng-class="{'no-padding-x-sides': $ctrl.reservation.$days < 2}" 
-			ng-click="$ctrl.$openReservation()" aria-label="Open reservation details">
+			ng-click="$ctrl.onClick({$reservation: $ctrl.reservation})" aria-label="Open reservation details">
 			<div layout-padding-sm>
 				<div flex layout layout-align="center center">
 					<div class="text-no-wrap">

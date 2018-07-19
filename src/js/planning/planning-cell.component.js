@@ -9,7 +9,9 @@
 			viewDate: "<",
 			onOpenRoom: "&?",
 			onCloseRoom: "&?",
-			onViewRates: "&?"
+			onViewRates: "&?",
+			onReservationClick: "&?",
+			onOverbookingsClick: "&?"
 		},
 		controller : PlanningCellCtrl,
 		templateUrl : "/tpls/planning/planning-cell.tpl"
