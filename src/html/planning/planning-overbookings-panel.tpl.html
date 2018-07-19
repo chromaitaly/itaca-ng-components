@@ -1,0 +1,13 @@
+<div flex layout-padding-sm>
+	<div>
+		<div ng-repeat="overbooking in $ctrl.$$overbookings track by overbooking.reservation.id">
+			<ch-planning-reservation class="animated fadeIn"
+				main-class="ch-planning-overbooking"
+				reservation="overbooking.reservation" 
+				room-people="overbooking.people" 
+				room-extra-people="overbooking.extraPeople"
+				on-click="$ctrl.onClick({'$reservation': $reservation})">
+			</ch-planning-reservation>
+		</div>
+	</div>
+</div>

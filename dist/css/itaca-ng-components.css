@@ -233,22 +233,22 @@
   border-left: none;
   /* 	padding: 8px 0 2px 0; */
 }
+.ch-planning-cell.ch-planning-cell-active,
+.ch-planning-cell.ch-planning-cell-past {
+  background-color: #f2f2f2;
+}
+.ch-planning-cell.ch-planning-cell-closed {
+  background-color: #dd2c00;
+}
+.ch-planning-cell:not(.ch-planning-cell-active):not(.ch-planning-cell-past):not(.ch-planning-cell-closed):hover {
+  background-color: #f2f2f2;
+  box-shadow: 0 0 10px #999;
+}
 .ch-planning-row ch-planning-cell:last-child .ch-planning-cell {
   border-right: none;
 }
 .ch-planning-cell md-icon {
   color: inherit;
-}
-.ch-planning-cell md-button,
-.ch-planning-cell .md-button {
-  text-transform: initial;
-  line-height: 1;
-  margin: 0;
-  width: 100%;
-  min-width: 100%;
-  height: 100%;
-  min-height: 100%;
-  white-space: normal;
 }
 .ch-planning-cell-room {
   height: 95px;
@@ -277,6 +277,9 @@ ch-planning-reservation {
 .ch-planning-reservation.ch-planning-reservation-continue-end {
   padding-right: 0;
 }
+.ch-planning-reservation-content-wrapper {
+  position: relative;
+}
 .ch-planning-reservation-content {
   border-radius: 10px;
   -webkit-box-flex: 1;
@@ -288,6 +291,18 @@ ch-planning-reservation {
   height: 40px;
   margin: 0 3px;
 }
+.ch-planning-reservation-content .md-button,
+.ch-planning-reservation-content md-button,
+.ch-planning-reservation-content button {
+  text-transform: initial;
+  line-height: 1;
+  margin: 0;
+  width: 100%;
+  min-width: 100%;
+  height: 100%;
+  min-height: 100%;
+  white-space: normal;
+}
 .ch-planning-reservation.ch-planning-reservation-continue-start .ch-planning-reservation-content {
   border-top-left-radius: 0;
   border-bottom-left-radius: 0;
@@ -298,6 +313,7 @@ ch-planning-reservation {
   position: absolute;
   width: 0;
   height: 0;
+  top: 0;
   left: 0;
   border-top: 20px solid transparent;
   border-bottom: 20px solid transparent;
@@ -314,7 +330,9 @@ ch-planning-reservation {
   position: absolute;
   width: 0;
   height: 0;
+  top: 0;
   right: 1px;
+  /* 1px del bordo */
   border-top: 20px solid transparent;
   border-bottom: 20px solid transparent;
   border-left: 6px solid;
@@ -327,6 +345,14 @@ ch-planning-reservation {
   background: #000;
   border-color: #000;
   color: #fff;
+}
+.ch-planning-overbookings-panel {
+  background: #fff;
+  width: 200px;
+  min-height: 60px;
+  max-height: 400px;
+  overflow-y: auto;
+  overflow-x: hidden;
 }
 .ch-planning-legend-color {
   width: 20px;

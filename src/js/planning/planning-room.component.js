@@ -13,7 +13,7 @@
 			onCloseRoom: "&?",
 			onViewRates: "&?",
 			onReservationClick: "&?",
-			onOverbookingsClick: "&?"
+			onOverbookingClick: "&?"
 		},
 		controller : PlanningRoomCtrl,
 		templateUrl : "/tpls/planning/planning-room.tpl"
@@ -108,9 +108,7 @@
 			if (activeStart.isSame(moment(date), "days") || (res.$startsEarlier && moment(date).isSame(start, "days"))) {
 				// posizionamento prenotazione (in %) 
 				res.$style = {
-//					width: "calc(" + (daySize * res.$days) + "% - " + (res.$startsEarlier && !res.$endsLater ? 0 : res.$startsEarlier || res.$endsLater ? ctrl.$$config.padding : ctrl.$$config.padding*2) + "px)"
 					width: ctrl.$$config.daySize * res.$days + "%"
-//					top: (_.isEmpty(planning.overbookings) ? ctrl.$$config.startTop : 0) + "px"
 				};
 				
 				res.$show = true;

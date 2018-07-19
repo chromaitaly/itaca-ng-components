@@ -2,13 +2,11 @@
 	'use strict';
 
 	angular.module("itaca.components").component("chPlanningReservation", {
-		require : {
-			chPlanningCtrl : "^^chPlanning"
-		},
 		bindings : {
 			reservation: "<",
 			roomPeople: "<?",
 			roomExtraPeople: "<?",
+			mainClass: "@",
 			onClick: "&?"
 		},
 		controller : PlanningReservationCtrl,

@@ -1,4 +1,8 @@
-<div flex layout="column" class="ch-planning-cell" ng-class="$ctrl.viewDate.isPast ? 'bg-gray-lighter' : $ctrl.viewDate.$planning.roomClosed ? 'bg-danger' : ''">
+<div flex layout="column" class="ch-planning-cell" ng-class="{
+	'ch-planning-cell-past': $ctrl.viewDate.isPast && !$ctrl.viewDate.$planning.roomClosed, 
+	'ch-planning-cell-closed': $ctrl.viewDate.$planning.roomClosed,
+	'ch-planning-cell-active': $ctrl.viewDate.$planning.active || $ctrl.viewDate.$planning.overbookings.length,
+}">
 	
 	<div ng-if="$ctrl.viewDate.$planning.hotelClosed" flex layout="column" layout-padding-sm layout-align="center center">
 		<div>
@@ -54,9 +58,10 @@
 		</div> 
 		
 		<ch-planning-overbookings ng-if="$ctrl.viewDate.$planning.overbookings.length" class="animated fadeIn"
+			date="$ctrl.viewDate.date"
 			overbookings="$ctrl.viewDate.$planning.overbookings" 
 			day-size="$ctrl.viewDate.$daySize"
-			on-click="$ctrl.onOverbookingsClick({'$overbookings': $overbookings})">
+			on-click="$ctrl.onOverbookingClick({'$reservation': $reservation})">
 		</ch-planning-overbookings>
 	</div>
 </div>
