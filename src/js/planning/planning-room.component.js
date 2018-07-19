@@ -8,18 +8,25 @@
 		bindings : {
 			room: "<",
 			dates: "<",
-			reservations: "<?"
+			planning: "<?",
+			onOpenRoom: "&?",
+			onCloseRoom: "&?",
+			onViewRates: "&?"
 		},
 		controller : PlanningRoomCtrl,
 		templateUrl : "/tpls/planning/planning-room.tpl"
 	});
 
 	/* @ngInject */
-	function PlanningRoomCtrl($scope, $mdMedia, IconUtils) {
+	function PlanningRoomCtrl($scope, $mdMedia) {
 		var ctrl = this;
 		
 		this.$mdMedia = $mdMedia;
-		this.$$portalIcons = IconUtils.portalIcons();
+		
+		this.$$config = {
+			startTop: 15,
+			padding: 3
+		};
 		
 		this.$onInit = function() {
 			ctrl.$initDates();
@@ -29,14 +36,17 @@
 			if (changesObj.dates) {
 				ctrl.$initDates();
 			
-			} else if (changesObj.reservations) {
+			} else if (changesObj.planning) {
 				// eseguo solo se non sono cambiate anche le date, altrimenti
 				// viene eseguito 2 volte (le date già lo eseguono)
-				ctrl.$initReservations();
+				ctrl.$initPlanning();
 			}
 		};
 		
 		this.$initDates = function() {
+			// prima le svuoto (per dare l'effetto)
+//			ctrl.$$viewDates = [];
+			// copio le date in ingresso
 			ctrl.$$viewDates = angular.copy(ctrl.dates);
 			
 			// data di inzio (più piccola)
@@ -49,55 +59,75 @@
 				return viewDate.date.getTime();
 			}).date;
 			
-			ctrl.$initReservations();
+			ctrl.$initPlanning();
 		};
 		
-		this.$initReservations = function() {
-			var start = moment(ctrl.$$startDate);
-			var end = moment(ctrl.$$endDate);
-			var daySize = 100/_.size(ctrl.$$viewDates);
-			var h = 50; // altezza div prenotazione
-			var startTop = 15;
+		this.$initPlanning = function() {
+			// imposto la dimensione della cella
+			ctrl.$$config.daySize = 100/_.size(ctrl.$$viewDates);
+			
+			var start = moment(ctrl.$$startDate).startOf("day");
+			var end = moment(ctrl.$$endDate).startOf("day");
 			
 			_.forEach(ctrl.$$viewDates, function(viewDate) {
-				viewDate.$reservations = _.filter(ctrl.reservations, function(res, index) {
-					// verifico se la prenotazione è su questa camera e questo giorno
-					var isThisRoom = _.some(res.rooms, function(roomSold) {
-						return _.some(roomSold.dailyDetails, function(dailyDetail) {
-							return moment(dailyDetail.date).isSame(moment(viewDate.date), "days") && _.isEqual(dailyDetail.room.id, ctrl.room.id);
-						});
-					});
-						
-					if (!isThisRoom) {
-						return false;
-					}
-					
-					var checkin = moment(res.checkin);
-					var checkout = moment(res.checkout);
-					res.$startEarlier = checkin.isBefore(start, "days");
-					res.$endLater = checkout.isAfter(end, "days");
-					res.$days = Math.abs((res.$startEarlier ? start : checkin).diff(res.$endLater ? end : checkout, "days")) || 1;
-					
-					if (checkin.isSame(moment(viewDate.date), "days") || (res.$startEarlier && moment(viewDate.date).isSame(start, "days"))) {
-						// posizionamento prenotazione (in %) 
-						res.$position = {
-//							left: daySize * Math.abs(start.diff(checkin, "days")),
-							width: daySize * res.$days + "%"
-//							top: h * index + "px"			
-						};
-						
-						
-						return true;
-					} else {
-						return false;
-					}
+				// dimensione cella
+				viewDate.$daySize = ctrl.$$config.daySize;
+				// planning
+				viewDate.$planning = _.find(ctrl.planning, function(p) {
+					return moment(p.date).isSame(moment(viewDate.date), "days");
 				});
 				
-				_.forEach(viewDate.$reservations, function(res, index) {
-					res.$position.top = h * index + (_.size(viewDate.$reservations) == 1 ? startTop : 0) + "px"; 
-				});		
+				if (!viewDate.$planning || !viewDate.$planning.active || !viewDate.$planning.active.reservation) {
+					return;
+				}
+				
+				ctrl.$manageDatePlanningReservation(start, end, viewDate.date, viewDate.$planning.active);
+				
+				_.forEach(viewDate.$planning.overbookings, function(ovPlanning) {
+					ctrl.$manageDatePlanningReservation(start, end, viewDate.date, ovPlanning);
+					ovPlanning					
+				});
 			});
 		};
 		
+		this.$manageDatePlanningReservation = function(start, end, date, planning) {
+			var activeStart = moment(planning.startDate), activeEnd = moment(planning.endDate);
+			var res = planning.reservation;
+				
+			var checkin = moment(res.checkin).startOf("day");
+			var checkout = moment(res.checkout).startOf("day");
+			
+			res.$differentMonths = !checkin.isSame(checkout, "month");
+			res.$startsEarlier = activeStart.isAfter(checkin, "days") || checkin.isBefore(start, "days");
+			res.$endsLater = activeEnd.isBefore(checkout, "days") || end.isBefore(checkout, "days");
+			
+			res.$days = Math.abs(activeEnd.diff(activeStart, "days")) || 1;
+			
+			if (activeStart.isSame(moment(date), "days") || (res.$startsEarlier && moment(date).isSame(start, "days"))) {
+				// posizionamento prenotazione (in %) 
+				res.$style = {
+//					width: "calc(" + (daySize * res.$days) + "% - " + (res.$startsEarlier && !res.$endsLater ? 0 : res.$startsEarlier || res.$endsLater ? ctrl.$$config.padding : ctrl.$$config.padding*2) + "px)"
+					width: ctrl.$$config.daySize * res.$days + "%"
+//					top: (_.isEmpty(planning.overbookings) ? ctrl.$$config.startTop : 0) + "px"
+				};
+				
+				res.$show = true;
+			
+			} else {
+				res.$show = false;
+			}
+		};
+		
+		this.$openRoom = function(date) {
+			ctrl.chPlanningCtrl.onOpenRoom && ctrl.chPlanningCtrl.onOpenRoom({$date: date, $room: ctrl.room});
+		};
+		
+		this.$closeRoom = function(date) {
+			ctrl.chPlanningCtrl.onCloseRoom && ctrl.chPlanningCtrl.onCloseRoom({$date: date, $room: ctrl.room});
+		};
+		
+		this.$viewRates = function(date) {
+			ctrl.chPlanningCtrl.onViewRates && ctrl.chPlanningCtrl.onViewRates({$date: date, $room: ctrl.room});
+		};
 	}
 })();

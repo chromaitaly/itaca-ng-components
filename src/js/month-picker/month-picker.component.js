@@ -103,7 +103,7 @@
 		};
 		
 		this.$onChanges = function(changesObj) {
-			if (changesObj.ngModel) {
+			if (changesObj.ngModel && !changesObj.ngModel.isFirstChange()) {
 				ctrl.$manageShowYear();
 				ctrl.$manageSelectedLabel();
 			}

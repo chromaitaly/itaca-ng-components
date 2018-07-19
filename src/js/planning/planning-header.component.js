@@ -40,8 +40,8 @@
 		};
 		
 		this.$onMonthChange = function() {
-			ctrl.$changeBg();
 			ctrl.chPlanningCtrl.$setStartDate(ctrl.chPlanningCtrl.$$startDate);
+			ctrl.$changeBg();
 		};
 		
 		this.$getMonthLabel = function() {

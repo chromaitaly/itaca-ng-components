@@ -11,10 +11,13 @@
         bindings: {
         	buttonClass: "@",
         	wrapperClass: "@",
+        	iconClass: "@",
         	label: "@",
         	hideLabel: "<?",
         	labelPosition: "@",
-        	ngModel: "=",
+        	tooltip: "@",
+        	ngModel: "<",
+        	hideValue: "<?",
         	minDate: "<?",
         	maxDate: "<?",
         	errorMessages: "<?",
@@ -69,7 +72,7 @@
 					
 			    	if (_.isBoolean(closeReason) && closeReason) {
 			    		ctrl.$updateOriginal();
-			    		ctrl.onClose && ctrl.onClose(ctrl.$$data);
+			    		ctrl.onClose && ctrl.onClose({$date: ctrl.ngModel});
 			    	}
 			    	
 			    	// sblocco scroll body
@@ -80,6 +83,22 @@
 			    	(ctrl.hasBackdrop || ctrl.disableBodyScroll) && ctrl.$$toggleBodyScroll(true);
 			    }
 			 };
+			
+			ctrl.ngModelCtrl.$formatters.push(formatter);
+            ctrl.ngModelCtrl.$parsers.push(parser);
+
+            function parser(value) {
+                var m = moment(value);
+                var valid = m.isValid();
+                ctrl.ngModelCtrl.$setValidity("date", valid);
+                return valid ? m.toDate() : value;
+            }
+
+            function formatter(value) {
+                var m = moment(value);
+                var valid = m.isValid();
+                return valid ? m.format("L") : value;
+            }
 		};
 		
 		this.$$toggleBodyScroll = function(block) {
@@ -120,7 +139,7 @@
 			// dirty dell'input
 			 $scope.chDatePickerTriggerForm.date.$setDirty();
 			 
-			 ctrl.ngModel = ctrl.$getDate(ctrl.$$data.current);
+			 ctrl.ngModelCtrl.$setViewValue(ctrl.$getDate(ctrl.$$data.current));
 			 ctrl.minDate = ctrl.$getDate(ctrl.$$data.min);
 			 ctrl.maxDate = ctrl.$getDate(ctrl.$$data.max);
 		};

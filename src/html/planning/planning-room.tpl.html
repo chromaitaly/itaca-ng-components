@@ -19,62 +19,11 @@
 	</div>
 	
 	<div flex layout class="ch-planning-days-content">
-		<div flex layout="column" class="ch-planning-cell" ng-class="{'bg-gray-base': viewDate.$reservations.length > 1}"
-			ng-repeat="viewDate in $ctrl.$$viewDates track by viewDate.uid">
-			
-			<div ng-if="viewDate.$reservations.length" ng-init="reservation = viewDate.$reservations[0]"
-				class="ch-planning-reservation" ng-class="{
-					'ch-planning-reservation-continue-start': reservation.$startEarlier, 
-					'ch-planning-reservation-continue-end': reservation.$endLater
-				}" ng-style="reservation.$position">
-				
-				<div class="ch-planning-reservation-content bg-blue-sea">
-					<md-button ng-class="{'no-padding-x-sides text-small': reservation.$days < 2}" ng-click="$ctrl.$openReservation(reservation)" aria-label="Open reservation details">
-						<div layout-padding-sm>
-							<div layout layout-wrap>
-								<strong flex>
-									<span ng-bind="reservation.guest.name"></span>&nbsp;<span ng-bind="reservation.guest.surname"></span>
-								</strong>
-								
-								<ch-people-summary ng-if="reservation.$days > 1" 
-									class="text-small"
-									people="reservation.people" 
-									extra-people="reservation.extraPeople" 
-									no-details="true">
-								</ch-people-summary>
-							</div>
-							<div layout layout-wrap>
-								<strong flex>
-									<md-icon ng-if="reservation.$days > 1" hide-xs class="mdi mdi-debug-step-into md-18"></md-icon>&nbsp;
-									<span ng-bind="reservation.checkin|date:'shortDate'"></span>&nbsp;-&nbsp;
-									<md-icon ng-if="reservation.$days > 1" hide-xs class="mdi mdi-debug-step-out md-18"></md-icon>&nbsp;
-									<span ng-bind="reservation.checkout|date:'shortDate'"></span>
-								</strong>
-								<div ng-if="reservation.$days > 1">
-									<md-icon class="{{$ctrl.$$portalIcons[reservation.source]}} channel-icon-mini md-18 no-padding text-white"></md-icon>&nbsp;
-									<small translate="channel.source.{{::reservation.source|lowercase}}"></small>
-								</div>
-							</div>
-						</div>
-						
-						<md-tooltip>
-							<span translate="common.details.view"></span>
-						</md-tooltip>
-					</md-button>
-				</div>
-			</div>
-			
-			<div ng-if="viewDate.$reservations.length > 1" class="ch-plannig-other">
-				<md-button class="auto-height minimal-button no-margin text-initial" ng-click="$ctrl.$showOverbookings()" aria-label="Show overbookings">
-					<md-icon hide-xs class="mdi mdi-alert md-18 text-warn"></md-icon>&nbsp;
-					<small class="text-lowercase">
-						<em>
-							<span ng-if="viewDate.$reservations.length == 2" translate="reservations.other.one""></span>
-							<span ng-if="viewDate.$reservations.length > 3" translate="reservations.other.num" translate-value-num="{{viewDate.$reservations.length - 1}}"></span>
-						</em>
-					</small>
-				</md-button>				
-			</div>
-		</div>
+		<ch-planning-cell flex ng-repeat="viewDate in $ctrl.$$viewDates track by viewDate.uid" 
+			view-date="viewDate"
+			on-open-room="$ctrl.$openRoom($date)"
+			on-close-room="$ctrl.$closeRoom($date)"
+			on-view-rates="$ctrl.$viewRates($date)">
+		</ch-planning-cell>
 	</div>
 </div>

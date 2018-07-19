@@ -2,27 +2,34 @@
 
 	<ch-planning-header></ch-planning-header>
 	
-	<md-button class="md-fab md-primary md-fab-bottom-right am-fade-and-scale" ui-sref="hotel-reservations-new" aria-label="Add reservation">
+	<md-button class="md-fab md-primary md-fab-bottom-right am-fade-and-scale" ui-sref="hotel-reservations-new" aria-label="New  reservation">
         <md-icon class="mdi mdi-book-plus md-24"></md-icon>
         <md-tooltip md-direction="left"><span translate-once="reservations.reservation.new"></span></md-tooltip>
     </md-button>
     
-    <div ng-switch-when="D" flex layout="column"> 
-		<div layout-fill ng-include="'/tpls/planning/planning-content-daily.tpl'" autoscroll></div>
-	</div>
-	
-	<div ng-switch-when="W" flex layout="column"> 
-		<div layout-fill ng-include="'/tpls/planning/planning-content-weekly.tpl'" autoscroll></div>
-	</div>
-	
-	<div ng-switch-when="M" flex layout="column"> 
-		<div layout-fill ng-include="'/tpls/planning/planning-content-monthly.tpl'" autoscroll></div>
-	</div>
-	
-	<div ng-if="!$ctrl.hideLegend" layout-padding-sm class="md-padding">
-		<div layout layout-padding layout-align="start center">
-			<div class="ch-planning-legend-color bg-gray-base"></div>
-			<div class="text-gray-base"><span translate="ratesheet.overbooked"></span></div>
+    <md-content id="planningCont">
+	    <div ng-switch-when="D" flex layout="column"> 
+			<div layout-fill ng-include="'/tpls/planning/planning-content-daily.tpl'" autoscroll></div>
 		</div>
-	</div>
+		
+		<div ng-switch-when="W" flex layout="column"> 
+			<div layout-fill ng-include="'/tpls/planning/planning-content-weekly.tpl'" autoscroll></div>
+		</div>
+		
+		<div ng-switch-when="M" flex layout="column"> 
+			<div layout-fill ng-include="'/tpls/planning/planning-content-monthly.tpl'" autoscroll></div>
+		</div>
+		
+		<div ng-if="!$ctrl.hideLegend" layout layout-wrap layout-padding-sm class="md-padding">
+			<div layout layout-padding layout-align="start center">
+				<div class="ch-planning-legend-color bg-gray-base"></div>
+				<div><span translate="ratesheet.overbooked"></span></div>
+			</div>
+			
+			<div layout layout-padding layout-align="start center">
+				<div class="ch-planning-legend-color bg-gray-lighter"></div>
+				<div><span translate="date.date.past"></span></div>
+			</div>
+		</div>
+	</md-content>
 </div>

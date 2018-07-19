@@ -4,11 +4,12 @@
 		<div class="{{$ctrl.wrapperClass}} layout-align-center-center" ng-class="$ctrl.labelPosition == 'top' ? 'layout-column' : 'layout-row'">
  			<div ng-if="!$ctrl.hideLabel" class="no-padding row-mini"><small class="row-mini text-initial" ng-bind-html="$ctrl.label"></small></div>
 			<div class="layout-row layout-padding-sm layout-align-center-center">
-				<span><md-icon class="mdi mdi-calendar" ng-class="{'md-32': $ctrl.size == 'big', 'md-24': $ctrl.size == 'medium', 'md-18': $ctrl.size == 'small'}"></md-icon></span>
-				<span ng-class="{'md-display-1': $ctrl.size == 'big', 'md-title': $ctrl.size == 'medium', 'md-subhead': $ctrl.size == 'small'}">{{$ctrl.ngModel|date:"dd"}}</span>
-				<span class="layout-column" ng-class="$ctrl.size == 'small' ? 'text-small row-1' : 'row-mini'">
-					<span class="text-lowercase">{{$ctrl.ngModel|date:"MMM"}}</span>
-					<span>{{$ctrl.ngModel|date:"yyyy"}}</span>
+				<span class="no-padding"><md-icon class="{{$ctrl.iconClass || 'mdi mdi-calendar'}}" ng-class="{'md-32': $ctrl.size == 'big', 'md-24': $ctrl.size == 'medium', 'md-18': $ctrl.size == 'small'}"></md-icon></span>
+				<span ng-if="!$ctrl.hideValue" ng-class="{'md-display-1': $ctrl.size == 'big', 'md-title': $ctrl.size == 'medium', 'md-subhead': $ctrl.size == 'small'}"
+					ng-bind="$ctrl.ngModel|date:'dd'"></span>
+				<span ng-if="!$ctrl.hideValue" class="layout-column" ng-class="$ctrl.size == 'small' ? 'text-small row-1' : 'row-mini'">
+					<span class="text-lowercase" ng-bind="$ctrl.ngModel|date:'MMM'"></span>
+					<span ng-bind="$ctrl.ngModel|date:'yyyy'"></span>
 				</span>
 			</div>
 		</div>
@@ -24,5 +25,9 @@
 	       		</div>
 			</div>
 		</md-input-container>
+		
+		<md-tooltip ng-if="$ctrl.tooltip">
+			<span ng-bind="$ctrl.tooltip"></span>
+		</md-tooltip>
 	</md-button>
 </ng-form>

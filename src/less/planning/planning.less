@@ -22,36 +22,54 @@
 }
 
 .ch-planning-cell {
-	height: 90px;
+	height: 95px;
 	border: 1px solid @gray-medium;
 	border-top: none;
 	border-left: none;
-	padding: 8px 0;
+/* 	padding: 8px 0 2px 0; */
+}
+
+.ch-planning-row ch-planning-cell:last-child .ch-planning-cell {
+	border-right: none;
+}
+
+.ch-planning-cell md-icon {
+	color: inherit;
+}
+
+.ch-planning-cell md-button,
+.ch-planning-cell .md-button {
+	text-transform: initial;
+	line-height: 1;
+	margin: 0;
+    width: 100%;
+    min-width: 100%;
+	height: 100%;
+    min-height: 100%;
+    white-space: normal;
 }
 
 .ch-planning-cell-room {
+	height: 95px;
 	border: 1px solid @gray-medium;
 	border-top: none;
 	border-left: none;
 	padding: 8px 0;
 }
 
-.ch-planning-row .ch-planning-cell:last-child {
-	border-right: none;
+ch-planning-reservation {
+	z-index: 2;	
 }
 
 .ch-planning-reservation {
     position: absolute;
-    height: 50px;
     text-overflow: ellipsis;
-    padding-right: 10px;
     transition: all 1s ease-in-out;
     -webkit-transition: all 1s ease-in-out;
-    z-index: 2;
     padding: 6px 0;
 }
 
-.ch-planning-reservation * {
+.ch-planning-reservation > * {
 	height: 100%;
 	width: 100%;	
 }
@@ -71,45 +89,60 @@
     flex: 1;
     -webkit-box-sizing: border-box;
     box-sizing: border-box;
-}
-
-.ch-planning-reservation-content md-icon {
-	color: inherit;
-}
-
-.ch-planning-reservation-content md-button,
-.ch-planning-reservation-content .md-button {
-	text-transform: initial;
-	line-height: 1;
-	margin: 0;
-    width: 100%;
-    min-height: 100%;
-    height: 100%;
+    width: auto;
+    height: 40px;
+    margin: 0 3px;
 }
 
 .ch-planning-reservation.ch-planning-reservation-continue-start .ch-planning-reservation-content {
 	border-top-left-radius: 0;
 	border-bottom-left-radius: 0;
-    border-left-style: dashed;
+    margin-left: 6px;
+}
+
+.ch-planning-reservation.ch-planning-reservation-continue-start .ch-planning-reservation-content:before {
+	content: '';
+	position: absolute;
+	width: 0;
+    height: 0;
+    left: 0;
+    border-top: 20px solid transparent;
+    border-bottom: 20px solid transparent; 
+    border-right: 6px solid;
+    border-right-color: inherit;
 }
 
 .ch-planning-reservation.ch-planning-reservation-continue-end .ch-planning-reservation-content {
 	border-top-right-radius: 0;
 	border-bottom-right-radius: 0;
-    border-right-style: dashed;
+	margin-right: 7px /* 6px + 1px del bordo */
 }
 
-.ch-plannig-other {
+.ch-planning-reservation.ch-planning-reservation-continue-end .ch-planning-reservation-content:after {
+	content: '';
 	position: absolute;
-	bottom: 2px;
-	-webkit-box-flex: 1;
-    -ms-flex: 1;
-    flex: 1;
-    -webkit-box-sizing: border-box;
-    box-sizing: border-box;
+ 	width: 0;
+    height: 0;
+    right: 1px;
+    border-top: 20px solid transparent;
+    border-bottom: 20px solid transparent;
+    border-left: 6px solid;
+    border-left-color: inherit;
+}
+
+.ch-planning-reservation.ch-planning-overbooking {
+	bottom: 0;	
+}
+
+.ch-planning-reservation.ch-planning-overbooking .ch-planning-reservation-content {
+	background: @gray-base;
+	border-color: @gray-base;
+	color: @color-white;
 }
 
 .ch-planning-legend-color {
 	width: 20px;
 	height: 20px;
+	border: 1px solid #ccc;
+	border-radius: 2px;
 }
