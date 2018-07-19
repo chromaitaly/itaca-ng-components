@@ -7,7 +7,8 @@
 		},
 		bindings : {
 			overbookings: "<",
-			daySize: "<"
+			daySize: "<",
+			onClick: "&?"
 		},
 		controller : PlanningOverbookingsCtrl,
 		templateUrl : "/tpls/planning/planning-overbookings.tpl"

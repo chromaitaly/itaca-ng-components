@@ -11,7 +11,9 @@
 			planning: "<?",
 			onOpenRoom: "&?",
 			onCloseRoom: "&?",
-			onViewRates: "&?"
+			onViewRates: "&?",
+			onReservationClick: "&?",
+			onOverbookingsClick: "&?"
 		},
 		controller : PlanningRoomCtrl,
 		templateUrl : "/tpls/planning/planning-room.tpl"
