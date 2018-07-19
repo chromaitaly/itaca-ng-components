@@ -212,7 +212,7 @@
 				<span translate="join.quote.hotel.address.ok"></span>
 			</div>
 		
-			<ng-map zoom="15" center="{{$ctrl.hotel.addressInfo.lat}},{{$ctrl.hotel.addressInfo.lng}}">
+			<ng-map zoom="15" center="{{$ctrl.hotel.addressInfo.lat}},{{$ctrl.hotel.addressInfo.lng}}" disable-default-ui="true" scrollwheel="false">
 		    	<marker position="{{$ctrl.hotel.addressInfo.lat}},{{$ctrl.hotel.addressInfo.lng}}" icon="{{$ctrl.mapMarker}}">
 		    	</marker>
 			</ng-map>
