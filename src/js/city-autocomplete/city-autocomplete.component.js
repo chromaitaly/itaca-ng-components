@@ -72,18 +72,17 @@
     	};
     	
     	this.precopileSearchText = function(){
-//    		if(ctrl.ngModel && ctrl.ngModel.address){
-//    			var address = ctrl.ngModel.address ? ctrl.ngModel.address  + ", " : '';
-//	    			address += ctrl.ngModel.city ? ctrl.ngModel.city  + ", " : '';
-//	    			address += ctrl.ngModel.province ? ctrl.ngModel.province  + ", " : '';
-//	    			address += ctrl.ngModel.country ? ctrl.ngModel.country : '';
-//    			
-//    			ctrl.searchText = address;
-//    		} else if(ctrl.ngModel && ctrl.ngModel.addressComplete){
-//    			ctrl.searchText = ctrl.ngModel.addressComplete
-//    		} else {
-//    			ctrl.searchText = null
-//    		}
+    		if(ctrl.ngModel && ctrl.ngModel.address){
+	    			address += ctrl.ngModel.city ? ctrl.ngModel.city  + ", " : '';
+	    			address += ctrl.ngModel.province ? ctrl.ngModel.province  + ", " : '';
+	    			address += ctrl.ngModel.country ? ctrl.ngModel.country : '';
+    			
+    			ctrl.searchText = address;
+    		} else if(ctrl.ngModel && ctrl.ngModel.addressComplete){
+    			ctrl.searchText = ctrl.ngModel.addressComplete;
+    		} else {
+    			ctrl.searchText = null;
+    		}
     	};
     	
     	this.$querySearch = function(query){
@@ -98,58 +97,56 @@
 	    		return;
 	    	}
 	    		
-//	    	GoogleAPI.placeDetails(place.place_id).then(function(data){
-//	    		var addressInfo = {};
-//	    	
-//	    		 for (var i = 0; i < data.address_components.length; i++) {
-//	    			 var address = data.address_components[i];
-//	    			 var type = address.types[0];
-//	    			 
-//		    		if(type == 'route'){
-//		    			addressInfo.street = address.long_name;
-//		    			continue;
-//		    		}
-//		    		
-//		    		if(type == 'street_number'){
-//		    			addressInfo.number = address.long_name;
-//		    			continue;
-//		    		}
-//		    		
-//		    		if(type == 'postal_code'){
-//		    			addressInfo.zipcode = address.long_name;
-//		    			continue;
-//		    		}
-//		    		
-//		    		if(type == 'country'){
-//		    			addressInfo.country = address.long_name;
-//		    			continue;
-//		    		}
-//		    		
-//		    		if(type == 'locality'){
-//		    			addressInfo.city = address.long_name;
-//		    			continue;
-//		    		}
-//		    		
-//		    		if(type == 'administrative_area_level_2'){
-//		    			addressInfo.province = address.short_name;
-//		    			continue;
-//		    		}
-//		    		
-//		    		if(type == 'neighborhood'){
-//		    			addressInfo.district = address.long_name;
-//		    			continue;
-//		    		}
-//		    	}
-//	    	
-//		    	// via e civico
-//		    	addressInfo.address = addressInfo.street + (addressInfo.number ? ' ' + addressInfo.number : '');
-//		    	addressInfo.lat = data.geometry.location.lat();
-//		    	addressInfo.lng = data.geometry.location.lng();
-//		    	addressInfo.offset = data.utc_offset ? parseInt(data.utc_offset)*60 : data.utc_offset;
-//		    	addressInfo.addressComplete = ctrl.selectedItem;
-//		    	
-//		    	ctrl.ngModel = addressInfo;
-//	    	});
+	    	GoogleAPI.placeDetails(place.place_id).then(function(data){
+	    		var addressInfo = {};
+	    	
+	    		 for (var i = 0; i < data.address_components.length; i++) {
+	    			 var address = data.address_components[i];
+	    			 var type = address.types[0];
+	    			 
+		    		if(type == 'route'){
+		    			addressInfo.street = address.long_name;
+		    			continue;
+		    		}
+		    		
+		    		if(type == 'street_number'){
+		    			addressInfo.number = address.long_name;
+		    			continue;
+		    		}
+		    		
+		    		if(type == 'postal_code'){
+		    			addressInfo.zipcode = address.long_name;
+		    			continue;
+		    		}
+		    		
+		    		if(type == 'country'){
+		    			addressInfo.country = address.long_name;
+		    			continue;
+		    		}
+		    		
+		    		if(type == 'locality'){
+		    			addressInfo.city = address.long_name;
+		    			continue;
+		    		}
+		    		
+		    		if(type == 'administrative_area_level_2'){
+		    			addressInfo.province = address.short_name;
+		    			continue;
+		    		}
+		    		
+		    		if(type == 'neighborhood'){
+		    			addressInfo.district = address.long_name;
+		    			continue;
+		    		}
+		    	}
+	    	
+		    	addressInfo.lat = data.geometry.location.lat();
+		    	addressInfo.lng = data.geometry.location.lng();
+		    	addressInfo.offset = data.utc_offset ? parseInt(data.utc_offset)*60 : data.utc_offset;
+		    	addressInfo.addressComplete = ctrl.selectedItem;
+		    	
+		    	ctrl.ngModel = addressInfo;
+	    	});
 	    };
 	}
 })();
