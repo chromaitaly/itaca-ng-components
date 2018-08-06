@@ -1,0 +1,11 @@
+<div class="cookiePolicy" ng-if="!$ctrl.$$cookiesPolicy">
+	<span translate="message.cookie.policy"></span>
+	
+	<md-button class="md-raised md-primary no-margin-top no-margin-bottom" ng-click="$ctrl.$acceptCookiesPolicy()" aria-label="Accept cookies policy and close">
+		<strong class="text-initial" translate="message.cookie.policy.accept"></strong>
+	</md-button>
+	
+	<md-button class="md-raised no-margin-top no-margin-bottom" ng-href="{{$ctrl.baseUrl + '/cookies'}}" target="_blank" aria-label="Open cookies policy">
+		<strong class="text-initial" translate="message.cookie.policy.read.more"></strong>
+	</md-button>
+</div>
