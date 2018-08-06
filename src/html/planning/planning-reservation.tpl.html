@@ -4,11 +4,12 @@
 	}" ng-style="$ctrl.reservation.$style">
 	
 	<div class="ch-planning-reservation-content-wrapper">
-		<div class="ch-planning-reservation-content" ng-class="!$ctrl.mainClass ? ($ctrl.planningSettings.colorLegend[$ctrl.reservation.source] || 'bg-blue-sea border-blue-sea') : ''">
+		<div class="ch-planning-reservation-content" ng-class="{'bg-blue-sea border-blue-sea': !$ctrl.mainClass && !$ctrl.settings.reservationColorLegend[$ctrl.reservation.source]}"
+			ng-style="{'background-color': $ctrl.settings.reservationColorLegend[$ctrl.reservation.source], 'border-color': $ctrl.settings.reservationColorLegend[$ctrl.reservation.source]}">
 			<md-button class="text-small" ng-class="{'no-padding-x-sides': $ctrl.reservation.$days < 2}" 
 				ng-click="$ctrl.onClick({'$reservation': $ctrl.reservation})" aria-label="Open reservation details">
 				<div layout-padding-sm>
-					<div flex layout layout-align="center center">
+					<div flex layout layout-align="center center" class="no-padding-top">
 						<div class="text-no-wrap">
 							<strong>
 								<span>

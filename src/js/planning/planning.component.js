@@ -6,9 +6,11 @@
     	bindings: {
     		rooms: "<",
     		planning: "<", // planning per camera {<id_camera>: <planning_camera>}
-    		view: "<?",
+    		settings: "<",
+//    		view: "<?",
     		startDate: "<?",
     		hideLegend: "<?",
+    		sourcePortalLabel: "@",
     		onPeriodChange: "&?",
 			onViewChange: "&?",
 			onOpenRoom: "&?",
@@ -31,8 +33,9 @@
     	
     	this.$onInit = function(){
     		ctrl.$initRooms();
-    		ctrl.$setView(ctrl.view);
+    		ctrl.$setView(ctrl.view, true);
     		ctrl.$setStartDate(ctrl.startDate);
+    		ctrl.$initLegend();
     	};
     	
     	this.$onChanges = function(changesObj) {
@@ -46,6 +49,10 @@
     		
     		if (changesObj.startDate && !changesObj.startDate.isFirstChange()) {
     			ctrl.$setStartDate(ctrl.startDate);
+    		}
+    		
+    		if (changesObj.planning && !changesObj.planning.isFirstChange()) {
+    			ctrl.$initLegend();
     		}
     	};
     	
@@ -62,13 +69,34 @@
 			}
     	};
     	
-    	this.$setView = function(type) {
+    	this.$initLegend = function() {
+    		ctrl.$$currentReservationSources = [];
+    		ctrl.$$isOverbookings = false;
+    		
+    		_.forEach(_.values(ctrl.planning), function(roomPlanning) {
+    			_.forEach(roomPlanning, function(datePlanning) {
+    				// aggiungo source della prenotazione attiva
+    				datePlanning.active && datePlanning.active.reservation && ctrl.$$currentReservationSources.push(datePlanning.active.reservation.source);
+    				// aggiungo source degli overbbokings
+    				_.forEach(datePlanning.overbookings, function(overbooking) {
+    					if (overbooking.reservation) {
+    						ctrl.$$currentReservationSources.push(overbooking.reservation.source);
+	    					ctrl.$$isOverbookings = true;
+    					}
+    				});
+    			});
+    		});
+    		
+    		ctrl.$$currentReservationSources = _.uniq(ctrl.$$currentReservationSources);
+    	};
+    	
+    	this.$setView = function(type, noRefresh) {
     		ctrl.$$currentView = _.includes(["D", "W", "M"], type) ? type : "W";
-    		ctrl.$setStartDate(ctrl.$$startDate);
+    		!noRefresh && ctrl.$setStartDate(ctrl.$$startDate);
     		ctrl.onViewChange && ctrl.onViewChange({$view: ctrl.$$currentView});
     	};
     	
-    	this.$setStartDate = function(date, notRefresh) {
+    	this.$setStartDate = function(date, noRefresh) {
     		date = angular.isDate(date) ? date : (moment.isMoment(date) && date.isValid() ? date.toDate() : moment().startOf("day").toDate());
     		
     		var m = moment(date).startOf("day");
@@ -88,7 +116,9 @@
 				break;
     		}
     		
-    		if (!notRefresh) {
+    		ctrl.$$isPastDates = moment(ctrl.$$startDate).isBefore(moment(), "day");
+    		
+    		if (!noRefresh) {
     			ctrl.$$actionInProgress = true;
     			ctrl.$createDates();
     			
@@ -125,9 +155,6 @@
 			}, viewDates);
 			
 			ctrl.$$viewDates = viewDates;
-			
-			// carico stato hotel per ogni giorno (asynch)
-//			$timeout(ctrl.$insertHotelStatus);
 			
 			ctrl.$$loading = false;
 		};

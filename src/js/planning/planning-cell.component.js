@@ -7,6 +7,7 @@
 		},
 		bindings : {
 			viewDate: "<",
+			settings: "<",
 			onOpenRoom: "&?",
 			onCloseRoom: "&?",
 			onViewRates: "&?",
@@ -18,12 +19,22 @@
 	});
 
 	/* @ngInject */
-	function PlanningCellCtrl($scope, $mdMedia) {
+	function PlanningCellCtrl($scope, $element, $mdMedia) {
 		var ctrl = this;
 		
 		this.$mdMedia = $mdMedia;
 		
 		this.$onInit = function() {
+		};
+		
+		this.$openCellMenu = function() {
+			if (ctrl.viewDate.$planning && (ctrl.viewDate.$planning.roomClosed || ctrl.viewDate.$planning.active || (ctrl.viewDate.$planning.overbookings && ctrl.viewDate.$planning.overbookings.length))) {
+				return;
+			}
+			
+			var menuTriggerBtn = $element[0].querySelector("md-menu.ch-planning-cell-menu .md-button");
+			
+			menuTriggerBtn && menuTriggerBtn.click();
 		};
 		
 		this.$openRoom = function() {

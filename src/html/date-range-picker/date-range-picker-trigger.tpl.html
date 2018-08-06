@@ -1,7 +1,7 @@
-<ng-form name="chDateRangePickerTriggerForm" class="flex no-padding layout-column layout-fill">
+<ng-form name="chDateRangePickerTriggerForm">
   	<md-button class="ch-date-range-picker-button minimal-button flex text-lowercase text-center {{$ctrl.buttonClass}}" ng-click="$ctrl.$openPanel($event)" aria-label="Change period" ng-disabled="$ctrl.ngDisabled">
   		<div class="{{$ctrl.wrapperClass}}">
-  			<div ng-if="$ctrl.label || $ctrl.placeholder" class="layout-row layout-align-center-center" ng-class="{'no-padding-top': $ctrl.$mdMedia('gt-xs'), 'md-padding': !$ctrl.$mdMedia('gt-xs') || $ctrl.start || $ctrl.end}">
+  			<div ng-if="$ctrl.label || ($ctrl.placeholder && !$ctrl.start && !$ctrl.end)" class="layout-row layout-align-center-center" ng-class="{'no-padding-top': $ctrl.$mdMedia('gt-xs'), 'md-padding': !$ctrl.$mdMedia('gt-xs') || $ctrl.start || $ctrl.end}">
 	  			<div class="{{$ctrl.labelClass}} text-initial text-wrap row-1" ng-class="{'text-small': $ctrl.start || $ctrl.end}">
 	  				<span ng-if="$ctrl.placeholder && !$ctrl.start && !$ctrl.end" ng-bind-html="$ctrl.placeholder"></span>
 		  			<span ng-if="$ctrl.label && (($ctrl.start || $ctrl.end) || !$ctrl.placeholder)" ng-bind-html="$ctrl.label"></span>

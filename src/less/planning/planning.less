@@ -13,6 +13,10 @@
     height: 100%;
 }
 
+.ch-planning-dates-header {
+	z-index: 20 !important;
+}
+
 .ch-planning-row {
 	overflow: hidden;
 }
@@ -23,10 +27,14 @@
 
 .ch-planning-cell {
 	height: 95px;
-	border: 1px solid @gray-medium;
-	border-top: none;
-	border-left: none;
-/* 	padding: 8px 0 2px 0; */
+	border: 1px solid @gray-medium !important;
+	border-top: 0 !important;
+	border-left: 0 !important;
+	margin: 0 !important;
+}
+
+.ch-planning-cell:focus {
+	outline-color: @color-primary;
 }
 
 .ch-planning-cell.ch-planning-cell-active,
@@ -43,6 +51,15 @@
     box-shadow: 0 0 10px #999;
 }
 
+.ch-planning-cell:not(.ch-planning-cell-active):not(.ch-planning-cell-closed):hover {
+	cursor: pointer;
+}
+
+.ch-planning-cell.ch-planning-cell-active:focus,
+.ch-planning-cell.ch-planning-cell-closed:focus {
+	outline: none;
+}
+
 .ch-planning-row ch-planning-cell:last-child .ch-planning-cell {
 	border-right: none;
 }
@@ -52,11 +69,10 @@
 }
 
 .ch-planning-cell-room {
-	height: 95px;
 	border: 1px solid @gray-medium;
 	border-top: none;
 	border-left: none;
-	padding: 8px 0;
+	padding: 6px 0;
 }
 
 ch-planning-reservation {

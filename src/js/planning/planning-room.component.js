@@ -9,6 +9,7 @@
 			room: "<",
 			dates: "<",
 			planning: "<?",
+			settings: "<",
 			onOpenRoom: "&?",
 			onCloseRoom: "&?",
 			onViewRates: "&?",
@@ -93,29 +94,24 @@
 		};
 		
 		this.$manageDatePlanningReservation = function(start, end, date, planning) {
-			var activeStart = moment(planning.startDate), activeEnd = moment(planning.endDate);
+			var current = moment(date), activeStart = moment(planning.startDate), activeEnd = moment(planning.endDate);
 			var res = planning.reservation;
 				
 			var checkin = moment(res.checkin).startOf("day");
 			var checkout = moment(res.checkout).startOf("day");
 			
 			res.$differentMonths = !checkin.isSame(checkout, "month");
-			res.$startsEarlier = activeStart.isAfter(checkin, "days") || checkin.isBefore(start, "days");
+			res.$startsEarlier = current.isAfter(activeStart, "days") || activeStart.isAfter(checkin, "days") || checkin.isBefore(start, "days");
 			res.$endsLater = activeEnd.isBefore(checkout, "days") || end.isBefore(checkout, "days");
 			
-			res.$days = Math.abs(activeEnd.diff(activeStart, "days")) || 1;
+			res.$days = Math.abs((activeEnd.isAfter(end) ? end.add(1, "days"): activeEnd).diff(activeStart.isAfter(start) ? activeStart : start, "days")) || 1;
 			
-			if (activeStart.isSame(moment(date), "days") || (res.$startsEarlier && moment(date).isSame(start, "days"))) {
-				// posizionamento prenotazione (in %) 
-				res.$style = {
-					width: ctrl.$$config.daySize * res.$days + "%"
-				};
-				
-				res.$show = true;
+			// posizionamento prenotazione (in %) 
+			res.$style = {
+				width: ctrl.$$config.daySize * res.$days + "%"
+			};
 			
-			} else {
-				res.$show = false;
-			}
+			res.$show = activeStart.isSame(current, "days") || (res.$startsEarlier && current.isSame(start, "days"));
 		};
 		
 		this.$openRoom = function(date) {
