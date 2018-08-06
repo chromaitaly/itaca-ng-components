@@ -1,8 +1,3 @@
-/**
- * Servizio per le info dell'applicazione
- * 
- * per i parametri vedere: http://www.chartjs.org/docs/latest/
- */
 (function() {
     'use strict';
     

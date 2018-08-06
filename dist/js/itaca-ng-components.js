@@ -4206,6 +4206,50 @@ var colorPicker = function() {
 
 (function() {
     "use strict";
+    ChartCtrl.$inject = [ "$scope", "$element" ];
+    angular.module("itaca.company").component("chChart", {
+        bindings: {
+            type: "<",
+            data: "<",
+            options: "<?"
+        },
+        controller: ChartCtrl,
+        template: '<div class="chart-container relative"><canvas class="chartjs"></canvas></div>'
+    });
+    function ChartCtrl($scope, $element) {
+        var ctrl = this;
+        this.$onInit = function() {
+            ctrl.type = _.includes([ "line", "bar", "horizontal-bar", "radar", "pie", "polar-area", "doughnut", "bubble" ], ctrl.type) ? ctrl.type : "line";
+            ctrl.data = ctrl.data || {};
+            ctrl.ctx = $element.find("canvas")[0].getContext("2d");
+            ctrl.$createChart();
+        };
+        this.$onChanges = function(changesObj) {
+            if (changesObj.type && !changesObj.type.isFirstChange()) {
+                ctrl.$createChart();
+            }
+            if (changesObj.data && !changesObj.data.isFirstChange()) {
+                ctrl.$createChart();
+            }
+            if (changesObj.options && !changesObj.options.isFirstChange()) {
+                ctrl.$createChart();
+            }
+        };
+        this.$createChart = function() {
+            if (!ctrl.ctx) {
+                return;
+            }
+            ctrl.$$chart = new Chart(ctrl.ctx, {
+                type: ctrl.type,
+                data: ctrl.data,
+                options: ctrl.options
+            });
+        };
+    }
+})();
+
+(function() {
+    "use strict";
     CityAutocompleteCtrl.$inject = [ "$scope", "$mdMedia", "AppOptions", "$translate", "GoogleAPI" ];
     angular.module("itaca.component").component("chCityAutocomplete", {
         require: {
@@ -9944,6 +9988,147 @@ var colorPicker = function() {
             ctrl.$$mediaUrl = UrlUtils.parseUrl(ctrl.mediaUrl).href;
             ctrl.$$url = UrlUtils.parseUrl(ctrl.url).href;
         };
+    }
+})();
+
+(function() {
+    "use strict";
+    StatisticChartCtrl.$inject = [ "$scope", "StatisticsHelper" ];
+    angular.module("itaca.company").component("chStatisticChart", {
+        bindings: {
+            type: "@",
+            values: "<",
+            colors: "<?",
+            onHover: "&?",
+            onClick: "&?"
+        },
+        controller: StatisticChartCtrl,
+        template: '<ch-chart type="$ctrl.$$chart.type" data="$ctrl.$$chart.data" options="$ctrl.$$chart.options"></ch-chart>'
+    });
+    function StatisticChartCtrl($scope, StatisticsHelper) {
+        var ctrl = this;
+        this.$onInit = function() {
+            ctrl.type = ctrl.type || "ANNUAL_RESERVATIONS_AMOUNT_TREND";
+            ctrl.$$chart = {};
+            ctrl.$createChart();
+        };
+        this.$onChanges = function(changesObj) {
+            if (changesObj.type && !changesObj.type.isFirstChange()) {
+                ctrl.$createChart();
+            }
+            if (changesObj.values && !changesObj.values.isFirstChange()) {
+                ctrl.$createChart();
+            }
+            if (changesObj.onHover && !changesObj.onHover.isFirstChange()) {
+                ctrl.$updateEvent();
+            }
+            if (changesObj.onClick && !changesObj.onClick.isFirstChange()) {
+                ctrl.$updateEvent();
+            }
+            if (changesObj.colors && !changesObj.colors.isFirstChange()) {
+                ctrl.$updateColors();
+            }
+        };
+        this.$createChart = function() {
+            ctrl.$$chart = StatisticsHelper.createChartData(ctrl.type, ctrl.values, ctrl.onHover, ctrl.onClick);
+            ctrl.$updateColors();
+        };
+        this.$updateEvent = function() {
+            if (!_.isNil(ctrl.$$chart) && !_.isNil(ctrl.$$chart.options)) {
+                ctrl.$$chart.options.onHover = angular.isFunction(ctrl.onHover) ? ctrl.onHover : null;
+                ctrl.$$chart.options.onClick = angular.isFunction(ctrl.onClick) ? ctrl.onClick : null;
+            }
+            ctrl.$updateColors();
+        };
+        this.$updateColors = function() {};
+    }
+})();
+
+(function() {
+    "use strict";
+    StatisticsHelper.$inject = [ "$translate" ];
+    angular.module("itaca.components").factory("StatisticsHelper", StatisticsHelper);
+    function StatisticsHelper($translate) {
+        var $$service = {};
+        $$service.createChartData = function(type, values, onHoverEv, onClickEv) {
+            var chartData = $$service.$createDefaultChartData(values, onHoverEv, onClickEv);
+            switch (type) {
+              case "ANNUAL_RESERVATIONS_AMOUNT_TREND":
+                chartData.type = "line";
+                _.forEach(chartData.data.datasets, function(d) {
+                    d.label = $translate.instant("reservations.reservations");
+                });
+                chartData.options.scales.yAxes.scaleLabel.labelString = $translate.instant("reservations.reservations");
+                chartData.options.scales.yAxes.ticks = {
+                    callback: function(value, index, values) {
+                        return value + "€";
+                    }
+                };
+                chartData.options.scales.xAxes.scaleLabel.labelString = moment(chartData.data.labels[0]).format("YYYY");
+                chartData.options.scales.xAxes.ticks = {
+                    callback: function(value, index, values) {
+                        return moment(value).format("MMMM");
+                    }
+                };
+                break;
+
+              case "ANNUAL_RESERVATIONS_COUNT_TREND":
+                chartData.type = "doughnut";
+
+              case "ANNUAL_REVIEWS_COUNT_TREND":
+                chartData.type = "bar";
+                chartData.options.scales.xAxes.ticks = {
+                    beginAtZero: true
+                };
+                break;
+            }
+            return chartData;
+        };
+        $$service.$createDefaultChartData = function(values, onHoverEv, onClickEv) {
+            var chartData = {
+                type: "line",
+                data: {
+                    labels: [],
+                    datasets: []
+                },
+                options: {
+                    onHover: angular.isFunction(onHoverEv) ? onHoverEv : null,
+                    onClick: angular.isFunction(onClickEv) ? onClickEv : null,
+                    scales: {
+                        yAxes: [ {
+                            display: true,
+                            scaleLabel: {
+                                display: true
+                            }
+                        } ],
+                        xAxes: [ {
+                            display: true,
+                            scaleLabel: {
+                                display: true
+                            }
+                        } ]
+                    }
+                }
+            };
+            if (_.isPLainObject(values)) {
+                chartData.data.labels.push(_.keys(values));
+                chartData.data.datasets.push({
+                    data: _.values(values)
+                });
+            } else if (_.isArray(values)) {
+                _.forEach(values, function(v) {
+                    chartData.data.labels.push(_.keys(v));
+                    chartData.data.datasets.push({
+                        data: _.values(v)
+                    });
+                });
+                chartData.data.labels = _.uniq(chartData.data.labels);
+            } else {
+                throw new Error("values is not valid. Should be array or object");
+            }
+            return chartData;
+        };
+        return $$service;
     }
 })();
 

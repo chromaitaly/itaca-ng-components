@@ -1,7 +1,7 @@
 (function() {
 	'use strict';
 	
-	angular.module("itaca.company").component('chStatisticChart', {
+	angular.module("itaca.company").component('chStatisticsChart', {
 		bindings: {
 			type: "@",
 			values: "<",
@@ -9,12 +9,12 @@
 			onHover: "&?",
 			onClick: "&?",
 		},
-		controller: StatisticChartCtrl,
+		controller: StatisticsChartCtrl,
 		template: "<ch-chart type=\"$ctrl.$$chart.type\" data=\"$ctrl.$$chart.data\" options=\"$ctrl.$$chart.options\"></ch-chart>"
 	});
 
 	/* @ngInject */
-	function StatisticChartCtrl($scope, StatisticsHelper) {
+	function StatisticsChartCtrl($scope, StatisticsHelper) {
 		var ctrl = this;
 		
 		this.$onInit = function(){
