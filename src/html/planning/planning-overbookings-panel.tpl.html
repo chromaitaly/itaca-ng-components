@@ -6,7 +6,13 @@
 				reservation="overbooking.reservation" 
 				room-people="overbooking.people" 
 				room-extra-people="overbooking.extraPeople"
-				on-click="$ctrl.onClick({'$reservation': $reservation})">
+				on-click="$ctrl.onClick({
+					'$reservation': $reservation, 
+					$roomId: overbooking.roomId, 
+					$roomTypeId: overbooking.roomType.id,
+					$startDate: overbooking.startDate,
+					$endDate: overbooking.endDate
+				}); $ctrl.$close()">
 			</ch-planning-reservation>
 		</div>
 	</div>

@@ -6,6 +6,7 @@
 			reservation: "<",
 			roomPeople: "<?",
 			roomExtraPeople: "<?",
+			settings: "<",
 			mainClass: "@",
 			onClick: "&?"
 		},

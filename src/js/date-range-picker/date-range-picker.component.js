@@ -80,6 +80,10 @@
 			    panelClass: "bg-white md-whiteframe-15dp",
 			    trapFocus: true,
 			    onCloseSuccess: function(panelRef, closeReason) {
+			    	// touch degli input
+			    	$scope.chDateRangePickerTriggerForm[ctrl.startInputName].$setTouched();
+			    	$scope.chDateRangePickerTriggerForm[ctrl.endInputName].$setTouched();
+			    	
 			    	if (_.isBoolean(closeReason) && closeReason) {
 			    		ctrl.$updateOriginal();
 			    		ctrl.onClose && ctrl.onClose({$start: ctrl.$$data.start, $end: ctrl.$$data.end});
@@ -154,6 +158,10 @@
 			 if (!ctrl.$$data) {
 				 return;
 			 }
+			 
+			// dirty degli input
+			 $scope.chDateRangePickerTriggerForm[ctrl.startInputName].$setDirty();
+			 $scope.chDateRangePickerTriggerForm[ctrl.endInputName].$setDirty();
 			 
 			 ctrl.start = ctrl.$getDate(ctrl.$$data.start);
 			 ctrl.startMinDate = ctrl.$getDate(ctrl.$$data.startMinDate);

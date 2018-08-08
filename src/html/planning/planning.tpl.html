@@ -1,13 +1,13 @@
-<div flex layout="column" layout-fill ng-switch="$ctrl.$$currentView">
+<div flex layout="column" layout-fill>
 
-	<ch-planning-header></ch-planning-header>
-	
 	<md-button class="md-fab md-primary md-fab-bottom-right am-fade-and-scale" ui-sref="hotel-reservations-new" aria-label="New  reservation">
         <md-icon class="mdi mdi-book-plus md-24"></md-icon>
         <md-tooltip md-direction="left"><span translate-once="reservations.reservation.new"></span></md-tooltip>
     </md-button>
     
-    <md-content id="planningCont">
+    <md-content flex id="planningCont" ng-switch="$ctrl.$$currentView">
+    	<ch-planning-header></ch-planning-header>
+    
 	    <div ng-switch-when="D" flex layout="column"> 
 			<div layout-fill ng-include="'/tpls/planning/planning-content-daily.tpl'" autoscroll></div>
 		</div>
@@ -21,14 +21,25 @@
 		</div>
 		
 		<div ng-if="!$ctrl.hideLegend" layout layout-wrap layout-padding-sm class="md-padding">
-			<div layout layout-padding layout-align="start center">
+			<div ng-if="$ctrl.$$isPastDates" layout layout-padding layout-align="start center">
+				<div class="ch-planning-legend-color bg-gray-lighter"></div>
+				<div><span translate="date.date.past"></span></div>
+			</div>
+			
+			<div ng-if="$ctrl.$$isOverbookings" layout layout-padding layout-align="start center">
 				<div class="ch-planning-legend-color bg-gray-base"></div>
 				<div><span translate="ratesheet.overbooked"></span></div>
 			</div>
 			
-			<div layout layout-padding layout-align="start center">
-				<div class="ch-planning-legend-color bg-gray-lighter"></div>
-				<div><span translate="date.date.past"></span></div>
+			<div ng-if="$ctrl.$$currentReservationSources.length && $ctrl.settings.reservationColorLegend"
+				ng-repeat="source in $ctrl.$$currentReservationSources track by $index"
+				layout layout-padding layout-align="start center">
+				<div class="ch-planning-legend-color" ng-class="{'bg-blue-sea': !$ctrl.settings.reservationColorLegend[source]}" 
+					ng-style="{'background-color': $ctrl.settings.reservationColorLegend[source]}"></div>
+				<div>
+					<span ng-if="source != 'PORTAL'" translate="channel.source.{{source|lowercase}}"></span>
+					<span ng-if="source == 'PORTAL'" ng-bind="$ctrl.sourcePortalLabel"></span>
+				</div>
 			</div>
 		</div>
 	</md-content>

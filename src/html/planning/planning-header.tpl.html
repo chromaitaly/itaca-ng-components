@@ -35,37 +35,38 @@
 				</ch-date-picker>
 			</div>
 			
-			<div>
-				<md-menu md-position-mode="target bottom">
-			 		<md-button ng-class="{'no-padding no-margin-x-sides minimal-button': !$ctrl.$mdMedia('gt-sm')}"
-			 			ng-click="$mdMenu.open($event)" ng-disabled="$ctrl.chPlanningCtrl.$$actionInProgress" aria-label="Switch view">
-				   		<span ng-switch="$ctrl.chPlanningCtrl.$$currentView" class="text-white text-bold">
-				   			<span ng-switch-when="D" translate="date.day"></span>
-				   			<span ng-switch-when="W" translate="date.week"></span>
-				   			<span ng-switch-when="M" translate="date.month"></span>
-				   		</span>
-				   		<md-icon class="mdi mdi-menu-down md-24 text-white"></md-icon>
-				   		<md-tooltip><span translate="planning.view.change"></span></md-tooltip>
-				 	</md-button>
-				 	<md-menu-content>
-				   		<md-menu-item>
-				   			<md-button ng-click="$ctrl.$dailyView()" aria-label="Switch to daily view">
-				   				<span translate="date.day"></span>
-				   			</md-button>
-				   		</md-menu-item>
-				   		<md-menu-item>
-				   			<md-button ng-click="$ctrl.$weeklyView()" aria-label="Switch to weekly view">
-				   				<span translate="date.week"></span>
-				   			</md-button>
-				   		</md-menu-item>
-				   		<md-menu-item>
-				   			<md-button ng-click="$ctrl.$monthlyView()" aria-label="Switch to monthly view">
-				   				<span translate="date.month"></span>
-				   			</md-button>
-				   		</md-menu-item>
-				 	</md-menu-content>
-				</md-menu>
-			</div>
+<!-- 			<div> -->
+<!-- 				<md-menu md-position-mode="target bottom"> -->
+<!-- 			 		<md-button ng-class="{'no-padding no-margin-x-sides minimal-button': !$ctrl.$mdMedia('gt-sm')}" -->
+<!-- 			 			ng-click="$mdMenu.open($event)" ng-disabled="$ctrl.chPlanningCtrl.$$actionInProgress" aria-label="Switch view"> -->
+<!-- 				   		<span ng-switch="$ctrl.chPlanningCtrl.$$currentView" class="text-white text-bold"> -->
+<!-- 				   			<span ng-switch-when="D" translate="date.day"></span> -->
+<!-- 				   			<span ng-switch-when="W" translate="date.week"></span> -->
+<!-- 				   			<span ng-switch-when="M" translate="date.month"></span> -->
+<!-- 				   		</span> -->
+<!-- 				   		<md-icon class="mdi mdi-menu-down md-24 text-white"></md-icon> -->
+<!-- 				   		<md-tooltip><span translate="planning.view.change"></span></md-tooltip> -->
+<!-- 				 	</md-button> -->
+<!-- 				 	<md-menu-content> -->
+<!-- 				   		<md-menu-item> -->
+<!-- 				   			<md-button ng-click="$ctrl.$dailyView()" aria-label="Switch to daily view"> -->
+<!-- 				   				<span translate="date.day"></span> -->
+<!-- 				   			</md-button> -->
+<!-- 				   		</md-menu-item> -->
+<!-- 				   		<md-menu-item> -->
+<!-- 				   			<md-button ng-click="$ctrl.$weeklyView()" aria-label="Switch to weekly view"> -->
+<!-- 				   				<span translate="date.week"></span> -->
+<!-- 				   			</md-button> -->
+<!-- 				   		</md-menu-item> -->
+<!-- 				   		<md-menu-item> -->
+<!-- 				   			<md-button ng-click="$ctrl.$monthlyView()" aria-label="Switch to monthly view"> -->
+<!-- 				   				<span translate="date.month"></span> -->
+<!-- 				   			</md-button> -->
+<!-- 				   		</md-menu-item> -->
+<!-- 				 	</md-menu-content> -->
+<!-- 				</md-menu> -->
+<!-- 			</div> -->
+			
 			<div>
 				<md-menu md-position-mode="target bottom">
 			 		<md-button class="md-icon-button" ng-class="{'no-margin-x-sides': !$ctrl.$mdMedia('gt-sm')}"
@@ -74,7 +75,8 @@
 				 	</md-button>
 				 	<md-menu-content>
 				   		<md-menu-item>
-				   			<md-button ng-click="$ctrl.$openSettings()" aria-label="Open planning settings">
+				   			<md-button ui-sref="hotel-planning.settings" aria-label="Open planning settings">
+				   				<md-icon class="mdi mdi-cogs md-24"></md-icon>
 				   				<span translate="menu.settings"></span>
 				   			</md-button>
 				   		</md-menu-item>

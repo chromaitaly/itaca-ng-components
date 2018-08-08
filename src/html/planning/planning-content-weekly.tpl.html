@@ -1,5 +1,5 @@
 <div flex layout="column" layout-fill ng-switch="$ctrl.$$roomsType">
-	<md-subheader class="no-padding bg-gray-lighter">
+	<md-subheader class="no-padding bg-gray-lighter ch-planning-dates-header">
   		<div layout flex>
 			<div hide show-gt-sm flex="25" layout layout-padding layout-align="center center" class="border-right-white">
 				<strong class="text-uppercase text-gray-light">
@@ -12,7 +12,7 @@
 					
 					<md-button tabindex="-1" ng-click="$ctrl.toggleAllRoomsClosing(viewDate.date)"
 						ng-disabled="viewDate.isPast || viewDate.$planning.hotelClosed || $ctrl.chPlanningCtrl.$$actionInProgress"
-						class="no-margin row-mini text-left" ng-class="{'minimal-button': !$ctrl.$mdMedia('gt-xs'),
+						class="md-square-button no-margin row-mini text-left" ng-class="{'minimal-button': !$ctrl.$mdMedia('gt-xs'),
 						'text-gray-light': !viewDate.$planning.roomsClosed,
 						'bg-danger text-white': viewDate.$planning.roomsClosed}">
 						<div layout="column" ng-class="{'text-primary': (viewDate.date|amDifference:$ctrl.$$today:'days') == 0}">
@@ -37,8 +37,9 @@
 			room="room"
 			dates="$ctrl.$$viewDates"
 			planning="$ctrl.planning[room.id]"
-			on-reservation-click="$ctrl.onReservationClick({'$reservation': $reservation})"
-			on-overbooking-click="$ctrl.onOverbookingClick({'$reservation': $reservation})">
+			settings="$ctrl.settings"
+			on-reservation-click="$ctrl.onReservationClick({'$reservation': $reservation, '$roomId': $roomId, '$roomTypeId': $roomTypeId, '$startDate': $startDate, '$endDate': $endDate})"
+			on-overbooking-click="$ctrl.onOverbookingClick({'$reservation': $reservation, '$roomId': $roomId, '$roomTypeId': $roomTypeId, '$startDate': $startDate, '$endDate': $endDate})">
 		</ch-planning-room>
 		
 		<div flex ng-show="$ctrl.rooms.busy" flex layout="column" layout-padding layout-align="center center">
