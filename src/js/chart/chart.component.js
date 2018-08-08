@@ -1,14 +1,14 @@
 (function() {
 	'use strict';
 	
-	angular.module("itaca.company").component('chChart', {
+	angular.module("itaca.components").component('chChart', {
 		bindings: {
 			type: "<",
 			data: "<",
 			options: "<?"
 		},
 		controller: ChartCtrl,
-		template: "<div class=\"chart-container relative\"><canvas class=\"chartjs\"></canvas></div>"
+		template: "<div class=\"chart-container relative\"><canvas class=\"chartjs\"></canvas></div><div>"
 	});
 
 	/* @ngInject */
@@ -16,7 +16,7 @@
 		var ctrl = this;
 		
 		this.$onInit = function(){
-			ctrl.type = _.includes(["line", "bar", "horizontal-bar", "radar", "pie", "polar-area", "doughnut", "bubble"], ctrl.type) ? ctrl.type : "line";
+			ctrl.type = _.includes(["line", "bar", "horizontal-bar", "radar", "pie", "polar-area", "doughnut", "bubble"], ctrl.type) ? ctrl.type : "bar";
 			ctrl.data = ctrl.data || {};
 			ctrl.ctx = $element.find('canvas')[0].getContext('2d');
 			ctrl.$createChart();
@@ -28,11 +28,13 @@
 			}
 			
 			if (changesObj.data && !changesObj.data.isFirstChange()) {
-				ctrl.$createChart();
+				ctrl.$$chart.data = ctrl.data;
+				ctrl.$$chart.update();
 			}
 			
 			if (changesObj.options && !changesObj.options.isFirstChange()) {
-				ctrl.$createChart();
+				ctrl.$$chart.options = ctrl.options;
+				ctrl.$$chart.update();
 			}
 		};
 		
@@ -47,6 +49,7 @@
 				options: ctrl.options,
 				
 			});
+			ctrl.$$chart.update();
 		};
 	}
 })();
