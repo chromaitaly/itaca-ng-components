@@ -1,7 +1,7 @@
 (function() {
 	'use strict';
 	
-	angular.module("itaca.component").component("chAddressAutocomplete", {
+	angular.module("itaca.components").component("chAddressAutocomplete", {
 		require: {
         	ngModelCtrl: 'ngModel' 
         },
@@ -42,6 +42,8 @@
 					"</md-item-template>" +
 					"<div ng-messages=\"autocompleteForm.address.$error\">" +
 						"<div ng-message=\"required\"><span translate=\"error.required\"></span></div>" +
+						"<div ng-message=\"minlength\"><span translate=\"error.field.generic.minlength\" translate-values=\"{count: $ctrl.minLength}\"></span></div>" +
+						"<div ng-message=\"connection\"><span translate=\"error.address.not.found\"></span></div>" +
 					"</div>" +
 				"</md-autocomplete>" +
 			"</ng-form>"
@@ -80,15 +82,18 @@
     			
     			ctrl.searchText = address;
     		} else if(ctrl.ngModel && ctrl.ngModel.addressComplete){
-    			ctrl.searchText = ctrl.ngModel.addressComplete
+    			ctrl.searchText = ctrl.ngModel.addressComplete;
     		} else {
-    			ctrl.searchText = null
+    			ctrl.searchText = null;
     		}
     	};
     	
     	this.$querySearch = function(query){
     		return GoogleAPI.addresses(query).then(function(response){
+    			ctrl.$setError(false);
     			return response;
+    		},function(error){
+    			ctrl.$setError(true);
     		});
 	    };
 	    
@@ -99,6 +104,8 @@
 	    	}
 	    		
 	    	GoogleAPI.placeDetails(place.place_id).then(function(data){
+	    		ctrl.$setError(false);
+	    		
 	    		var addressInfo = {};
 	    	
 	    		 for (var i = 0; i < data.address_components.length; i++) {
@@ -149,7 +156,19 @@
 		    	addressInfo.addressComplete = ctrl.selectedItem;
 		    	
 		    	ctrl.ngModel = addressInfo;
+	    	}, function(error){
+	    		ctrl.$setError(true);
 	    	});
+	    };
+	    
+	    this.$setError = function(bool){
+	    	$scope.autocompleteForm.address.$setValidity('connection', !bool);
+	    	ctrl.$$error = bool;
+	    	
+	    	if(bool){
+	    		ctrl.ngModel = null;
+    			ctrl.selectedItem  = null;
+	    	}
 	    };
 	}
 })();

@@ -1,7 +1,7 @@
 (function() {
 	'use strict';
 	
-	angular.module("itaca.component").component("chCountryAutocomplete", {
+	angular.module("itaca.components").component("chCountryAutocomplete", {
 		require: {
         	ngModelCtrl: 'ngModel' 
         },
@@ -43,6 +43,8 @@
 					"</md-item-template>" +
 					"<div ng-messages=\"autocompleteForm.address.$error\">" +
 						"<div ng-message=\"required\"><span translate=\"error.required\"></span></div>" +
+						"<div ng-message=\"minlength\"><span translate=\"error.field.generic.minlength\" translate-values=\"{count: $ctrl.minLength}\"></span></div>" +
+						"<div ng-message=\"connection\"><span translate=\"error.country.not.found\"></span></div>" +
 					"</div>" +
 				"</md-autocomplete>" +
 			"</ng-form>"
@@ -93,17 +95,30 @@
     	
     	this.$querySearch = function(query){
     		return CountryAPI.getByName(query).then(function(response){
+    			ctrl.$setError(false);
     			return response;
+    		},function(error){
+    			ctrl.$setError(true);
     		});
 	    };
 	    
 	    this.$selectedItemChange = function(country){
 	    	if(!country){
-	    		ctrl.ngModel = null;
+    			ctrl.ngModel = null;
 	    		return;
 	    	}
-	    	
 	    	ctrl.ngModel = country.alpha2Code;
+	    	ctrl.$setError(false);
+	    };
+	    
+	    this.$setError = function(bool){
+	    	$scope.autocompleteForm.address.$setValidity('connection', !bool);
+	    	ctrl.$$error = bool;
+	    	
+	    	if(bool){
+	    		ctrl.ngModel = null;
+    			ctrl.selectedItem  = null;
+	    	}
 	    };
 	}
 })();
