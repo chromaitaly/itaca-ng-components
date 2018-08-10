@@ -16,6 +16,7 @@
 			onOpenRoom: "&?",
 			onCloseRoom: "&?",
 			onViewRates: "&?",
+			onDateClick: "&?",
 			onReservationClick: "&?",
 			onOverbookingClick: "&?"
     	},
@@ -36,6 +37,7 @@
     		ctrl.$setView(ctrl.view, true);
     		ctrl.$setStartDate(ctrl.startDate);
     		ctrl.$initLegend();
+    		ctrl.$manageDatesClosing();
     	};
     	
     	this.$onChanges = function(changesObj) {
@@ -53,6 +55,7 @@
     		
     		if (changesObj.planning && !changesObj.planning.isFirstChange()) {
     			ctrl.$initLegend();
+    			ctrl.$manageDatesClosing();
     		}
     	};
     	
@@ -148,7 +151,9 @@
 				this.push({
 					uid: d.getTime(), 
 					date: d,
-					isPast: m.isBefore(moment(), "days"),
+					isoWeekday: m.isoWeekday(),
+					isPast: m.isBefore(ctrl.$$today, "days"),
+					isToday: m.isSame(ctrl.$$today, "days"),
 					hotelStatus: null
 				});
 				
@@ -157,6 +162,18 @@
 			ctrl.$$viewDates = viewDates;
 			
 			ctrl.$$loading = false;
+		};
+		
+		this.$manageDatesClosing = function() {
+			_.forEach(ctrl.$$viewDates, function(viewDate) {
+				var date = viewDate.date;
+				
+				viewDate.roomsClosed = ctrl.planning && !_.some(ctrl.planning, function(roomPlanning) {
+					return _.some(roomPlanning, function(roomDatePlanning) {
+						return moment(roomDatePlanning.date).isSame(date, "days") && !roomDatePlanning.roomClosed;
+					});
+				});
+			});
 		};
 		
 		this.$getSelectedMonths = function() {
@@ -171,6 +188,12 @@
 			}, months);
 			
 			return _.uniq(months);
+		};
+		
+		this.$onDateClick = function(ev, viewDate) {
+			ctrl.onDateClick && $q.when(ctrl.onDateClick({$event: ev, $date: viewDate.date, $opened: !viewDate.roomsClosed})).finally(function() {
+				ctrl.$manageDatesClosing();
+			});
 		};
     }
 })();

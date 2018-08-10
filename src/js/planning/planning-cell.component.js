@@ -28,7 +28,7 @@
 		};
 		
 		this.$openCellMenu = function() {
-			if (ctrl.viewDate.$planning && (ctrl.viewDate.$planning.roomClosed || ctrl.viewDate.$planning.active || (ctrl.viewDate.$planning.overbookings && ctrl.viewDate.$planning.overbookings.length))) {
+			if (ctrl.viewDate.$planning && (ctrl.viewDate.$planning.active || (ctrl.viewDate.$planning.overbookings && ctrl.viewDate.$planning.overbookings.length))) {
 				return;
 			}
 			

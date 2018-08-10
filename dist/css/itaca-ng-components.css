@@ -251,11 +251,16 @@ ch-card .md-whiteframe-1dp {
 .ch-planning-cell.ch-planning-cell-closed {
   background-color: #dd2c00;
 }
-.ch-planning-cell:not(.ch-planning-cell-active):not(.ch-planning-cell-past):not(.ch-planning-cell-closed):hover {
-  background-color: #f2f2f2;
+.ch-planning-cell:not(.ch-planning-cell-active):hover {
   box-shadow: 0 0 10px #999;
 }
 .ch-planning-cell:not(.ch-planning-cell-active):not(.ch-planning-cell-closed):hover {
+  /* 	background-color: @gray-lighter; */
+}
+.ch-planning-cell.ch-planning-cell-closed:hover {
+  /* 	background-color: @gray-lighter; */
+}
+.ch-planning-cell:not(.ch-planning-cell-active):hover {
   cursor: pointer;
 }
 .ch-planning-cell.ch-planning-cell-active:focus,

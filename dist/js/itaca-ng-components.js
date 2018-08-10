@@ -7298,7 +7298,7 @@ var colorPicker = function() {
         this.$mdMedia = $mdMedia;
         this.$onInit = function() {};
         this.$openCellMenu = function() {
-            if (ctrl.viewDate.$planning && (ctrl.viewDate.$planning.roomClosed || ctrl.viewDate.$planning.active || ctrl.viewDate.$planning.overbookings && ctrl.viewDate.$planning.overbookings.length)) {
+            if (ctrl.viewDate.$planning && (ctrl.viewDate.$planning.active || ctrl.viewDate.$planning.overbookings && ctrl.viewDate.$planning.overbookings.length)) {
                 return;
             }
             var menuTriggerBtn = $element[0].querySelector("md-menu.ch-planning-cell-menu .md-button");
@@ -7620,6 +7620,7 @@ var colorPicker = function() {
             onOpenRoom: "&?",
             onCloseRoom: "&?",
             onViewRates: "&?",
+            onDateClick: "&?",
             onReservationClick: "&?",
             onOverbookingClick: "&?"
         },
@@ -7635,6 +7636,7 @@ var colorPicker = function() {
             ctrl.$setView(ctrl.view, true);
             ctrl.$setStartDate(ctrl.startDate);
             ctrl.$initLegend();
+            ctrl.$manageDatesClosing();
         };
         this.$onChanges = function(changesObj) {
             if (changesObj.rooms && !changesObj.rooms.isFirstChange()) {
@@ -7648,6 +7650,7 @@ var colorPicker = function() {
             }
             if (changesObj.planning && !changesObj.planning.isFirstChange()) {
                 ctrl.$initLegend();
+                ctrl.$manageDatesClosing();
             }
         };
         this.$initRooms = function() {
@@ -7728,12 +7731,24 @@ var colorPicker = function() {
                 this.push({
                     uid: d.getTime(),
                     date: d,
-                    isPast: m.isBefore(moment(), "days"),
+                    isoWeekday: d.isoWeekday(),
+                    isPast: m.isBefore(ctrl.$$today, "days"),
+                    isToday: d.isSame(ctrl.$$today, "days"),
                     hotelStatus: null
                 });
             }, viewDates);
             ctrl.$$viewDates = viewDates;
             ctrl.$$loading = false;
+        };
+        this.$manageDatesClosing = function() {
+            _.forEach(ctrl.$$viewDates, function(viewDate) {
+                var date = viewDate.date;
+                viewDate.roomsClosed = ctrl.planning && !_.some(ctrl.planning, function(roomPlanning) {
+                    return _.some(roomPlanning, function(roomDatePlanning) {
+                        return moment(roomDatePlanning.date).isSame(date, "days") && !roomDatePlanning.roomClosed;
+                    });
+                });
+            });
         };
         this.$getSelectedMonths = function() {
             ctrl.$setStartDate(ctrl.$$startDate, true);
@@ -7743,6 +7758,15 @@ var colorPicker = function() {
                 this.push(m.month());
             }, months);
             return _.uniq(months);
+        };
+        this.$onDateClick = function(ev, viewDate) {
+            ctrl.onDateClick && $q.when(ctrl.onDateClick({
+                $event: ev,
+                $date: viewDate.date,
+                $opened: !viewDate.roomsClosed
+            })).finally(function() {
+                ctrl.$manageDatesClosing();
+            });
         };
     }
 })();
@@ -9993,59 +10017,6 @@ var colorPicker = function() {
 
 (function() {
     "use strict";
-    StatisticChartCtrl.$inject = [ "$scope", "StatisticsHelper" ];
-    angular.module("itaca.company").component("chStatisticChart", {
-        bindings: {
-            type: "@",
-            values: "<",
-            colors: "<?",
-            onHover: "&?",
-            onClick: "&?"
-        },
-        controller: StatisticChartCtrl,
-        template: '<ch-chart type="$ctrl.$$chart.type" data="$ctrl.$$chart.data" options="$ctrl.$$chart.options"></ch-chart>'
-    });
-    function StatisticChartCtrl($scope, StatisticsHelper) {
-        var ctrl = this;
-        this.$onInit = function() {
-            ctrl.type = ctrl.type || "ANNUAL_RESERVATIONS_AMOUNT_TREND";
-            ctrl.$$chart = {};
-            ctrl.$createChart();
-        };
-        this.$onChanges = function(changesObj) {
-            if (changesObj.type && !changesObj.type.isFirstChange()) {
-                ctrl.$createChart();
-            }
-            if (changesObj.values && !changesObj.values.isFirstChange()) {
-                ctrl.$createChart();
-            }
-            if (changesObj.onHover && !changesObj.onHover.isFirstChange()) {
-                ctrl.$updateEvent();
-            }
-            if (changesObj.onClick && !changesObj.onClick.isFirstChange()) {
-                ctrl.$updateEvent();
-            }
-            if (changesObj.colors && !changesObj.colors.isFirstChange()) {
-                ctrl.$updateColors();
-            }
-        };
-        this.$createChart = function() {
-            ctrl.$$chart = StatisticsHelper.createChartData(ctrl.type, ctrl.values, ctrl.onHover, ctrl.onClick);
-            ctrl.$updateColors();
-        };
-        this.$updateEvent = function() {
-            if (!_.isNil(ctrl.$$chart) && !_.isNil(ctrl.$$chart.options)) {
-                ctrl.$$chart.options.onHover = angular.isFunction(ctrl.onHover) ? ctrl.onHover : null;
-                ctrl.$$chart.options.onClick = angular.isFunction(ctrl.onClick) ? ctrl.onClick : null;
-            }
-            ctrl.$updateColors();
-        };
-        this.$updateColors = function() {};
-    }
-})();
-
-(function() {
-    "use strict";
     StatisticsHelper.$inject = [ "$translate" ];
     angular.module("itaca.components").factory("StatisticsHelper", StatisticsHelper);
     function StatisticsHelper($translate) {
@@ -10129,6 +10100,59 @@ var colorPicker = function() {
             return chartData;
         };
         return $$service;
+    }
+})();
+
+(function() {
+    "use strict";
+    StatisticsChartCtrl.$inject = [ "$scope", "StatisticsHelper" ];
+    angular.module("itaca.company").component("chStatisticsChart", {
+        bindings: {
+            type: "@",
+            values: "<",
+            colors: "<?",
+            onHover: "&?",
+            onClick: "&?"
+        },
+        controller: StatisticsChartCtrl,
+        template: '<ch-chart type="$ctrl.$$chart.type" data="$ctrl.$$chart.data" options="$ctrl.$$chart.options"></ch-chart>'
+    });
+    function StatisticsChartCtrl($scope, StatisticsHelper) {
+        var ctrl = this;
+        this.$onInit = function() {
+            ctrl.type = ctrl.type || "ANNUAL_RESERVATIONS_AMOUNT_TREND";
+            ctrl.$$chart = {};
+            ctrl.$createChart();
+        };
+        this.$onChanges = function(changesObj) {
+            if (changesObj.type && !changesObj.type.isFirstChange()) {
+                ctrl.$createChart();
+            }
+            if (changesObj.values && !changesObj.values.isFirstChange()) {
+                ctrl.$createChart();
+            }
+            if (changesObj.onHover && !changesObj.onHover.isFirstChange()) {
+                ctrl.$updateEvent();
+            }
+            if (changesObj.onClick && !changesObj.onClick.isFirstChange()) {
+                ctrl.$updateEvent();
+            }
+            if (changesObj.colors && !changesObj.colors.isFirstChange()) {
+                ctrl.$updateColors();
+            }
+        };
+        this.$createChart = function() {
+            ctrl.$$chart = StatisticsHelper.createChartData(ctrl.type, ctrl.values, ctrl.onHover, ctrl.onClick);
+            ctrl.$updateColors();
+        };
+        this.$updateEvent = function() {
+            if (!_.isNil(ctrl.$$chart) && !_.isNil(ctrl.$$chart.options)) {
+                ctrl.$$chart.options.onHover = angular.isFunction(ctrl.onHover) ? ctrl.onHover : null;
+                ctrl.$$chart.options.onClick = angular.isFunction(ctrl.onClick) ? ctrl.onClick : null;
+            }
+            ctrl.$updateColors();
+        };
+        this.$updateColors = function() {};
     }
 })();
 
@@ -11162,8 +11186,8 @@ angular.module("itaca.components").run([ "$templateCache", function($templateCac
     $templateCache.put("/tpls/people-counters/people-counters.tpl", '<div class="layout layout-wrap layout-align-center-center"><div class="flex layout-column layout-align-center-center"><ch-counter label="{{$ctrl.$$adultsHint}}" count-class="bg-white only-border" ng-model="$ctrl.people.adults" min="$ctrl.$$peopleLimits.adults.min" max="$ctrl.$$peopleLimits.adults.max"></ch-counter></div><div class="flex layout-column layout-align-center-center"><ch-counter label="{{$ctrl.$$boysHint}}" count-class="bg-white only-border" ng-model="$ctrl.people.boys" min="$ctrl.$$peopleLimits.boys.min" max="$ctrl.$$peopleLimits.boys.max"></ch-counter></div><div class="flex layout-column layout-align-center-center"><ch-counter label="{{$ctrl.$$childrenHints}}" count-class="bg-white only-border" ng-model="$ctrl.people.children" min="$ctrl.$$peopleLimits.children.min" max="$ctrl.$$peopleLimits.children.max"></ch-counter></div><div class="flex layout-column layout-align-center-center layout-padding"><ch-counter label="{{$ctrl.$$kidsHints}}" count-class="bg-white only-border" ng-model="$ctrl.people.kids" min="$ctrl.$$peopleLimits.kids.min" max="$ctrl.$$peopleLimits.kids.max"></ch-counter></div></div>');
     $templateCache.put("/tpls/people-picker/people-picker-trigger.tpl", '<ng-form name="chPeoplePickerForm" class="flex no-padding layout-column layout-fill"><md-button class="ch-people-picker-button minimal-button flex text-lowercase text-center {{$ctrl.buttonClass}}" aria-label="Change people" ng-disabled="$ctrl.ngDisabled" ng-click="$ctrl.$openPanel($event)"><div class="{{$ctrl.wrapperClass}}"><div ng-if="$ctrl.label" class="layout-row layout-align-center-center" ng-class="{\'no-padding-top\': $ctrl.$mdMedia(\'gt-xs\'), \'md-padding\': !$ctrl.$mdMedia(\'gt-xs\') || $ctrl.$$hasPeople}"><div class="{{$ctrl.labelClass}} text-initial text-wrap row-1" ng-class="{\'text-small\': $ctrl.$$hasPeople}"><span ng-bind-html="$ctrl.label"></span></div></div><div ng-show="$ctrl.$$hasPeople" class="md-subhead text-wrap row-mini"><strong><ch-people-summary people="$ctrl.people"></ch-people-summary></strong></div></div><div ng-messages="chPeoplePickerForm[$ctrl.fieldName].$error" ng-show="chPeoplePickerForm[$ctrl.fieldName].$dirty" class="text-danger text-small text-center row-1 no-padding layout-column layout-padding-sm"><div ng-message="required"><md-icon ng-if="$ctrl.showErrorIcon" class="mdi mdi-alert-outline material-icons md-18 text-danger"></md-icon><span class="text-wrap" translate="error.required"></span></div><div ng-message="min"><md-icon ng-if="$ctrl.showErrorIcon" class="mdi mdi-alert-outline material-icons md-18 text-danger"></md-icon><span class="text-wrap" ng-if="$ctrl.errorMessages.min" ng-bind="$ctrl.errorMessages.min"></span><span class="text-wrap" ng-if="!$ctrl.errorMessages.min" translate="error.field.min" translate-value-num="{{$ctrl.minCount}}"></span></div></div></md-button><input type="hidden" name="{{$ctrl.fieldName}}" ng-model="$ctrl.people" ng-required="$ctrl.ngRequired"></ng-form>');
     $templateCache.put("/tpls/people-picker/people-picker.tpl", '<div layout="column" layout-padding><div class="text-center" ng-if="!$ctrl.data.noTitle"><strong><span ng-if="!$ctrl.data.title" translate="reservation.people.question"></span><span ng-if="$ctrl.data.title" ng-bind-html="$ctrl.data.title"></span></strong></div><div class="no-padding"><div layout layout-align="center center" class="md-margin"><ch-counter label="<div class=\'text-center\'>{{::(\'people.adults\'|translate)}}</div><small>({{\'date.years.min.range.abbr\'| translate:\'{min:18}\'}})</small>" label-direction="{{$mdMedia(\'xs\') ? \'top\' : \'left\'}}" label-class="md-body-1 text-gray-light flex-40" flexible="true" ng-model="$ctrl.data.people.adults" min="1" plus-disabled="$ctrl.data.plusDisabled" aria-label="Adults"></ch-counter></div><div layout layout-align="center center" class="md-margin"><ch-counter label="<div class=\'text-center\'>{{::(\'people.boys\'|translate)}}</div><small>({{\'date.years.range.abbr\'| translate:\'{min:13,max:17}\'}})</small>" label-direction="{{$mdMedia(\'xs\') ? \'top\' : \'left\'}}" label-class="md-body-1 text-gray-light flex-40" flexible="true" ng-model="$ctrl.data.people.boys" min="0" plus-disabled="$ctrl.data.plusDisabled" aria-label="Boys"></ch-counter></div><div layout layout-align="center center" class="md-margin"><ch-counter label="<div class=\' text-center\'>{{::(\'people.children\'|translate)}}</div><small>({{\'date.years.range.abbr\'| translate:\'{min:3,max:12}\'}})</small>" label-direction="{{$mdMedia(\'xs\') ? \'top\' : \'left\'}}" label-class="md-body-1 text-gray-light flex-40" flexible="true" ng-model="$ctrl.data.people.children" min="0" plus-disabled="$ctrl.data.plusDisabled" aria-label="Children"></ch-counter></div><div layout layout-align="center center" class="md-margin"><ch-counter label="<div class=\'text-center\'>{{::(\'people.kids\'|translate)}}</div><small>({{\'date.years.range.abbr\'| translate:\'{min:0,max:2}\'}})</small>" label-direction="{{$mdMedia(\'xs\') ? \'top\' : \'left\'}}" label-class="md-body-1 text-gray-light flex-40" flexible="true" ng-model="$ctrl.data.people.kids" min="0" plus-disabled="$ctrl.data.plusDisabled" aria-label="Kids"></ch-counter></div></div><div ng-if="$ctrl.hasConfirm" class="no-padding layout-row layout-align-center-center"><md-button class="no-margin-top no-margin-bottom md-raised" ng-click="$ctrl.cancel()" aria-label="Cancel"><small translate="common.cancel"></small></md-button><md-button class="md-primary md-raised no-margin-top no-margin-bottom" ng-click="$ctrl.confirm()" aria-label="Confirm"><small translate="common.confirm"></small></md-button></div><div layout ng-if="!$ctrl.hasConfirm && $ctrl.hasClose" class="no-padding"><div flex></div><md-button class="md-primary no-margin-top no-margin-bottom" ng-click="$ctrl.confirm()" aria-label="Close"><small translate="common.close"></small></md-button></div></div>');
-    $templateCache.put("/tpls/planning/planning-cell.tpl", '<div flex layout="column" class="ch-planning-cell" ng-class="{\n' + "\t'ch-planning-cell-past': $ctrl.viewDate.isPast && !$ctrl.viewDate.$planning.roomClosed, \n" + "\t'ch-planning-cell-closed': $ctrl.viewDate.$planning.roomClosed,\n" + "\t'ch-planning-cell-active': $ctrl.viewDate.$planning.active || $ctrl.viewDate.$planning.overbookings.length,\n" + '\t}" ng-click="$ctrl.$openCellMenu()"><div ng-if="$ctrl.viewDate.$planning.hotelClosed" flex layout="column" layout-padding-sm layout-align="center center"><div><md-icon class="mdi mdi-lock md-24 text-gray-light"></md-icon></div><div class="text-gray-light text-center"><small translate="hotel.closed"></small></div></div><div ng-if="!$ctrl.viewDate.$planning.hotelClosed" flex layout="column"><ch-planning-reservation ng-if="$ctrl.viewDate.$planning.active.reservation.$show" class="animated fadeIn" reservation="$ctrl.viewDate.$planning.active.reservation" room-people="$ctrl.viewDate.$planning.active.people" room-extra-people="$ctrl.viewDate.$planning.active.extraPeople" settings="$ctrl.settings" on-click="$ctrl.onReservationClick({\n' + "\t\t\t\t'$reservation': $reservation, \n" + "\t\t\t\t$roomId: $ctrl.viewDate.$planning.active.roomId,\n" + "\t\t\t\t$roomTypeId: $ctrl.viewDate.$planning.active.roomType.id,\n" + "\t\t\t\t$startDate: $ctrl.viewDate.$planning.active.startDate,\n" + "\t\t\t\t$endDate: $ctrl.viewDate.$planning.active.endDate\n" + '\t\t\t})"></ch-planning-reservation><div flex ng-if="!$ctrl.viewDate.$planning.active" layout layout-align="end start"><md-menu md-position-mode="target bottom" class="ch-planning-cell-menu"><md-button class="md-icon-button" ng-class="{\'no-margin-x-sides\': !$ctrl.$mdMedia(\'gt-sm\')}" ng-click="$mdMenu.open($event)" ng-disabled="$ctrl.chPlanningCtrl.$$actionInProgress" aria-label="Open date menu"><md-icon class="mdi mdi-dots-vertical md-24 text-gray-light"></md-icon></md-button><md-menu-content><md-menu-item ng-if="!$ctrl.viewDate.isPast && $ctrl.onCloseRoom && !$ctrl.viewDate.roomClosed"><md-button ng-click="$ctrl.$closeRoom()" aria-label="Close room availability"><md-icon class="mdi mdi-lock md-24"></md-icon><span translate="hotel.availability.close"></span></md-button></md-menu-item><md-menu-item ng-if="!$ctrl.viewDate.isPast && $ctrl.onOpenRoom && $ctrl.viewDate.roomClosed"><md-button ng-click="$ctrl.$openRoom()" aria-label="Open room availability"><md-icon class="mdi mdi-lock-open md-24"></md-icon><span translate="hotel.availability.open"></span></md-button></md-menu-item><md-menu-item ng-if="$ctrl.onViewRates && !$ctrl.viewDate.roomClosed"><md-button ng-click="$ctrl.$viewRates()" aria-label="View rates"><md-icon class="mdi mdi-cash-usd md-24"></md-icon><span translate="ratesheet.rates.view"></span></md-button></md-menu-item><md-menu-item ng-if="!$ctrl.viewDate.roomClosed"><md-button ui-sref="hotel-reservations-new({checkin: $ctrl.viewDate.date})" aria-label="New reservation"><md-icon class="mdi mdi-book-plus md-24"></md-icon><span translate="reservations.reservation.new"></span></md-button></md-menu-item></md-menu-content></md-menu></div><ch-planning-overbookings ng-if="$ctrl.viewDate.$planning.overbookings.length" class="animated fadeIn" date="$ctrl.viewDate.date" overbookings="$ctrl.viewDate.$planning.overbookings" day-size="$ctrl.viewDate.$daySize" on-click="$ctrl.onOverbookingClick({\n' + "\t\t\t\t'$reservation': $reservation,\n" + "\t\t\t\t'$roomId': $roomId, \n" + "\t\t\t\t'$roomTypeId': $roomTypeId,\n" + "\t\t\t\t'$startDate': $startDate,\n" + "\t\t\t\t'$endDate': $endDate\n" + '\t\t\t})"></ch-planning-overbookings></div></div>');
-    $templateCache.put("/tpls/planning/planning-content-weekly.tpl", '<div flex layout="column" layout-fill ng-switch="$ctrl.$$roomsType"><md-subheader class="no-padding bg-gray-lighter ch-planning-dates-header"><div layout flex><div hide show-gt-sm flex="25" layout layout-padding layout-align="center center" class="border-right-white"><strong class="text-uppercase text-gray-light"><span translate="room.room"></span></strong></div><div flex layout layout-padding-sm><div flex layout="column" class="border-right-white" ng-repeat="viewDate in $ctrl.$$viewDates track by viewDate.uid"><md-button tabindex="-1" ng-click="$ctrl.toggleAllRoomsClosing(viewDate.date)" ng-disabled="viewDate.isPast || viewDate.$planning.hotelClosed || $ctrl.chPlanningCtrl.$$actionInProgress" class="md-square-button no-margin row-mini text-left" ng-class="{\'minimal-button\': !$ctrl.$mdMedia(\'gt-xs\'),\n' + "\t\t\t\t\t\t'text-gray-light': !viewDate.$planning.roomsClosed,\n" + '\t\t\t\t\t\t\'bg-danger text-white\': viewDate.$planning.roomsClosed}"><div layout="column" ng-class="{\'text-primary\': (viewDate.date|amDifference:$ctrl.$$today:\'days\') == 0}"><small class="text-capitalize">{{viewDate.date|date:"EEE"}}</small><strong ng-class="{\'md-display-1\': $ctrl.$mdMedia(\'gt-xs\'), \'md-title\': $ctrl.$mdMedia(\'xs\')}">{{viewDate.date|date:"d"}}</strong></div><md-tooltip><span ng-show="viewDate.$planning.roomsClosed" translate="hotel.availability.open.day"></span><span ng-show="!viewDate.$planning.roomsClosed" translate="hotel.availability.close.day"></span></md-tooltip></md-button></div></div></div></md-subheader><div ng-switch-when="2" flex layout="column" infinite-scroll="$ctrl.rooms.nextPage()" infinite-scroll-container="\'#planningCont\'" infinite-scroll-disabled="$ctrl.rooms.busy" infinite-scroll-distance="1"><ch-planning-room ng-repeat="room in $ctrl.rooms.items track by room.id" room="room" dates="$ctrl.$$viewDates" planning="$ctrl.planning[room.id]" settings="$ctrl.settings" on-reservation-click="$ctrl.onReservationClick({\'$reservation\': $reservation, \'$roomId\': $roomId, \'$roomTypeId\': $roomTypeId, \'$startDate\': $startDate, \'$endDate\': $endDate})" on-overbooking-click="$ctrl.onOverbookingClick({\'$reservation\': $reservation, \'$roomId\': $roomId, \'$roomTypeId\': $roomTypeId, \'$startDate\': $startDate, \'$endDate\': $endDate})"></ch-planning-room><div flex ng-show="$ctrl.rooms.busy" flex layout="column" layout-padding layout-align="center center"><div><md-progress-circular class="md-primary ch-progress" md-mode="indeterminate" md-diameter="40"></md-progress-circular></div><div class="text-gray-light"><span translate="planning.loading"></span>...</div></div></div><div ng-switch-default flex layout="column"></div></div>');
+    $templateCache.put("/tpls/planning/planning-cell.tpl", '<div flex layout="column" class="ch-planning-cell" ng-class="{\n' + "\t'ch-planning-cell-past': $ctrl.viewDate.isPast && !$ctrl.viewDate.$planning.roomClosed, \n" + "\t'ch-planning-cell-closed': $ctrl.viewDate.$planning.roomClosed && !$ctrl.viewDate.$planning.active && !$ctrl.viewDate.$planning.overbookings.length,\n" + "\t'ch-planning-cell-active': $ctrl.viewDate.$planning.active || $ctrl.viewDate.$planning.overbookings.length,\n" + '\t}" ng-click="$ctrl.$openCellMenu()"><div ng-if="$ctrl.viewDate.$planning.hotelClosed" flex layout="column" layout-padding-sm layout-align="center center"><div><md-icon class="mdi mdi-lock md-24 text-gray-light"></md-icon></div><div class="text-gray-light text-center"><small translate="hotel.closed"></small></div></div><div ng-if="!$ctrl.viewDate.$planning.hotelClosed" flex layout="column"><ch-planning-reservation ng-if="$ctrl.viewDate.$planning.active.reservation.$show" class="animated fadeIn" reservation="$ctrl.viewDate.$planning.active.reservation" room-people="$ctrl.viewDate.$planning.active.people" room-extra-people="$ctrl.viewDate.$planning.active.extraPeople" settings="$ctrl.settings" on-click="$ctrl.onReservationClick({\n' + "\t\t\t\t'$reservation': $reservation, \n" + "\t\t\t\t$roomId: $ctrl.viewDate.$planning.active.roomId,\n" + "\t\t\t\t$roomTypeId: $ctrl.viewDate.$planning.active.roomType.id,\n" + "\t\t\t\t$startDate: $ctrl.viewDate.$planning.active.startDate,\n" + "\t\t\t\t$endDate: $ctrl.viewDate.$planning.active.endDate\n" + '\t\t\t})"></ch-planning-reservation><div flex ng-if="!$ctrl.viewDate.$planning.active" layout layout-align="end start"><md-menu md-position-mode="target bottom" class="ch-planning-cell-menu"><md-button class="md-icon-button" ng-class="{\'no-margin-x-sides\': !$ctrl.$mdMedia(\'gt-sm\')}" ng-click="$mdMenu.open($event)" ng-disabled="$ctrl.chPlanningCtrl.$$actionInProgress" aria-label="Open date menu"><md-icon class="mdi mdi-dots-vertical md-24" ng-class="{\'text-gray-light\': !$ctrl.viewDate.$planning.roomClosed, \'text-white\': $ctrl.viewDate.$planning.roomClosed}"></md-icon></md-button><md-menu-content><md-menu-item ng-if="!$ctrl.viewDate.isPast && $ctrl.onCloseRoom && !$ctrl.viewDate.$planning.roomClosed"><md-button ng-click="$ctrl.$closeRoom()" aria-label="Close room availability"><md-icon class="mdi mdi-lock md-24"></md-icon><span translate="hotel.availability.close"></span></md-button></md-menu-item><md-menu-item ng-if="!$ctrl.viewDate.isPast && $ctrl.onOpenRoom && $ctrl.viewDate.$planning.roomClosed"><md-button ng-click="$ctrl.$openRoom()" aria-label="Open room availability"><md-icon class="mdi mdi-lock-open md-24"></md-icon><span translate="hotel.availability.open"></span></md-button></md-menu-item><md-menu-item ng-if="$ctrl.onViewRates && !$ctrl.viewDate.$planning.roomClosed"><md-button ng-click="$ctrl.$viewRates()" aria-label="View rates"><md-icon class="mdi mdi-cash-usd md-24"></md-icon><span translate="ratesheet.rates.view"></span></md-button></md-menu-item><md-menu-item ng-if="!$ctrl.viewDate.$planning.roomClosed"><md-button ui-sref="hotel-reservations-new({checkin: $ctrl.viewDate.date})" aria-label="New reservation"><md-icon class="mdi mdi-book-plus md-24"></md-icon><span translate="reservations.reservation.new"></span></md-button></md-menu-item></md-menu-content></md-menu></div><ch-planning-overbookings ng-if="$ctrl.viewDate.$planning.overbookings.length" class="animated fadeIn" date="$ctrl.viewDate.date" overbookings="$ctrl.viewDate.$planning.overbookings" day-size="$ctrl.viewDate.$daySize" on-click="$ctrl.onOverbookingClick({\n' + "\t\t\t\t'$reservation': $reservation,\n" + "\t\t\t\t'$roomId': $roomId, \n" + "\t\t\t\t'$roomTypeId': $roomTypeId,\n" + "\t\t\t\t'$startDate': $startDate,\n" + "\t\t\t\t'$endDate': $endDate\n" + '\t\t\t})"></ch-planning-overbookings></div></div>');
+    $templateCache.put("/tpls/planning/planning-content-weekly.tpl", '<div flex layout="column" layout-fill ng-switch="$ctrl.$$roomsType"><md-subheader class="no-padding bg-gray-lighter ch-planning-dates-header"><div layout flex><div hide show-gt-sm flex="25" layout layout-padding layout-align="center center" class="border-right-white"><strong class="text-uppercase text-gray-light"><span translate="room.room"></span></strong></div><div flex layout layout-padding-sm><div flex layout="column" class="border-right-white" ng-repeat="viewDate in $ctrl.$$viewDates track by viewDate.uid"><md-button tabindex="-1" ng-click="$ctrl.$onDateClick($event, viewDate)" ng-disabled="viewDate.isPast || viewDate.$planning.hotelClosed || $ctrl.chPlanningCtrl.$$actionInProgress" class="md-square-button no-margin row-mini text-left" ng-class="{\'minimal-button\': !$ctrl.$mdMedia(\'gt-xs\'),\n' + "\t\t\t\t\t\t'text-gray-light': !viewDate.roomsClosed,\n" + '\t\t\t\t\t\t\'bg-danger text-white\': viewDate.roomsClosed}"><div layout="column" ng-class="{\n' + "\t\t\t\t\t\t\t'text-primary': !viewDate.roomsClosed && viewDate.isToday, \n" + "\t\t\t\t\t\t\t'text-danger': !viewDate.roomsClosed && !viewDate.isToday && (viewDate.isoWeekday == 6 || viewDate.isoWeekday == 7)\n" + '\t\t\t\t\t\t}"><small class="text-capitalize">{{viewDate.date|date:"EEE"}}</small><strong ng-class="{\'md-display-1\': $ctrl.$mdMedia(\'gt-xs\'), \'md-title\': $ctrl.$mdMedia(\'xs\')}">{{viewDate.date|date:"d"}}</strong></div><md-tooltip><span ng-show="viewDate.roomsClosed" translate="hotel.availability.open.day"></span><span ng-show="!viewDate.roomsClosed" translate="hotel.availability.close.day"></span></md-tooltip></md-button></div></div></div></md-subheader><div ng-switch-when="2" flex layout="column" infinite-scroll="$ctrl.rooms.nextPage()" infinite-scroll-container="\'#planningCont\'" infinite-scroll-disabled="$ctrl.rooms.busy" infinite-scroll-distance="1"><ch-planning-room ng-repeat="room in $ctrl.rooms.items track by room.id" room="room" dates="$ctrl.$$viewDates" planning="$ctrl.planning[room.id]" settings="$ctrl.settings" on-reservation-click="$ctrl.onReservationClick({\'$reservation\': $reservation, \'$roomId\': $roomId, \'$roomTypeId\': $roomTypeId, \'$startDate\': $startDate, \'$endDate\': $endDate})" on-overbooking-click="$ctrl.onOverbookingClick({\'$reservation\': $reservation, \'$roomId\': $roomId, \'$roomTypeId\': $roomTypeId, \'$startDate\': $startDate, \'$endDate\': $endDate})"></ch-planning-room><div flex ng-show="$ctrl.rooms.busy" flex layout="column" layout-padding layout-align="center center"><div><md-progress-circular class="md-primary ch-progress" md-mode="indeterminate" md-diameter="40"></md-progress-circular></div><div class="text-gray-light"><span translate="planning.loading"></span>...</div></div></div><div ng-switch-default flex layout="column"></div></div>');
     $templateCache.put("/tpls/planning/planning-header.tpl", '<div class="ch-planning-header" ng-style="{\'background-image\': $ctrl.$$bgImage}"><div class="ch-planning-header-content bg-opaque-4" layout="column"><div flex layout layout-padding-sm><div flex><ch-month-picker ng-model="$ctrl.chPlanningCtrl.$$startDate" hide-icon="true" wrapper-class="text-white text-bold" icon-color-class="text-white" selected-text="$ctrl.$getMonthLabel()" ng-change="$ctrl.$onMonthChange()" ng-disabled="$ctrl.chPlanningCtrl.$$actionInProgress"></ch-month-picker></div><div><md-button class="md-icon-button" ng-click="$ctrl.$goToToday()" ng-disabled="$ctrl.chPlanningCtrl.$$actionInProgress" aria-label="Go to today"><md-icon class="mdi mdi-calendar-today md-24 text-white"></md-icon><md-tooltip><span translate="date.today.go.to"></span></md-tooltip></md-button></div><div layout layout-align="center start"><ch-date-picker ng-model="$ctrl.chPlanningCtrl.$$startDate" hide-label="true" size="medium" tooltip="{{\'common.go.to\'|translate}}" button-class="md-icon-button" icon-class="mdi mdi-calendar-search text-white" hide-value="true" has-confirm="false" ng-change="$ctrl.$onMonthChange()" ng-disabled="$ctrl.chPlanningCtrl.$$actionInProgress"></ch-date-picker></div><div><md-menu md-position-mode="target bottom"><md-button class="md-icon-button" ng-class="{\'no-margin-x-sides\': !$ctrl.$mdMedia(\'gt-sm\')}" ng-click="$mdMenu.open($event)" ng-disabled="$ctrl.chPlanningCtrl.$$actionInProgress" aria-label="Open planning menu"><md-icon class="mdi mdi-dots-vertical md-24 text-white"></md-icon></md-button><md-menu-content><md-menu-item><md-button ui-sref="hotel-planning.settings" aria-label="Open planning settings"><md-icon class="mdi mdi-cogs md-24"></md-icon><span translate="menu.settings"></span></md-button></md-menu-item></md-menu-content></md-menu></div></div><div layout><div><md-button ng-class="{\'no-margin-x-sides minimal-button\': !$ctrl.$mdMedia(\'gt-sm\')}" ng-click="$ctrl.$prevWeek()" ng-disabled="$ctrl.chPlanningCtrl.$$actionInProgress" aria-label="Go to previous week"><md-icon class="mdi mdi-chevron-left md-24 text-white"></md-icon><span hide-xs class="text-white text-bold" translate="date.week.previous"></span><span hide-gt-xs class="text-white text-bold" translate="common.previous"></span><md-tooltip hide show-xs show-sm><span class="text-uppercase" translate="date.week.previous"></span></md-tooltip></md-button></div><div flex></div><div><md-button ng-class="{\'no-margin-x-sides minimal-button\': !$ctrl.$mdMedia(\'gt-sm\')}" ng-click="$ctrl.$nextWeek()" ng-disabled="$ctrl.chPlanningCtrl.$$actionInProgress" aria-label="Go to next week"><span hide-xs class="text-white text-bold" translate="date.week.next"></span><span hide-gt-xs class="text-white text-bold" translate="common.next.female"></span><md-icon class="mdi mdi-chevron-right md-24 text-white"></md-icon><md-tooltip hide show-xs show-sm><span class="text-uppercase" translate="date.week.next"></span></md-tooltip></md-button></div></div></div></div>');
     $templateCache.put("/tpls/planning/planning-overbookings-panel.tpl", '<div flex layout-padding-sm><div><div ng-repeat="overbooking in $ctrl.$$overbookings track by overbooking.reservation.id"><ch-planning-reservation class="animated fadeIn" main-class="ch-planning-overbooking" reservation="overbooking.reservation" room-people="overbooking.people" room-extra-people="overbooking.extraPeople" on-click="$ctrl.onClick({\n' + "\t\t\t\t\t'$reservation': $reservation, \n" + "\t\t\t\t\t$roomId: overbooking.roomId, \n" + "\t\t\t\t\t$roomTypeId: overbooking.roomType.id,\n" + "\t\t\t\t\t$startDate: overbooking.startDate,\n" + "\t\t\t\t\t$endDate: overbooking.endDate\n" + '\t\t\t\t}); $ctrl.$close()"></ch-planning-reservation></div></div></div>');
     $templateCache.put("/tpls/planning/planning-overbookings.tpl", '<ch-planning-reservation ng-if="$ctrl.overbookings.length == 1" class="animated fadeIn" main-class="ch-planning-overbooking" reservation="$ctrl.overbookings[0].reservation" room-people="$ctrl.overbookings[0].people" room-extra-people="$ctrl.overbookings[0].extraPeople" on-click="$ctrl.onClick({\n' + "\t\t'$reservation': $reservation, \n" + "\t\t$roomId: $ctrl.overbookings[0].roomId,\n" + "\t\t$roomTypeId: $ctrl.overbookings[0].roomType.id,\n" + "\t\t$startDate: $ctrl.overbookings[0].startDate,\n" + "\t\t$endDate: $ctrl.overbookings[0].endDate\n" + '\t})"></ch-planning-reservation><div ng-if="$ctrl.overbookings.length > 1" class="ch-planning-reservation ch-planning-overbooking" ng-style="{\'width\': $ctrl.daySize + \'%\'}"><div class="ch-planning-reservation-content-wrapper"><div class="ch-planning-reservation-content"><md-button class="text-small" ng-click="$ctrl.$showOverbookings($event)" aria-label="Show overbookings"><div layout-padding-sm><div layout layout-wrap class="no-padding-x-sides" ng-class="{\'no-padding\': $ctrl.$mdMedia(\'gt-xs\')}"><div flex layout layout-padding-sm layout-align="center center" class="text-lowercase"><em>+&nbsp;<span ng-bind="$ctrl.overbookings.length"></span><span hide-xs>&nbsp;<span translate="ratesheet.overbookings"></span></span></em></div></div></div><md-tooltip><span translate="ratesheet.overbookings.show"></span></md-tooltip></md-button></div></div></div>');
