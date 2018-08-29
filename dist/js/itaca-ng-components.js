@@ -3596,7 +3596,7 @@ var colorPicker = function() {
 (function() {
     "use strict";
     AddressAutocompleteCtrl.$inject = [ "$scope", "$mdMedia", "AppOptions", "$translate", "GoogleAPI" ];
-    angular.module("itaca.component").component("chAddressAutocomplete", {
+    angular.module("itaca.components").component("chAddressAutocomplete", {
         require: {
             ngModelCtrl: "ngModel"
         },
@@ -3611,7 +3611,7 @@ var colorPicker = function() {
             clearButton: "<?"
         },
         controller: AddressAutocompleteCtrl,
-        template: '<ng-form class="flex" name="autocompleteForm">' + "<md-autocomplete " + ' class="ch-address-autocomplete" ' + ' md-input-name="address" ' + ' ng-disabled="$ctrl.isDisabled" ' + ' ng-required="$ctrl.isRequired" ' + ' md-no-cache="$ctrl.noCache" ' + ' md-selected-item="$ctrl.selectedItem" ' + ' md-search-text="$ctrl.searchText" ' + ' md-selected-item-change="$ctrl.$selectedItemChange(item)"  ' + ' md-items="item in $ctrl.$querySearch($ctrl.searchText)" ' + ' md-item-text="item.description"  ' + ' md-min-length="$ctrl.minLength"  ' + " md-floating-label=\"{{'common.address'|translate}}\" " + ' md-dropdown-position="$ctrl.dropdownPosition" ' + ' md-clear-button="$ctrl.clearButton" ' + ' placeholder="$ctrl.placeholder">  ' + "<md-item-template>" + '<md-icon class="mdi mdi-map-marker-outline material-icons md-24"></md-icon>' + '<strong md-highlight-text="ctrl.searchText" md-highlight-flags="^i">{{item.structured_formatting.main_text}}</strong>' + '<span class="text-gray-light">,&nbsp;{{item.structured_formatting.secondary_text}}</span>' + "<md-divider></md-divider>" + "</md-item-template>" + '<div ng-messages="autocompleteForm.address.$error">' + '<div ng-message="required"><span translate="error.required"></span></div>' + "</div>" + "</md-autocomplete>" + "</ng-form>"
+        template: '<ng-form class="flex" name="autocompleteForm">' + "<md-autocomplete " + ' class="ch-address-autocomplete" ' + ' md-input-name="address" ' + ' ng-disabled="$ctrl.isDisabled" ' + ' ng-required="$ctrl.isRequired" ' + ' md-no-cache="$ctrl.noCache" ' + ' md-selected-item="$ctrl.selectedItem" ' + ' md-search-text="$ctrl.searchText" ' + ' md-selected-item-change="$ctrl.$selectedItemChange(item)"  ' + ' md-items="item in $ctrl.$querySearch($ctrl.searchText)" ' + ' md-item-text="item.description"  ' + ' md-min-length="$ctrl.minLength"  ' + " md-floating-label=\"{{'common.address'|translate}}\" " + ' md-dropdown-position="$ctrl.dropdownPosition" ' + ' md-clear-button="$ctrl.clearButton" ' + ' placeholder="$ctrl.placeholder">  ' + "<md-item-template>" + '<md-icon class="mdi mdi-map-marker-outline material-icons md-24"></md-icon>' + '<strong md-highlight-text="ctrl.searchText" md-highlight-flags="^i">{{item.structured_formatting.main_text}}</strong>' + '<span class="text-gray-light">,&nbsp;{{item.structured_formatting.secondary_text}}</span>' + "<md-divider></md-divider>" + "</md-item-template>" + '<div ng-messages="autocompleteForm.address.$error">' + '<div ng-message="required"><span translate="error.required"></span></div>' + '<div ng-message="minlength"><span translate="error.field.generic.minlength" translate-values="{count: $ctrl.minLength}"></span></div>' + '<div ng-message="connection"><span translate="error.address.not.found"></span></div>' + "</div>" + "</md-autocomplete>" + "</ng-form>"
     });
     function AddressAutocompleteCtrl($scope, $mdMedia, AppOptions, $translate, GoogleAPI) {
         var ctrl = this;
@@ -3644,7 +3644,10 @@ var colorPicker = function() {
         };
         this.$querySearch = function(query) {
             return GoogleAPI.addresses(query).then(function(response) {
+                ctrl.$setError(false);
                 return response;
+            }, function(error) {
+                ctrl.$setError(true);
             });
         };
         this.$selectedItemChange = function(place) {
@@ -3653,6 +3656,7 @@ var colorPicker = function() {
                 return;
             }
             GoogleAPI.placeDetails(place.place_id).then(function(data) {
+                ctrl.$setError(false);
                 var addressInfo = {};
                 for (var i = 0; i < data.address_components.length; i++) {
                     var address = data.address_components[i];
@@ -3692,7 +3696,17 @@ var colorPicker = function() {
                 addressInfo.offset = data.utc_offset ? parseInt(data.utc_offset) * 60 : data.utc_offset;
                 addressInfo.addressComplete = ctrl.selectedItem;
                 ctrl.ngModel = addressInfo;
+            }, function(error) {
+                ctrl.$setError(true);
             });
+        };
+        this.$setError = function(bool) {
+            $scope.autocompleteForm.address.$setValidity("connection", !bool);
+            ctrl.$$error = bool;
+            if (bool) {
+                ctrl.ngModel = null;
+                ctrl.selectedItem = null;
+            }
         };
     }
 })();
@@ -4207,19 +4221,19 @@ var colorPicker = function() {
 (function() {
     "use strict";
     ChartCtrl.$inject = [ "$scope", "$element" ];
-    angular.module("itaca.company").component("chChart", {
+    angular.module("itaca.components").component("chChart", {
         bindings: {
             type: "<",
             data: "<",
             options: "<?"
         },
         controller: ChartCtrl,
-        template: '<div class="chart-container relative"><canvas class="chartjs"></canvas></div>'
+        template: '<div class="chart-container relative"><canvas class="chartjs"></canvas></div><div>'
     });
     function ChartCtrl($scope, $element) {
         var ctrl = this;
         this.$onInit = function() {
-            ctrl.type = _.includes([ "line", "bar", "horizontal-bar", "radar", "pie", "polar-area", "doughnut", "bubble" ], ctrl.type) ? ctrl.type : "line";
+            ctrl.type = _.includes([ "line", "bar", "horizontal-bar", "radar", "pie", "polar-area", "doughnut", "bubble" ], ctrl.type) ? ctrl.type : "bar";
             ctrl.data = ctrl.data || {};
             ctrl.ctx = $element.find("canvas")[0].getContext("2d");
             ctrl.$createChart();
@@ -4229,10 +4243,12 @@ var colorPicker = function() {
                 ctrl.$createChart();
             }
             if (changesObj.data && !changesObj.data.isFirstChange()) {
-                ctrl.$createChart();
+                ctrl.$$chart.data = ctrl.data;
+                ctrl.$$chart.update();
             }
             if (changesObj.options && !changesObj.options.isFirstChange()) {
-                ctrl.$createChart();
+                ctrl.$$chart.options = ctrl.options;
+                ctrl.$$chart.update();
             }
         };
         this.$createChart = function() {
@@ -4244,6 +4260,7 @@ var colorPicker = function() {
                 data: ctrl.data,
                 options: ctrl.options
             });
+            ctrl.$$chart.update();
         };
     }
 })();
@@ -4770,7 +4787,7 @@ var colorPicker = function() {
 (function() {
     "use strict";
     CountryAutocompleteCtrl.$inject = [ "$scope", "$mdMedia", "AppOptions", "$translate", "CountryAPI" ];
-    angular.module("itaca.component").component("chCountryAutocomplete", {
+    angular.module("itaca.components").component("chCountryAutocomplete", {
         require: {
             ngModelCtrl: "ngModel"
         },
@@ -4786,7 +4803,7 @@ var colorPicker = function() {
             currentLang: "<?"
         },
         controller: CountryAutocompleteCtrl,
-        template: '<ng-form class="flex" name="autocompleteForm">' + "<md-autocomplete " + ' class="ch-contry-autocomplete" ' + ' md-input-name="country" ' + ' ng-disabled="$ctrl.isDisabled" ' + ' ng-required="$ctrl.isRequired" ' + ' md-no-cache="$ctrl.noCache" ' + ' md-selected-item="$ctrl.selectedItem" ' + ' md-search-text="$ctrl.searchText" ' + ' md-selected-item-change="$ctrl.$selectedItemChange(item)"  ' + ' md-items="item in $ctrl.$querySearch($ctrl.searchText)" ' + ' md-item-text="item.translations[$ctrl.currentLang] ? item.translations[$ctrl.currentLang] : item.name"  ' + ' md-min-length="$ctrl.minLength"  ' + " md-floating-label=\"{{'common.nationality'|translate}}\" " + ' md-dropdown-position="$ctrl.dropdownPosition" ' + ' md-clear-button="$ctrl.clearButton" ' + ' placeholder="$ctrl.placeholder">  ' + "<md-item-template>" + '<img ng-src="{{item.flag}}" class="ch-country-autocomplete-flag">' + '<strong md-highlight-text="ctrl.searchText" md-highlight-flags="^i">{{item.name}}</strong>' + '<span class="text-gray-light">,&nbsp;{{item.nativeName}}</span>' + "<md-divider></md-divider>" + "</md-item-template>" + '<div ng-messages="autocompleteForm.address.$error">' + '<div ng-message="required"><span translate="error.required"></span></div>' + "</div>" + "</md-autocomplete>" + "</ng-form>"
+        template: '<ng-form class="flex" name="autocompleteForm">' + "<md-autocomplete " + ' class="ch-contry-autocomplete" ' + ' md-input-name="country" ' + ' ng-disabled="$ctrl.isDisabled" ' + ' ng-required="$ctrl.isRequired" ' + ' md-no-cache="$ctrl.noCache" ' + ' md-selected-item="$ctrl.selectedItem" ' + ' md-search-text="$ctrl.searchText" ' + ' md-selected-item-change="$ctrl.$selectedItemChange(item)"  ' + ' md-items="item in $ctrl.$querySearch($ctrl.searchText)" ' + ' md-item-text="item.translations[$ctrl.currentLang] ? item.translations[$ctrl.currentLang] : item.name"  ' + ' md-min-length="$ctrl.minLength"  ' + " md-floating-label=\"{{'common.nationality'|translate}}\" " + ' md-dropdown-position="$ctrl.dropdownPosition" ' + ' md-clear-button="$ctrl.clearButton" ' + ' placeholder="$ctrl.placeholder">  ' + "<md-item-template>" + '<img ng-src="{{item.flag}}" class="ch-country-autocomplete-flag">' + '<strong md-highlight-text="ctrl.searchText" md-highlight-flags="^i">{{item.name}}</strong>' + '<span class="text-gray-light">,&nbsp;{{item.nativeName}}</span>' + "<md-divider></md-divider>" + "</md-item-template>" + '<div ng-messages="autocompleteForm.address.$error">' + '<div ng-message="required"><span translate="error.required"></span></div>' + '<div ng-message="minlength"><span translate="error.field.generic.minlength" translate-values="{count: $ctrl.minLength}"></span></div>' + '<div ng-message="connection"><span translate="error.country.not.found"></span></div>' + "</div>" + "</md-autocomplete>" + "</ng-form>"
     });
     function CountryAutocompleteCtrl($scope, $mdMedia, AppOptions, $translate, CountryAPI) {
         var ctrl = this;
@@ -4822,7 +4839,10 @@ var colorPicker = function() {
         };
         this.$querySearch = function(query) {
             return CountryAPI.getByName(query).then(function(response) {
+                ctrl.$setError(false);
                 return response;
+            }, function(error) {
+                ctrl.$setError(true);
             });
         };
         this.$selectedItemChange = function(country) {
@@ -4831,6 +4851,15 @@ var colorPicker = function() {
                 return;
             }
             ctrl.ngModel = country.alpha2Code;
+            ctrl.$setError(false);
+        };
+        this.$setError = function(bool) {
+            $scope.autocompleteForm.address.$setValidity("connection", !bool);
+            ctrl.$$error = bool;
+            if (bool) {
+                ctrl.ngModel = null;
+                ctrl.selectedItem = null;
+            }
         };
     }
 })();
@@ -7731,9 +7760,9 @@ var colorPicker = function() {
                 this.push({
                     uid: d.getTime(),
                     date: d,
-                    isoWeekday: d.isoWeekday(),
+                    isoWeekday: m.isoWeekday(),
                     isPast: m.isBefore(ctrl.$$today, "days"),
-                    isToday: d.isSame(ctrl.$$today, "days"),
+                    isToday: m.isSame(ctrl.$$today, "days"),
                     hotelStatus: null
                 });
             }, viewDates);
@@ -10017,118 +10046,35 @@ var colorPicker = function() {
 
 (function() {
     "use strict";
-    StatisticsHelper.$inject = [ "$translate" ];
-    angular.module("itaca.components").factory("StatisticsHelper", StatisticsHelper);
-    function StatisticsHelper($translate) {
-        var $$service = {};
-        $$service.createChartData = function(type, values, onHoverEv, onClickEv) {
-            var chartData = $$service.$createDefaultChartData(values, onHoverEv, onClickEv);
-            switch (type) {
-              case "ANNUAL_RESERVATIONS_AMOUNT_TREND":
-                chartData.type = "line";
-                _.forEach(chartData.data.datasets, function(d) {
-                    d.label = $translate.instant("reservations.reservations");
-                });
-                chartData.options.scales.yAxes.scaleLabel.labelString = $translate.instant("reservations.reservations");
-                chartData.options.scales.yAxes.ticks = {
-                    callback: function(value, index, values) {
-                        return value + "€";
-                    }
-                };
-                chartData.options.scales.xAxes.scaleLabel.labelString = moment(chartData.data.labels[0]).format("YYYY");
-                chartData.options.scales.xAxes.ticks = {
-                    callback: function(value, index, values) {
-                        return moment(value).format("MMMM");
-                    }
-                };
-                break;
-
-              case "ANNUAL_RESERVATIONS_COUNT_TREND":
-                chartData.type = "doughnut";
-
-              case "ANNUAL_REVIEWS_COUNT_TREND":
-                chartData.type = "bar";
-                chartData.options.scales.xAxes.ticks = {
-                    beginAtZero: true
-                };
-                break;
-            }
-            return chartData;
-        };
-        $$service.$createDefaultChartData = function(values, onHoverEv, onClickEv) {
-            var chartData = {
-                type: "line",
-                data: {
-                    labels: [],
-                    datasets: []
-                },
-                options: {
-                    onHover: angular.isFunction(onHoverEv) ? onHoverEv : null,
-                    onClick: angular.isFunction(onClickEv) ? onClickEv : null,
-                    scales: {
-                        yAxes: [ {
-                            display: true,
-                            scaleLabel: {
-                                display: true
-                            }
-                        } ],
-                        xAxes: [ {
-                            display: true,
-                            scaleLabel: {
-                                display: true
-                            }
-                        } ]
-                    }
-                }
-            };
-            if (_.isPLainObject(values)) {
-                chartData.data.labels.push(_.keys(values));
-                chartData.data.datasets.push({
-                    data: _.values(values)
-                });
-            } else if (_.isArray(values)) {
-                _.forEach(values, function(v) {
-                    chartData.data.labels.push(_.keys(v));
-                    chartData.data.datasets.push({
-                        data: _.values(v)
-                    });
-                });
-                chartData.data.labels = _.uniq(chartData.data.labels);
-            } else {
-                throw new Error("values is not valid. Should be array or object");
-            }
-            return chartData;
-        };
-        return $$service;
-    }
-})();
-
-(function() {
-    "use strict";
     StatisticsChartCtrl.$inject = [ "$scope", "StatisticsHelper" ];
-    angular.module("itaca.company").component("chStatisticsChart", {
+    angular.module("itaca.components").component("chStatisticsChart", {
         bindings: {
             type: "@",
-            values: "<",
+            datasets: "<",
+            tooltips: "<?",
             colors: "<?",
             onHover: "&?",
             onClick: "&?"
         },
         controller: StatisticsChartCtrl,
-        template: '<ch-chart type="$ctrl.$$chart.type" data="$ctrl.$$chart.data" options="$ctrl.$$chart.options"></ch-chart>'
+        template: '<ch-chart type="$ctrl.$$chart.type" data="$ctrl.$$chart.data" options="$ctrl.$$chart.options"></ch-chart>' + '<div ng-if="$ctrl.$$loading || (!$ctrl.$$loading && !$ctrl.$$chart.data)" class="overlay" layout layout-align="center center">' + '<div ng-if="$ctrl.$$loading && !$ctrl.ctrl.datasets.length">' + '<md-progress-circular class="md-primary ch-progress" md-mode="indeterminate" md-diameter="32"></md-progress-circular>' + "</div>" + '<div ng-if="!$ctrl.$$loading && !$ctrl.ctrl.datasets.length">' + '<span translate="statistics.statistics.no.data">' + "</div>" + "</div>"
     });
     function StatisticsChartCtrl($scope, StatisticsHelper) {
         var ctrl = this;
         this.$onInit = function() {
-            ctrl.type = ctrl.type || "ANNUAL_RESERVATIONS_AMOUNT_TREND";
+            ctrl.type = ctrl.type || "RESERVATIONS_AMOUNT_TREND";
             ctrl.$$chart = {};
+            ctrl.$$loading = true;
             ctrl.$createChart();
         };
         this.$onChanges = function(changesObj) {
             if (changesObj.type && !changesObj.type.isFirstChange()) {
                 ctrl.$createChart();
             }
-            if (changesObj.values && !changesObj.values.isFirstChange()) {
+            if (changesObj.datasets && !changesObj.datasets.isFirstChange()) {
+                ctrl.$createChart();
+            }
+            if (changesObj.tooltips && !changesObj.tooltips.isFirstChange()) {
                 ctrl.$createChart();
             }
             if (changesObj.onHover && !changesObj.onHover.isFirstChange()) {
@@ -10142,8 +10088,12 @@ var colorPicker = function() {
             }
         };
         this.$createChart = function() {
-            ctrl.$$chart = StatisticsHelper.createChartData(ctrl.type, ctrl.values, ctrl.onHover, ctrl.onClick);
+            if (_.isNil(ctrl.type) || _.isNil(ctrl.datasets)) {
+                return;
+            }
+            ctrl.$$chart = StatisticsHelper.createChartData(ctrl.type, ctrl.datasets, ctrl.tooltips, ctrl.onHover, ctrl.onClick);
             ctrl.$updateColors();
+            ctrl.$$loading = false;
         };
         this.$updateEvent = function() {
             if (!_.isNil(ctrl.$$chart) && !_.isNil(ctrl.$$chart.options)) {
@@ -10152,7 +10102,201 @@ var colorPicker = function() {
             }
             ctrl.$updateColors();
         };
-        this.$updateColors = function() {};
+        this.$updateColors = function() {
+            if (_.isNil(ctrl.colors) || !_.isPlainObject(ctrl.colors) && !_.isArray(ctrl.colors)) {
+                return;
+            }
+            _.forEach(ctrl.$$chart.chartData.data.datasets, function(dataset) {
+                dataset.backgroundColor = ctrl.colors;
+            });
+        };
+    }
+})();
+
+(function() {
+    "use strict";
+    StatisticsHelper.$inject = [ "$translate" ];
+    angular.module("itaca.components").factory("StatisticsHelper", StatisticsHelper);
+    function StatisticsHelper($translate) {
+        var $$service = {};
+        $$service.createChartData = function(type, datasets, tooltips, onHoverEv, onClickEv) {
+            var chartData = $$service.$createDefaultChartData(datasets, tooltips, onHoverEv, onClickEv);
+            switch (type) {
+              case "RESERVATIONS_AMOUNT_TREND":
+                chartData.type = "bar";
+                _.forEach(chartData.data.datasets, function(d) {
+                    d.label = $translate.instant("statistics.statistics.revenue") + "€";
+                });
+                chartData.options.scales.yAxes[0].ticks.callback = function(value, index, values) {
+                    return value + " €";
+                };
+                chartData.options.scales.xAxes[0].ticks.callback = function(value, index, values) {
+                    return moment.unix(value).format("MMM YY");
+                };
+                chartData.options.legend.display = false;
+                break;
+
+              case "RESERVATIONS_SOURCE_TREND":
+                chartData.type = "doughnut";
+                chartData.options = {
+                    responsive: true,
+                    legend: {
+                        position: "bottom"
+                    },
+                    animation: {
+                        animateScale: true,
+                        animateRotate: true
+                    },
+                    scales: {
+                        xAxes: [ {
+                            display: false,
+                            ticks: {
+                                callback: function(value, index, values) {
+                                    return $translate.instant("channel.source." + value.toLowerCase());
+                                }
+                            },
+                            scaleLabel: {
+                                display: true
+                            }
+                        } ]
+                    }
+                };
+                break;
+
+              case "REVIEWS_COUNT_TREND":
+                chartData.type = "bar";
+                break;
+            }
+            return chartData;
+        };
+        $$service.$createDefaultChartData = function(datasets, tooltips, onHoverEv, onClickEv) {
+            var chartData = {
+                data: {
+                    labels: [],
+                    datasets: []
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    onHover: angular.isFunction(onHoverEv) ? onHoverEv : null,
+                    onClick: angular.isFunction(onClickEv) ? onClickEv : null,
+                    scales: {
+                        yAxes: [ {
+                            display: true,
+                            scaleLabel: {
+                                display: true
+                            },
+                            ticks: {
+                                beginAtZero: true
+                            }
+                        } ],
+                        xAxes: [ {
+                            display: true,
+                            scaleLabel: {
+                                display: true
+                            },
+                            ticks: {
+                                beginAtZero: true
+                            }
+                        } ]
+                    },
+                    legend: {},
+                    hover: {
+                        mode: "index",
+                        intersect: true
+                    },
+                    animation: {
+                        animateScale: true,
+                        animateRotate: true
+                    }
+                }
+            };
+            if (_.isArray(tooltips) && !_.isEmpty(tooltips)) {
+                chartData.options.tooltips = {
+                    mode: "index",
+                    callbacks: {
+                        label: function(tooltipItem, data) {
+                            var label = "";
+                            _.forEach(tooltips, function(tp) {
+                                var idx = data.labels[tooltipItem.index];
+                                label += tp[idx].key + ": ";
+                                label += tp[idx].value + "\\n";
+                            });
+                            return label;
+                        }
+                    }
+                };
+            }
+            if (_.isPlainObject(datasets)) {
+                chartData.data.labels = Object.keys(datasets);
+                chartData.data.datasets.push({
+                    data: Object.values(datasets),
+                    backgroundColor: "#92278f",
+                    label: $translate.instant("reservations.reservations")
+                });
+            } else if (_.isArray(datasets)) {
+                _.forEach(datasets, function(v) {
+                    chartData.data.labels = Object.keys(v);
+                    chartData.data.datasets.push({
+                        data: Object.values(v),
+                        backgroundColor: "#92278f",
+                        label: $translate.instant("reservations.reservations"),
+                        fill: false
+                    });
+                });
+                chartData.data.labels = _.uniq(chartData.data.labels);
+            } else {
+                throw new Error("values is not valid. Should be array or object");
+            }
+            return chartData;
+        };
+        $$service.$tooltipsGenerator = function(tooltipModel) {
+            var tooltipEl = document.getElementById("chartjs-tooltip");
+            if (!tooltipEl) {
+                tooltipEl = document.createElement("div");
+                tooltipEl.id = "chartjs-tooltip";
+                tooltipEl.innerHTML = "<table></table>";
+                document.body.appendChild(tooltipEl);
+            }
+            if (tooltipModel.opacity === 0) {
+                tooltipEl.style.opacity = 0;
+                return;
+            }
+            tooltipEl.classList.remove("above", "below", "no-transform");
+            if (tooltipModel.yAlign) {
+                tooltipEl.classList.add(tooltipModel.yAlign);
+            } else {
+                tooltipEl.classList.add("no-transform");
+            }
+            function getBody(bodyItem) {
+                return bodyItem.lines;
+            }
+            if (tooltipModel.body) {
+                var titleLines = tooltipModel.title || [];
+                var bodyLines = tooltipModel.body.map(getBody);
+                var innerHtml = "<thead>";
+                titleLines.forEach(function(title) {
+                    innerHtml += "<tr><th>" + title + "</th></tr>";
+                });
+                innerHtml += "</thead><tbody>";
+                bodyLines.forEach(function(body, i) {
+                    innerHtml += "<tr><td>" + body + "</td></tr>";
+                });
+                innerHtml += "</tbody>";
+                var tableRoot = tooltipEl.querySelector("table");
+                tableRoot.innerHTML = innerHtml;
+            }
+            var position = this._chart.canvas.getBoundingClientRect();
+            tooltipEl.style.opacity = 1;
+            tooltipEl.style.position = "absolute";
+            tooltipEl.style.left = position.left + tooltipModel.caretX + "px";
+            tooltipEl.style.top = position.top + tooltipModel.caretY + "px";
+            tooltipEl.style.fontFamily = tooltipModel._bodyFontFamily;
+            tooltipEl.style.fontSize = tooltipModel.bodyFontSize + "px";
+            tooltipEl.style.fontStyle = tooltipModel._bodyFontStyle;
+            tooltipEl.style.padding = tooltipModel.yPadding + "px " + tooltipModel.xPadding + "px";
+        };
+        return $$service;
     }
 })();
 
@@ -11186,7 +11330,7 @@ angular.module("itaca.components").run([ "$templateCache", function($templateCac
     $templateCache.put("/tpls/people-counters/people-counters.tpl", '<div class="layout layout-wrap layout-align-center-center"><div class="flex layout-column layout-align-center-center"><ch-counter label="{{$ctrl.$$adultsHint}}" count-class="bg-white only-border" ng-model="$ctrl.people.adults" min="$ctrl.$$peopleLimits.adults.min" max="$ctrl.$$peopleLimits.adults.max"></ch-counter></div><div class="flex layout-column layout-align-center-center"><ch-counter label="{{$ctrl.$$boysHint}}" count-class="bg-white only-border" ng-model="$ctrl.people.boys" min="$ctrl.$$peopleLimits.boys.min" max="$ctrl.$$peopleLimits.boys.max"></ch-counter></div><div class="flex layout-column layout-align-center-center"><ch-counter label="{{$ctrl.$$childrenHints}}" count-class="bg-white only-border" ng-model="$ctrl.people.children" min="$ctrl.$$peopleLimits.children.min" max="$ctrl.$$peopleLimits.children.max"></ch-counter></div><div class="flex layout-column layout-align-center-center layout-padding"><ch-counter label="{{$ctrl.$$kidsHints}}" count-class="bg-white only-border" ng-model="$ctrl.people.kids" min="$ctrl.$$peopleLimits.kids.min" max="$ctrl.$$peopleLimits.kids.max"></ch-counter></div></div>');
     $templateCache.put("/tpls/people-picker/people-picker-trigger.tpl", '<ng-form name="chPeoplePickerForm" class="flex no-padding layout-column layout-fill"><md-button class="ch-people-picker-button minimal-button flex text-lowercase text-center {{$ctrl.buttonClass}}" aria-label="Change people" ng-disabled="$ctrl.ngDisabled" ng-click="$ctrl.$openPanel($event)"><div class="{{$ctrl.wrapperClass}}"><div ng-if="$ctrl.label" class="layout-row layout-align-center-center" ng-class="{\'no-padding-top\': $ctrl.$mdMedia(\'gt-xs\'), \'md-padding\': !$ctrl.$mdMedia(\'gt-xs\') || $ctrl.$$hasPeople}"><div class="{{$ctrl.labelClass}} text-initial text-wrap row-1" ng-class="{\'text-small\': $ctrl.$$hasPeople}"><span ng-bind-html="$ctrl.label"></span></div></div><div ng-show="$ctrl.$$hasPeople" class="md-subhead text-wrap row-mini"><strong><ch-people-summary people="$ctrl.people"></ch-people-summary></strong></div></div><div ng-messages="chPeoplePickerForm[$ctrl.fieldName].$error" ng-show="chPeoplePickerForm[$ctrl.fieldName].$dirty" class="text-danger text-small text-center row-1 no-padding layout-column layout-padding-sm"><div ng-message="required"><md-icon ng-if="$ctrl.showErrorIcon" class="mdi mdi-alert-outline material-icons md-18 text-danger"></md-icon><span class="text-wrap" translate="error.required"></span></div><div ng-message="min"><md-icon ng-if="$ctrl.showErrorIcon" class="mdi mdi-alert-outline material-icons md-18 text-danger"></md-icon><span class="text-wrap" ng-if="$ctrl.errorMessages.min" ng-bind="$ctrl.errorMessages.min"></span><span class="text-wrap" ng-if="!$ctrl.errorMessages.min" translate="error.field.min" translate-value-num="{{$ctrl.minCount}}"></span></div></div></md-button><input type="hidden" name="{{$ctrl.fieldName}}" ng-model="$ctrl.people" ng-required="$ctrl.ngRequired"></ng-form>');
     $templateCache.put("/tpls/people-picker/people-picker.tpl", '<div layout="column" layout-padding><div class="text-center" ng-if="!$ctrl.data.noTitle"><strong><span ng-if="!$ctrl.data.title" translate="reservation.people.question"></span><span ng-if="$ctrl.data.title" ng-bind-html="$ctrl.data.title"></span></strong></div><div class="no-padding"><div layout layout-align="center center" class="md-margin"><ch-counter label="<div class=\'text-center\'>{{::(\'people.adults\'|translate)}}</div><small>({{\'date.years.min.range.abbr\'| translate:\'{min:18}\'}})</small>" label-direction="{{$mdMedia(\'xs\') ? \'top\' : \'left\'}}" label-class="md-body-1 text-gray-light flex-40" flexible="true" ng-model="$ctrl.data.people.adults" min="1" plus-disabled="$ctrl.data.plusDisabled" aria-label="Adults"></ch-counter></div><div layout layout-align="center center" class="md-margin"><ch-counter label="<div class=\'text-center\'>{{::(\'people.boys\'|translate)}}</div><small>({{\'date.years.range.abbr\'| translate:\'{min:13,max:17}\'}})</small>" label-direction="{{$mdMedia(\'xs\') ? \'top\' : \'left\'}}" label-class="md-body-1 text-gray-light flex-40" flexible="true" ng-model="$ctrl.data.people.boys" min="0" plus-disabled="$ctrl.data.plusDisabled" aria-label="Boys"></ch-counter></div><div layout layout-align="center center" class="md-margin"><ch-counter label="<div class=\' text-center\'>{{::(\'people.children\'|translate)}}</div><small>({{\'date.years.range.abbr\'| translate:\'{min:3,max:12}\'}})</small>" label-direction="{{$mdMedia(\'xs\') ? \'top\' : \'left\'}}" label-class="md-body-1 text-gray-light flex-40" flexible="true" ng-model="$ctrl.data.people.children" min="0" plus-disabled="$ctrl.data.plusDisabled" aria-label="Children"></ch-counter></div><div layout layout-align="center center" class="md-margin"><ch-counter label="<div class=\'text-center\'>{{::(\'people.kids\'|translate)}}</div><small>({{\'date.years.range.abbr\'| translate:\'{min:0,max:2}\'}})</small>" label-direction="{{$mdMedia(\'xs\') ? \'top\' : \'left\'}}" label-class="md-body-1 text-gray-light flex-40" flexible="true" ng-model="$ctrl.data.people.kids" min="0" plus-disabled="$ctrl.data.plusDisabled" aria-label="Kids"></ch-counter></div></div><div ng-if="$ctrl.hasConfirm" class="no-padding layout-row layout-align-center-center"><md-button class="no-margin-top no-margin-bottom md-raised" ng-click="$ctrl.cancel()" aria-label="Cancel"><small translate="common.cancel"></small></md-button><md-button class="md-primary md-raised no-margin-top no-margin-bottom" ng-click="$ctrl.confirm()" aria-label="Confirm"><small translate="common.confirm"></small></md-button></div><div layout ng-if="!$ctrl.hasConfirm && $ctrl.hasClose" class="no-padding"><div flex></div><md-button class="md-primary no-margin-top no-margin-bottom" ng-click="$ctrl.confirm()" aria-label="Close"><small translate="common.close"></small></md-button></div></div>');
-    $templateCache.put("/tpls/planning/planning-cell.tpl", '<div flex layout="column" class="ch-planning-cell" ng-class="{\n' + "\t'ch-planning-cell-past': $ctrl.viewDate.isPast && !$ctrl.viewDate.$planning.roomClosed, \n" + "\t'ch-planning-cell-closed': $ctrl.viewDate.$planning.roomClosed && !$ctrl.viewDate.$planning.active && !$ctrl.viewDate.$planning.overbookings.length,\n" + "\t'ch-planning-cell-active': $ctrl.viewDate.$planning.active || $ctrl.viewDate.$planning.overbookings.length,\n" + '\t}" ng-click="$ctrl.$openCellMenu()"><div ng-if="$ctrl.viewDate.$planning.hotelClosed" flex layout="column" layout-padding-sm layout-align="center center"><div><md-icon class="mdi mdi-lock md-24 text-gray-light"></md-icon></div><div class="text-gray-light text-center"><small translate="hotel.closed"></small></div></div><div ng-if="!$ctrl.viewDate.$planning.hotelClosed" flex layout="column"><ch-planning-reservation ng-if="$ctrl.viewDate.$planning.active.reservation.$show" class="animated fadeIn" reservation="$ctrl.viewDate.$planning.active.reservation" room-people="$ctrl.viewDate.$planning.active.people" room-extra-people="$ctrl.viewDate.$planning.active.extraPeople" settings="$ctrl.settings" on-click="$ctrl.onReservationClick({\n' + "\t\t\t\t'$reservation': $reservation, \n" + "\t\t\t\t$roomId: $ctrl.viewDate.$planning.active.roomId,\n" + "\t\t\t\t$roomTypeId: $ctrl.viewDate.$planning.active.roomType.id,\n" + "\t\t\t\t$startDate: $ctrl.viewDate.$planning.active.startDate,\n" + "\t\t\t\t$endDate: $ctrl.viewDate.$planning.active.endDate\n" + '\t\t\t})"></ch-planning-reservation><div flex ng-if="!$ctrl.viewDate.$planning.active" layout layout-align="end start"><md-menu md-position-mode="target bottom" class="ch-planning-cell-menu"><md-button class="md-icon-button" ng-class="{\'no-margin-x-sides\': !$ctrl.$mdMedia(\'gt-sm\')}" ng-click="$mdMenu.open($event)" ng-disabled="$ctrl.chPlanningCtrl.$$actionInProgress" aria-label="Open date menu"><md-icon class="mdi mdi-dots-vertical md-24" ng-class="{\'text-gray-light\': !$ctrl.viewDate.$planning.roomClosed, \'text-white\': $ctrl.viewDate.$planning.roomClosed}"></md-icon></md-button><md-menu-content><md-menu-item ng-if="!$ctrl.viewDate.isPast && $ctrl.onCloseRoom && !$ctrl.viewDate.$planning.roomClosed"><md-button ng-click="$ctrl.$closeRoom()" aria-label="Close room availability"><md-icon class="mdi mdi-lock md-24"></md-icon><span translate="hotel.availability.close"></span></md-button></md-menu-item><md-menu-item ng-if="!$ctrl.viewDate.isPast && $ctrl.onOpenRoom && $ctrl.viewDate.$planning.roomClosed"><md-button ng-click="$ctrl.$openRoom()" aria-label="Open room availability"><md-icon class="mdi mdi-lock-open md-24"></md-icon><span translate="hotel.availability.open"></span></md-button></md-menu-item><md-menu-item ng-if="$ctrl.onViewRates && !$ctrl.viewDate.$planning.roomClosed"><md-button ng-click="$ctrl.$viewRates()" aria-label="View rates"><md-icon class="mdi mdi-cash-usd md-24"></md-icon><span translate="ratesheet.rates.view"></span></md-button></md-menu-item><md-menu-item ng-if="!$ctrl.viewDate.$planning.roomClosed"><md-button ui-sref="hotel-reservations-new({checkin: $ctrl.viewDate.date})" aria-label="New reservation"><md-icon class="mdi mdi-book-plus md-24"></md-icon><span translate="reservations.reservation.new"></span></md-button></md-menu-item></md-menu-content></md-menu></div><ch-planning-overbookings ng-if="$ctrl.viewDate.$planning.overbookings.length" class="animated fadeIn" date="$ctrl.viewDate.date" overbookings="$ctrl.viewDate.$planning.overbookings" day-size="$ctrl.viewDate.$daySize" on-click="$ctrl.onOverbookingClick({\n' + "\t\t\t\t'$reservation': $reservation,\n" + "\t\t\t\t'$roomId': $roomId, \n" + "\t\t\t\t'$roomTypeId': $roomTypeId,\n" + "\t\t\t\t'$startDate': $startDate,\n" + "\t\t\t\t'$endDate': $endDate\n" + '\t\t\t})"></ch-planning-overbookings></div></div>');
+    $templateCache.put("/tpls/planning/planning-cell.tpl", '<div flex layout="column" class="ch-planning-cell" ng-class="{\n' + "\t'ch-planning-cell-past': $ctrl.viewDate.isPast && !$ctrl.viewDate.$planning.roomClosed, \n" + "\t'ch-planning-cell-closed': $ctrl.viewDate.$planning.roomClosed && !$ctrl.viewDate.$planning.active && !$ctrl.viewDate.$planning.overbookings.length,\n" + "\t'ch-planning-cell-active': $ctrl.viewDate.$planning.active || $ctrl.viewDate.$planning.overbookings.length,\n" + '\t}" ng-click="$ctrl.$openCellMenu()"><div ng-if="$ctrl.viewDate.$planning.hotelClosed" flex layout="column" layout-padding-sm layout-align="center center"><div><md-icon class="mdi mdi-lock md-24 text-gray-light"></md-icon></div><div class="text-gray-light text-center"><small translate="hotel.closed"></small></div></div><div ng-if="!$ctrl.viewDate.$planning.hotelClosed" flex layout="column"><ch-planning-reservation ng-if="$ctrl.viewDate.$planning.active.reservation.$show" class="animated fadeIn" reservation="$ctrl.viewDate.$planning.active.reservation" room-people="$ctrl.viewDate.$planning.active.people" room-extra-people="$ctrl.viewDate.$planning.active.extraPeople" settings="$ctrl.settings" on-click="$ctrl.onReservationClick({\n' + "\t\t\t\t'$reservation': $reservation, \n" + "\t\t\t\t$roomId: $ctrl.viewDate.$planning.active.roomId,\n" + "\t\t\t\t$roomTypeId: $ctrl.viewDate.$planning.active.roomType.id,\n" + "\t\t\t\t$startDate: $ctrl.viewDate.$planning.active.startDate,\n" + "\t\t\t\t$endDate: $ctrl.viewDate.$planning.active.endDate\n" + '\t\t\t})"></ch-planning-reservation><div flex ng-if="!$ctrl.viewDate.$planning.active" layout layout-align="end start"><md-menu md-position-mode="target bottom" class="ch-planning-cell-menu"><md-button class="md-icon-button" ng-class="{\'no-margin-x-sides\': !$ctrl.$mdMedia(\'gt-sm\')}" ng-click="$mdMenu.open($event)" ng-disabled="$ctrl.chPlanningCtrl.$$actionInProgress" aria-label="Open date menu"><md-icon class="mdi mdi-dots-vertical md-24" ng-class="{\'text-gray-light\': !$ctrl.viewDate.$planning.roomClosed, \'text-white\': $ctrl.viewDate.$planning.roomClosed}"></md-icon></md-button><md-menu-content><md-menu-item ng-if="!$ctrl.viewDate.isPast && $ctrl.onCloseRoom && !$ctrl.viewDate.$planning.roomClosed"><md-button ng-click="$ctrl.$closeRoom()" aria-label="Close room availability"><md-icon class="mdi mdi-lock md-24"></md-icon><span translate="hotel.availability.close"></span></md-button></md-menu-item><md-menu-item ng-if="$ctrl.onOpenRoom && $ctrl.viewDate.$planning.roomClosed"><md-button ng-click="$ctrl.$openRoom()" aria-label="Open room availability"><md-icon class="mdi mdi-lock-open md-24"></md-icon><span translate="hotel.availability.open"></span></md-button></md-menu-item><md-menu-item ng-if="$ctrl.onViewRates && !$ctrl.viewDate.$planning.roomClosed"><md-button ng-click="$ctrl.$viewRates()" aria-label="View rates"><md-icon class="mdi mdi-cash-usd md-24"></md-icon><span translate="ratesheet.rates.view"></span></md-button></md-menu-item><md-menu-item ng-if="!$ctrl.viewDate.$planning.roomClosed"><md-button ui-sref="hotel-reservations-new({checkin: $ctrl.viewDate.date})" aria-label="New reservation"><md-icon class="mdi mdi-book-plus md-24"></md-icon><span translate="reservations.reservation.new"></span></md-button></md-menu-item></md-menu-content></md-menu></div><ch-planning-overbookings ng-if="$ctrl.viewDate.$planning.overbookings.length" class="animated fadeIn" date="$ctrl.viewDate.date" overbookings="$ctrl.viewDate.$planning.overbookings" day-size="$ctrl.viewDate.$daySize" on-click="$ctrl.onOverbookingClick({\n' + "\t\t\t\t'$reservation': $reservation,\n" + "\t\t\t\t'$roomId': $roomId, \n" + "\t\t\t\t'$roomTypeId': $roomTypeId,\n" + "\t\t\t\t'$startDate': $startDate,\n" + "\t\t\t\t'$endDate': $endDate\n" + '\t\t\t})"></ch-planning-overbookings></div></div>');
     $templateCache.put("/tpls/planning/planning-content-weekly.tpl", '<div flex layout="column" layout-fill ng-switch="$ctrl.$$roomsType"><md-subheader class="no-padding bg-gray-lighter ch-planning-dates-header"><div layout flex><div hide show-gt-sm flex="25" layout layout-padding layout-align="center center" class="border-right-white"><strong class="text-uppercase text-gray-light"><span translate="room.room"></span></strong></div><div flex layout layout-padding-sm><div flex layout="column" class="border-right-white" ng-repeat="viewDate in $ctrl.$$viewDates track by viewDate.uid"><md-button tabindex="-1" ng-click="$ctrl.$onDateClick($event, viewDate)" ng-disabled="viewDate.isPast || viewDate.$planning.hotelClosed || $ctrl.chPlanningCtrl.$$actionInProgress" class="md-square-button no-margin row-mini text-left" ng-class="{\'minimal-button\': !$ctrl.$mdMedia(\'gt-xs\'),\n' + "\t\t\t\t\t\t'text-gray-light': !viewDate.roomsClosed,\n" + '\t\t\t\t\t\t\'bg-danger text-white\': viewDate.roomsClosed}"><div layout="column" ng-class="{\n' + "\t\t\t\t\t\t\t'text-primary': !viewDate.roomsClosed && viewDate.isToday, \n" + "\t\t\t\t\t\t\t'text-danger': !viewDate.roomsClosed && !viewDate.isToday && (viewDate.isoWeekday == 6 || viewDate.isoWeekday == 7)\n" + '\t\t\t\t\t\t}"><small class="text-capitalize">{{viewDate.date|date:"EEE"}}</small><strong ng-class="{\'md-display-1\': $ctrl.$mdMedia(\'gt-xs\'), \'md-title\': $ctrl.$mdMedia(\'xs\')}">{{viewDate.date|date:"d"}}</strong></div><md-tooltip><span ng-show="viewDate.roomsClosed" translate="hotel.availability.open.day"></span><span ng-show="!viewDate.roomsClosed" translate="hotel.availability.close.day"></span></md-tooltip></md-button></div></div></div></md-subheader><div ng-switch-when="2" flex layout="column" infinite-scroll="$ctrl.rooms.nextPage()" infinite-scroll-container="\'#planningCont\'" infinite-scroll-disabled="$ctrl.rooms.busy" infinite-scroll-distance="1"><ch-planning-room ng-repeat="room in $ctrl.rooms.items track by room.id" room="room" dates="$ctrl.$$viewDates" planning="$ctrl.planning[room.id]" settings="$ctrl.settings" on-reservation-click="$ctrl.onReservationClick({\'$reservation\': $reservation, \'$roomId\': $roomId, \'$roomTypeId\': $roomTypeId, \'$startDate\': $startDate, \'$endDate\': $endDate})" on-overbooking-click="$ctrl.onOverbookingClick({\'$reservation\': $reservation, \'$roomId\': $roomId, \'$roomTypeId\': $roomTypeId, \'$startDate\': $startDate, \'$endDate\': $endDate})"></ch-planning-room><div flex ng-show="$ctrl.rooms.busy" flex layout="column" layout-padding layout-align="center center"><div><md-progress-circular class="md-primary ch-progress" md-mode="indeterminate" md-diameter="40"></md-progress-circular></div><div class="text-gray-light"><span translate="planning.loading"></span>...</div></div></div><div ng-switch-default flex layout="column"></div></div>');
     $templateCache.put("/tpls/planning/planning-header.tpl", '<div class="ch-planning-header" ng-style="{\'background-image\': $ctrl.$$bgImage}"><div class="ch-planning-header-content bg-opaque-4" layout="column"><div flex layout layout-padding-sm><div flex><ch-month-picker ng-model="$ctrl.chPlanningCtrl.$$startDate" hide-icon="true" wrapper-class="text-white text-bold" icon-color-class="text-white" selected-text="$ctrl.$getMonthLabel()" ng-change="$ctrl.$onMonthChange()" ng-disabled="$ctrl.chPlanningCtrl.$$actionInProgress"></ch-month-picker></div><div><md-button class="md-icon-button" ng-click="$ctrl.$goToToday()" ng-disabled="$ctrl.chPlanningCtrl.$$actionInProgress" aria-label="Go to today"><md-icon class="mdi mdi-calendar-today md-24 text-white"></md-icon><md-tooltip><span translate="date.today.go.to"></span></md-tooltip></md-button></div><div layout layout-align="center start"><ch-date-picker ng-model="$ctrl.chPlanningCtrl.$$startDate" hide-label="true" size="medium" tooltip="{{\'common.go.to\'|translate}}" button-class="md-icon-button" icon-class="mdi mdi-calendar-search text-white" hide-value="true" has-confirm="false" ng-change="$ctrl.$onMonthChange()" ng-disabled="$ctrl.chPlanningCtrl.$$actionInProgress"></ch-date-picker></div><div><md-menu md-position-mode="target bottom"><md-button class="md-icon-button" ng-class="{\'no-margin-x-sides\': !$ctrl.$mdMedia(\'gt-sm\')}" ng-click="$mdMenu.open($event)" ng-disabled="$ctrl.chPlanningCtrl.$$actionInProgress" aria-label="Open planning menu"><md-icon class="mdi mdi-dots-vertical md-24 text-white"></md-icon></md-button><md-menu-content><md-menu-item><md-button ui-sref="hotel-planning.settings" aria-label="Open planning settings"><md-icon class="mdi mdi-cogs md-24"></md-icon><span translate="menu.settings"></span></md-button></md-menu-item></md-menu-content></md-menu></div></div><div layout><div><md-button ng-class="{\'no-margin-x-sides minimal-button\': !$ctrl.$mdMedia(\'gt-sm\')}" ng-click="$ctrl.$prevWeek()" ng-disabled="$ctrl.chPlanningCtrl.$$actionInProgress" aria-label="Go to previous week"><md-icon class="mdi mdi-chevron-left md-24 text-white"></md-icon><span hide-xs class="text-white text-bold" translate="date.week.previous"></span><span hide-gt-xs class="text-white text-bold" translate="common.previous"></span><md-tooltip hide show-xs show-sm><span class="text-uppercase" translate="date.week.previous"></span></md-tooltip></md-button></div><div flex></div><div><md-button ng-class="{\'no-margin-x-sides minimal-button\': !$ctrl.$mdMedia(\'gt-sm\')}" ng-click="$ctrl.$nextWeek()" ng-disabled="$ctrl.chPlanningCtrl.$$actionInProgress" aria-label="Go to next week"><span hide-xs class="text-white text-bold" translate="date.week.next"></span><span hide-gt-xs class="text-white text-bold" translate="common.next.female"></span><md-icon class="mdi mdi-chevron-right md-24 text-white"></md-icon><md-tooltip hide show-xs show-sm><span class="text-uppercase" translate="date.week.next"></span></md-tooltip></md-button></div></div></div></div>');
     $templateCache.put("/tpls/planning/planning-overbookings-panel.tpl", '<div flex layout-padding-sm><div><div ng-repeat="overbooking in $ctrl.$$overbookings track by overbooking.reservation.id"><ch-planning-reservation class="animated fadeIn" main-class="ch-planning-overbooking" reservation="overbooking.reservation" room-people="overbooking.people" room-extra-people="overbooking.extraPeople" on-click="$ctrl.onClick({\n' + "\t\t\t\t\t'$reservation': $reservation, \n" + "\t\t\t\t\t$roomId: overbooking.roomId, \n" + "\t\t\t\t\t$roomTypeId: overbooking.roomType.id,\n" + "\t\t\t\t\t$startDate: overbooking.startDate,\n" + "\t\t\t\t\t$endDate: overbooking.endDate\n" + '\t\t\t\t}); $ctrl.$close()"></ch-planning-reservation></div></div></div>');

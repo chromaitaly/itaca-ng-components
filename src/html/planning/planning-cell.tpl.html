@@ -41,7 +41,7 @@
 			   				<span translate="hotel.availability.close"></span>
 			   			</md-button>
 			   		</md-menu-item>
-			   		<md-menu-item ng-if="!$ctrl.viewDate.isPast && $ctrl.onOpenRoom && $ctrl.viewDate.$planning.roomClosed">
+			   		<md-menu-item ng-if="$ctrl.onOpenRoom && $ctrl.viewDate.$planning.roomClosed">
 			   			<md-button ng-click="$ctrl.$openRoom()" aria-label="Open room availability">
 							<md-icon class="mdi mdi-lock-open md-24"></md-icon>			   			
 			   				<span translate="hotel.availability.open"></span>
