@@ -6,7 +6,7 @@
         	ngModelCtrl: 'ngModel' 
         },
 		bindings: {
-			ngModel: '=',
+			ngModel: '<',
 			isDisabled: "<?",
 			isRequired: "<?",
 			noCache: "<?",
@@ -27,6 +27,8 @@
           			" md-no-cache=\"$ctrl.noCache\" "+
           			" md-selected-item=\"$ctrl.selectedItem\" "+
           			" md-search-text=\"$ctrl.searchText\" "+
+          			" md-require-match=\"true\" " +
+          			" md-match-case-insensitive=\"true\" " +
           			" md-selected-item-change=\"$ctrl.$selectedItemChange(item)\"  "+
           			" md-items=\"item in $ctrl.$querySearch($ctrl.searchText)\" "+
           			" md-item-text=\"item.translations[$ctrl.currentLang] ? item.translations[$ctrl.currentLang] : item.name\"  "+
@@ -41,10 +43,11 @@
   						"<span class=\"text-gray-light\">,&nbsp;{{item.nativeName}}</span>" +
   						"<md-divider></md-divider>" +
 					"</md-item-template>" +
-					"<div ng-messages=\"autocompleteForm.address.$error\">" +
+					"<div ng-messages=\"autocompleteForm.country.$error\">" +
 						"<div ng-message=\"required\"><span translate=\"error.required\"></span></div>" +
 						"<div ng-message=\"minlength\"><span translate=\"error.field.generic.minlength\" translate-values=\"{count: $ctrl.minLength}\"></span></div>" +
 						"<div ng-message=\"connection\"><span translate=\"error.country.not.found\"></span></div>" +
+						"<div ng-message=\"md-require-match\"><span translate=\"error.country.not.match\"></span></div>" +
 					"</div>" +
 				"</md-autocomplete>" +
 			"</ng-form>"
@@ -74,6 +77,36 @@
     		ctrl.selectedItem  = null;
     		
     		ctrl.precopileSearchText();
+    		
+//    		ctrl.ngModelCtrl.$formatters.push(function(value) {
+//    			return CountryAPI.getByIso(value).then(function(response){
+//    				var country = _.find(response, function(item){
+//    					return item.translations[ctrl.currentLang];
+//    				});
+//    				
+//    				if(country){
+//    					return country.translations[ctrl.currentLang] ? country.translations[ctrl.currentLang] : country.name;
+//    				}
+//    				
+//    				return value;
+//	    		});
+//    		});
+//    		
+//    		ctrl.ngModelCtrl.$parsers.push(function(value) {
+//    			return CountryAPI.getByName(value).then(function(response){
+//    				var country = _.find(response, function(item){
+//    					return item.translations[ctrl.currentLang];
+//    				});
+//    				
+//    				if(country){
+//    					return country.translations[ctrl.currentLang] ? country.translations[ctrl.currentLang] : country.name;
+//    				}
+//    				
+//    				return value;
+//	    		});
+//    		});
+    		
+
     	};
     	
     	this.precopileSearchText = function(){
@@ -81,11 +114,23 @@
     			
     			if(ctrl.ngModel.length > 2){
     				CountryAPI.getByName(ctrl.ngModel).then(function(response){
-    					ctrl.searchText = response.translations[ctrl.currentLang] ? response.translations[ctrl.currentLang] : response.name;
+    					var country = _.find(response, function(item){
+        					return item.translations[ctrl.currentLang];
+        				});
+        				
+        				if(country){
+        					ctrl.searchText = country.translations[ctrl.currentLang] ? country.translations[ctrl.currentLang] : country.name;
+        				}
     	    		});
     			} else if(ctrl.ngModel.length == 2){
     				CountryAPI.getByIso(ctrl.ngModel).then(function(response){
-    					ctrl.searchText = response.translations[ctrl.currentLang] ? response.translations[ctrl.currentLang] : response.name;
+    					var country = _.find(response, function(item){
+        					return item.translations[ctrl.currentLang];
+        				});
+        				
+        				if(country){
+        					ctrl.searchText = country.translations[ctrl.currentLang] ? country.translations[ctrl.currentLang] : country.name;
+        				}
     	    		});
     			} else {
     				ctrl.searchText = angular.copy(ctrl.ngModel);
@@ -93,26 +138,28 @@
     		} 
     	};
     	
+    	
     	this.$querySearch = function(query){
     		return CountryAPI.getByName(query).then(function(response){
     			ctrl.$setError(false);
     			return response;
     		},function(error){
     			ctrl.$setError(true);
+    			return [];
     		});
 	    };
 	    
 	    this.$selectedItemChange = function(country){
 	    	if(!country){
-    			ctrl.ngModel = null;
+    			ctrl.ngModelCtrl.$setViewValue(null);
 	    		return;
 	    	}
-	    	ctrl.ngModel = country.alpha2Code;
+	    	ctrl.ngModelCtrl.$setViewValue(country.alpha2Code);
 	    	ctrl.$setError(false);
 	    };
 	    
 	    this.$setError = function(bool){
-	    	$scope.autocompleteForm.address.$setValidity('connection', !bool);
+	    	$scope.autocompleteForm.country.$setValidity('connection', !bool);
 	    	ctrl.$$error = bool;
 	    	
 	    	if(bool){

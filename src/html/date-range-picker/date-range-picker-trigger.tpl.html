@@ -1,4 +1,4 @@
-<ng-form name="chDateRangePickerTriggerForm">
+<ng-form name="chDateRangePickerTriggerForm" layout="column" flex="100">
   	<md-button class="ch-date-range-picker-button minimal-button flex text-lowercase text-center {{$ctrl.buttonClass}}" ng-click="$ctrl.$openPanel($event)" aria-label="Change period" ng-disabled="$ctrl.ngDisabled">
   		<div class="{{$ctrl.wrapperClass}}">
   			<div ng-if="$ctrl.label || ($ctrl.placeholder && !$ctrl.start && !$ctrl.end)" class="layout-row layout-align-center-center" ng-class="{'no-padding-top': $ctrl.$mdMedia('gt-xs'), 'md-padding': !$ctrl.$mdMedia('gt-xs') || $ctrl.start || $ctrl.end}">

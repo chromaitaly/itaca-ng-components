@@ -1,12 +1,12 @@
 (function() {
 	'use strict';
 	
-	angular.module("itaca.component").component("chCityAutocomplete", {
+	angular.module("itaca.components").component("chCityAutocomplete", {
 		require: {
         	ngModelCtrl: 'ngModel' 
         },
 		bindings: {
-			ngModel: '=',
+			ngModel: '<',
 			isDisabled: "<?",
 			isRequired: "<?",
 			noCache: "<?",
@@ -20,7 +20,7 @@
 			"<ng-form class=\"flex\" name=\"cityAutocompleteForm\">" +
 				"<md-autocomplete " +
 					" class=\"ch-city-autocomplete\" " +
-					" md-input-name=\"city\" " +
+					" md-input-name=\"city\" " + 
           			" ng-disabled=\"$ctrl.isDisabled\" "+
           			" ng-required=\"$ctrl.isRequired\" "+
           			" md-no-cache=\"$ctrl.noCache\" "+
@@ -40,8 +40,11 @@
   						"<span class=\"text-gray-light\">,&nbsp;{{item.structured_formatting.secondary_text}}</span>" +
   						"<md-divider></md-divider>" +
 					"</md-item-template>" +
-					"<div ng-messages=\"autocompleteForm.address.$error\">" +
+					"<div ng-messages=\"cityAutocompleteForm.city.$error\">" +
 						"<div ng-message=\"required\"><span translate=\"error.required\"></span></div>" +
+						"<div ng-message=\"minlength\"><span translate=\"error.field.generic.minlength\" translate-values=\"{count: $ctrl.minLength}\"></span></div>" +
+						"<div ng-message=\"connection\"><span translate=\"error.city.not.found\"></span></div>" +
+						"<div ng-message=\"md-require-match\"><span translate=\"error.city.not.match\"></span></div>" +
 					"</div>" +
 				"</md-autocomplete>" +
 			"</ng-form>"
@@ -87,17 +90,22 @@
     	
     	this.$querySearch = function(query){
     		return GoogleAPI.cities(query).then(function(response){
+    			ctrl.$setError(false);
     			return response;
+    		},function(error){
+    			ctrl.$setError(true);
     		});
 	    };
 	    
 	    this.$selectedItemChange = function(place){
 	    	if(!place){
-	    		ctrl.ngModel = null;
+	    		ctrl.ngModelCtrl.$setViewValue(null);
 	    		return;
 	    	}
 	    		
 	    	GoogleAPI.placeDetails(place.place_id).then(function(data){
+	    		ctrl.$setError(false);
+
 	    		var addressInfo = {};
 	    	
 	    		 for (var i = 0; i < data.address_components.length; i++) {
@@ -145,8 +153,21 @@
 		    	addressInfo.offset = data.utc_offset ? parseInt(data.utc_offset)*60 : data.utc_offset;
 		    	addressInfo.addressComplete = ctrl.selectedItem;
 		    	
-		    	ctrl.ngModel = addressInfo;
+		    	ctrl.ngModelCtrl.$setViewValue(addressInfo);
+	    	}, function(error){
+	    		ctrl.$setError(true);
 	    	});
 	    };
+	    
+	    this.$setError = function(bool){
+	    	$scope.cityAutocompleteForm.city.$setValidity('connection', !bool);
+	    	ctrl.$$error = bool;
+	    	
+	    	if(bool){
+	    		ctrl.ngModelCtrl.$setViewValue(null);
+    			ctrl.selectedItem  = null;
+	    	}
+	    };
+	    
 	}
 })();

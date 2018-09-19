@@ -20,12 +20,14 @@
 			"<ng-form class=\"flex\" name=\"autocompleteForm\">" +
 				"<md-autocomplete " +
 					" class=\"ch-address-autocomplete\" " +
-					" md-input-name=\"address\" " +
+					" md-input-name=\"address\" " + 
           			" ng-disabled=\"$ctrl.isDisabled\" "+
           			" ng-required=\"$ctrl.isRequired\" "+
           			" md-no-cache=\"$ctrl.noCache\" "+
           			" md-selected-item=\"$ctrl.selectedItem\" "+
           			" md-search-text=\"$ctrl.searchText\" "+
+          			" md-require-match=\"true\" " +
+          			" md-match-case-insensitive=\"true\" " +
           			" md-selected-item-change=\"$ctrl.$selectedItemChange(item)\"  "+
           			" md-items=\"item in $ctrl.$querySearch($ctrl.searchText)\" "+
           			" md-item-text=\"item.description\"  "+
@@ -44,6 +46,7 @@
 						"<div ng-message=\"required\"><span translate=\"error.required\"></span></div>" +
 						"<div ng-message=\"minlength\"><span translate=\"error.field.generic.minlength\" translate-values=\"{count: $ctrl.minLength}\"></span></div>" +
 						"<div ng-message=\"connection\"><span translate=\"error.address.not.found\"></span></div>" +
+						"<div ng-message=\"md-require-match\"><span translate=\"error.address.not.match\"></span></div>" +
 					"</div>" +
 				"</md-autocomplete>" +
 			"</ng-form>"
@@ -99,7 +102,7 @@
 	    
 	    this.$selectedItemChange = function(place){
 	    	if(!place){
-	    		ctrl.ngModel = null;
+	    		ctrl.ngModelCtrl.$setViewValue(null);
 	    		return;
 	    	}
 	    		
@@ -155,7 +158,7 @@
 		    	addressInfo.offset = data.utc_offset ? parseInt(data.utc_offset)*60 : data.utc_offset;
 		    	addressInfo.addressComplete = ctrl.selectedItem;
 		    	
-		    	ctrl.ngModel = addressInfo;
+		    	ctrl.ngModelCtrl.$setViewValue(addressInfo);
 	    	}, function(error){
 	    		ctrl.$setError(true);
 	    	});
@@ -166,7 +169,7 @@
 	    	ctrl.$$error = bool;
 	    	
 	    	if(bool){
-	    		ctrl.ngModel = null;
+	    		ctrl.ngModelCtrl.$setViewValue(null);
     			ctrl.selectedItem  = null;
 	    	}
 	    };

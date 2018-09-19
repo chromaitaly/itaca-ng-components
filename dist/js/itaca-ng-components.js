@@ -3596,7 +3596,7 @@ var colorPicker = function() {
 (function() {
     "use strict";
     AddressAutocompleteCtrl.$inject = [ "$scope", "$mdMedia", "AppOptions", "$translate", "GoogleAPI" ];
-    angular.module("itaca.component").component("chAddressAutocomplete", {
+    angular.module("itaca.components").component("chAddressAutocomplete", {
         require: {
             ngModelCtrl: "ngModel"
         },
@@ -3611,7 +3611,7 @@ var colorPicker = function() {
             clearButton: "<?"
         },
         controller: AddressAutocompleteCtrl,
-        template: '<ng-form class="flex" name="autocompleteForm">' + "<md-autocomplete " + ' class="ch-address-autocomplete" ' + ' md-input-name="address" ' + ' ng-disabled="$ctrl.isDisabled" ' + ' ng-required="$ctrl.isRequired" ' + ' md-no-cache="$ctrl.noCache" ' + ' md-selected-item="$ctrl.selectedItem" ' + ' md-search-text="$ctrl.searchText" ' + ' md-selected-item-change="$ctrl.$selectedItemChange(item)"  ' + ' md-items="item in $ctrl.$querySearch($ctrl.searchText)" ' + ' md-item-text="item.description"  ' + ' md-min-length="$ctrl.minLength"  ' + " md-floating-label=\"{{'common.address'|translate}}\" " + ' md-dropdown-position="$ctrl.dropdownPosition" ' + ' md-clear-button="$ctrl.clearButton" ' + ' placeholder="$ctrl.placeholder">  ' + "<md-item-template>" + '<md-icon class="mdi mdi-map-marker-outline material-icons md-24"></md-icon>' + '<strong md-highlight-text="ctrl.searchText" md-highlight-flags="^i">{{item.structured_formatting.main_text}}</strong>' + '<span class="text-gray-light">,&nbsp;{{item.structured_formatting.secondary_text}}</span>' + "<md-divider></md-divider>" + "</md-item-template>" + '<div ng-messages="autocompleteForm.address.$error">' + '<div ng-message="required"><span translate="error.required"></span></div>' + "</div>" + "</md-autocomplete>" + "</ng-form>"
+        template: '<ng-form class="flex" name="autocompleteForm">' + "<md-autocomplete " + ' class="ch-address-autocomplete" ' + ' md-input-name="address" ' + ' ng-disabled="$ctrl.isDisabled" ' + ' ng-required="$ctrl.isRequired" ' + ' md-no-cache="$ctrl.noCache" ' + ' md-selected-item="$ctrl.selectedItem" ' + ' md-search-text="$ctrl.searchText" ' + ' md-require-match="true" ' + ' md-match-case-insensitive="true" ' + ' md-selected-item-change="$ctrl.$selectedItemChange(item)"  ' + ' md-items="item in $ctrl.$querySearch($ctrl.searchText)" ' + ' md-item-text="item.description"  ' + ' md-min-length="$ctrl.minLength"  ' + " md-floating-label=\"{{'common.address'|translate}}\" " + ' md-dropdown-position="$ctrl.dropdownPosition" ' + ' md-clear-button="$ctrl.clearButton" ' + ' placeholder="$ctrl.placeholder">  ' + "<md-item-template>" + '<md-icon class="mdi mdi-map-marker-outline material-icons md-24"></md-icon>' + '<strong md-highlight-text="ctrl.searchText" md-highlight-flags="^i">{{item.structured_formatting.main_text}}</strong>' + '<span class="text-gray-light">,&nbsp;{{item.structured_formatting.secondary_text}}</span>' + "<md-divider></md-divider>" + "</md-item-template>" + '<div ng-messages="autocompleteForm.address.$error">' + '<div ng-message="required"><span translate="error.required"></span></div>' + '<div ng-message="minlength"><span translate="error.field.generic.minlength" translate-values="{count: $ctrl.minLength}"></span></div>' + '<div ng-message="connection"><span translate="error.address.not.found"></span></div>' + '<div ng-message="md-require-match"><span translate="error.address.not.match"></span></div>' + "</div>" + "</md-autocomplete>" + "</ng-form>"
     });
     function AddressAutocompleteCtrl($scope, $mdMedia, AppOptions, $translate, GoogleAPI) {
         var ctrl = this;
@@ -3644,15 +3644,19 @@ var colorPicker = function() {
         };
         this.$querySearch = function(query) {
             return GoogleAPI.addresses(query).then(function(response) {
+                ctrl.$setError(false);
                 return response;
+            }, function(error) {
+                ctrl.$setError(true);
             });
         };
         this.$selectedItemChange = function(place) {
             if (!place) {
-                ctrl.ngModel = null;
+                ctrl.ngModelCtrl.$setViewValue(null);
                 return;
             }
             GoogleAPI.placeDetails(place.place_id).then(function(data) {
+                ctrl.$setError(false);
                 var addressInfo = {};
                 for (var i = 0; i < data.address_components.length; i++) {
                     var address = data.address_components[i];
@@ -3691,8 +3695,18 @@ var colorPicker = function() {
                 addressInfo.lng = data.geometry.location.lng();
                 addressInfo.offset = data.utc_offset ? parseInt(data.utc_offset) * 60 : data.utc_offset;
                 addressInfo.addressComplete = ctrl.selectedItem;
-                ctrl.ngModel = addressInfo;
+                ctrl.ngModelCtrl.$setViewValue(addressInfo);
+            }, function(error) {
+                ctrl.$setError(true);
             });
+        };
+        this.$setError = function(bool) {
+            $scope.autocompleteForm.address.$setValidity("connection", !bool);
+            ctrl.$$error = bool;
+            if (bool) {
+                ctrl.ngModelCtrl.$setViewValue(null);
+                ctrl.selectedItem = null;
+            }
         };
     }
 })();
@@ -4207,21 +4221,22 @@ var colorPicker = function() {
 (function() {
     "use strict";
     ChartCtrl.$inject = [ "$scope", "$element" ];
-    angular.module("itaca.company").component("chChart", {
+    angular.module("itaca.components").component("chChart", {
         bindings: {
             type: "<",
             data: "<",
             options: "<?"
         },
         controller: ChartCtrl,
-        template: '<div class="chart-container relative"><canvas class="chartjs"></canvas></div>'
+        template: '<canvas class="chartjs"></canvas>'
     });
     function ChartCtrl($scope, $element) {
         var ctrl = this;
         this.$onInit = function() {
-            ctrl.type = _.includes([ "line", "bar", "horizontal-bar", "radar", "pie", "polar-area", "doughnut", "bubble" ], ctrl.type) ? ctrl.type : "line";
+            ctrl.type = _.includes([ "line", "bar", "horizontal-bar", "radar", "pie", "polar-area", "doughnut", "bubble" ], ctrl.type) ? ctrl.type : "bar";
             ctrl.data = ctrl.data || {};
             ctrl.ctx = $element.find("canvas")[0].getContext("2d");
+            ctrl.ctx.height = $element[0].offsetHeight > 250 ? $element[0].offsetHeight : 250;
             ctrl.$createChart();
         };
         this.$onChanges = function(changesObj) {
@@ -4229,21 +4244,72 @@ var colorPicker = function() {
                 ctrl.$createChart();
             }
             if (changesObj.data && !changesObj.data.isFirstChange()) {
-                ctrl.$createChart();
+                _.assign(ctrl.$$chart.data, ctrl.data);
+                ctrl.$update();
             }
             if (changesObj.options && !changesObj.options.isFirstChange()) {
-                ctrl.$createChart();
+                _.assign(ctrl.$$chart.options, ctrl.options);
+                ctrl.$update();
             }
+        };
+        this.$update = function() {
+            ctrl.$$chart.update();
+            ctrl.$$chart.resize();
+            ctrl.data.$$updateChart = false;
         };
         this.$createChart = function() {
             if (!ctrl.ctx) {
                 return;
             }
+            var horizonalLinePlugin = {
+                afterDatasetDraw: function(chartInstance) {
+                    var yScale = chartInstance.scales["y-axis-0"];
+                    var xScale = chartInstance.scales["x-axis-0"];
+                    var canvas = chartInstance.chart;
+                    var ctx = canvas.ctx;
+                    if (chartInstance.options.horizontalLine) {
+                        for (var i = 0; i < chartInstance.options.horizontalLine.length; i++) {
+                            var line = chartInstance.options.horizontalLine[i];
+                            var style, yValue;
+                            if (!line.style) {
+                                style = "rgba(0, 0, 0, .7)";
+                            } else {
+                                style = line.style;
+                            }
+                            if (line.y) {
+                                yValue = yScale.getPixelForValue(line.y);
+                            } else {
+                                yValue = 0;
+                            }
+                            if (yValue) {
+                                ctx.setLineDash([ 10, 10 ]);
+                                ctx.lineWidth = 1.5;
+                                ctx.strokeStyle = style;
+                                ctx.beginPath();
+                                ctx.moveTo(xScale.getPixelForTick(0), yValue);
+                                ctx.lineTo(xScale.right, yValue);
+                                ctx.stroke();
+                                ctx.beginPath();
+                                ctx.setLineDash([]);
+                            }
+                            if (line.text) {
+                                ctx.fillStyle = style;
+                                ctx.font = "12px sans-serif";
+                                ctx.textBaseline = "top";
+                                ctx.fillText(line.text, xScale.getPixelForTick(0) + 2, yValue + ctx.lineWidth + 5);
+                            }
+                        }
+                        return;
+                    }
+                }
+            };
+            Chart.pluginService.register(horizonalLinePlugin);
             ctrl.$$chart = new Chart(ctrl.ctx, {
                 type: ctrl.type,
                 data: ctrl.data,
                 options: ctrl.options
             });
+            ctrl.$update();
         };
     }
 })();
@@ -4251,12 +4317,12 @@ var colorPicker = function() {
 (function() {
     "use strict";
     CityAutocompleteCtrl.$inject = [ "$scope", "$mdMedia", "AppOptions", "$translate", "GoogleAPI" ];
-    angular.module("itaca.component").component("chCityAutocomplete", {
+    angular.module("itaca.components").component("chCityAutocomplete", {
         require: {
             ngModelCtrl: "ngModel"
         },
         bindings: {
-            ngModel: "=",
+            ngModel: "<",
             isDisabled: "<?",
             isRequired: "<?",
             noCache: "<?",
@@ -4266,7 +4332,7 @@ var colorPicker = function() {
             clearButton: "<?"
         },
         controller: CityAutocompleteCtrl,
-        template: '<ng-form class="flex" name="cityAutocompleteForm">' + "<md-autocomplete " + ' class="ch-city-autocomplete" ' + ' md-input-name="city" ' + ' ng-disabled="$ctrl.isDisabled" ' + ' ng-required="$ctrl.isRequired" ' + ' md-no-cache="$ctrl.noCache" ' + ' md-selected-item="$ctrl.selectedItem" ' + ' md-search-text="$ctrl.searchText" ' + ' md-selected-item-change="$ctrl.$selectedItemChange(item)"  ' + ' md-items="item in $ctrl.$querySearch($ctrl.searchText)" ' + ' md-item-text="item.description"  ' + ' md-min-length="$ctrl.minLength"  ' + " md-floating-label=\"{{'common.city'|translate}}\" " + ' md-dropdown-position="$ctrl.dropdownPosition" ' + ' md-clear-button="$ctrl.clearButton" ' + ' placeholder="$ctrl.placeholder">  ' + "<md-item-template>" + '<md-icon class="mdi mdi-map-marker-outline material-icons md-24"></md-icon>' + '<strong md-highlight-text="ctrl.searchText" md-highlight-flags="^i">{{item.structured_formatting.main_text}}</strong>' + '<span class="text-gray-light">,&nbsp;{{item.structured_formatting.secondary_text}}</span>' + "<md-divider></md-divider>" + "</md-item-template>" + '<div ng-messages="autocompleteForm.address.$error">' + '<div ng-message="required"><span translate="error.required"></span></div>' + "</div>" + "</md-autocomplete>" + "</ng-form>"
+        template: '<ng-form class="flex" name="cityAutocompleteForm">' + "<md-autocomplete " + ' class="ch-city-autocomplete" ' + ' md-input-name="city" ' + ' ng-disabled="$ctrl.isDisabled" ' + ' ng-required="$ctrl.isRequired" ' + ' md-no-cache="$ctrl.noCache" ' + ' md-selected-item="$ctrl.selectedItem" ' + ' md-search-text="$ctrl.searchText" ' + ' md-selected-item-change="$ctrl.$selectedItemChange(item)"  ' + ' md-items="item in $ctrl.$querySearch($ctrl.searchText)" ' + ' md-item-text="item.description"  ' + ' md-min-length="$ctrl.minLength"  ' + " md-floating-label=\"{{'common.city'|translate}}\" " + ' md-dropdown-position="$ctrl.dropdownPosition" ' + ' md-clear-button="$ctrl.clearButton" ' + ' placeholder="$ctrl.placeholder">  ' + "<md-item-template>" + '<md-icon class="mdi mdi-map-marker-outline material-icons md-24"></md-icon>' + '<strong md-highlight-text="ctrl.searchText" md-highlight-flags="^i">{{item.structured_formatting.main_text}}</strong>' + '<span class="text-gray-light">,&nbsp;{{item.structured_formatting.secondary_text}}</span>' + "<md-divider></md-divider>" + "</md-item-template>" + '<div ng-messages="cityAutocompleteForm.city.$error">' + '<div ng-message="required"><span translate="error.required"></span></div>' + '<div ng-message="minlength"><span translate="error.field.generic.minlength" translate-values="{count: $ctrl.minLength}"></span></div>' + '<div ng-message="connection"><span translate="error.city.not.found"></span></div>' + '<div ng-message="md-require-match"><span translate="error.city.not.match"></span></div>' + "</div>" + "</md-autocomplete>" + "</ng-form>"
     });
     function CityAutocompleteCtrl($scope, $mdMedia, AppOptions, $translate, GoogleAPI) {
         var ctrl = this;
@@ -4298,15 +4364,19 @@ var colorPicker = function() {
         };
         this.$querySearch = function(query) {
             return GoogleAPI.cities(query).then(function(response) {
+                ctrl.$setError(false);
                 return response;
+            }, function(error) {
+                ctrl.$setError(true);
             });
         };
         this.$selectedItemChange = function(place) {
             if (!place) {
-                ctrl.ngModel = null;
+                ctrl.ngModelCtrl.$setViewValue(null);
                 return;
             }
             GoogleAPI.placeDetails(place.place_id).then(function(data) {
+                ctrl.$setError(false);
                 var addressInfo = {};
                 for (var i = 0; i < data.address_components.length; i++) {
                     var address = data.address_components[i];
@@ -4344,8 +4414,18 @@ var colorPicker = function() {
                 addressInfo.lng = data.geometry.location.lng();
                 addressInfo.offset = data.utc_offset ? parseInt(data.utc_offset) * 60 : data.utc_offset;
                 addressInfo.addressComplete = ctrl.selectedItem;
-                ctrl.ngModel = addressInfo;
+                ctrl.ngModelCtrl.$setViewValue(addressInfo);
+            }, function(error) {
+                ctrl.$setError(true);
             });
+        };
+        this.$setError = function(bool) {
+            $scope.cityAutocompleteForm.city.$setValidity("connection", !bool);
+            ctrl.$$error = bool;
+            if (bool) {
+                ctrl.ngModelCtrl.$setViewValue(null);
+                ctrl.selectedItem = null;
+            }
         };
     }
 })();
@@ -4770,12 +4850,12 @@ var colorPicker = function() {
 (function() {
     "use strict";
     CountryAutocompleteCtrl.$inject = [ "$scope", "$mdMedia", "AppOptions", "$translate", "CountryAPI" ];
-    angular.module("itaca.component").component("chCountryAutocomplete", {
+    angular.module("itaca.components").component("chCountryAutocomplete", {
         require: {
             ngModelCtrl: "ngModel"
         },
         bindings: {
-            ngModel: "=",
+            ngModel: "<",
             isDisabled: "<?",
             isRequired: "<?",
             noCache: "<?",
@@ -4786,7 +4866,7 @@ var colorPicker = function() {
             currentLang: "<?"
         },
         controller: CountryAutocompleteCtrl,
-        template: '<ng-form class="flex" name="autocompleteForm">' + "<md-autocomplete " + ' class="ch-contry-autocomplete" ' + ' md-input-name="country" ' + ' ng-disabled="$ctrl.isDisabled" ' + ' ng-required="$ctrl.isRequired" ' + ' md-no-cache="$ctrl.noCache" ' + ' md-selected-item="$ctrl.selectedItem" ' + ' md-search-text="$ctrl.searchText" ' + ' md-selected-item-change="$ctrl.$selectedItemChange(item)"  ' + ' md-items="item in $ctrl.$querySearch($ctrl.searchText)" ' + ' md-item-text="item.translations[$ctrl.currentLang] ? item.translations[$ctrl.currentLang] : item.name"  ' + ' md-min-length="$ctrl.minLength"  ' + " md-floating-label=\"{{'common.nationality'|translate}}\" " + ' md-dropdown-position="$ctrl.dropdownPosition" ' + ' md-clear-button="$ctrl.clearButton" ' + ' placeholder="$ctrl.placeholder">  ' + "<md-item-template>" + '<img ng-src="{{item.flag}}" class="ch-country-autocomplete-flag">' + '<strong md-highlight-text="ctrl.searchText" md-highlight-flags="^i">{{item.name}}</strong>' + '<span class="text-gray-light">,&nbsp;{{item.nativeName}}</span>' + "<md-divider></md-divider>" + "</md-item-template>" + '<div ng-messages="autocompleteForm.address.$error">' + '<div ng-message="required"><span translate="error.required"></span></div>' + "</div>" + "</md-autocomplete>" + "</ng-form>"
+        template: '<ng-form class="flex" name="autocompleteForm">' + "<md-autocomplete " + ' class="ch-contry-autocomplete" ' + ' md-input-name="country" ' + ' ng-disabled="$ctrl.isDisabled" ' + ' ng-required="$ctrl.isRequired" ' + ' md-no-cache="$ctrl.noCache" ' + ' md-selected-item="$ctrl.selectedItem" ' + ' md-search-text="$ctrl.searchText" ' + ' md-require-match="true" ' + ' md-match-case-insensitive="true" ' + ' md-selected-item-change="$ctrl.$selectedItemChange(item)"  ' + ' md-items="item in $ctrl.$querySearch($ctrl.searchText)" ' + ' md-item-text="item.translations[$ctrl.currentLang] ? item.translations[$ctrl.currentLang] : item.name"  ' + ' md-min-length="$ctrl.minLength"  ' + " md-floating-label=\"{{'common.nationality'|translate}}\" " + ' md-dropdown-position="$ctrl.dropdownPosition" ' + ' md-clear-button="$ctrl.clearButton" ' + ' placeholder="$ctrl.placeholder">  ' + "<md-item-template>" + '<img ng-src="{{item.flag}}" class="ch-country-autocomplete-flag">' + '<strong md-highlight-text="ctrl.searchText" md-highlight-flags="^i">{{item.name}}</strong>' + '<span class="text-gray-light">,&nbsp;{{item.nativeName}}</span>' + "<md-divider></md-divider>" + "</md-item-template>" + '<div ng-messages="autocompleteForm.country.$error">' + '<div ng-message="required"><span translate="error.required"></span></div>' + '<div ng-message="minlength"><span translate="error.field.generic.minlength" translate-values="{count: $ctrl.minLength}"></span></div>' + '<div ng-message="connection"><span translate="error.country.not.found"></span></div>' + '<div ng-message="md-require-match"><span translate="error.country.not.match"></span></div>' + "</div>" + "</md-autocomplete>" + "</ng-form>"
     });
     function CountryAutocompleteCtrl($scope, $mdMedia, AppOptions, $translate, CountryAPI) {
         var ctrl = this;
@@ -4809,11 +4889,21 @@ var colorPicker = function() {
             if (ctrl.ngModel) {
                 if (ctrl.ngModel.length > 2) {
                     CountryAPI.getByName(ctrl.ngModel).then(function(response) {
-                        ctrl.searchText = response.translations[ctrl.currentLang] ? response.translations[ctrl.currentLang] : response.name;
+                        var country = _.find(response, function(item) {
+                            return item.translations[ctrl.currentLang];
+                        });
+                        if (country) {
+                            ctrl.searchText = country.translations[ctrl.currentLang] ? country.translations[ctrl.currentLang] : country.name;
+                        }
                     });
                 } else if (ctrl.ngModel.length == 2) {
                     CountryAPI.getByIso(ctrl.ngModel).then(function(response) {
-                        ctrl.searchText = response.translations[ctrl.currentLang] ? response.translations[ctrl.currentLang] : response.name;
+                        var country = _.find(response, function(item) {
+                            return item.translations[ctrl.currentLang];
+                        });
+                        if (country) {
+                            ctrl.searchText = country.translations[ctrl.currentLang] ? country.translations[ctrl.currentLang] : country.name;
+                        }
                     });
                 } else {
                     ctrl.searchText = angular.copy(ctrl.ngModel);
@@ -4822,15 +4912,28 @@ var colorPicker = function() {
         };
         this.$querySearch = function(query) {
             return CountryAPI.getByName(query).then(function(response) {
+                ctrl.$setError(false);
                 return response;
+            }, function(error) {
+                ctrl.$setError(true);
+                return [];
             });
         };
         this.$selectedItemChange = function(country) {
             if (!country) {
-                ctrl.ngModel = null;
+                ctrl.ngModelCtrl.$setViewValue(null);
                 return;
             }
-            ctrl.ngModel = country.alpha2Code;
+            ctrl.ngModelCtrl.$setViewValue(country.alpha2Code);
+            ctrl.$setError(false);
+        };
+        this.$setError = function(bool) {
+            $scope.autocompleteForm.country.$setValidity("connection", !bool);
+            ctrl.$$error = bool;
+            if (bool) {
+                ctrl.ngModel = null;
+                ctrl.selectedItem = null;
+            }
         };
     }
 })();
@@ -6329,6 +6432,25 @@ var colorPicker = function() {
 
 (function() {
     "use strict";
+    MouseScollBtnCtrl.$inject = [ "Navigator" ];
+    angular.module("itaca.components").component("mouseScollBtn", {
+        bindings: {
+            anchor: "@"
+        },
+        controller: MouseScollBtnCtrl,
+        template: '<div class="mouse-scroll-btn">' + '<button class="no-bg no-border" ng-click="$ctrl.navigator.goToAnchor($ctrl.anchor)">' + '<span class="mouse"><span></span></span>' + "</button>" + '<p translate="common.scroll.me"></p>' + "</div>"
+    });
+    function MouseScollBtnCtrl(Navigator) {
+        var ctrl = this;
+        this.$onInit = function() {
+            ctrl.navigator = Navigator;
+            ctrl.anchor = ctrl.anchor || "body";
+        };
+    }
+})();
+
+(function() {
+    "use strict";
     CancellationPolicyCtrl.$inject = [ "$scope" ];
     angular.module("itaca.components").component("chNoShowPolicyInfo", {
         bindings: {
@@ -6503,25 +6625,40 @@ var colorPicker = function() {
 
 (function() {
     "use strict";
-    ParallaxCtrl.$inject = [ "$scope" ];
+    ParallaxCtrl.$inject = [ "$scope", "$mdMedia", "$element" ];
     angular.module("itaca.components").component("chParallax", {
         bindings: {
             imageUrl: "@",
             containerClass: "@",
             bgClass: "@",
-            hasBackdrop: "<?"
+            hasBackdrop: "<?",
+            height: "@"
         },
         controller: ParallaxCtrl,
         transclude: true,
         template: '<div class="ch-parallax {{$ctrl.containerClass}}">' + '<div class="ch-parallax-bg {{$ctrl.bgClass}}" ng-style="$ctrl.$$bgStyle"></div>' + '<div ng-show="$ctrl.hasBackdrop"  class="ch-parallax-backdrop"></div>' + '<div class="ch-parallax-content" ng-transclude></div>' + "</div>"
     });
-    function ParallaxCtrl($scope) {
+    function ParallaxCtrl($scope, $mdMedia, $element) {
         var ctrl = this;
         this.$onInit = function() {
             ctrl.$$bgStyle = {
                 "background-image": "url(" + ctrl.imageUrl + ")"
             };
             ctrl.hasBackdrop = _.isBoolean(ctrl.hasBackdrop) ? ctrl.hasBackdrop : false;
+            if (ctrl.height) {
+                var el = $element[0].querySelector(".ch-parallax");
+                var height = ctrl.height == "SCREEN" ? document.body.clientHeight + "px" : ctrl.height + "px";
+                if (!el) {
+                    return;
+                }
+                if ($mdMedia("gt-sm")) {
+                    el.style.height = height;
+                    el.style.minHeight = "";
+                } else {
+                    el.style.minHeight = height;
+                    el.style.height = "";
+                }
+            }
         };
     }
 })();
@@ -8294,7 +8431,7 @@ var colorPicker = function() {
             actions: "<?"
         },
         controller: ReviewActionsCtrl,
-        template: '<div flex ng-if="!$ctrl.noDefault && !$ctrl.hideAction">' + "<md-divider></<md-divider>" + '<div class="flex layout-row layout-wrap">' + '<div ng-repeat="action in $ctrl.actions" ng-if="!action.hide" ng-class="{\'flex-33\': $ctrl.actions.length <= 3, \'flex\': $ctrl.actions.length > 3}" layout>' + '<div class="flex layout-column">' + '<md-button class="no-margin {{btnClass}}" ng-disabled="action.disabled" ng-click="$ctrl.$actionClick($event, action)" aria-label="{{action.label}}">' + '<md-icon ng-if="action.icon" class="{{::action.icon}} material-icons"></md-icon>&nbsp;' + '<span ng-if="action.label" class="text-initial" ng-bind-html="action.label"></span>' + "</md-button>" + "</div>" + "<md-divider></<md-divider>" + "</div>" + "</div>" + "<md-divider></<md-divider>" + "</div>"
+        template: '<div flex ng-if="!$ctrl.noDefault && !$ctrl.hideAction">' + "<md-divider></<md-divider>" + '<div class="flex layout-row layout-wrap">' + '<div ng-repeat="action in $ctrl.actions" ng-if="!action.hide" ng-class="{\'flex-33\': $ctrl.actions.length <= 3, \'flex\': $ctrl.actions.length > 3}" layout>' + '<div class="flex layout-column">' + '<md-button class="no-margin {{::action.btnClass}}" ng-disabled="action.disabled" ng-click="$ctrl.$actionClick($event, action)" aria-label="{{action.label}}">' + '<md-icon ng-if="action.icon" class="{{::action.icon}} material-icons"></md-icon>&nbsp;' + '<span ng-if="action.label" class="text-initial" ng-bind-html="action.label"></span>' + "</md-button>" + "</div>" + "<md-divider></<md-divider>" + "</div>" + "</div>" + "<md-divider></<md-divider>" + "</div>"
     });
     function ReviewActionsCtrl($scope, Navigator) {
         var ctrl = this;
@@ -8327,7 +8464,7 @@ var colorPicker = function() {
             dateFormat: "@"
         },
         controller: ReviewContentCtrl,
-        template: "<div>" + '<div class="layout-row layout-wrap layout-align-center-center layout-padding">' + '<div class="layout-column flex-xs-100 flex-sm-100 flex-gt-sm">' + '<div ng-show="!$ctrl.review.showDetails">' + '<div class="md-margin ng-scope no-margin-top no-margin-x-sides">' + '<small><span translate="review.score.total"></span>:</small>' + '<md-progress-linear md-mode="determinate" value="{{($ctrl.review.score * 10)}}"></md-progress-linear>' + "</div>" + "</div>" + '<div ng-show="$ctrl.review.showDetails">' + '<div ng-repeat="feedback in $ctrl.review.feedbacks track by $index" class="md-margin ng-scope no-margin-top no-margin-x-sides"' + 'title="{{::feedback.value}}" ng-switch="feedback.type">' + '<small class="layout-row flex-100"><span class="flex" translate="{{::feedback.titleKey}}" translate-values="{{feedback.titleParams}}"></span><span ng-if="feedback.type == \'RANK\'">{{::feedback.value}}</span></small>' + '<md-progress-linear ng-switch-when="RANK" md-mode="determinate" value="{{(feedback.value * 10)}}"></md-progress-linear>' + "<div ng-switch-default>" + '<small ng-if="feedback.value">{{feedback.value}}</small>' + '<small ng-if="!feedback.value" class="text-gray-light text-lowercase"><em>({{::(\'review.comment.none\'|translate)}})</em></small>' + "</div>" + "</div>" + "</div>" + '<div class="text-right">' + '<md-button class="auto-height no-margin row-1 text-capitalize text-gray-light text-small" ng-click="$ctrl.review.showDetails = !$ctrl.review.showDetails" aria-label="show details">' + '<span ng-if="!$ctrl.review.showDetails" translate="common.show"></span>' + '<span ng-if="$ctrl.review.showDetails" translate="common.hide"></span>' + '&nbsp;<span class="text-lowercase" translate="common.details"></span>' + "<md-icon ng-class=\"$ctrl.review.showDetails ? 'mdi-chevron-up' : 'mdi-chevron-down'\" class=\"mdi md-18\"></md-icon>" + "</md-button>" + "</div>" + "</div>" + "<div class=\"flex-100 flex-gt-sm-25 layout-column\" ng-class=\"$ctrl.review.showDetails ? 'layout-align-center-center' : 'layout-align-start-center'\">" + '<small ng-if="$ctrl.review.showDetails" class="font-12 text-gray-light text-center" translate="review.score.total"></small>' + '<span class="md-headline">{{::$ctrl.review.score.toFixed(1)}}</span>' + '<span class="text-center" translate="{{$ctrl.review.label}}"></span>' + "</div>" + "</div>" + '<div class="overflow-hidden" ng-transclude></div>' + '<div ng-if="$ctrl.review.createdDate && $ctrl.showDate">' + "<md-divider></md-divider>" + '<div class="layout-padding text-gray-light">' + "<small>{{$ctrl.review.createdDate|utcDate:$ctrl.dateFormat}}</small>" + "</div>" + "</div>" + "</div>"
+        template: "<div>" + '<div class="layout-row layout-wrap layout-align-center-center layout-padding">' + '<div class="layout-column flex-xs-100 flex-sm-100 flex-gt-sm">' + '<div ng-show="!$ctrl.review.showDetails">' + '<div class="md-margin ng-scope no-margin-top no-margin-x-sides">' + '<small><span translate="review.score.total"></span>:</small>' + '<md-progress-linear md-mode="determinate" value="{{($ctrl.review.score * 10)}}"></md-progress-linear>' + "</div>" + "</div>" + '<div ng-show="$ctrl.review.showDetails">' + '<div ng-repeat="feedback in $ctrl.review.feedbacks track by $index" class="md-margin ng-scope no-margin-top no-margin-x-sides"' + 'title="{{::feedback.value}}" ng-switch="feedback.type">' + '<small class="layout-row flex-100"><span class="flex" translate="{{::feedback.titleKey}}" translate-values="{{feedback.titleParams}}"></span><span ng-if="feedback.type == \'RANK\'">{{feedback.value}}</span></small>' + '<md-progress-linear ng-switch-when="RANK" md-mode="determinate" value="{{(feedback.value * 10)}}"></md-progress-linear>' + "<div ng-switch-default>" + '<small ng-if="feedback.value">{{feedback.value}}</small>' + '<small ng-if="!feedback.value" class="text-gray-light text-lowercase"><em>({{::(\'review.comment.none\'|translate)}})</em></small>' + "</div>" + "</div>" + "</div>" + '<div class="text-right">' + '<md-button class="auto-height no-margin row-1 text-capitalize text-gray-light text-small" ng-click="$ctrl.review.showDetails = !$ctrl.review.showDetails" aria-label="show details">' + '<span ng-if="!$ctrl.review.showDetails" translate="common.show"></span>' + '<span ng-if="$ctrl.review.showDetails" translate="common.hide"></span>' + '&nbsp;<span class="text-lowercase" translate="common.details"></span>' + "<md-icon ng-class=\"$ctrl.review.showDetails ? 'mdi-chevron-up' : 'mdi-chevron-down'\" class=\"mdi md-18\"></md-icon>" + "</md-button>" + "</div>" + "</div>" + "<div class=\"flex-100 flex-gt-sm-25 layout-column\" ng-class=\"$ctrl.review.showDetails ? 'layout-align-center-center' : 'layout-align-start-center'\">" + '<small ng-if="$ctrl.review.showDetails" class="font-12 text-gray-light text-center" translate="review.score.total"></small>' + '<span class="md-headline">{{$ctrl.review.score.toFixed(1)}}</span>' + '<span class="text-center" translate="{{$ctrl.review.label}}"></span>' + "</div>" + "</div>" + '<div class="overflow-hidden" ng-transclude></div>' + '<div ng-if="$ctrl.review.createdDate && $ctrl.showDate">' + "<md-divider></md-divider>" + '<div class="layout-padding text-gray-light">' + "<small>{{$ctrl.review.createdDate|utcDate:$ctrl.dateFormat}}</small>" + "</div>" + "</div>" + "</div>"
     });
     function ReviewContentCtrl($scope) {
         var ctrl = this;
@@ -8977,6 +9114,7 @@ var colorPicker = function() {
         };
         this.$calculatePercentage = function() {
             ctrl.$$percentage = Math.round((ctrl.count || 0) * 100 / (ctrl.summary.totalReviews || 1));
+            ctrl.$$percentage = ctrl.$$percentage.toFixed(2);
         };
         this.$onDestroy = function() {};
     }
@@ -9270,7 +9408,7 @@ var colorPicker = function() {
         },
         bindings: {},
         controller: RoomHeaderCtrl,
-        template: '<div class="ch-room-header-content layout-column">' + "<ng-transclude></ng-transclude>" + '<div ng-if="$ctrl.chRoomCtrl.showInfoBtn" class="img-bottom-left-bar layout-row layout-wrap layout-align-center-center">' + '<md-button ng-class="{\'md-icon-button\' : $ctrl.$mdMedia(\'xs\')}" ng-click="$ctrl.toggleInfo()" aria-label="Open room information">' + '<div class="row-mini">' + '<md-icon class="mdi mdi-information-outline md-18 text-white"></md-icon>' + '<small class="hide-xs hide-sm" translate="common.information"></small>' + "</div>" + "</md-button>" + "</div>" + "<div ng-if=\"$ctrl.chRoomCtrl.showRateBtn\" ng-class=\"::{'img-right-bar': $ctrl.$mdMedia('gt-xs'), 'img-bottom-right-bar': $ctrl.$mdMedia('xs')}\" class=\"layout-row layout-align-center-center\">" + '<md-button ng-click="$ctrl.toggleRates()" aria-label="Open room prices">' + '<div layout class="row-mini text-left layout-padding no-padding">' + '<div layout="column">' + "<small>" + '<span class="text-initial" translate="common.from"></span>' + '<i ng-if="$ctrl.chRoomCtrl.bestRate.amount.initialAmount > 0 && $ctrl.chRoomCtrl.bestRate.amount.initialAmount > $ctrl.chRoomCtrl.bestRate.amount.finalAmount">&nbsp;<del>{{$ctrl.chRoomCtrl.bestRate.amount.initialAmount|chCurrency}}</del></i>' + "</small>" + '<span class="md-title"><strong>{{$ctrl.chRoomCtrl.bestRate.amount.finalAmount|chCurrency}}</strong></span>' + '<small ng-if="$ctrl.chRoomCtrl.nights > 0" class="text-lowercase">' + '<span translate="common.for"></span>&nbsp;{{$ctrl.chRoomCtrl.nights}}' + '<span ng-show="$ctrl.chRoomCtrl.nights == 1" translate="common.night"></span>' + '<span ng-show="$ctrl.chRoomCtrl.nights > 1" translate="common.nights"></span>' + "</small>" + "</div>" + '<div layout="column">' + "<md-icon class=\"mdi md-48 text-white\" ng-class=\"$ctrl.chRoomCtrl.showRoomRates ? 'mdi-chevron-up' : 'mdi-chevron-down animated infinite bounce'\"></md-icon>" + "</div>" + "<md-tooltip hide-xs>" + '<span ng-if="!$ctrl.chRoomCtrl.showRoomRates" translate="ratesheet.rates.all.view"></span>' + '<span ng-if="$ctrl.chRoomCtrl.showRoomRates" translate="ratesheet.rates.hide"></span>' + "</md-tooltip>" + "</div>" + "</md-button>" + "</div>" + "</div>",
+        template: '<div class="ch-room-header-content layout-column">' + "<ng-transclude></ng-transclude>" + '<div ng-if="$ctrl.chRoomCtrl.showInfoBtn" class="img-bottom-left-bar layout-row layout-wrap layout-align-center-center">' + '<md-button ng-class="{\'md-icon-button\' : $ctrl.$mdMedia(\'xs\')}" ng-click="$ctrl.toggleInfo()" aria-label="Open room information">' + '<div class="row-mini">' + '<md-icon class="mdi mdi-information-outline md-18 text-white"></md-icon>' + '<small class="hide-xs hide-sm" translate="common.information"></small>' + "</div>" + "</md-button>" + "</div>" + "<div ng-if=\"$ctrl.chRoomCtrl.showRateBtn\" ng-class=\"::{'img-right-bar': $ctrl.$mdMedia('gt-xs'), 'img-bottom-right-bar': $ctrl.$mdMedia('xs')}\" class=\"layout-row layout-align-center-center\">" + '<md-button ng-click="$ctrl.toggleRates()" aria-label="Open room prices" class="md-square-button">' + '<div layout class="row-mini text-left layout-padding no-padding">' + '<div layout="column">' + "<small>" + '<span class="text-initial" translate="common.from"></span>' + '<i ng-if="$ctrl.chRoomCtrl.bestRate.amount.initialAmount > 0 && $ctrl.chRoomCtrl.bestRate.amount.initialAmount > $ctrl.chRoomCtrl.bestRate.amount.finalAmount">&nbsp;<del>{{$ctrl.chRoomCtrl.bestRate.amount.initialAmount|chCurrency}}</del></i>' + "</small>" + '<span class="md-title"><strong>{{$ctrl.chRoomCtrl.bestRate.amount.finalAmount|chCurrency}}</strong></span>' + '<small ng-if="$ctrl.chRoomCtrl.nights > 0" class="text-lowercase">' + '<span translate="common.for"></span>&nbsp;{{$ctrl.chRoomCtrl.nights}}' + '<span ng-show="$ctrl.chRoomCtrl.nights == 1" translate="common.night"></span>' + '<span ng-show="$ctrl.chRoomCtrl.nights > 1" translate="common.nights"></span>' + "</small>" + "</div>" + '<div layout="column">' + "<md-icon class=\"mdi md-48 text-white\" ng-class=\"$ctrl.chRoomCtrl.showRoomRates ? 'mdi-chevron-up' : 'mdi-chevron-down animated infinite bounce'\"></md-icon>" + "</div>" + "<md-tooltip hide-xs>" + '<span ng-if="!$ctrl.chRoomCtrl.showRoomRates" translate="ratesheet.rates.all.view"></span>' + '<span ng-if="$ctrl.chRoomCtrl.showRoomRates" translate="ratesheet.rates.hide"></span>' + "</md-tooltip>" + "</div>" + "</md-button>" + "</div>" + "</div>",
         transclude: true
     });
     function RoomHeaderCtrl($scope, $mdMedia, Navigator) {
@@ -9993,30 +10131,103 @@ var colorPicker = function() {
 
 (function() {
     "use strict";
-    StatisticChartCtrl.$inject = [ "$scope", "StatisticsHelper" ];
-    angular.module("itaca.company").component("chStatisticChart", {
+    StatisticsChartLegendCtrl.$inject = [ "$scope", "$translate", "$mdMedia", "AppOptions" ];
+    angular.module("itaca.components").component("chStatisticsChartLegend", {
+        bindings: {
+            datasets: "<",
+            colors: "<?"
+        },
+        controller: StatisticsChartLegendCtrl,
+        template: '<div layout-align="center center" layout-padding-sm layout layout-wrap>' + '<div layout layout-align="start center" ng-repeat="(key, value) in $ctrl.$$legend">' + '<span class="chart-legend" ng-style="{\'background-color\': value.background}"></span>' + '<span ng-if="key == \'portal\'" ng-bind=" $ctrl.appOptions.about.name"></span>' + "<span ng-if=\"key != 'portal'\" translate=\"{{'channel.source.' + key }}\"></span>" + "<span>&nbsp;(" + "<span>{{value.percentage}}%</span>" + "<small ng-if=\"value.increase\" ng-class=\"value.increase > 0 ? 'text-success' : 'text-danger'\"> {{value.increase}}%</small>" + ")</span>" + "</div>" + "</div>"
+    });
+    function StatisticsChartLegendCtrl($scope, $translate, $mdMedia, AppOptions) {
+        var ctrl = this;
+        this.$onInit = function() {
+            ctrl.appOptions = AppOptions;
+            ctrl.$mdMedia = $mdMedia;
+            ctrl.$$legend = {};
+            ctrl.$initLegend();
+        };
+        this.$onChanges = function(changesObj) {
+            if (changesObj.datasets && !changesObj.datasets.isFirstChange()) {
+                ctrl.$initLegend();
+            }
+            if (changesObj.colors) {
+                ctrl.$updateColors();
+            }
+        };
+        this.$initLegend = function() {
+            if (_.isNil(ctrl.datasets) || _.isEmpty(ctrl.datasets)) {
+                return;
+            }
+            var _total = _.reduce(ctrl.datasets[0], function(sum, obj) {
+                return sum + obj;
+            }, 0);
+            ctrl.$$legend = _.reduce(ctrl.datasets, function(result, obj) {
+                _.forEach(obj, function(value, key) {
+                    result[key.toLowerCase()] = result[key.toLowerCase()] || {};
+                    var el = result[key.toLowerCase()];
+                    el.values = el.values || [];
+                    el.values.push(value);
+                    el.percentage = value / _total * 100;
+                    el.percentage = el.percentage.toFixed(2);
+                    if (el.values.length == 2) {
+                        el.increase = (el.values[0] - el.values[1]) / el.values[1] * 100;
+                        el.increase = el.increase.toFixed(2);
+                    }
+                });
+                return result;
+            }, {});
+        };
+        this.$updateColors = function() {
+            if (_.isNil(ctrl.colors) || _.isEmpty(ctrl.colors)) {
+                return;
+            }
+            if (_.isNil(ctrl.$$legend) || _.isEmpty(ctrl.$$legend)) {
+                return;
+            }
+            _.forEach(ctrl.$$legend, function(value, key) {
+                value.background = ctrl.colors[key.toUpperCase()];
+            });
+        };
+    }
+})();
+
+(function() {
+    "use strict";
+    StatisticsChartCtrl.$inject = [ "$scope", "StatisticsHelper", "ColorsUtils" ];
+    angular.module("itaca.components").component("chStatisticsChart", {
         bindings: {
             type: "@",
-            values: "<",
+            datasets: "<",
+            tooltips: "<?",
+            extra: "<?",
             colors: "<?",
             onHover: "&?",
             onClick: "&?"
         },
-        controller: StatisticChartCtrl,
-        template: '<ch-chart type="$ctrl.$$chart.type" data="$ctrl.$$chart.data" options="$ctrl.$$chart.options"></ch-chart>'
+        controller: StatisticsChartCtrl,
+        template: '<div layout="column" flex="100">' + '<ch-chart class="display-block flex" ng-class="{\'auto-height\': $ctrl.extra.noData}" type="$ctrl.$$chart.type" data="$ctrl.$$chart.data" options="$ctrl.$$chart.options"></ch-chart>' + '<div ng-if="$ctrl.$$loading || (!$ctrl.$$loading && $ctrl.extra.noData)" class="overlay text-center" layout layout-align="center center">' + '<div ng-if="$ctrl.$$loading && !$ctrl.ctrl.datasets.length">' + '<md-progress-circular class="md-primary ch-progress" md-mode="indeterminate" md-diameter="32"></md-progress-circular>' + "</div>" + '<div ng-if="!$ctrl.$$loading && $ctrl.extra.noData">' + '<span translate="statistics.statistics.no.data">' + "</div>" + "</div>" + "</div>" + '<div layout="column" flex="100" ng-if="$ctrl.$$chart.type == \'doughnut\' || $ctrl.$$chart.type == \'pie\'">' + '<ch-statistics-chart-legend datasets="$ctrl.datasets" colors="$ctrl.colors"></ch-statistics-chart-legend>' + "</div>"
     });
-    function StatisticChartCtrl($scope, StatisticsHelper) {
+    function StatisticsChartCtrl($scope, StatisticsHelper, ColorsUtils) {
         var ctrl = this;
         this.$onInit = function() {
-            ctrl.type = ctrl.type || "ANNUAL_RESERVATIONS_AMOUNT_TREND";
+            ctrl.type = ctrl.type || "RESERVATIONS_AMOUNT_TREND";
             ctrl.$$chart = {};
+            ctrl.$$loading = true;
             ctrl.$createChart();
         };
         this.$onChanges = function(changesObj) {
             if (changesObj.type && !changesObj.type.isFirstChange()) {
                 ctrl.$createChart();
             }
-            if (changesObj.values && !changesObj.values.isFirstChange()) {
+            if (changesObj.datasets && !changesObj.datasets.isFirstChange()) {
+                ctrl.$createChart();
+            }
+            if (changesObj.tooltips && !changesObj.tooltips.isFirstChange()) {
+                ctrl.$createChart();
+            }
+            if (changesObj.extra && !changesObj.extra.isFirstChange()) {
                 ctrl.$createChart();
             }
             if (changesObj.onHover && !changesObj.onHover.isFirstChange()) {
@@ -10025,13 +10236,17 @@ var colorPicker = function() {
             if (changesObj.onClick && !changesObj.onClick.isFirstChange()) {
                 ctrl.$updateEvent();
             }
-            if (changesObj.colors && !changesObj.colors.isFirstChange()) {
+            if (changesObj.colors) {
                 ctrl.$updateColors();
             }
         };
         this.$createChart = function() {
-            ctrl.$$chart = StatisticsHelper.createChartData(ctrl.type, ctrl.values, ctrl.onHover, ctrl.onClick);
+            if (_.isNil(ctrl.type) || _.isNil(ctrl.datasets)) {
+                return;
+            }
+            ctrl.$$chart = StatisticsHelper.createChartData(ctrl.type, ctrl.datasets, ctrl.tooltips, ctrl.extra, ctrl.onHover, ctrl.onClick);
             ctrl.$updateColors();
+            ctrl.$$loading = false;
         };
         this.$updateEvent = function() {
             if (!_.isNil(ctrl.$$chart) && !_.isNil(ctrl.$$chart.options)) {
@@ -10040,58 +10255,168 @@ var colorPicker = function() {
             }
             ctrl.$updateColors();
         };
-        this.$updateColors = function() {};
+        this.$updateColors = function() {
+            if (_.isNil(ctrl.colors) || _.isEmpty(ctrl.colors)) {
+                return;
+            }
+            if (_.isNil(ctrl.datasets) || _.isEmpty(ctrl.datasets)) {
+                return;
+            }
+            var backgroundColor = [];
+            var borderColor = [];
+            _.forEach(ctrl.datasets[0], function(value, key) {
+                backgroundColor.push(ctrl.colors[key] || "#3f51b5");
+                borderColor.push(ctrl.colors[key] || "#3f51b5");
+            });
+            _.forEach(ctrl.$$chart.data.datasets, function(dts) {
+                dts.backgroundColor = backgroundColor;
+                dts.borderColor = ctrl.$$chart.type != "doughnut" && ctrl.$$chart.type != "pie" ? borderColor : "#FFF";
+            });
+            ctrl.$$chart.data.$$updateChart = true;
+        };
     }
 })();
 
 (function() {
     "use strict";
-    StatisticsHelper.$inject = [ "$translate" ];
+    StatisticsHelper.$inject = [ "$translate", "$mdMedia", "AppOptions", "ColorsUtils", "chValueFilter", "NumberUtils" ];
     angular.module("itaca.components").factory("StatisticsHelper", StatisticsHelper);
-    function StatisticsHelper($translate) {
+    function StatisticsHelper($translate, $mdMedia, AppOptions, ColorsUtils, chValueFilter, NumberUtils) {
         var $$service = {};
-        $$service.createChartData = function(type, values, onHoverEv, onClickEv) {
-            var chartData = $$service.$createDefaultChartData(values, onHoverEv, onClickEv);
+        $$service.createChartData = function(type, datasets, tooltips, extra, onHoverEv, onClickEv) {
+            var chartData = $$service.$createDefaultChartData(datasets, tooltips, extra, onHoverEv, onClickEv);
             switch (type) {
-              case "ANNUAL_RESERVATIONS_AMOUNT_TREND":
-                chartData.type = "line";
-                _.forEach(chartData.data.datasets, function(d) {
-                    d.label = $translate.instant("reservations.reservations");
+              case "RESERVATIONS_AMOUNT_TREND":
+                chartData.type = "bar";
+                _.forEach(chartData.data.datasets, function(data) {
+                    data.backgroundColor = ColorsUtils.hex2rgba("#92278f", 80);
+                    data.borderColor = ColorsUtils.hex2rgba("#92278f");
+                    data.fill = true;
                 });
-                chartData.options.scales.yAxes.scaleLabel.labelString = $translate.instant("reservations.reservations");
-                chartData.options.scales.yAxes.ticks = {
-                    callback: function(value, index, values) {
-                        return value + "€";
+                chartData.options.scales.yAxes[0].ticks.callback = function(value, index, values) {
+                    return NumberUtils.formatter(value, 2);
+                };
+                chartData.options.scales.yAxes[0].scaleLabel = {
+                    display: true,
+                    labelString: "Euro €"
+                };
+                chartData.options.scales.xAxes[0].ticks.callback = function(value, index, values) {
+                    if (!$mdMedia("gt-sm")) {
+                        return index % 2 === 0 ? moment.unix(value).format("MMM YY") : "";
+                    }
+                    return moment.unix(value).format("MMM YY");
+                };
+                chartData.options.tooltips.callbacks.label = function(tooltipItem, data) {
+                    return $translate.instant("reservations.reservations");
+                }, chartData.options.legend.display = false;
+                break;
+
+              case "RESERVATIONS_SOURCE_TREND":
+                chartData.type = "doughnut";
+                _.forEach(chartData.data.datasets, function(ds) {
+                    ds.backgroundColor = ColorsUtils.hex2rgba("#92278f");
+                    ds.borderColor = "#FFF";
+                    ds.borderWidth = 4;
+                    ds.hoverBorderWidth = 0;
+                    ds.hoverBorderColor = "#FFF";
+                });
+                var tp = chartData.options.tooltips;
+                tp.callbacks = {
+                    title: function(tp, data) {
+                        return data.labels[tp[0].index] == "PORTAL" ? AppOptions.about.name : $translate.instant("channel.source." + data.labels[tp[0].index].toLowerCase());
+                    },
+                    label: function(tooltipItem, data) {
+                        return " ";
+                    },
+                    footer: function(tp, data) {
+                        var label = [];
+                        var tooltip = _.find(tooltips[0], function(value, key) {
+                            return key == data.labels[tp[0].index];
+                        });
+                        if (tooltip) {
+                            _.forEach(tooltip, function(obj, key) {
+                                label.push($translate.instant(obj.key) + ": " + chValueFilter(obj.value));
+                            });
+                        }
+                        return label;
                     }
                 };
-                chartData.options.scales.xAxes.scaleLabel.labelString = moment(chartData.data.labels[0]).format("YYYY");
-                chartData.options.scales.xAxes.ticks = {
-                    callback: function(value, index, values) {
-                        return moment(value).format("MMMM");
+                chartData.options = {
+                    layout: {
+                        padding: {
+                            left: 10,
+                            right: 10,
+                            top: 10,
+                            bottom: 10
+                        }
+                    },
+                    animationSteps: 100,
+                    animationEasing: "easeOutBounce",
+                    responsive: true,
+                    legend: false,
+                    tooltips: tp,
+                    animation: {
+                        animateScale: true,
+                        animateRotate: true
+                    },
+                    cutoutPercentage: 60,
+                    scales: {
+                        xAxes: [ {
+                            display: false,
+                            scaleLabel: {
+                                display: true
+                            }
+                        } ]
                     }
                 };
                 break;
 
-              case "ANNUAL_RESERVATIONS_COUNT_TREND":
-                chartData.type = "doughnut";
-
-              case "ANNUAL_REVIEWS_COUNT_TREND":
-                chartData.type = "bar";
-                chartData.options.scales.xAxes.ticks = {
-                    beginAtZero: true
+              case "REVIEWS_COUNT_TREND":
+                chartData.type = "line";
+                if (extra && extra.benchmarkValue) {
+                    chartData.options.horizontalLine = [ {
+                        y: extra.benchmarkValue,
+                        style: "#444",
+                        text: $translate.instant("statistics.statistic.benchmark")
+                    } ];
+                }
+                _.forEach(chartData.data.datasets, function(ds) {
+                    ds.backgroundColor = ColorsUtils.hex2rgba("#92278f", 60);
+                    ds.borderColor = ColorsUtils.hex2rgba("#92278f");
+                    ds.pointBackgroundColor = ColorsUtils.hex2rgba("#92278f");
+                    ds.pointRadius = 2;
+                    ds.pointHoverRadius = 4;
+                    ds.lineTension = 0;
+                });
+                chartData.options.scales.xAxes[0].ticks.callback = function(value, index, values) {
+                    if (!$mdMedia("gt-sm")) {
+                        return index % 2 === 0 ? moment.unix(value).format("MMM YY") : "";
+                    }
+                    return moment.unix(value).format("MMM YY");
+                };
+                chartData.options.legend.display = false;
+                chartData.options.scales.yAxes[0].ticks.min = 4;
+                chartData.options.scales.yAxes[0].ticks.max = 10;
+                chartData.options.tooltips.callbacks.label = function(tooltipItem, data) {
+                    return $translate.instant("reviews.reviews");
+                };
+                chartData.options.scales.yAxes[0].scaleLabel = {
+                    display: true,
+                    labelString: $translate.instant("common.opinion")
                 };
                 break;
             }
             return chartData;
         };
-        $$service.$createDefaultChartData = function(values, onHoverEv, onClickEv) {
+        $$service.$createDefaultChartData = function(datasets, tooltips, extra, onHoverEv, onClickEv) {
             var chartData = {
-                type: "line",
                 data: {
                     labels: [],
                     datasets: []
                 },
                 options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
                     onHover: angular.isFunction(onHoverEv) ? onHoverEv : null,
                     onClick: angular.isFunction(onClickEv) ? onClickEv : null,
                     scales: {
@@ -10099,27 +10424,91 @@ var colorPicker = function() {
                             display: true,
                             scaleLabel: {
                                 display: true
+                            },
+                            ticks: {
+                                beginAtZero: true
+                            },
+                            gridLines: {
+                                tickMarkLength: 10
                             }
                         } ],
                         xAxes: [ {
                             display: true,
                             scaleLabel: {
                                 display: true
+                            },
+                            ticks: {
+                                beginAtZero: true
+                            },
+                            gridLines: {
+                                tickMarkLength: 10
                             }
                         } ]
+                    },
+                    legend: {},
+                    hover: {
+                        mode: "index",
+                        intersect: true
+                    },
+                    animation: {
+                        animateScale: true,
+                        animateRotate: true
+                    },
+                    tooltips: {
+                        backgroundColor: "#FFF",
+                        borderColor: "rgba(0,0,0, .7)",
+                        titleFontColor: "#000",
+                        bodyFontColor: "#000",
+                        footerFontColor: "#000"
                     }
                 }
             };
-            if (_.isPLainObject(values)) {
-                chartData.data.labels.push(_.keys(values));
+            if (_.isArray(tooltips) && !_.isEmpty(tooltips)) {
+                chartData.options.tooltips = {
+                    mode: "index",
+                    callbacks: {
+                        title: function(tp, data) {
+                            return _.capitalize(moment.unix(data.labels[tp[0].index]).format("MMMM YYYY"));
+                        },
+                        label: function(tooltipItem, data) {
+                            return "";
+                        },
+                        footer: function(tp, data) {
+                            var label = [];
+                            var tooltip = _.find(tooltips[0], function(value, key) {
+                                return key == data.labels[tp[0].index];
+                            });
+                            if (tooltip) {
+                                _.forEach(tooltip, function(obj, key) {
+                                    label.push($translate.instant(obj.key) + ": " + chValueFilter(obj.value));
+                                });
+                            }
+                            return label;
+                        }
+                    },
+                    backgroundColor: "#FFF",
+                    borderColor: "#666",
+                    borderWidth: 1,
+                    titleFontColor: "#000",
+                    bodyFontColor: "#222",
+                    footerFontColor: "#444"
+                };
+            }
+            var backgroundColor = ColorsUtils.hex2rgba("#92278f");
+            if (_.isPlainObject(datasets)) {
+                chartData.data.labels = Object.keys(datasets);
                 chartData.data.datasets.push({
-                    data: _.values(values)
+                    data: Object.values(datasets),
+                    backgroundColor: backgroundColor,
+                    fill: true
                 });
-            } else if (_.isArray(values)) {
-                _.forEach(values, function(v) {
-                    chartData.data.labels.push(_.keys(v));
+            } else if (_.isArray(datasets)) {
+                _.forEach(datasets, function(v) {
+                    chartData.data.labels = Object.keys(v);
                     chartData.data.datasets.push({
-                        data: _.values(v)
+                        data: Object.values(v),
+                        backgroundColor: backgroundColor,
+                        fill: true
                     });
                 });
                 chartData.data.labels = _.uniq(chartData.data.labels);
@@ -11144,7 +11533,7 @@ angular.module("itaca.components").run([ "$templateCache", function($templateCac
     $templateCache.put("/tpls/counter/counter.tpl", '<div class="layout-column {{$ctrl.wrapperClass}}" ng-class="{\'flex\': $ctrl.flexible}" ng-style="{\'display\': $ctrl.flexible ? \'inherit\' : \'inline-block\'}" style="min-width: 150px"><div class="{{$ctrl.labelContClass}} layout-padding-sm no-padding"><div ng-if="$ctrl.label && ($ctrl.labelDirection == \'left\' || $ctrl.labelDirection == \'top\')" class="layout-row layout-align-center-center {{$ctrl.labelClass}}"><span ng-bind-html="$ctrl.label"></span></div><div class="layout-row layout-align-center-center flex"><md-button class="{{$ctrl.btnClass}} no-margin" ng-class="!$ctrl.$$decreaseDisabled ? $ctrl.btnActiveClass : \'\'" aria-label="Decrease" ng-disabled="$ctrl.ngDisabled || $ctrl.minusDisabled || ($ctrl.min && $ctrl.count <= $ctrl.min)" ng-click="$ctrl.$decrease($event)"><md-icon class="material-icons mdi mdi-minus md-18 {{$ctrl.iconClass}}" ng-class="!$ctrl.$$decreaseDisabled ? $ctrl.iconActiveClass : \'\'"></md-icon></md-button><div class="layout-column layout-padding layout-align-center-center" ng-class="{\'flex\': $ctrl.flexible, \'text-gray-light\': $ctrl.ngDisabled}"><span class="{{$ctrl.countClass}} border-gray-lighter border-radius">{{$ctrl.count || 0}}</span></div><md-button class="{{$ctrl.btnClass}} no-margin" ng-class="!$ctrl.$$increaseDisabled ? $ctrl.btnActiveClass : \'\'" aria-label="Increase" ng-disabled="$ctrl.ngDisabled || $ctrl.plusDisabled || ($ctrl.max && $ctrl.count >= $ctrl.max)" ng-click="$ctrl.$increase($event)"><md-icon class="material-icons mdi mdi-plus md-18 {{$ctrl.iconClass}}" ng-class="!$ctrl.$$increaseDisabled ? $ctrl.iconActiveClass : \'\'"></md-icon></md-button></div><div ng-if="$ctrl.label && ($ctrl.labelDirection == \'right\' || $ctrl.labelDirection == \'bottom\')" class="layout-row layout-align-center-center {{$ctrl.labelClass}}"><span ng-bind-html="$ctrl.label"></span></div></div><div class="no-padding"><md-input-container md-no-float class="md-block minimal-input no-margin no-padding"><input ng-if="$ctrl.fieldName" type="hidden" name="{{$ctrl.fieldName}}" step="{{$ctrl.step}}" ng-min="$ctrl.min" ng-max="$ctrl.max"><small ng-transclude class="no-padding text-center"></small></md-input-container></div></div>');
     $templateCache.put("/tpls/date-picker/date-picker-trigger.tpl", '<ng-form name="chDatePickerTriggerForm"><md-button class="ch-date-picker-button flex minimal-button text-lowercase text-center {{$ctrl.buttonClass}}" ng-click="$ctrl.$openPanel($event)" aria-label="Change date" ng-disabled="$ctrl.ngDisabled" ng-readonly="$ctrl.ngReadonly"><div class="{{$ctrl.wrapperClass}} layout-align-center-center" ng-class="$ctrl.labelPosition == \'top\' ? \'layout-column\' : \'layout-row\'"><div ng-if="!$ctrl.hideLabel" class="no-padding row-mini"><small class="row-mini text-initial" ng-bind-html="$ctrl.label"></small></div><div class="layout-row layout-padding-sm layout-align-center-center"><span class="no-padding"><md-icon class="{{$ctrl.iconClass || \'mdi mdi-calendar\'}}" ng-class="{\'md-32\': $ctrl.size == \'big\', \'md-24\': $ctrl.size == \'medium\', \'md-18\': $ctrl.size == \'small\'}"></md-icon></span><span ng-if="!$ctrl.hideValue" ng-class="{\'md-display-1\': $ctrl.size == \'big\', \'md-title\': $ctrl.size == \'medium\', \'md-subhead\': $ctrl.size == \'small\'}" ng-bind="$ctrl.ngModel|date:\'dd\'"></span><span ng-if="!$ctrl.hideValue" class="layout-column" ng-class="$ctrl.size == \'small\' ? \'text-small row-1\' : \'row-mini\'"><span class="text-lowercase" ng-bind="$ctrl.ngModel|date:\'MMM\'"></span><span ng-bind="$ctrl.ngModel|date:\'yyyy\'"></span></span></div></div><md-input-container class="md-block no-margin no-padding"><input type="hidden" style="visibility: hidden" name="date" ng-model="$ctrl.ngModel" ng-required="$ctrl.ngRequired"><div ng-messages="chDatePickerTriggerForm.date.$error" ng-show="chDatePickerTriggerForm.$submitted || chDatePickerTriggerForm.date.$touched || chDatePickerTriggerForm.date.$dirty"><div ng-repeat="errorObj in $ctrl.errorMessages" ng-message="{{errorObj.error}}" class="no-padding"><span ng-if="errorObj.message" ng-bind="{{errorObj.message}}"></span><span ng-if="!errorObj.message && errorObj.messageKey" translate="{{errorObj.messageKey}}" translate-values="errorObj.messageKeyParams"></span></div></div></md-input-container><md-tooltip ng-if="$ctrl.tooltip"><span ng-bind="$ctrl.tooltip"></span></md-tooltip></md-button></ng-form>');
     $templateCache.put("/tpls/date-picker/date-picker.tpl", '<div><div><md-calendar class="no-today-selection" ng-model="$ctrl.data.current" ng-model-options="$ctrl.modelOptions" md-min-date="$ctrl.data.min" md-max-date="$ctrl.data.max"></md-calendar></div><div ng-if="$ctrl.hasConfirm" layout class="no-padding"><div flex></div><md-button class="no-margin-top no-margin-bottom" ng-click="$ctrl.cancel()" aria-label="Cancel"><small translate="common.cancel"></small></md-button><md-button class="md-primary no-margin-top no-margin-bottom" ng-click="$ctrl.confirm()" aria-label="Confirm"><small translate="common.confirm"></small></md-button></div></div>');
-    $templateCache.put("/tpls/date-range-picker/date-range-picker-trigger.tpl", '<ng-form name="chDateRangePickerTriggerForm"><md-button class="ch-date-range-picker-button minimal-button flex text-lowercase text-center {{$ctrl.buttonClass}}" ng-click="$ctrl.$openPanel($event)" aria-label="Change period" ng-disabled="$ctrl.ngDisabled"><div class="{{$ctrl.wrapperClass}}"><div ng-if="$ctrl.label || ($ctrl.placeholder && !$ctrl.start && !$ctrl.end)" class="layout-row layout-align-center-center" ng-class="{\'no-padding-top\': $ctrl.$mdMedia(\'gt-xs\'), \'md-padding\': !$ctrl.$mdMedia(\'gt-xs\') || $ctrl.start || $ctrl.end}"><div class="{{$ctrl.labelClass}} text-initial text-wrap row-1" ng-class="{\'text-small\': $ctrl.start || $ctrl.end}"><span ng-if="$ctrl.placeholder && !$ctrl.start && !$ctrl.end" ng-bind-html="$ctrl.placeholder"></span><span ng-if="$ctrl.label && (($ctrl.start || $ctrl.end) || !$ctrl.placeholder)" ng-bind-html="$ctrl.label"></span></div></div><div ng-if="!$ctrl.largeTemplate"><div ng-show="$ctrl.start || $ctrl.end" class="layout layout-wrap layout-align-center-center row-mini"><span><span translate="date.from.abbr"></span>&nbsp;<span class="md-subhead"><strong>{{$ctrl.start|date:"shortDate":$ctrl.$$timezone}}</strong></span>&nbsp;</span><span><span translate="date.to.abbr"></span>&nbsp;<span class="md-subhead"><strong>{{$ctrl.end|date:"shortDate":$ctrl.$$timezone}}</strong></span></span><span ng-if="$ctrl.showDiff && $ctrl.$$diff" class="{{$ctrl.labelClass}} text-small no-padding no-margin text-lowercase">&nbsp;(<span ng-bind="$ctrl.$$diff"></span>&nbsp;<span ng-show="$ctrl.$$diff == 1"><span ng-if="!$ctrl.$$diffLabelSingular" translate="date.day"></span><span ng-if="$ctrl.$$diffLabelSingular" ng-bind="$ctrl.$$diffLabelSingular"></span>)</span><span ng-show="$ctrl.$$diff > 1"><span ng-if="!$ctrl.$$diffLabelPlural" translate="date.days"></span><span ng-if="$ctrl.$$diffLabelPlural" ng-bind="$ctrl.$$diffLabelPlural"></span>)</span></span></div></div><div ng-if="$ctrl.largeTemplate" class="layout-row layout-wrap layout-align-center-center layout-padding-sm"><div class="layout-column layout-padding-sm flex-45 row-1"><span class="no-padding-bottom row-1 text-initial" ng-bind-html="$ctrl.startLabel"></span><div class="layout-align-center-center layout-row"><span><md-icon class="mdi mdi-calendar md-32"></md-icon></span><span ng-if="$ctrl.start" class="md-display-1 layout-padding">{{$ctrl.start|date:"dd":$ctrl.$$timezone}}</span><span ng-if="$ctrl.start" class="layout-column row-mini"><span>{{$ctrl.start|date:"MMM":$ctrl.$$timezone}}</span><span>{{$ctrl.start|date:"yyyy":$ctrl.$$timezone}}</span></span></div></div><div class="layout-column flex text-bold">-</div><div class="layout-column layout-padding-sm flex-45 row-1"><span class="no-padding-bottom row-1 text-initial" ng-bind-html="$ctrl.endLabel"></span><div class="layout-align-center-center layout-row"><span><md-icon class="mdi mdi-calendar md-32"></md-icon></span><span ng-if="$ctrl.end" class="md-display-1 layout-padding">{{$ctrl.end|date:"dd":$ctrl.$$timezone}}</span><span ng-if="$ctrl.end" class="layout-column row-mini"><span>{{$ctrl.end|date:"MMM":$ctrl.$$timezone}}</span><span>{{$ctrl.end|date:"yyyy":$ctrl.$$timezone}}</span></span></div></div><div ng-if="$ctrl.showDiff && $ctrl.$$diff" class="layout-column flex-100 row-1"><span class="{{$ctrl.labelClass}} text-small no-padding no-margin text-lowercase">&nbsp;(<span ng-bind="$ctrl.$$diff">&nbsp;</span><span ng-show="$ctrl.$$diff == 1"><span ng-if="!$ctrl.$$diffLabelSingular" translate="date.day"></span><span ng-if="$ctrl.$$diffLabelSingular" ng-bind="$ctrl.$$diffLabelSingular"></span>)</span><span ng-show="$ctrl.$$diff > 1"><span ng-if="!$ctrl.$$diffLabelPlural" translate="date.days"></span><span ng-if="$ctrl.$$diffLabelPlural" ng-bind="$ctrl.$$diffLabelPlural"></span>)</span></span></div></div></div><md-input-container class="md-block no-margin no-padding"><input type="hidden" style="visibility: hidden" name="{{$ctrl.startInputName}}" ng-model="$ctrl.start" ng-required="$ctrl.ngRequired"><div ng-messages="chDateRangePickerTriggerForm[$ctrl.startInputName].$error" class="font-12 text-center text-danger"><div ng-repeat="errorObj in $ctrl.startErrorMessages" ng-message="{{errorObj.error}}" class="no-padding"><span ng-if="errorObj.message" ng-bind="{{errorObj.message}}"></span><span ng-if="!errorObj.message && errorObj.messageKey" translate="{{errorObj.messageKey}}" translate-values="errorObj.messageKeyParams"></span></div></div></md-input-container><md-input-container class="md-block no-margin no-padding"><input type="hidden" style="visibility: hidden" name="{{$ctrl.endInputName}}" ng-model="$ctrl.end" ng-required="$ctrl.ngRequired"><div ng-messages="chDateRangePickerTriggerForm[$ctrl.endInputName].$error" class="font-12 text-center text-danger" ng-show="!chDateRangePickerTriggerForm[$ctrl.startInputName].$invalid && (chDateRangePickerTriggerForm[$ctrl.endInputName].$dirty || chDateRangePickerTriggerForm[$ctrl.endInputName].$touched)"><div ng-repeat="errorObj in $ctrl.endErrorMessages" ng-message="{{errorObj.error}}" class="no-padding"><span ng-if="errorObj.message" ng-bind="{{errorObj.message}}"></span><span ng-if="!errorObj.message && errorObj.messageKey" translate="{{errorObj.messageKey}}" translate-values="errorObj.messageKeyParams"></span></div></div></md-input-container></md-button></ng-form>');
+    $templateCache.put("/tpls/date-range-picker/date-range-picker-trigger.tpl", '<ng-form name="chDateRangePickerTriggerForm" layout="column" flex="100"><md-button class="ch-date-range-picker-button minimal-button flex text-lowercase text-center {{$ctrl.buttonClass}}" ng-click="$ctrl.$openPanel($event)" aria-label="Change period" ng-disabled="$ctrl.ngDisabled"><div class="{{$ctrl.wrapperClass}}"><div ng-if="$ctrl.label || ($ctrl.placeholder && !$ctrl.start && !$ctrl.end)" class="layout-row layout-align-center-center" ng-class="{\'no-padding-top\': $ctrl.$mdMedia(\'gt-xs\'), \'md-padding\': !$ctrl.$mdMedia(\'gt-xs\') || $ctrl.start || $ctrl.end}"><div class="{{$ctrl.labelClass}} text-initial text-wrap row-1" ng-class="{\'text-small\': $ctrl.start || $ctrl.end}"><span ng-if="$ctrl.placeholder && !$ctrl.start && !$ctrl.end" ng-bind-html="$ctrl.placeholder"></span><span ng-if="$ctrl.label && (($ctrl.start || $ctrl.end) || !$ctrl.placeholder)" ng-bind-html="$ctrl.label"></span></div></div><div ng-if="!$ctrl.largeTemplate"><div ng-show="$ctrl.start || $ctrl.end" class="layout layout-wrap layout-align-center-center row-mini"><span><span translate="date.from.abbr"></span>&nbsp;<span class="md-subhead"><strong>{{$ctrl.start|date:"shortDate":$ctrl.$$timezone}}</strong></span>&nbsp;</span><span><span translate="date.to.abbr"></span>&nbsp;<span class="md-subhead"><strong>{{$ctrl.end|date:"shortDate":$ctrl.$$timezone}}</strong></span></span><span ng-if="$ctrl.showDiff && $ctrl.$$diff" class="{{$ctrl.labelClass}} text-small no-padding no-margin text-lowercase">&nbsp;(<span ng-bind="$ctrl.$$diff"></span>&nbsp;<span ng-show="$ctrl.$$diff == 1"><span ng-if="!$ctrl.$$diffLabelSingular" translate="date.day"></span><span ng-if="$ctrl.$$diffLabelSingular" ng-bind="$ctrl.$$diffLabelSingular"></span>)</span><span ng-show="$ctrl.$$diff > 1"><span ng-if="!$ctrl.$$diffLabelPlural" translate="date.days"></span><span ng-if="$ctrl.$$diffLabelPlural" ng-bind="$ctrl.$$diffLabelPlural"></span>)</span></span></div></div><div ng-if="$ctrl.largeTemplate" class="layout-row layout-wrap layout-align-center-center layout-padding-sm"><div class="layout-column layout-padding-sm flex-45 row-1"><span class="no-padding-bottom row-1 text-initial" ng-bind-html="$ctrl.startLabel"></span><div class="layout-align-center-center layout-row"><span><md-icon class="mdi mdi-calendar md-32"></md-icon></span><span ng-if="$ctrl.start" class="md-display-1 layout-padding">{{$ctrl.start|date:"dd":$ctrl.$$timezone}}</span><span ng-if="$ctrl.start" class="layout-column row-mini"><span>{{$ctrl.start|date:"MMM":$ctrl.$$timezone}}</span><span>{{$ctrl.start|date:"yyyy":$ctrl.$$timezone}}</span></span></div></div><div class="layout-column flex text-bold">-</div><div class="layout-column layout-padding-sm flex-45 row-1"><span class="no-padding-bottom row-1 text-initial" ng-bind-html="$ctrl.endLabel"></span><div class="layout-align-center-center layout-row"><span><md-icon class="mdi mdi-calendar md-32"></md-icon></span><span ng-if="$ctrl.end" class="md-display-1 layout-padding">{{$ctrl.end|date:"dd":$ctrl.$$timezone}}</span><span ng-if="$ctrl.end" class="layout-column row-mini"><span>{{$ctrl.end|date:"MMM":$ctrl.$$timezone}}</span><span>{{$ctrl.end|date:"yyyy":$ctrl.$$timezone}}</span></span></div></div><div ng-if="$ctrl.showDiff && $ctrl.$$diff" class="layout-column flex-100 row-1"><span class="{{$ctrl.labelClass}} text-small no-padding no-margin text-lowercase">&nbsp;(<span ng-bind="$ctrl.$$diff">&nbsp;</span><span ng-show="$ctrl.$$diff == 1"><span ng-if="!$ctrl.$$diffLabelSingular" translate="date.day"></span><span ng-if="$ctrl.$$diffLabelSingular" ng-bind="$ctrl.$$diffLabelSingular"></span>)</span><span ng-show="$ctrl.$$diff > 1"><span ng-if="!$ctrl.$$diffLabelPlural" translate="date.days"></span><span ng-if="$ctrl.$$diffLabelPlural" ng-bind="$ctrl.$$diffLabelPlural"></span>)</span></span></div></div></div><md-input-container class="md-block no-margin no-padding"><input type="hidden" style="visibility: hidden" name="{{$ctrl.startInputName}}" ng-model="$ctrl.start" ng-required="$ctrl.ngRequired"><div ng-messages="chDateRangePickerTriggerForm[$ctrl.startInputName].$error" class="font-12 text-center text-danger"><div ng-repeat="errorObj in $ctrl.startErrorMessages" ng-message="{{errorObj.error}}" class="no-padding"><span ng-if="errorObj.message" ng-bind="{{errorObj.message}}"></span><span ng-if="!errorObj.message && errorObj.messageKey" translate="{{errorObj.messageKey}}" translate-values="errorObj.messageKeyParams"></span></div></div></md-input-container><md-input-container class="md-block no-margin no-padding"><input type="hidden" style="visibility: hidden" name="{{$ctrl.endInputName}}" ng-model="$ctrl.end" ng-required="$ctrl.ngRequired"><div ng-messages="chDateRangePickerTriggerForm[$ctrl.endInputName].$error" class="font-12 text-center text-danger" ng-show="!chDateRangePickerTriggerForm[$ctrl.startInputName].$invalid && (chDateRangePickerTriggerForm[$ctrl.endInputName].$dirty || chDateRangePickerTriggerForm[$ctrl.endInputName].$touched)"><div ng-repeat="errorObj in $ctrl.endErrorMessages" ng-message="{{errorObj.error}}" class="no-padding"><span ng-if="errorObj.message" ng-bind="{{errorObj.message}}"></span><span ng-if="!errorObj.message && errorObj.messageKey" translate="{{errorObj.messageKey}}" translate-values="errorObj.messageKeyParams"></span></div></div></md-input-container></md-button></ng-form>');
     $templateCache.put("/tpls/date-range-picker/date-range-picker.tpl", '<div ng-switch="$ctrl.currentView"><div class="md-subhead" layout layout-padding><strong><span ng-switch-when="end"><span ng-if="!$ctrl.endTitle"><span translate="date.end.select"></span></span><span ng-if="$ctrl.endTitle" ng-bind-html="$ctrl.endTitle"></span></span><span ng-switch-default><span ng-if="!$ctrl.startTitle"><span translate="date.start.select"></span></span><span ng-if="$ctrl.startTitle" ng-bind-html="$ctrl.startTitle"></span></span></strong><span flex></span><md-button class="md-icon-button" ng-click="$ctrl.cancel()" aria-label="Cancel"><md-icon class="mdi mdi-close md-24"></md-icon><md-tooltip><span translate="common.close"></span></md-tooltip></md-button></div><div class="layout-column layout-align-center-center"><div ng-switch-when="end"><md-calendar class="no-today-selection" ng-model="$ctrl.data.end" ng-model-options="$ctrl.modelOptions" md-min-date="$ctrl.data.endMinDate" md-max-date="$ctrl.data.endMaxDate"></md-calendar></div><div ng-switch-default><md-calendar class="no-today-selection" ng-model="$ctrl.data.start" ng-model-options="$ctrl.modelOptions" md-min-date="$ctrl.data.startMinDate" md-max-date="$ctrl.data.startMaxDate"></md-calendar></div></div><md-divider></md-divider><div layout layout-padding-sm layout-align="center center" class="bg-gray-lighter text-lowercase"><div layout layout-align="start center"><span translate="date.from.abbr"></span>&nbsp;<md-button class="no-margin" ng-class="{\'only-border border-primary\': $ctrl.currentView == \'start\'}" ng-click="$ctrl.currentView = \'start\'" aria-label="Choose start date"><span ng-show="!$ctrl.$$startDate" class="text-gray-light"><md-icon class="mdi mdi-dots-horizontal md-24"></md-icon></span><span ng-show="$ctrl.$$startDate" class="md-subhead"><strong>{{$ctrl.$$startDate|date:"shortDate":$ctrl.timezone}}</strong></span><md-tooltip><span ng-if="!$ctrl.startTitle"><span translate="date.start.select"></span></span><span ng-if="$ctrl.startTitle" ng-bind-html="$ctrl.startTitle"></span></md-tooltip></md-button></div><div layout layout-align="start center"><span translate="date.to.abbr"></span>&nbsp;<md-button class="no-margin" ng-class="{\'only-border border-primary\': $ctrl.currentView == \'end\'}" ng-click="$ctrl.currentView = \'end\'" aria-label="Choose end date"><span ng-show="!$ctrl.$$endDate" class="text-gray-light"><md-icon class="mdi mdi-dots-horizontal md-24"></md-icon></span><span ng-show="$ctrl.$$endDate" class="md-subhead"><strong>{{$ctrl.$$endDate|date:"shortDate":$ctrl.timezone}}</strong></span><md-tooltip><span ng-if="!$ctrl.endTitle"><span translate="date.end.select"></span></span><span ng-if="$ctrl.endTitle" ng-bind-html="$ctrl.endTitle"></span></md-tooltip></md-button><div ng-if="$ctrl.showDiff  && $ctrl.data.diff > 0 && $ctrl.$$startDate && $ctrl.$$endDate" class="text-gray-light text-small no-padding no-margin text-lowercase">&nbsp;(<span>{{$ctrl.data.diff}}&nbsp;</span><span ng-show="$ctrl.data.diff == 1"><span ng-if="!$ctrl.diffLabelSingular" translate="date.day"></span><span ng-if="$ctrl.diffLabelSingular">{{$ctrl.diffLabelSingular}}</span>)</span><span ng-show="$ctrl.data.diff > 1"><span ng-if="!$ctrl.diffLabelPlural" translate="date.days"></span><span ng-if="$ctrl.diffLabelPlural">{{$ctrl.diffLabelPlural}}</span>)</span></div></div></div></div>');
     $templateCache.put("/tpls/hotel-info/hotel-info.tpl", '<ng-form name="$ctrl.hotelForm"><div class="layout-padding" ng-if="($ctrl.type == \'HOTEL\' || $ctrl.type == \'MULTIPLE_HOTELS\') && !$ctrl.isDisabled"><md-input-container class="md-block no-padding"><label><span translate="hotel.name"></span><em ng-if="!$ctrl.nameRequired">&nbsp;(<span class="text-lowercase" translate="common.optional"></span>)</em></label><input name="name" ng-model="$ctrl.hotel.name" ng-disabled="$ctrl.isDisabled" ng-required="$ctrl.nameRequired"><div ng-messages="$ctrl.hotelForm.name.$error"><div ng-message="required"><span translate="error.required"></span></div></div><div><small class="text-gray-light" translate="join.quote.hotel.name.text"></small></div></md-input-container><div class="bg-info border-radius layout-padding text-white" th:if="${#strings.equals(@mainProps.joinType,\'QUOTE\')}"><md-icon class="mdi mdi-information-outline text-white no-padding"></md-icon><span translate="join.quote.hotel.name.quote.text" translate-values="{company: $ctrl.appOptions.about.name}"></span></div></div><div class="layout-row layout-wrap layout-align-center-center layout-align-gt-sm-start-center" ng-if="!$ctrl.isDisabled"><div class="flex-100 flex-gt-sm-60 layout-padding"><md-input-container class="md-block no-padding"><label><span translate="hotel.type.select">Type</span><span ng-if="$ctrl.type == \'BUILDING\'">&nbsp;(<span translate="common.optional"></span>)</span></label><md-select name="hotelType" ng-model="$ctrl.hotel.type" ng-required="$ctrl.type != \'BUILDING\'" aria-label="Hotel Type" ng-disabled="$ctrl.isDisabled"><md-option ng-repeat="type in $ctrl.$hotelTypes" value="{{::type}}"><span translate="{{::(\'hotel.type.\'+ type)}}"></span></md-option></md-select><div ng-messages="$ctrl.hotelForm.hotelType.$error"><div ng-message="required"><span translate="error.required"></span></div></div><div ng-if="$ctrl.type == \'BUILDING\'"><small class="text-gray-light" translate="join.quote.hotel.type.text"></small></div></md-input-container></div><div class="flex-100 flex-gt-sm-40"><div class="bg-info-light border-radius md-padding text-gray-3" ng-if="$ctrl.hotel.type"><small translate="{{(\'hotel.type.\'+ $ctrl.hotel.type)}}"></small><p translate="{{(\'hotel.type.\'+ $ctrl.hotel.type +\'.description\')}}"></p></div></div></div><div class="layout-row layout-wrap layout-align-center-center layout-align-gt-sm-start-center" ng-if="!$ctrl.isDisabled"><div class="layout-column flex-100 layout-padding" ng-if="$ctrl.hotel.type == \'APARTMENT\' || $ctrl.hotel.type == \'COUNTRY_HOUSE\' || $ctrl.hotel.type == \'VILLA\' || $ctrl.hotel.type == \'HOLIDAY_HOME\' || $ctrl.hotel.type == \'CHALET\' || $ctrl.hotel.type == \'LODGE\' || $ctrl.hotel.type == \'RIAD\'"><div class="layout-row layout-wrap layout-align-center-center layout-align-gt-sm-start-center no-padding"><div class="layout-column flex flex-xs-100 flex-sm-100"><span translate="hotel.entire.accommodation.question"></span></div><div><md-button ng-click="$ctrl.$setApartment(false)" aria-label="private rooms" ng-class="!$ctrl.$$isApartment ? \'bg-success\' : \'only-border\'"><md-icon class="mdi mdi-checkbox-marked-circle-outline text-white md-24" ng-if="!$ctrl.$$isApartment"></md-icon><span translate="hotel.private.rooms"></span></md-button><md-button ng-click="$ctrl.$setApartment(true)" aria-label="only appartment" ng-class="$ctrl.$$isApartment ? \'bg-success\' : \'only-border\'"><md-icon class="mdi mdi-checkbox-marked-circle-outline text-white md-24" ng-if="$ctrl.$$isApartment"></md-icon><span translate="hotel.entire.accommodation"></span></md-button></div></div></div><div class="flex-100 flex-gt-sm-60 layout-padding" ng-if="!$ctrl.$$isApartment && ($ctrl.hotel.type == \'APARTMENT\' || $ctrl.hotel.type == \'COUNTRY_HOUSE\' || $ctrl.hotel.type == \'VILLA\' || $ctrl.hotel.type == \'HOLIDAY_HOME\' || $ctrl.hotel.type == \'CHALET\' || $ctrl.hotel.type == \'LODGE\' || $ctrl.hotel.type == \'RIAD\')"><span class="no-padding" translate="hotel.private.rooms.question"></span></div><div class="flex-100 flex-gt-sm-40 layout-padding" ng-if="!$ctrl.$$isApartment"><md-input-container class="md-block no-padding"><label><span translate="room.rooms.number">Number</span><span ng-if="$ctrl.type == \'BUILDING\'">&nbsp;(<span translate="common.optional"></span>)</span></label><md-select name="hotelRooms" ng-model="$ctrl.hotel.roomsNumber" ng-required="$ctrl.type != \'BUILDING\'" aria-label="Hotel rooms" ng-disabled="$ctrl.isDisabled"><md-option ng-repeat="n in [1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20]" value="{{::n}}"><span>{{::n}}&nbsp;</span><span ng-if="n == 1" translate="room.room"></span><span ng-if="n != 1" translate="room.rooms"></span></md-option><md-option value="21"><span>20+&nbsp;</span><span translate="room.rooms"></span></md-option></md-select><div ng-messages="$ctrl.hotelForm.hotelRooms.$error"><div ng-message="required"><span translate="error.required"></span></div></div></md-input-container></div><div class="flex-100 flex-gt-sm-40 layout-padding" ng-if="$ctrl.hotel.type == \'HOTEL\'"><md-input-container class="md-block no-padding"><label><span translate="common.stars">Number</span><span ng-if="$ctrl.type == \'BUILDING\'">&nbsp;(<span translate="common.optional"></span>)</span></label><md-select name="hotelStars" ng-model="$ctrl.hotel.stars" ng-required="$ctrl.type != \'BUILDING\'" aria-label="Hotel stars" ng-disabled="$ctrl.isDisabled"><md-option ng-repeat="n in [1,2,3,4,5]" value="{{::n}}"><span>{{::n}}&nbsp;</span><span ng-if="n == 1" translate="common.star"></span><span ng-if="n != 1" translate="common.stars"></span></md-option></md-select><div ng-messages="$ctrl.hotelForm.hotelStars.$error"><div ng-message="required"><span translate="error.required"></span></div></div></md-input-container></div></div><div ng-if="$ctrl.isDisabled" class="layout-row layout-wrap layout-padding"><div class="layout-column flex-100 flex-gt-sm-25"><small><span translate="hotel.type"></span>:&nbsp;</small><strong class="md-title text-bold" ng-if="$ctrl.hotel.type">{{(\'hotel.type.\'+ $ctrl.hotel.type |translate)}}</strong></div><div class="layout-column flex-100" ng-class="$ctrl.hotel.type == \'HOTEL\' ? \'flex-gt-sm-50\' : \'flex-gt-sm-75\'"><small><span translate="common.name"></span>:&nbsp;</small><strong class="md-title text-bold"><span ng-if="$ctrl.hotel.name">{{::$ctrl.hotel.name}}</span><span ng-if="!$ctrl.hotel.name" translate="join.quote.list.hotel.unnamed"></span></strong></div><div class="layout-column flex-100 flex-gt-sm-25" ng-if="$ctrl.hotel.type == \'HOTEL\'"><small><span translate="common.stars"></span>:&nbsp;</small><span><md-icon class="mdi mdi-star text-yellow md-24 material-icons" ng-repeat="n in $ctrl.stars"></md-icon></span></div><div class="layout-column flex-100 flex-gt-sm-25" ng-if="!$ctrl.$$isApartment"><small><span translate="room.rooms.number"></span>:&nbsp;</small><strong class="md-title text-bold" ng-if="$ctrl.hotel.roomsNumber"><span>{{::$ctrl.hotel.roomsNumber}}&nbsp;</span><span ng-if="$ctrl.hotel.roomsNumber == 1" translate="room.room"></span><span ng-if="$ctrl.hotel.roomsNumber != 1" translate="room.rooms"></span></strong></div><div class="layout-column flex-100 flex-gt-sm-75"><small><span translate="common.address"></span>:&nbsp;</small><strong class="md-title text-bold" ng-if="$ctrl.hotel.addressInfo.address"><span class="text-capitalize">{{::$ctrl.hotel.addressInfo.address}},&nbsp;{{::$ctrl.hotel.addressInfo.city}}&nbsp;{{::$ctrl.hotel.addressInfo.zipcode}},&nbsp;{{::$ctrl.hotel.addressInfo.country}}</span></strong></div></div><div class="layout-row layout-wrap"><div class="layout-column flex-100" ng-if="!$ctrl.isDisabled"><ch-address-autocomplete ng-model="$ctrl.hotel.addressInfo" is-required="true" dropdown-position="BOTTOM" clear-button="true" is-disabled="$ctrl.isDisabled"></ch-address-autocomplete><div class="layout-row layout-wrap" ng-if="$ctrl.hotel.addressInfo.addressComplete"><div class="layout-padding layout-column flex-xs-100 flex-sm-100 flex no-padding-y-sides" ng-if="::(!$ctrl.hotel.addressInfo.district)"><md-input-container class="md-block no-padding"><label class="text-capitalize"><span translate="common.district"></span></label><input name="district" ng-model="$ctrl.hotel.addressInfo.district"><div ng-messages="$ctrl.hotelForm.district.$error"><div ng-message="required"><span translate="error.required"></span></div></div></md-input-container></div><div class="layout-padding layout-column flex-xs-100 flex-sm-100 flex no-padding-y-sides" ng-if="::(!$ctrl.hotel.addressInfo.city) && !$ctrl.isDisabled"><md-input-container class="md-block no-padding"><label class="text-capitalize"><span translate="common.city"></span></label><input name="city" ng-model="$ctrl.hotel.addressInfo.city"><div ng-messages="$ctrl.hotelForm.city.$error"><div ng-message="required"><span translate="error.required"></span></div></div></md-input-container></div><div class="layout-padding layout-column flex-xs-100 flex-sm-100 flex no-padding-y-sides" ng-if="::(!$ctrl.hotel.addressInfo.zipcode) && !$ctrl.isDisabled"><md-input-container class="md-block no-padding"><label class="text-capitalize"><span translate="common.zipcode"></span></label><input name="zipcode" ng-model="$ctrl.hotel.addressInfo.zipcode"><div ng-messages="$ctrl.hotelForm.zipcode.$error"><div ng-message="required"><span translate="error.required"></span></div></div></md-input-container></div><div class="layout-padding layout-column flex-xs-100 flex-sm-100 flex no-padding-y-sides" ng-if="::(!$ctrl.hotel.addressInfo.province) && !$ctrl.isDisabled"><md-input-container class="md-block no-padding"><label class="text-capitalize"><span translate="common.province"></span></label><input name="province" ng-model="$ctrl.hotel.addressInfo.province"><div ng-messages="$ctrl.hotelForm.province.$error"><div ng-message="required"><span translate="error.required"></span></div></div></md-input-container></div><div class="layout-padding layout-column flex-xs-100 flex-sm-100 flex no-padding-y-sides" ng-if="::(!$ctrl.hotel.addressInfo.country) && !$ctrl.isDisabled"><md-input-container class="md-block no-padding"><label class="text-capitalize"><span translate="common.country"></span></label><input name="country" ng-model="$ctrl.hotel.addressInfo.country"><div ng-messages="$ctrl.hotelForm.country.$error"><div ng-message="required"><span translate="error.required"></span></div></div></md-input-container></div></div></div><div id="maps" class="layout-column flex-100" ng-if="$ctrl.hotel.addressInfo.lat && $ctrl.hotel.addressInfo.lng"><div class="md-padding text-center no-padding-top wow slideInLeft text-success" ng-if="!$ctrl.isDisabled"><md-icon class="mdi mdi-checkbox-marked-circle-outline text-success"></md-icon><span translate="join.quote.hotel.address.ok"></span></div><ng-map zoom="15" center="{{$ctrl.hotel.addressInfo.lat}},{{$ctrl.hotel.addressInfo.lng}}" disable-default-ui="true" scrollwheel="false"><marker position="{{$ctrl.hotel.addressInfo.lat}},{{$ctrl.hotel.addressInfo.lng}}" icon="{{$ctrl.mapMarker}}"></marker></ng-map><div class="layout-padding bg-info md-margin no-margin-x-sides border-radius wow slideInUp" ng-if="!$ctrl.isDisabled"><span class="no-padding" translate="join.quote.hotel.address.label"></span></div></div><div class="layout-column flex-100" ng-if="!$ctrl.isDisabled && (!$ctrl.hotel.addressInfo.lat || !$ctrl.hotel.addressInfo.lng)"><div class="md-padding bg-info layout-align-start-center layout-row md-margin no-margin-x-sides border-radius wow slideInUp"><span class="flex-xs-100 flex-sm-100"><md-icon class="mdi mdi-map-marker-radius md-48 text-white"></md-icon></span><span class="flex-xs-100 flex-sm-100" translate="join.quote.hotel.address.info"></span></div></div></div></ng-form>');
     $templateCache.put("/tpls/icon-select/icon-select.tpl", '<div flex layout="column" layout-fill><div ng-show="$ctrl.$$exists && !$ctrl.$$showIcons" flex layout="column" layout-padding layout-fill layout-align="center center" class="no-padding"><div><md-icon md-font-set="{{$ctrl.ngModel.fontSet}}" class="{{$ctrl.ngModel.cssClass}} md-94"></md-icon></div><div><md-button class="md-primary" ng-click="$ctrl.$showIconSelect()" ng-disabled="$ctrl.ngDisabled" aria-label="Change icon"><small translate-once="common.icon.change"></small></md-button></div></div><div ng-if="!$ctrl.ngDisabled" ng-show="!$ctrl.$$exists || $ctrl.$$showIcons" flex layout="column" layout-fill layout-padding class="no-padding"><div class="text-center text-gray-light" ng-if="$ctrl.label"><span ng-bind="$ctrl.label"></span></div><div class="no-padding" flex layout="column"><div ng-if="!$ctrl.hideFilter"><md-input-container md-no-float class="md-icon-right md-icon-left md-block no-margin"><md-icon class="mdi mdi-magnify md-24"></md-icon><input type="text" ng-model="$ctrl.$$loader.params.filter" placeholder="{{\'search.filter\'|translate}}..."><md-icon class="mdi mdi-close md-24 clickable" ng-show="$ctrl.$$loader.params.filter" ng-click="$ctrl.$$loader.params.filter = \'\'"></md-icon></md-input-container></div><md-content flex id="chIconSelectCont" class="only-border border-radius"><div layout-fill infinite-scroll="$ctrl.$$loader.nextPage()" infinite-scroll-container="\'#chIconSelectCont\'" infinite-scroll-disabled="$ctrl.loader.busy" infinite-scroll-distance="0.5"><div layout layout-wrap><md-button ng-repeat="icon in $ctrl.$$loader.items track by icon.cssClass" class="minimal-button" ng-click="$ctrl.$selectIcon(icon)" aria-label="{{icon.label || icon.cssClass}}"><md-icon md-font-set="{{icon.fontSet}}" class="{{icon.cssClass}} md-32"></md-icon></md-button></div><div ng-show="$ctrl.$$loader.busy" layout layout-align="space-around"><md-progress-circular class="md-primary ch-progress" md-mode="indeterminate" md-diameter="30"></md-progress-circular></div><div ng-if="!$ctrl.$$loader.busy && !$ctrl.$$loader.items.length" flex layout="column" layout-padding layout-align="center center" class="text-opaque"><md-icon class="mdi mdi-shape md-56 text-opaque"></md-icon><div><span translate-once="common.icon.list.none"></span></div></div><div ng-if="$ctrl.$$error" class="text-danger text-center"><span ng-bind="$ctrl.$$error"></span></div></div></md-content><div ng-if="$ctrl.$$exists" class="text-center"><md-button ng-click="$ctrl.$cancelIconSelect()" aria-label="Cancel icon select"><md-icon class="mdi mdi-close md-18"></md-icon><small translate-once="common.cancel"></small></md-button></div></div></div></div>');

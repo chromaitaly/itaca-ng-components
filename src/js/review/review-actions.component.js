@@ -19,7 +19,7 @@
 				"<div class=\"flex layout-row layout-wrap\">" +
 					"<div ng-repeat=\"action in $ctrl.actions\" ng-if=\"!action.hide\" ng-class=\"{'flex-33': $ctrl.actions.length <= 3, 'flex': $ctrl.actions.length > 3}\" layout>" +
 						"<div class=\"flex layout-column\">" +
-							"<md-button class=\"no-margin {{btnClass}}\" ng-disabled=\"action.disabled\" ng-click=\"$ctrl.$actionClick($event, action)\" aria-label=\"{{action.label}}\">" +
+							"<md-button class=\"no-margin {{::action.btnClass}}\" ng-disabled=\"action.disabled\" ng-click=\"$ctrl.$actionClick($event, action)\" aria-label=\"{{action.label}}\">" +
 								"<md-icon ng-if=\"action.icon\" class=\"{{::action.icon}} material-icons\"></md-icon>&nbsp;" +
 								"<span ng-if=\"action.label\" class=\"text-initial\" ng-bind-html=\"action.label\"></span>" +
 							"</md-button>" +

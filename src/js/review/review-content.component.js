@@ -24,7 +24,7 @@
 		    			"<div ng-show=\"$ctrl.review.showDetails\">" +
 		    				"<div ng-repeat=\"feedback in $ctrl.review.feedbacks track by $index\" class=\"md-margin ng-scope no-margin-top no-margin-x-sides\"" + 
 		    					"title=\"{{::feedback.value}}\" ng-switch=\"feedback.type\">" +
-		    					"<small class=\"layout-row flex-100\"><span class=\"flex\" translate=\"{{::feedback.titleKey}}\" translate-values=\"{{feedback.titleParams}}\"></span><span ng-if=\"feedback.type == 'RANK'\">{{::feedback.value}}</span></small>" +
+		    					"<small class=\"layout-row flex-100\"><span class=\"flex\" translate=\"{{::feedback.titleKey}}\" translate-values=\"{{feedback.titleParams}}\"></span><span ng-if=\"feedback.type == 'RANK'\">{{feedback.value}}</span></small>" +
 		    					"<md-progress-linear ng-switch-when=\"RANK\" md-mode=\"determinate\" value=\"{{(feedback.value * 10)}}\"></md-progress-linear>" +
 		    					"<div ng-switch-default>" +
 		    						"<small ng-if=\"feedback.value\">{{feedback.value}}</small>" +
@@ -43,7 +43,7 @@
 		    		"</div>" +
 		    		"<div class=\"flex-100 flex-gt-sm-25 layout-column\" ng-class=\"$ctrl.review.showDetails ? 'layout-align-center-center' : 'layout-align-start-center'\">" +
 		    			"<small ng-if=\"$ctrl.review.showDetails\" class=\"font-12 text-gray-light text-center\" translate=\"review.score.total\"></small>" +
-		    			"<span class=\"md-headline\">{{::$ctrl.review.score.toFixed(1)}}</span>" +
+		    			"<span class=\"md-headline\">{{$ctrl.review.score.toFixed(1)}}</span>" +
 		    			"<span class=\"text-center\" translate=\"{{$ctrl.review.label}}\"></span>" +
 		    		"</div>" +
 		    	"</div>" +
