@@ -46,12 +46,19 @@
 	background-color: @color-danger;
 }
 
-.ch-planning-cell:not(.ch-planning-cell-active):not(.ch-planning-cell-past):not(.ch-planning-cell-closed):hover {
-	background-color: @gray-lighter;
+.ch-planning-cell:not(.ch-planning-cell-active):hover {
     box-shadow: 0 0 10px #999;
 }
 
 .ch-planning-cell:not(.ch-planning-cell-active):not(.ch-planning-cell-closed):hover {
+/* 	background-color: @gray-lighter; */
+}
+
+.ch-planning-cell.ch-planning-cell-closed:hover {
+/* 	background-color: @gray-lighter; */
+}
+
+.ch-planning-cell:not(.ch-planning-cell-active):hover {
 	cursor: pointer;
 }
 
