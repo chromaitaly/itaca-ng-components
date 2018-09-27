@@ -3611,11 +3611,7 @@ var colorPicker = function() {
             clearButton: "<?"
         },
         controller: AddressAutocompleteCtrl,
-<<<<<<< HEAD
-        template: '<ng-form class="flex" name="autocompleteForm">' + "<md-autocomplete " + ' class="ch-address-autocomplete" ' + ' md-input-name="address" ' + ' ng-disabled="$ctrl.isDisabled" ' + ' ng-required="$ctrl.isRequired" ' + ' md-no-cache="$ctrl.noCache" ' + ' md-selected-item="$ctrl.selectedItem" ' + ' md-search-text="$ctrl.searchText" ' + ' md-selected-item-change="$ctrl.$selectedItemChange(item)"  ' + ' md-items="item in $ctrl.$querySearch($ctrl.searchText)" ' + ' md-item-text="item.description"  ' + ' md-min-length="$ctrl.minLength"  ' + " md-floating-label=\"{{'common.address'|translate}}\" " + ' md-dropdown-position="$ctrl.dropdownPosition" ' + ' md-clear-button="$ctrl.clearButton" ' + ' placeholder="$ctrl.placeholder">  ' + "<md-item-template>" + '<md-icon class="mdi mdi-map-marker-outline material-icons md-24"></md-icon>' + '<strong md-highlight-text="ctrl.searchText" md-highlight-flags="^i">{{item.structured_formatting.main_text}}</strong>' + '<span class="text-gray-light">,&nbsp;{{item.structured_formatting.secondary_text}}</span>' + "<md-divider></md-divider>" + "</md-item-template>" + '<div ng-messages="autocompleteForm.address.$error">' + '<div ng-message="required"><span translate="error.required"></span></div>' + '<div ng-message="minlength"><span translate="error.field.generic.minlength" translate-values="{count: $ctrl.minLength}"></span></div>' + '<div ng-message="connection"><span translate="error.address.not.found"></span></div>' + "</div>" + "</md-autocomplete>" + "</ng-form>"
-=======
         template: '<ng-form class="flex" name="autocompleteForm">' + "<md-autocomplete " + ' class="ch-address-autocomplete" ' + ' md-input-name="address" ' + ' ng-disabled="$ctrl.isDisabled" ' + ' ng-required="$ctrl.isRequired" ' + ' md-no-cache="$ctrl.noCache" ' + ' md-selected-item="$ctrl.selectedItem" ' + ' md-search-text="$ctrl.searchText" ' + ' md-require-match="true" ' + ' md-match-case-insensitive="true" ' + ' md-selected-item-change="$ctrl.$selectedItemChange(item)"  ' + ' md-items="item in $ctrl.$querySearch($ctrl.searchText)" ' + ' md-item-text="item.description"  ' + ' md-min-length="$ctrl.minLength"  ' + " md-floating-label=\"{{'common.address'|translate}}\" " + ' md-dropdown-position="$ctrl.dropdownPosition" ' + ' md-clear-button="$ctrl.clearButton" ' + ' placeholder="$ctrl.placeholder">  ' + "<md-item-template>" + '<md-icon class="mdi mdi-map-marker-outline material-icons md-24"></md-icon>' + '<strong md-highlight-text="ctrl.searchText" md-highlight-flags="^i">{{item.structured_formatting.main_text}}</strong>' + '<span class="text-gray-light">,&nbsp;{{item.structured_formatting.secondary_text}}</span>' + "<md-divider></md-divider>" + "</md-item-template>" + '<div ng-messages="autocompleteForm.address.$error">' + '<div ng-message="required"><span translate="error.required"></span></div>' + '<div ng-message="minlength"><span translate="error.field.generic.minlength" translate-values="{count: $ctrl.minLength}"></span></div>' + '<div ng-message="connection"><span translate="error.address.not.found"></span></div>' + '<div ng-message="md-require-match"><span translate="error.address.not.match"></span></div>' + "</div>" + "</md-autocomplete>" + "</ng-form>"
->>>>>>> branch 'master' of https://github.com/chromaitaly/itaca-ng-components.git
     });
     function AddressAutocompleteCtrl($scope, $mdMedia, AppOptions, $translate, GoogleAPI) {
         var ctrl = this;
@@ -3699,11 +3695,7 @@ var colorPicker = function() {
                 addressInfo.lng = data.geometry.location.lng();
                 addressInfo.offset = data.utc_offset ? parseInt(data.utc_offset) * 60 : data.utc_offset;
                 addressInfo.addressComplete = ctrl.selectedItem;
-<<<<<<< HEAD
-                ctrl.ngModel = addressInfo;
-=======
                 ctrl.ngModelCtrl.$setViewValue(addressInfo);
->>>>>>> branch 'master' of https://github.com/chromaitaly/itaca-ng-components.git
             }, function(error) {
                 ctrl.$setError(true);
             });
@@ -3712,11 +3704,7 @@ var colorPicker = function() {
             $scope.autocompleteForm.address.$setValidity("connection", !bool);
             ctrl.$$error = bool;
             if (bool) {
-<<<<<<< HEAD
-                ctrl.ngModel = null;
-=======
                 ctrl.ngModelCtrl.$setViewValue(null);
->>>>>>> branch 'master' of https://github.com/chromaitaly/itaca-ng-components.git
                 ctrl.selectedItem = null;
             }
         };
@@ -4240,11 +4228,7 @@ var colorPicker = function() {
             options: "<?"
         },
         controller: ChartCtrl,
-<<<<<<< HEAD
-        template: '<div class="chart-container relative"><canvas class="chartjs"></canvas></div><div>'
-=======
         template: '<canvas class="chartjs"></canvas>'
->>>>>>> branch 'master' of https://github.com/chromaitaly/itaca-ng-components.git
     });
     function ChartCtrl($scope, $element) {
         var ctrl = this;
@@ -4260,22 +4244,12 @@ var colorPicker = function() {
                 ctrl.$createChart();
             }
             if (changesObj.data && !changesObj.data.isFirstChange()) {
-<<<<<<< HEAD
-                ctrl.$$chart.data = ctrl.data;
-                ctrl.$$chart.update();
-=======
                 _.assign(ctrl.$$chart.data, ctrl.data);
                 ctrl.$update();
->>>>>>> branch 'master' of https://github.com/chromaitaly/itaca-ng-components.git
             }
             if (changesObj.options && !changesObj.options.isFirstChange()) {
-<<<<<<< HEAD
-                ctrl.$$chart.options = ctrl.options;
-                ctrl.$$chart.update();
-=======
                 _.assign(ctrl.$$chart.options, ctrl.options);
                 ctrl.$update();
->>>>>>> branch 'master' of https://github.com/chromaitaly/itaca-ng-components.git
             }
         };
         this.$update = function() {
@@ -4335,11 +4309,7 @@ var colorPicker = function() {
                 data: ctrl.data,
                 options: ctrl.options
             });
-<<<<<<< HEAD
-            ctrl.$$chart.update();
-=======
             ctrl.$update();
->>>>>>> branch 'master' of https://github.com/chromaitaly/itaca-ng-components.git
         };
     }
 })();
@@ -4896,11 +4866,7 @@ var colorPicker = function() {
             currentLang: "<?"
         },
         controller: CountryAutocompleteCtrl,
-<<<<<<< HEAD
-        template: '<ng-form class="flex" name="autocompleteForm">' + "<md-autocomplete " + ' class="ch-contry-autocomplete" ' + ' md-input-name="country" ' + ' ng-disabled="$ctrl.isDisabled" ' + ' ng-required="$ctrl.isRequired" ' + ' md-no-cache="$ctrl.noCache" ' + ' md-selected-item="$ctrl.selectedItem" ' + ' md-search-text="$ctrl.searchText" ' + ' md-selected-item-change="$ctrl.$selectedItemChange(item)"  ' + ' md-items="item in $ctrl.$querySearch($ctrl.searchText)" ' + ' md-item-text="item.translations[$ctrl.currentLang] ? item.translations[$ctrl.currentLang] : item.name"  ' + ' md-min-length="$ctrl.minLength"  ' + " md-floating-label=\"{{'common.nationality'|translate}}\" " + ' md-dropdown-position="$ctrl.dropdownPosition" ' + ' md-clear-button="$ctrl.clearButton" ' + ' placeholder="$ctrl.placeholder">  ' + "<md-item-template>" + '<img ng-src="{{item.flag}}" class="ch-country-autocomplete-flag">' + '<strong md-highlight-text="ctrl.searchText" md-highlight-flags="^i">{{item.name}}</strong>' + '<span class="text-gray-light">,&nbsp;{{item.nativeName}}</span>' + "<md-divider></md-divider>" + "</md-item-template>" + '<div ng-messages="autocompleteForm.address.$error">' + '<div ng-message="required"><span translate="error.required"></span></div>' + '<div ng-message="minlength"><span translate="error.field.generic.minlength" translate-values="{count: $ctrl.minLength}"></span></div>' + '<div ng-message="connection"><span translate="error.country.not.found"></span></div>' + "</div>" + "</md-autocomplete>" + "</ng-form>"
-=======
         template: '<ng-form class="flex" name="autocompleteForm">' + "<md-autocomplete " + ' class="ch-contry-autocomplete" ' + ' md-input-name="country" ' + ' ng-disabled="$ctrl.isDisabled" ' + ' ng-required="$ctrl.isRequired" ' + ' md-no-cache="$ctrl.noCache" ' + ' md-selected-item="$ctrl.selectedItem" ' + ' md-search-text="$ctrl.searchText" ' + ' md-require-match="true" ' + ' md-match-case-insensitive="true" ' + ' md-selected-item-change="$ctrl.$selectedItemChange(item)"  ' + ' md-items="item in $ctrl.$querySearch($ctrl.searchText)" ' + ' md-item-text="item.translations[$ctrl.currentLang] ? item.translations[$ctrl.currentLang] : item.name"  ' + ' md-min-length="$ctrl.minLength"  ' + " md-floating-label=\"{{'common.nationality'|translate}}\" " + ' md-dropdown-position="$ctrl.dropdownPosition" ' + ' md-clear-button="$ctrl.clearButton" ' + ' placeholder="$ctrl.placeholder">  ' + "<md-item-template>" + '<img ng-src="{{item.flag}}" class="ch-country-autocomplete-flag">' + '<strong md-highlight-text="ctrl.searchText" md-highlight-flags="^i">{{item.name}}</strong>' + '<span class="text-gray-light">,&nbsp;{{item.nativeName}}</span>' + "<md-divider></md-divider>" + "</md-item-template>" + '<div ng-messages="autocompleteForm.country.$error">' + '<div ng-message="required"><span translate="error.required"></span></div>' + '<div ng-message="minlength"><span translate="error.field.generic.minlength" translate-values="{count: $ctrl.minLength}"></span></div>' + '<div ng-message="connection"><span translate="error.country.not.found"></span></div>' + '<div ng-message="md-require-match"><span translate="error.country.not.match"></span></div>' + "</div>" + "</md-autocomplete>" + "</ng-form>"
->>>>>>> branch 'master' of https://github.com/chromaitaly/itaca-ng-components.git
     });
     function CountryAutocompleteCtrl($scope, $mdMedia, AppOptions, $translate, CountryAPI) {
         var ctrl = this;
@@ -4950,10 +4916,7 @@ var colorPicker = function() {
                 return response;
             }, function(error) {
                 ctrl.$setError(true);
-<<<<<<< HEAD
-=======
                 return [];
->>>>>>> branch 'master' of https://github.com/chromaitaly/itaca-ng-components.git
             });
         };
         this.$selectedItemChange = function(country) {
@@ -4961,19 +4924,11 @@ var colorPicker = function() {
                 ctrl.ngModelCtrl.$setViewValue(null);
                 return;
             }
-<<<<<<< HEAD
-            ctrl.ngModel = country.alpha2Code;
-            ctrl.$setError(false);
-        };
-        this.$setError = function(bool) {
-            $scope.autocompleteForm.address.$setValidity("connection", !bool);
-=======
             ctrl.ngModelCtrl.$setViewValue(country.alpha2Code);
             ctrl.$setError(false);
         };
         this.$setError = function(bool) {
             $scope.autocompleteForm.country.$setValidity("connection", !bool);
->>>>>>> branch 'master' of https://github.com/chromaitaly/itaca-ng-components.git
             ctrl.$$error = bool;
             if (bool) {
                 ctrl.ngModel = null;
@@ -10348,257 +10303,6 @@ var colorPicker = function() {
 
 (function() {
     "use strict";
-<<<<<<< HEAD
-    StatisticsChartCtrl.$inject = [ "$scope", "StatisticsHelper" ];
-    angular.module("itaca.components").component("chStatisticsChart", {
-        bindings: {
-            type: "@",
-            datasets: "<",
-            tooltips: "<?",
-            colors: "<?",
-            onHover: "&?",
-            onClick: "&?"
-        },
-        controller: StatisticsChartCtrl,
-        template: '<ch-chart type="$ctrl.$$chart.type" data="$ctrl.$$chart.data" options="$ctrl.$$chart.options"></ch-chart>' + '<div ng-if="$ctrl.$$loading || (!$ctrl.$$loading && !$ctrl.$$chart.data)" class="overlay" layout layout-align="center center">' + '<div ng-if="$ctrl.$$loading && !$ctrl.ctrl.datasets.length">' + '<md-progress-circular class="md-primary ch-progress" md-mode="indeterminate" md-diameter="32"></md-progress-circular>' + "</div>" + '<div ng-if="!$ctrl.$$loading && !$ctrl.ctrl.datasets.length">' + '<span translate="statistics.statistics.no.data">' + "</div>" + "</div>"
-    });
-    function StatisticsChartCtrl($scope, StatisticsHelper) {
-        var ctrl = this;
-        this.$onInit = function() {
-            ctrl.type = ctrl.type || "RESERVATIONS_AMOUNT_TREND";
-            ctrl.$$chart = {};
-            ctrl.$$loading = true;
-            ctrl.$createChart();
-        };
-        this.$onChanges = function(changesObj) {
-            if (changesObj.type && !changesObj.type.isFirstChange()) {
-                ctrl.$createChart();
-            }
-            if (changesObj.datasets && !changesObj.datasets.isFirstChange()) {
-                ctrl.$createChart();
-            }
-            if (changesObj.tooltips && !changesObj.tooltips.isFirstChange()) {
-                ctrl.$createChart();
-            }
-            if (changesObj.onHover && !changesObj.onHover.isFirstChange()) {
-                ctrl.$updateEvent();
-            }
-            if (changesObj.onClick && !changesObj.onClick.isFirstChange()) {
-                ctrl.$updateEvent();
-            }
-            if (changesObj.colors && !changesObj.colors.isFirstChange()) {
-                ctrl.$updateColors();
-            }
-        };
-        this.$createChart = function() {
-            if (_.isNil(ctrl.type) || _.isNil(ctrl.datasets)) {
-                return;
-            }
-            ctrl.$$chart = StatisticsHelper.createChartData(ctrl.type, ctrl.datasets, ctrl.tooltips, ctrl.onHover, ctrl.onClick);
-            ctrl.$updateColors();
-            ctrl.$$loading = false;
-        };
-        this.$updateEvent = function() {
-            if (!_.isNil(ctrl.$$chart) && !_.isNil(ctrl.$$chart.options)) {
-                ctrl.$$chart.options.onHover = angular.isFunction(ctrl.onHover) ? ctrl.onHover : null;
-                ctrl.$$chart.options.onClick = angular.isFunction(ctrl.onClick) ? ctrl.onClick : null;
-            }
-            ctrl.$updateColors();
-        };
-        this.$updateColors = function() {
-            if (_.isNil(ctrl.colors) || !_.isPlainObject(ctrl.colors) && !_.isArray(ctrl.colors)) {
-                return;
-            }
-            _.forEach(ctrl.$$chart.chartData.data.datasets, function(dataset) {
-                dataset.backgroundColor = ctrl.colors;
-            });
-        };
-    }
-})();
-
-(function() {
-    "use strict";
-    StatisticsHelper.$inject = [ "$translate" ];
-    angular.module("itaca.components").factory("StatisticsHelper", StatisticsHelper);
-    function StatisticsHelper($translate) {
-        var $$service = {};
-        $$service.createChartData = function(type, datasets, tooltips, onHoverEv, onClickEv) {
-            var chartData = $$service.$createDefaultChartData(datasets, tooltips, onHoverEv, onClickEv);
-            switch (type) {
-              case "RESERVATIONS_AMOUNT_TREND":
-                chartData.type = "bar";
-                _.forEach(chartData.data.datasets, function(d) {
-                    d.label = $translate.instant("statistics.statistics.revenue") + "€";
-                });
-                chartData.options.scales.yAxes[0].ticks.callback = function(value, index, values) {
-                    return value + " €";
-                };
-                chartData.options.scales.xAxes[0].ticks.callback = function(value, index, values) {
-                    return moment.unix(value).format("MMM YY");
-                };
-                chartData.options.legend.display = false;
-                break;
-
-              case "RESERVATIONS_SOURCE_TREND":
-                chartData.type = "doughnut";
-                chartData.options = {
-                    responsive: true,
-                    legend: {
-                        position: "bottom"
-                    },
-                    animation: {
-                        animateScale: true,
-                        animateRotate: true
-                    },
-                    scales: {
-                        xAxes: [ {
-                            display: false,
-                            ticks: {
-                                callback: function(value, index, values) {
-                                    return $translate.instant("channel.source." + value.toLowerCase());
-                                }
-                            },
-                            scaleLabel: {
-                                display: true
-                            }
-                        } ]
-                    }
-                };
-                break;
-
-              case "REVIEWS_COUNT_TREND":
-                chartData.type = "bar";
-                break;
-            }
-            return chartData;
-        };
-        $$service.$createDefaultChartData = function(datasets, tooltips, onHoverEv, onClickEv) {
-            var chartData = {
-                data: {
-                    labels: [],
-                    datasets: []
-                },
-                options: {
-                    responsive: true,
-                    maintainAspectRatio: false,
-                    onHover: angular.isFunction(onHoverEv) ? onHoverEv : null,
-                    onClick: angular.isFunction(onClickEv) ? onClickEv : null,
-                    scales: {
-                        yAxes: [ {
-                            display: true,
-                            scaleLabel: {
-                                display: true
-                            },
-                            ticks: {
-                                beginAtZero: true
-                            }
-                        } ],
-                        xAxes: [ {
-                            display: true,
-                            scaleLabel: {
-                                display: true
-                            },
-                            ticks: {
-                                beginAtZero: true
-                            }
-                        } ]
-                    },
-                    legend: {},
-                    hover: {
-                        mode: "index",
-                        intersect: true
-                    },
-                    animation: {
-                        animateScale: true,
-                        animateRotate: true
-                    }
-                }
-            };
-            if (_.isArray(tooltips) && !_.isEmpty(tooltips)) {
-                chartData.options.tooltips = {
-                    mode: "index",
-                    callbacks: {
-                        label: function(tooltipItem, data) {
-                            var label = "";
-                            _.forEach(tooltips, function(tp) {
-                                var idx = data.labels[tooltipItem.index];
-                                label += tp[idx].key + ": ";
-                                label += tp[idx].value + "\\n";
-                            });
-                            return label;
-                        }
-                    }
-                };
-            }
-            if (_.isPlainObject(datasets)) {
-                chartData.data.labels = Object.keys(datasets);
-                chartData.data.datasets.push({
-                    data: Object.values(datasets),
-                    backgroundColor: "#92278f",
-                    label: $translate.instant("reservations.reservations")
-                });
-            } else if (_.isArray(datasets)) {
-                _.forEach(datasets, function(v) {
-                    chartData.data.labels = Object.keys(v);
-                    chartData.data.datasets.push({
-                        data: Object.values(v),
-                        backgroundColor: "#92278f",
-                        label: $translate.instant("reservations.reservations"),
-                        fill: false
-                    });
-                });
-                chartData.data.labels = _.uniq(chartData.data.labels);
-            } else {
-                throw new Error("values is not valid. Should be array or object");
-            }
-            return chartData;
-        };
-        $$service.$tooltipsGenerator = function(tooltipModel) {
-            var tooltipEl = document.getElementById("chartjs-tooltip");
-            if (!tooltipEl) {
-                tooltipEl = document.createElement("div");
-                tooltipEl.id = "chartjs-tooltip";
-                tooltipEl.innerHTML = "<table></table>";
-                document.body.appendChild(tooltipEl);
-            }
-            if (tooltipModel.opacity === 0) {
-                tooltipEl.style.opacity = 0;
-                return;
-            }
-            tooltipEl.classList.remove("above", "below", "no-transform");
-            if (tooltipModel.yAlign) {
-                tooltipEl.classList.add(tooltipModel.yAlign);
-            } else {
-                tooltipEl.classList.add("no-transform");
-            }
-            function getBody(bodyItem) {
-                return bodyItem.lines;
-            }
-            if (tooltipModel.body) {
-                var titleLines = tooltipModel.title || [];
-                var bodyLines = tooltipModel.body.map(getBody);
-                var innerHtml = "<thead>";
-                titleLines.forEach(function(title) {
-                    innerHtml += "<tr><th>" + title + "</th></tr>";
-                });
-                innerHtml += "</thead><tbody>";
-                bodyLines.forEach(function(body, i) {
-                    innerHtml += "<tr><td>" + body + "</td></tr>";
-                });
-                innerHtml += "</tbody>";
-                var tableRoot = tooltipEl.querySelector("table");
-                tableRoot.innerHTML = innerHtml;
-            }
-            var position = this._chart.canvas.getBoundingClientRect();
-            tooltipEl.style.opacity = 1;
-            tooltipEl.style.position = "absolute";
-            tooltipEl.style.left = position.left + tooltipModel.caretX + "px";
-            tooltipEl.style.top = position.top + tooltipModel.caretY + "px";
-            tooltipEl.style.fontFamily = tooltipModel._bodyFontFamily;
-            tooltipEl.style.fontSize = tooltipModel.bodyFontSize + "px";
-            tooltipEl.style.fontStyle = tooltipModel._bodyFontStyle;
-            tooltipEl.style.padding = tooltipModel.yPadding + "px " + tooltipModel.xPadding + "px";
-=======
     StatisticsChartLegendCtrl.$inject = [ "$scope", "$translate", "$mdMedia", "AppOptions" ];
     angular.module("itaca.components").component("chStatisticsChartLegend", {
         bindings: {
@@ -10984,7 +10688,6 @@ var colorPicker = function() {
                 throw new Error("values is not valid. Should be array or object");
             }
             return chartData;
->>>>>>> branch 'master' of https://github.com/chromaitaly/itaca-ng-components.git
         };
         return $$service;
     }
@@ -12032,7 +11735,7 @@ angular.module("itaca.components").run([ "$templateCache", function($templateCac
     $templateCache.put("/tpls/ratesheet/ratesheet-availability.tpl", '<div flex layout="column"><div ng-if="$ctrl.availability.hotelClosed" layout layout-align="center center" flex><md-button class="md-icon-button no-margin no-padding auto-height cursor-help" tabindex="-1" aria-label="Availability"><md-icon class="mdi mdi-lock md-18"></md-icon><md-tooltip><span translate="hotel.closed"></span></md-tooltip></md-button></div><div ng-if="!$ctrl.availability.hotelClosed" flex layout="column"><md-button ng-disabled="$ctrl.availability.pastDate || $ctrl.availability.roomClosed" tabindex="-1" aria-label="Availability" ng-click="$ctrl.$click($event)" class="md-square-button no-margin row-1 forced" ng-class="{\'minimal-button\': !$ctrl.$mdMedia(\'gt-xs\'),\n' + "\t\t\t\t'bg-success': $ctrl.availability.counter.actual > 0 && !$ctrl.availability.hotelClosed && !$ctrl.availability.roomClosed, \n" + "\t\t\t\t'bg-danger': $ctrl.availability.roomClosed, \n" + '\t\t\t\t\'bg-warn\': $ctrl.availability.counter.actual <= 0 && !$ctrl.availability.hotelClosed && !$ctrl.availability.roomClosed}"><div layout layout-wrap layout-align="center center" class="md-margin" ng-class="{\'text-small\': $ctrl.$mdMedia(\'xs\')}"><div ng-if="$ctrl.availability.counter.actual > 0"><strong>{{$ctrl.availability.counter.actual}}</strong><small>/{{$ctrl.availability.counter.total}}</small></div><div ng-if="$ctrl.availability.counter.actual <= 0"><md-icon class="mdi mdi-calendar-remove md-18 text-white"></md-icon></div></div><md-tooltip><div ng-if="$ctrl.availability.counter.actual > 0"><span ng-if="!$ctrl.availability.pastDate" translate="ratesheet.availability.edit">Edit availability</span><span ng-if="$ctrl.availability.pastDate && $ctrl.availability.counter.actual == 1" translate="ratesheet.availability.rooms.one"></span><span ng-if="$ctrl.availability.pastDate && $ctrl.availability.counter.actual > 1" translate="ratesheet.availability.rooms" translate-values="{count: $ctrl.availability.counter.actual}"></span></div><div ng-if="$ctrl.availability.counter.actual <= 0"><span translate="hotel.availability.none"></span></div></md-tooltip></md-button></div></div>');
     $templateCache.put("/tpls/ratesheet/ratesheet-header.tpl", '<div flex layout="column"><div ng-if="$ctrl.header.hotelClosed" layout layout-align="center center" flex><md-button class="md-icon-button no-margin no-padding auto-height cursor-help" tabindex="-1" aria-label="Availability"><md-icon class="mdi mdi-lock md-18"></md-icon><md-tooltip><span translate="hotel.closed"></span></md-tooltip></md-button></div><div ng-if="!$ctrl.header.hotelClosed" flex layout="column"><md-button ng-disabled="$ctrl.header.pastDate || ($ctrl.header.availability.actual <= 0 && !$ctrl.header.roomClosed)" ng-click="$ctrl.$toggleRoomTypeClosing($event)" aria-label="Enable/Disable all room rates" tabindex="-1" class="md-square-button no-margin row-1 forced" ng-class="{\'minimal-button\': !$ctrl.$mdMedia(\'gt-xs\'), \n' + "\t\t\t\t'bg-success': !$ctrl.header.roomClosed && $ctrl.header.availability.actual > 0, \n" + "\t\t\t\t'bg-danger': $ctrl.header.roomClosed, \n" + '\t\t\t\t\'bg-warn\': !$ctrl.header.roomClosed && $ctrl.header.availability.actual <= 0}"><div class="text-small" ng-if="$ctrl.header.roomClosed"><strong hide-xs translate="common.closed.female"></strong><span hide show-xs><md-icon class="mdi mdi-lock md-24 text-white"></md-icon></span></div><div class="text-small" ng-if="!$ctrl.header.roomClosed"><strong><span ng-if="$ctrl.header.availability.actual > 0"><span hide-xs translate="ratesheet.available"></span><span hide show-xs><md-icon class="mdi mdi-lock-open md-24 text-white"></md-icon></span></span><span ng-if="$ctrl.header.availability.actual <= 0"><span hide-xs translate="hotel.availability.none.abbr"></span><span hide show-xs><md-icon class="mdi mdi-close md-24 text-white"></md-icon></span></span></strong></div><md-tooltip><span ng-if="$ctrl.header.roomClosed" translate="ratesheet.rate.room.open"></span><span ng-if="!$ctrl.header.roomClosed && $ctrl.header.availability.actual > 0" translate="ratesheet.rate.room.close"></span><span ng-if="!$ctrl.header.roomClosed && $ctrl.header.availability.actual <= 0" translate="hotel.availability.none"></span></md-tooltip></md-button></div></div>');
     $templateCache.put("/tpls/ratesheet/ratesheet-promotion-edit.tpl", '<ng-form name="chRatesheetPromotionForm" flex layout="column"><div ng-if="$ctrl.promotion.hotelClosed" layout layout-align="center center" flex><md-button aria-label="Closed" class="md-icon-button no-margin no-padding auto-height cursor-help" tabindex="-1"><md-icon class="mdi mdi-lock md-18"></md-icon><md-tooltip><span translate="hotel.closed"></span></md-tooltip></md-button></div><div ng-if="!$ctrl.promotion.valid && !$ctrl.promotion.hotelClosed" layout layout-align="center center" flex><md-icon class="mdi mdi-block-helper md-18"></md-icon></div><div ng-if="$ctrl.promotion.valid && !$ctrl.promotion.hotelClosed"><div ng-switch="$ctrl.type" layout="column" layout-align="center center"><div ng-switch-when="MINIMUM_STAY"><md-input-container flex class="no-margin-bottom minimal-input"><label><span translate="common.nights"></span></label><input value="{{$ctrl.promotion.minStay}}" class="text-center" disabled="disabled" readonly="readonly"></md-input-container></div><div ng-switch-default><md-input-container flex class="no-margin-bottom minimal-input"><label><span translate="common.nights"></span></label><input type="number" class="text-center" name="minStay" ng-model="$ctrl.promotion.minStay" ng-disabled="$ctrl.promotion.pastDate || $ctrl.promotion.roomClosed || !$ctrl.promotion.enabled" min="0" step="1" ng-blur="$ctrl.$saveMinStay()" tabindex="2"><div ng-messages="chRatesheetPromotionForm.minStay.$error"><div ng-message="min"><span translate="error.field.min" translate-values="{num: 1}"></span></div></div></md-input-container></div></div></div></ng-form>');
-    $templateCache.put("/tpls/ratesheet/ratesheet-promotion.tpl", '<div flex layout="column"><div ng-if="$ctrl.promotion.hotelClosed" layout layout-align="center center" flex><md-button aria-label="Closed" class="md-icon-button no-margin no-padding auto-height cursor-help" tabindex="-1"><md-icon class="mdi mdi-lock md-18"></md-icon><md-tooltip><span translate="hotel.closed"></span></md-tooltip></md-button></div><div ng-if="!$ctrl.promotion.valid && !$ctrl.promotion.hotelClosed" layout layout-align="center center" flex><md-icon class="mdi mdi-block-helper md-18"></md-icon></div><div ng-if="$ctrl.promotion.valid && !$ctrl.promotion.hotelClosed"><div layout="column" flex><md-button ng-disabled="$ctrl.promotion.pastDate || ($ctrl.promotion.availability.actual <= 0 && !$ctrl.promotion.roomClosed)" ng-click="$ctrl.$toggleClosing()" aria-label="Enable/Disable promotion" class="md-square-button no-margin forced" ng-class="{\'minimal-button\': !$ctrl.$mdMedia(\'gt-xs\'), \n' + "\t\t\t\t\t'bg-success': !$ctrl.promotion.roomClosed && $ctrl.promotion.enabled && $ctrl.promotion.availability.actual > 0,\n" + "\t\t\t\t\t'bg-warn': !$ctrl.promotion.roomClosed && $ctrl.promotion.enabled && $ctrl.promotion.availability.actual <= 0,\n" + '\t\t\t\t\t\'bg-danger\': $ctrl.promotion.roomClosed || !$ctrl.promotion.enabled}" tabindex="-1"><div ng-show="!$ctrl.promotion.roomClosed" flex layout layout-xs="column" layout-align="center center"><small ng-show="$ctrl.promotion.minStay > 1"><md-icon class="mdi mdi-calendar-today md-14 text-white"></md-icon></small></div><md-tooltip><span ng-if="$ctrl.promotion.roomClosed || !$ctrl.promotion.enabled"><span ng-if="$ctrl.promotion.availability.actual > 0" translate="ratesheet.promos.promo.enable"></span><span ng-if="$ctrl.promotion.availability.actual <= 0" translate="hotel.availability.none.abbr"></span></span><span ng-if="!$ctrl.promotion.roomClosed && $ctrl.promotion.enabled" translate="ratesheet.promos.promo.disable"></span></md-tooltip></md-button></div></div></div>');
+    $templateCache.put("/tpls/ratesheet/ratesheet-promotion.tpl", '<div flex layout="column"><div ng-if="$ctrl.promotion.hotelClosed" layout layout-align="center center" flex><md-button aria-label="Closed" class="md-icon-button no-margin no-padding auto-height cursor-help" tabindex="-1"><md-icon class="mdi mdi-lock md-18"></md-icon><md-tooltip><span translate="hotel.closed"></span></md-tooltip></md-button></div><div ng-if="!$ctrl.promotion.valid && !$ctrl.promotion.hotelClosed" layout layout-align="center center" flex><md-icon class="mdi mdi-block-helper md-18"></md-icon></div><div ng-if="$ctrl.promotion.valid && !$ctrl.promotion.hotelClosed"><div layout="column" flex><md-button ng-disabled="$ctrl.promotion.pastDate || $ctrl.promotion.availability.actual <= 0 || $ctrl.promotion.roomClosed" ng-click="$ctrl.$toggleClosing()" aria-label="Enable/Disable promotion" class="md-square-button no-margin forced" ng-class="{\'minimal-button\': !$ctrl.$mdMedia(\'gt-xs\'), \n' + "\t\t\t\t\t'bg-success': !$ctrl.promotion.roomClosed && $ctrl.promotion.enabled && $ctrl.promotion.availability.actual > 0,\n" + "\t\t\t\t\t'bg-warn': !$ctrl.promotion.roomClosed && $ctrl.promotion.enabled && $ctrl.promotion.availability.actual <= 0,\n" + '\t\t\t\t\t\'bg-danger\': $ctrl.promotion.roomClosed || !$ctrl.promotion.enabled}" tabindex="-1"><div ng-show="!$ctrl.promotion.roomClosed" flex layout layout-xs="column" layout-align="center center"><small ng-show="$ctrl.promotion.minStay > 1"><md-icon class="mdi mdi-calendar-today md-14 text-white"></md-icon></small></div><md-tooltip><span ng-if="$ctrl.promotion.roomClosed || !$ctrl.promotion.enabled"><span ng-if="$ctrl.promotion.availability.actual > 0" translate="ratesheet.promos.promo.enable"></span><span ng-if="$ctrl.promotion.availability.actual <= 0" translate="hotel.availability.none.abbr"></span></span><span ng-if="!$ctrl.promotion.roomClosed && $ctrl.promotion.enabled" translate="ratesheet.promos.promo.disable"></span></md-tooltip></md-button></div></div></div>');
     $templateCache.put("/tpls/ratesheet/ratesheet-rate-edit-amount.tpl", '<ng-form name="chRatesheetRateDataForm" flex layout="column"><md-input-container class="no-margin minimal-input no-padding-left text-center"><label><span ng-if="$ctrl.label" ng-bind="$ctrl.label"></span><span ng-if="!$ctrl.label" translate="common.price"></span></label><md-icon ng-if="$ctrl.errorIcon" ng-show="!$ctrl.rate.amount.finalAmount" class="material-icons {{$ctrl.errorIcon}}" ng-class="$ctrl.$mdMedia(\'gt-xs\') ? \'md-24\' : \'md-18\'"></md-icon><input type="number" name="amount" ng-model="$ctrl.rate.amount.finalAmount" ng-model-options="{updateOn: $ctrl.updateOn}" ng-disabled="$ctrl.ngDisabled" min="0.01" step="0.01" aria-label="{{$ctrl.type}} Rate" ng-pattern="$ctrl.REGEXP.price" ng-required="$ctrl.ngRequired" ng-change="$ctrl.$onChange()" ng-class="$ctrl.errorBg && !$ctrl.rate.amount.finalAmount ? $ctrl.errorBg : \'\'"><div ng-messages="chRatesheetRateDataForm.amount.$error"><div ng-repeat="errorObj in $ctrl.errorMessages" ng-message="{{errorObj.error}}"><span ng-if="errorObj.message" ng-bind="{{errorObj.message}}"></span><span ng-if="!errorObj.message && errorObj.messageKey" translate="{{errorObj.messageKey}}" translate-values="errorObj.messageKeyParams"></span></div></div></md-input-container></ng-form>');
     $templateCache.put("/tpls/ratesheet/ratesheet-rate-edit.tpl", '<ng-form name="chRatesheetRateForm" flex layout="column"><div ng-if="$ctrl.rate.hotelClosed" layout layout-align="center center" flex><md-button aria-label="Closed" class="md-icon-button no-margin no-padding auto-height cursor-help" tabindex="-1"><md-icon class="mdi mdi-lock md-18"></md-icon><md-tooltip><span translate="hotel.closed"></span></md-tooltip></md-button></div><div ng-if="!$ctrl.rate.hotelClosed"><div layout="column" layout-align="center center"><div ng-if="!$ctrl.hideRate"><ch-ratesheet-rate-edit-amount rate="$ctrl.rate[$ctrl.$$rateDataKey]" type="{{$ctrl.type}}" ng-required="true" ng-disabled="$ctrl.rate.pastDate || $ctrl.rate.roomClosed || !$ctrl.rate[$ctrl.$$rateDataKey].enabled" validate-on-init="true" update-on="blur" on-change="$ctrl.$saveRate()"></ch-ratesheet-rate-edit-amount></div><div ng-if="!$ctrl.hideRestrictions"><md-input-container class="minimal-input"><label flex><span translate="common.nights"></span></label><input type="number" class="text-center" name="minStay" ng-model="$ctrl.rate[$ctrl.$$rateDataKey].minStay" ng-disabled="$ctrl.rate.pastDate || $ctrl.rate.roomClosed || !$ctrl.rate[$ctrl.$$rateDataKey].enabled" min="1" step="1" ng-blur="$ctrl.$saveMinStay()" tabindex="2"><div ng-messages="chRatesheetRateForm.minStay.$error"><div ng-message="min"><span translate="error.field.min" translate-values="{num: 1}"></span></div></div></md-input-container></div></div></div></ng-form>');
     $templateCache.put("/tpls/ratesheet/ratesheet-rate.tpl", '<div flex layout="column"><div ng-if="$ctrl.rate.hotelClosed" layout layout-align="center center" flex><md-button aria-label="Closed" class="md-icon-button no-margin no-padding auto-height cursor-help" tabindex="-1"><md-icon class="mdi mdi-lock md-18"></md-icon><md-tooltip><span translate="hotel.closed"></span></md-tooltip></md-button></div><div ng-if="!$ctrl.rate.hotelClosed"><div layout="column" flex><md-button ng-disabled="$ctrl.rate.pastDate || ($ctrl.rate.availability.actual <= 0 && !$ctrl.rate.roomClosed)" ng-click="$ctrl.$toggleRateClosing($event)" aria-label="Enable/Disable rate" class="md-square-button no-margin button-label forced" ng-class="{\'minimal-button\': !$ctrl.$mdMedia(\'gt-xs\'), \n' + "\t\t\t\t\t'bg-success': !$ctrl.rate.roomClosed && $ctrl.rate[$ctrl.$$rateDataKey].enabled && $ctrl.rate[$ctrl.$$rateDataKey].amount.finalAmount && $ctrl.rate.availability.actual > 0, \n" + "\t\t\t\t\t'bg-warn': !$ctrl.rate.roomClosed && $ctrl.rate[$ctrl.$$rateDataKey].enabled && (!$ctrl.rate[$ctrl.$$rateDataKey].amount.finalAmount || $ctrl.rate.availability.actual <= 0),\n" + '\t\t\t\t\t\'bg-danger\': $ctrl.rate.roomClosed || !$ctrl.rate[$ctrl.$$rateDataKey].enabled}" tabindex="-1"><div ng-show="!$ctrl.rate.roomClosed && $ctrl.rate[$ctrl.$$rateDataKey].enabled" flex layout layout-xs="column" layout-align="center center"><div flex ng-show="$ctrl.rate[$ctrl.$$rateDataKey].amount.finalAmount"><span ng-class="{\'text-small\': $ctrl.$mdMedia(\'xs\')}">{{$ctrl.rate[$ctrl.$$rateDataKey].amount.finalAmount|currency:\'€\'}}</span></div><div ng-if="!$ctrl.rate[$ctrl.$$rateDataKey].amount.finalAmount"><md-icon class="mdi mdi-currency-usd-off text-white md-24"></md-icon></div><small ng-show="$ctrl.rate[$ctrl.$$rateDataKey].amount.finalAmount && $ctrl.rate[$ctrl.$$rateDataKey].minStay > 1"><md-icon class="mdi mdi-calendar-plus md-14 text-white"></md-icon><md-tooltip><span translate="ratesheet.rate.minstay" translate-value-count="{{$ctrl.rate[$ctrl.$$rateDataKey].minStay}}"></span></md-tooltip></small></div><md-tooltip><div ng-if="!$ctrl.rate[$ctrl.$$rateDataKey].amount.finalAmount"><span translate="ratesheet.rates.none"></span></div><div ng-if="!$ctrl.rate.pastDate"><div ng-if="$ctrl.rate.roomClosed || !$ctrl.rate[$ctrl.$$rateDataKey].enabled"><span translate="ratesheet.rate.enable"></span></div><div ng-if="!$ctrl.rate.roomClosed && $ctrl.rate[$ctrl.$$rateDataKey].enabled"><span ng-if="$ctrl.rate.availability.actual > 0" translate="ratesheet.rate.disable"></span><span ng-if="$ctrl.rate.availability.actual <= 0" translate="hotel.availability.none"></span></div></div></md-tooltip></md-button></div></div></div>');
