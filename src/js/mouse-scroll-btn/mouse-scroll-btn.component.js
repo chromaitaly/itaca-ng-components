@@ -1,14 +1,15 @@
 (function() {
 	'use strict';
 	
-	angular.module("itaca.components").component("mouseScollBtn", {
+	angular.module("itaca.components").component("chMouseScollBtn", {
 		bindings: {
-			anchor : "@"
+			anchor: "@",
+			offset: "@" 
 		},
 		controller: MouseScollBtnCtrl,
 		template: 
 			"<div class=\"mouse-scroll-btn\">" +
-				"<button class=\"no-bg no-border\" ng-click=\"$ctrl.navigator.goToAnchor($ctrl.anchor)\">" +
+				"<button class=\"no-bg no-border\" ng-click=\"$ctrl.navigator.goToAnchor($ctrl.anchor, $ctrl.offset)\">" +
 					"<span class=\"mouse\"><span></span></span>" +
 				"</button>" +
 				"<p translate=\"common.scroll.me\"></p>" +
