@@ -1,9 +1,7 @@
 .ch-parallax {
-	height: 600px; 
-	/*perspective: 1px;*/
-	/*overflow-x: hidden;*/
-	/*overflow-y: auto;*/
+	/*height: 600px;*/
 	position: relative;
+	padding-top: 64px;
 }
 
 .ch-parallax-bg {
@@ -30,10 +28,17 @@
 }
 
 .ch-parallax-content {
-	top: 60px;
+	top: 0;
 	left: 0;
 	width: 100%;
-	height: ~"calc(100% - 80px)";
-	position: absolute;
+	height: 100%;
+	position: relative;
 	z-index:3;
+	padding: 8px 0;
+}
+
+@media @query-gt-sm {
+	.ch-parallax {
+		padding: 8px 0 !important;
+	}
 }

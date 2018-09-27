@@ -4,54 +4,109 @@
     angular.module("itaca.components").factory('StatisticsHelper', StatisticsHelper);
     
     /* @ngInject */
-    function StatisticsHelper($translate) {			
+    function StatisticsHelper($translate, $mdMedia, AppOptions, ColorsUtils, chValueFilter, NumberUtils) {			
     	var $$service = {};
     	
-    	$$service.createChartData = function(type, datasets, tooltips, onHoverEv, onClickEv){
-    		var chartData = $$service.$createDefaultChartData(datasets, tooltips, onHoverEv, onClickEv);
+    	$$service.createChartData = function(type, datasets, tooltips, extra, onHoverEv, onClickEv){
+    		var chartData = $$service.$createDefaultChartData(datasets, tooltips, extra, onHoverEv, onClickEv);
     		
     		switch(type) {
     		case "RESERVATIONS_AMOUNT_TREND":
     			chartData.type = 'bar';
     			
-    			_.forEach(chartData.data.datasets, function(d){
-    				d.label = $translate.instant('statistics.statistics.revenue') + '€';
-    			});
+    			_.forEach(chartData.data.datasets, function(data){
+ 					data.backgroundColor = ColorsUtils.hex2rgba("#92278f", 80);
+ 					data.borderColor = ColorsUtils.hex2rgba("#92278f");
+ 					data.fill = true;
+ 				});
     			
     			// Y
     			chartData.options.scales.yAxes[0].ticks.callback = function(value, index, values) {
-                    return value + ' €';
+                    return NumberUtils.formatter(value, 2);
+				};
+				chartData.options.scales.yAxes[0].scaleLabel = {
+					display: true,
+		        	labelString: 'Euro €',
 				};
     			
     			// X
     			chartData.options.scales.xAxes[0].ticks.callback = function(value, index, values) {
-                   return moment.unix(value).format("MMM YY");
+    				if(!$mdMedia('gt-sm')){
+    					return index % 2 === 0 ? moment.unix(value).format("MMM YY") : '';
+    				}
+                	return moment.unix(value).format("MMM YY");
 				};
     			
+				chartData.options.tooltips.callbacks.label = function(tooltipItem, data) {
+					return $translate.instant('reservations.reservations'); 
+				},
+				
     			chartData.options.legend.display = false;
     			
     			break;
     			
     		case "RESERVATIONS_SOURCE_TREND":
     			chartData.type = 'doughnut';
+    			
+    			_.forEach(chartData.data.datasets, function(ds){
+    				ds.backgroundColor = ColorsUtils.hex2rgba("#92278f");
+    				ds.borderColor = "#FFF";
+    				ds.borderWidth = 4;
+    				ds.hoverBorderWidth = 0;
+    				ds.hoverBorderColor = "#FFF";
+//    				ds.fill = false;
+    			});
+    			
+    			var tp = chartData.options.tooltips;
+    			tp.callbacks = {
+					title: function(tp, data) {
+						return data.labels[tp[0].index] == 'PORTAL' ? AppOptions.about.name : $translate.instant('channel.source.' + data.labels[tp[0].index].toLowerCase());
+					},
+					label: function(tooltipItem, data) {
+						return ' '; //label vuota ma con il quadratino colorato
+					},
+					footer: function(tp, data) {
+						var label = [];
+						
+						var tooltip = _.find(tooltips[0], function(value, key){
+							return key == data.labels[tp[0].index];
+						});
+
+						if(tooltip){
+							_.forEach(tooltip, function(obj, key){
+								label.push($translate.instant(obj.key) + ": " + chValueFilter(obj.value));
+							});
+						}
+
+						return label;
+					},
+    			};
+    			
     			chartData.options = {
+					layout: {
+			            padding: {
+			            	left: 10,
+			                right: 10,
+			                top: 10,
+			                bottom: 10
+			            }
+					},
+					animationSteps : 100,
+					animationEasing : "easeOutBounce",
+    					
+    					
     				responsive: true,
-    				legend: {
-    					position: 'bottom',
-    				},
+    				legend: false,
+    				tooltips: tp,
     				animation: {
     					animateScale: true,
     					animateRotate: true
     				},
+    				cutoutPercentage: 60,
     				scales: {
     					xAxes: [
     						{
     	    					display: false,
-    							ticks: {
-		    						callback: function(value, index, values) {
-		    	                        return $translate.instant('channel.source.' + value.toLowerCase());
-		    	                    }
-    							},
     							scaleLabel: {
     								display: true,
     							},
@@ -60,19 +115,58 @@
     				}
     			};
     			
-    			
     			break;
     			
     		case "REVIEWS_COUNT_TREND":
-    			chartData.type = 'bar';
+    			chartData.type = 'line';
+    			
+    			//mostro la linea di divisione
+    			if(extra && extra.benchmarkValue){
+    				chartData.options.horizontalLine = [{
+				      "y": extra.benchmarkValue,
+				      "style": "#444",
+				      "text": $translate.instant("statistics.statistic.benchmark"),
+				    }];
+    				
+    			}
+    			
+    			_.forEach(chartData.data.datasets, function(ds){
+    				ds.backgroundColor = ColorsUtils.hex2rgba("#92278f", 60);
+    				ds.borderColor = ColorsUtils.hex2rgba("#92278f");
+    				ds.pointBackgroundColor = ColorsUtils.hex2rgba("#92278f");
+    				ds.pointRadius = 2;
+    				ds.pointHoverRadius = 4;
+    				ds.lineTension = 0;
+    			});
+    		
+    			chartData.options.scales.xAxes[0].ticks.callback = function(value, index, values) {
+    				if(!$mdMedia('gt-sm')){
+    					return index % 2 === 0 ? moment.unix(value).format("MMM YY") : '';
+    				}
+                    return moment.unix(value).format("MMM YY");
+ 				};
+
+ 				chartData.options.legend.display = false;
+ 				
+ 				chartData.options.scales.yAxes[0].ticks.min = 4;
+ 				chartData.options.scales.yAxes[0].ticks.max = 10;
+ 				
+ 				chartData.options.tooltips.callbacks.label = function(tooltipItem, data) {
+					return $translate.instant('reviews.reviews');
+				};
+				
+				chartData.options.scales.yAxes[0].scaleLabel = {
+					display: true,
+		        	labelString: $translate.instant('common.opinion'),
+				};
+ 				
     			break;
     		}    	
     		
     		return chartData;
-    		
     	};
     	
-    	$$service.$createDefaultChartData = function(datasets, tooltips, onHoverEv, onClickEv) {
+    	$$service.$createDefaultChartData = function(datasets, tooltips, extra, onHoverEv, onClickEv) {
     		var chartData = {
 				data: {
 					labels: [],
@@ -91,7 +185,10 @@
 							},
 							ticks: {
 								 beginAtZero: true //imposto l'asse x a partire da 0
-							}
+							},
+							gridLines: {
+							   tickMarkLength: 10
+							},
 			            }],
 			            xAxes: [{
 							display: true,
@@ -100,16 +197,13 @@
 							},
 							ticks: {
 								 beginAtZero: true //imposto l'asse x a partire da 0
-							}
+							},
+							gridLines: {
+							   tickMarkLength: 10
+							},
 			            }]
 					},
 					legend: {},
-//					tooltips: {
-//						enabled: false,
-//						mode: 'index',
-//						position: 'nearest',
-//						custom: $$service.$tooltipsGenerator
-//					},
 					hover: {
 						mode: 'index',
 						intersect: true
@@ -117,6 +211,13 @@
 					animation: {
     					animateScale: true,
     					animateRotate: true
+    				},
+    				tooltips: {
+    					backgroundColor: '#FFF',
+    					borderColor: 'rgba(0,0,0, .7)',
+    					titleFontColor: '#000',
+    					bodyFontColor: '#000',
+    					footerFontColor: '#000',
     				}
 				}
     		};
@@ -126,27 +227,48 @@
     			chartData.options.tooltips = {
     				mode: 'index',
 					callbacks: {
+						title: function(tp, data) {
+							return _.capitalize(moment.unix(data.labels[tp[0].index]).format("MMMM YYYY"));
+						},
+						
 						label: function(tooltipItem, data) {
-							var label = '';
-							_.forEach(tooltips, function(tp){
-								
-								var idx = data.labels[tooltipItem.index];
-								
-								label += tp[idx].key + ': ';
-								label += tp[idx].value + '\\n';
+							return ''; //label vuota ma con il quadratino colorato
+						},
+						
+						footer: function(tp, data) {
+							var label = [];
+							
+							var tooltip = _.find(tooltips[0], function(value, key){
+								return key == data.labels[tp[0].index];
 							});
+
+							if(tooltip){
+								_.forEach(tooltip, function(obj, key){
+									label.push($translate.instant(obj.key) + ": " + chValueFilter(obj.value));
+								});
+							}
+
 							return label;
 						},
 					},
+					backgroundColor: '#FFF',
+					borderColor: '#666',
+					borderWidth: 1,
+					titleFontColor: '#000',
+					bodyFontColor: '#222',
+					footerFontColor: '#444',
 				}
     		}
+    		
+    		//default background color
+    		var backgroundColor = ColorsUtils.hex2rgba("#92278f");
     		
     		if (_.isPlainObject(datasets)) {
     			chartData.data.labels = Object.keys(datasets);
     			chartData.data.datasets.push({
     				data: Object.values(datasets),
-    				backgroundColor: "#92278f", // test
-    				label: $translate.instant('reservations.reservations'), //test
+    				backgroundColor:backgroundColor,
+    				fill: true,
     			});
     			
     		} else if (_.isArray(datasets)) {
@@ -154,9 +276,8 @@
 	    			chartData.data.labels = Object.keys(v);
 	    			chartData.data.datasets.push({
 	    				data: Object.values(v),
-	    				backgroundColor: "#92278f", // test
-	    				label: $translate.instant('reservations.reservations'), //test
-	    				fill: false,
+	    				backgroundColor:backgroundColor,
+	    				fill: true,
 	    			});
 	    		});
 	    		
@@ -168,78 +289,6 @@
     		
     		return chartData;
     	};
-    	
-    	//TODO genero una tooltip custom
-    	$$service.$tooltipsGenerator = function(tooltipModel){
-    		
-    		// Tooltip Element
-            var tooltipEl = document.getElementById('chartjs-tooltip');
-
-            // Create element on first render
-            if (!tooltipEl) {
-                tooltipEl = document.createElement('div');
-                tooltipEl.id = 'chartjs-tooltip';
-                tooltipEl.innerHTML = "<table></table>";
-                document.body.appendChild(tooltipEl);
-            }
-
-            // Hide if no tooltip
-            if (tooltipModel.opacity === 0) {
-                tooltipEl.style.opacity = 0;
-                return;
-            }
-
-            // Set caret Position
-            tooltipEl.classList.remove('above', 'below', 'no-transform');
-            if (tooltipModel.yAlign) {
-                tooltipEl.classList.add(tooltipModel.yAlign);
-            } else {
-                tooltipEl.classList.add('no-transform');
-            }
-
-            function getBody(bodyItem) {
-                return bodyItem.lines;
-            }
-
-            // Set Text
-            if (tooltipModel.body) {
-                var titleLines = tooltipModel.title || [];
-                var bodyLines = tooltipModel.body.map(getBody);
-
-                var innerHtml = '<thead>';
-
-                titleLines.forEach(function(title) {
-                    innerHtml += '<tr><th>' + title + '</th></tr>';
-                });
-                innerHtml += '</thead><tbody>';
-
-                bodyLines.forEach(function(body, i) {
-//                    var colors = tooltipModel.labelColors[i];
-//                    var style = 'background:' + colors.backgroundColor;
-//                    style += '; border-color:' + colors.borderColor;
-//                    style += '; border-width: 2px';
-//                    var span = '<span style="' + style + '"></span>';
-                    innerHtml += '<tr><td>' + body + '</td></tr>';
-                });
-                innerHtml += '</tbody>';
-
-                var tableRoot = tooltipEl.querySelector('table');
-                tableRoot.innerHTML = innerHtml;
-            }
-
-            // `this` will be the overall tooltip
-            var position = this._chart.canvas.getBoundingClientRect();
-
-            // Display, position, and set styles for font
-            tooltipEl.style.opacity = 1;
-            tooltipEl.style.position = 'absolute';
-            tooltipEl.style.left = position.left + tooltipModel.caretX + 'px';
-            tooltipEl.style.top = position.top + tooltipModel.caretY + 'px';
-            tooltipEl.style.fontFamily = tooltipModel._bodyFontFamily;
-            tooltipEl.style.fontSize = tooltipModel.bodyFontSize + 'px';
-            tooltipEl.style.fontStyle = tooltipModel._bodyFontStyle;
-            tooltipEl.style.padding = tooltipModel.yPadding + 'px ' + tooltipModel.xPadding + 'px';
-        };
     	
     	return $$service;
     }

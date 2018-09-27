@@ -66,7 +66,7 @@
 		};
 		
 		this.$calculatePercentage = function() {
-			ctrl.$$percentage = Math.round((ctrl.count || 0) * 100 / (ctrl.summary.totalReviews || 1));
+			ctrl.$$percentage = Math.round((ctrl.count || 0) * 100 / (ctrl.summary.totalReviews || 1));ctrl.$$percentage = ctrl.$$percentage.toFixed(2);
 		};
 		
 		this.$onDestroy = function() {

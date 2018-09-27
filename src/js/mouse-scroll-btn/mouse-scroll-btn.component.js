@@ -1,0 +1,28 @@
+(function() {
+	'use strict';
+	
+	angular.module("itaca.components").component("mouseScollBtn", {
+		bindings: {
+			anchor : "@"
+		},
+		controller: MouseScollBtnCtrl,
+		template: 
+			"<div class=\"mouse-scroll-btn\">" +
+				"<button class=\"no-bg no-border\" ng-click=\"$ctrl.navigator.goToAnchor($ctrl.anchor)\">" +
+					"<span class=\"mouse\"><span></span></span>" +
+				"</button>" +
+				"<p translate=\"common.scroll.me\"></p>" +
+			"</div>"
+	});
+	
+	/* @ngInject */
+	function MouseScollBtnCtrl(Navigator) {
+		var ctrl = this;
+		
+		this.$onInit = function(){
+			ctrl.navigator = Navigator;
+			
+			ctrl.anchor = ctrl.anchor || 'body';
+		};
+	}
+})();

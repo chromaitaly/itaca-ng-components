@@ -22,7 +22,7 @@
 		        "</div>" +
 		        
    				"<div ng-if=\"$ctrl.chRoomCtrl.showRateBtn\" ng-class=\"::{'img-right-bar': $ctrl.$mdMedia('gt-xs'), 'img-bottom-right-bar': $ctrl.$mdMedia('xs')}\" class=\"layout-row layout-align-center-center\">" +
-		        	"<md-button ng-click=\"$ctrl.toggleRates()\" aria-label=\"Open room prices\">" +
+		        	"<md-button ng-click=\"$ctrl.toggleRates()\" aria-label=\"Open room prices\" class=\"md-square-button\">" +
 			        	"<div layout class=\"row-mini text-left layout-padding no-padding\">" +
 				        	"<div layout=\"column\">" +
 					        	"<small>" +
