@@ -14,7 +14,10 @@
 			onCloseRoom: "&?",
 			onViewRates: "&?",
 			onReservationClick: "&?",
-			onOverbookingClick: "&?"
+			onOverbookingClick: "&?",
+			onReservationDrag: "&?",
+			onFinishReservationDrag: "&?",
+			onReservationDrop: "&?"
 		},
 		controller : PlanningRoomCtrl,
 		templateUrl : "/tpls/planning/planning-room.tpl"
@@ -47,10 +50,7 @@
 		};
 		
 		this.$initDates = function() {
-			// prima le svuoto (per dare l'effetto)
-//			ctrl.$$viewDates = [];
-			// copio le date in ingresso
-			ctrl.$$viewDates = angular.copy(ctrl.dates);
+			ctrl.$$viewDates = ctrl.dates;
 			
 			// data di inzio (più piccola)
 			ctrl.$$startDate = _.minBy(ctrl.$$viewDates, function(viewDate) {
@@ -72,23 +72,33 @@
 			var start = moment(ctrl.$$startDate).startOf("day");
 			var end = moment(ctrl.$$endDate).startOf("day");
 			
+			// svuoto planning map
+			ctrl.$$datePlanningMap = {};
+			
 			_.forEach(ctrl.$$viewDates, function(viewDate) {
+				// timestamp
+				viewDate.timestamp = viewDate.date.getTime();
 				// dimensione cella
 				viewDate.$daySize = ctrl.$$config.daySize;
 				// planning
-				viewDate.$planning = _.find(ctrl.planning, function(p) {
+				var planning = _.find(ctrl.planning, function(p) {
 					return moment(p.date).isSame(moment(viewDate.date), "days");
 				});
 				
-				if (!viewDate.$planning || !viewDate.$planning.active || !viewDate.$planning.active.reservation) {
+				// imposto il planning
+				ctrl.$$datePlanningMap[viewDate.timestamp] = planning;
+				
+				if (!planning || !planning.active || !planning.active.reservation) {
 					return;
 				}
 				
-				ctrl.$manageDatePlanningReservation(start, end, viewDate.date, viewDate.$planning.active);
+				// init active planning
+				ctrl.$manageDatePlanningReservation(start, end, viewDate.date, planning.active);
 				
-				_.forEach(viewDate.$planning.overbookings, function(ovPlanning) {
+				// init overbookings planning
+				_.forEach(planning.overbookings, function(ovPlanning) {
 					ctrl.$manageDatePlanningReservation(start, end, viewDate.date, ovPlanning);
-					ovPlanning					
+					ovPlanning.reservation.$show = collection.length > 1 ? true : ovPlanning.reservation.$show;
 				});
 			});
 		};
@@ -99,10 +109,11 @@
 				
 			var checkin = moment(res.checkin).startOf("day");
 			var checkout = moment(res.checkout).startOf("day");
+			var targetCheckout = moment(checkout).subtract(1, "days");
 			
 			res.$differentMonths = !checkin.isSame(checkout, "month");
 			res.$startsEarlier = current.isAfter(activeStart, "days") || activeStart.isAfter(checkin, "days") || checkin.isBefore(start, "days");
-			res.$endsLater = activeEnd.isBefore(checkout, "days") || end.isBefore(checkout, "days");
+			res.$endsLater = moment(activeEnd).subtract(1, "days").isBefore(targetCheckout, "days") || end.isBefore(targetCheckout, "days");
 			
 			res.$days = Math.abs((activeEnd.isAfter(end) ? end.add(1, "days"): activeEnd).diff(activeStart.isAfter(start) ? activeStart : start, "days")) || 1;
 			
@@ -114,16 +125,16 @@
 			res.$show = activeStart.isSame(current, "days") || (res.$startsEarlier && current.isSame(start, "days"));
 		};
 		
-		this.$openRoom = function(date) {
-			ctrl.chPlanningCtrl.onOpenRoom && ctrl.chPlanningCtrl.onOpenRoom({$date: date, $room: ctrl.room});
+		this.$openRoom = function(ev, date) {
+			ctrl.chPlanningCtrl.onOpenRoom && ctrl.chPlanningCtrl.onOpenRoom({$event: ev, $date: date, $room: ctrl.room});
 		};
 		
-		this.$closeRoom = function(date) {
-			ctrl.chPlanningCtrl.onCloseRoom && ctrl.chPlanningCtrl.onCloseRoom({$date: date, $room: ctrl.room});
+		this.$closeRoom = function(ev, date) {
+			ctrl.chPlanningCtrl.onCloseRoom && ctrl.chPlanningCtrl.onCloseRoom({$event: ev, $date: date, $room: ctrl.room});
 		};
 		
-		this.$viewRates = function(date) {
-			ctrl.chPlanningCtrl.onViewRates && ctrl.chPlanningCtrl.onViewRates({$date: date, $room: ctrl.room});
+		this.$viewRates = function(ev, date) {
+			ctrl.chPlanningCtrl.onViewRates && ctrl.chPlanningCtrl.onViewRates({$event: ev, $date: date, $room: ctrl.room});
 		};
 	}
 })();

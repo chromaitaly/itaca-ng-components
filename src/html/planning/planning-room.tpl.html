@@ -18,15 +18,20 @@
 		</div>
 	</div>
 	
-	<div flex layout class="ch-planning-days-content">
+	<div flex layout class="ch-planning-days-content" ng-class="{'ch-planning-room-droppable': $ctrl.room.$droppable}">
 		<ch-planning-cell flex ng-repeat="viewDate in $ctrl.$$viewDates track by viewDate.uid" 
 			view-date="viewDate"
+			can-drop="$ctrl.room.$droppable"
+			planning="$ctrl.$$datePlanningMap[viewDate.timestamp]"
 			settings="$ctrl.settings"
-			on-open-room="$ctrl.$openRoom($date)"
-			on-close-room="$ctrl.$closeRoom($date)"
-			on-view-rates="$ctrl.$viewRates($date)"
-			on-reservation-click="$ctrl.onReservationClick({'$reservation': $reservation, '$roomId': $roomId, '$roomTypeId': $roomTypeId, '$startDate': $startDate, '$endDate': $endDate})"
-			on-overbooking-click="$ctrl.onOverbookingClick({'$reservation': $reservation, '$roomId': $roomId, '$roomTypeId': $roomTypeId, '$startDate': $startDate, '$endDate': $endDate})">
+			on-open-room="$ctrl.$openRoom($event, $date)"
+			on-close-room="$ctrl.$closeRoom($event, $date)"
+			on-view-rates="$ctrl.$viewRates($event, $date)"
+			on-reservation-click="$ctrl.onReservationClick({'$event': $event, '$reservation': $reservation, '$roomSoldId': $roomSoldId, '$roomId': $roomId, '$roomTypeId': $roomTypeId, '$startDate': $startDate, '$endDate': $endDate})"
+			on-overbooking-click="$ctrl.onOverbookingClick({'$event': $event, '$reservation': $reservation, '$roomSoldId': $roomSoldId, '$roomId': $roomId, '$roomTypeId': $roomTypeId, '$startDate': $startDate, '$endDate': $endDate})"
+			on-reservation-drag="$ctrl.onReservationDrag({'$event': $event, '$reservation': $reservation, '$startDate': $startDate, '$endDate': $endDate, '$roomTypeId': $roomTypeId})"
+			on-finish-reservation-drag="$ctrl.onFinishReservationDrag({'$event': $event, '$reservation': $reservation, '$startDate': $startDate, '$endDate': $endDate, '$roomTypeId': $roomTypeId})"
+			on-reservation-drop="$ctrl.onReservationDrop({'$event': $event, '$reservation': $reservation, '$roomSoldId': $roomSoldId, '$newRoomId': $newRoomId, '$startDate': $startDate, '$endDate': $endDate})">
 		</ch-planning-cell>
 	</div>
 </div>

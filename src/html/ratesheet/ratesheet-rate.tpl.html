@@ -7,9 +7,9 @@
 	</div>
 	<div ng-if="!$ctrl.rate.hotelClosed">
 		<div layout="column" flex>
-			<md-button ng-disabled="$ctrl.rate.pastDate || $ctrl.rate.availability.actual <= 0" 
+			<md-button ng-disabled="$ctrl.rate.pastDate || ($ctrl.rate.availability.actual <= 0 && !$ctrl.rate.roomClosed)" 
 				ng-click="$ctrl.$toggleRateClosing($event)" aria-label="Enable/Disable rate"
-				class="no-margin button-label forced" ng-class="{'minimal-button': !$ctrl.$mdMedia('gt-xs'), 
+				class="md-square-button no-margin button-label forced" ng-class="{'minimal-button': !$ctrl.$mdMedia('gt-xs'), 
 					'bg-success': !$ctrl.rate.roomClosed && $ctrl.rate[$ctrl.$$rateDataKey].enabled && $ctrl.rate[$ctrl.$$rateDataKey].amount.finalAmount && $ctrl.rate.availability.actual > 0, 
 					'bg-warn': !$ctrl.rate.roomClosed && $ctrl.rate[$ctrl.$$rateDataKey].enabled && (!$ctrl.rate[$ctrl.$$rateDataKey].amount.finalAmount || $ctrl.rate.availability.actual <= 0),
 					'bg-danger': $ctrl.rate.roomClosed || !$ctrl.rate[$ctrl.$$rateDataKey].enabled}" tabindex="-1">

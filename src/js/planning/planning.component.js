@@ -18,14 +18,15 @@
 			onViewRates: "&?",
 			onDateClick: "&?",
 			onReservationClick: "&?",
-			onOverbookingClick: "&?"
+			onOverbookingClick: "&?",
+			onReservationMove: "&?"
     	},
 		controller: PlanningCtrl,
 		templateUrl: "/tpls/planning/planning.tpl"
     });
     
     /* @ngInject */
-    function PlanningCtrl($scope, $q, $mdMedia, InfinitePaging){
+    function PlanningCtrl($scope, $q, $mdMedia, InfinitePaging, ColorsUtils){
     	var ctrl = this;
     	
     	this.$mdMedia = $mdMedia;
@@ -194,6 +195,53 @@
 			ctrl.onDateClick && $q.when(ctrl.onDateClick({$event: ev, $date: viewDate.date, $opened: !viewDate.roomsClosed})).finally(function() {
 				ctrl.$manageDatesClosing();
 			});
+		};
+		
+		this.$onReservationDrag = function(reservation, startDate, roomTypeId) {
+			ctrl.$$dragging = true;
+			
+			var bgColor;
+			if (reservation && ctrl.settings && ctrl.settings.reservationColorLegend) {
+				bgColor = ctrl.settings.reservationColorLegend[reservation.source];
+			}
+			
+			var droppableViewDate = _.find(ctrl.$$viewDates, function(viewDate) {
+				return moment(viewDate.date).isSame(moment(startDate), "days");
+			});
+			
+			if (droppableViewDate) {
+				droppableViewDate.$droppable = true;
+				droppableViewDate.$bgColor = ColorsUtils.hex2rgba(bgColor, 50);
+			}
+			
+			var droppableRooms = _.filter(ctrl.rooms.items, function(room) {
+				return _.some(room.types, ["id", roomTypeId]); 
+			});
+			
+			_.forEach(droppableRooms, function(room) {
+				room.$droppable = true;
+			});
+		};
+		
+		this.$onFinishReservationDrag = function(reservation, startDate, roomTypeId) {
+			var droppableViewDate = _.find(ctrl.$$viewDates, function(viewDate) {
+				return moment(viewDate.date).isSame(moment(startDate), "days");
+			});
+			
+			if (droppableViewDate) {
+				droppableViewDate.$droppable = false;
+				droppableViewDate.$bgColor = null;
+			}
+			
+			var droppableRooms = _.filter(ctrl.rooms.items, function(room) {
+				return _.some(room.types, ["id", roomTypeId]); 
+			});
+			
+			_.forEach(droppableRooms, function(room) {
+				room.$droppable = false;
+			});
+			
+			ctrl.$$dragging = false;
 		};
     }
 })();

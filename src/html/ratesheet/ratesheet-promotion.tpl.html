@@ -14,7 +14,7 @@
 		<div layout="column" flex>
 			<md-button ng-disabled="$ctrl.promotion.pastDate || $ctrl.promotion.availability.actual <= 0 || $ctrl.promotion.roomClosed" 
 				ng-click="$ctrl.$toggleClosing()" aria-label="Enable/Disable promotion"
-				class="no-margin forced" ng-class="{'minimal-button': !$ctrl.$mdMedia('gt-xs'), 
+				class="md-square-button no-margin forced" ng-class="{'minimal-button': !$ctrl.$mdMedia('gt-xs'), 
 					'bg-success': !$ctrl.promotion.roomClosed && $ctrl.promotion.enabled && $ctrl.promotion.availability.actual > 0,
 					'bg-warn': !$ctrl.promotion.roomClosed && $ctrl.promotion.enabled && $ctrl.promotion.availability.actual <= 0,
 					'bg-danger': $ctrl.promotion.roomClosed || !$ctrl.promotion.enabled}" tabindex="-1">

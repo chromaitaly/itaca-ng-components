@@ -1,10 +1,10 @@
 <div flex layout="column" class="ch-planning-cell" ng-class="{
-	'ch-planning-cell-past': $ctrl.viewDate.isPast && !$ctrl.viewDate.$planning.roomClosed, 
-	'ch-planning-cell-closed': $ctrl.viewDate.$planning.roomClosed && !$ctrl.viewDate.$planning.active && !$ctrl.viewDate.$planning.overbookings.length,
-	'ch-planning-cell-active': $ctrl.viewDate.$planning.active || $ctrl.viewDate.$planning.overbookings.length,
-	}" ng-click="$ctrl.$openCellMenu()">
+	'ch-planning-cell-past': $ctrl.viewDate.isPast && !$ctrl.planning.roomClosed, 
+	'ch-planning-cell-closed': $ctrl.planning.roomClosed && !$ctrl.planning.active && !$ctrl.planning.overbookings.length,
+	'ch-planning-cell-active': $ctrl.planning.active || $ctrl.planning.overbookings.length,
+	}" ng-click="$ctrl.$openCellMenu($event)">
 	
-	<div ng-if="$ctrl.viewDate.$planning.hotelClosed" flex layout="column" layout-padding-sm layout-align="center center">
+	<div ng-if="$ctrl.planning.hotelClosed" flex layout="column" layout-padding-sm layout-align="center center">
 		<div>
 			<md-icon class="mdi mdi-lock md-24 text-gray-light"></md-icon>
 		</div>
@@ -12,68 +12,111 @@
 			<small translate="hotel.closed"></small>
 		</div>
 	</div>
+
+	<div ng-if="!$ctrl.planning.hotelClosed" flex layout="column" class="ch-planning-cell-content"
+		ng-class="{'ch-planning-cell-droppable': $ctrl.canDrop && $ctrl.viewDate.$droppable}">
 	
-	<div ng-if="!$ctrl.viewDate.$planning.hotelClosed" flex layout="column">
-		<ch-planning-reservation ng-if="$ctrl.viewDate.$planning.active.reservation.$show" class="animated fadeIn"
-			reservation="$ctrl.viewDate.$planning.active.reservation" 
-			room-people="$ctrl.viewDate.$planning.active.people" 
-			room-extra-people="$ctrl.viewDate.$planning.active.extraPeople"
+		<div class="ch-planning-cell-drop-hint-cont" ng-class="{
+			'ch-planning-cell-drop-over': $ctrl.$$dropOver
+		}" ng-style="{'background-color': $ctrl.viewDate.$bgColor, 'width': $ctrl.$$dragStyle.width}">
+			
+			<div ng-if="$ctrl.$$dropOver" flex layout layout-align="center center" class="ch-planning-cell-drop-over-hint">
+				<small><em translate="planning.release.to.assign.room"></em></small>
+			</div>
+		</div>
+		
+		<ch-planning-reservation ng-if="$ctrl.planning.active.reservation.$show" class="animated fadeIn"
+			planning="$ctrl.planning.active" 
 			settings="$ctrl.settings"
 			on-click="$ctrl.onReservationClick({
+				'$event': $event,
 				'$reservation': $reservation, 
-				$roomId: $ctrl.viewDate.$planning.active.roomId,
-				$roomTypeId: $ctrl.viewDate.$planning.active.roomType.id,
-				$startDate: $ctrl.viewDate.$planning.active.startDate,
-				$endDate: $ctrl.viewDate.$planning.active.endDate
-			})">
+				'$roomId': $ctrl.planning.active.roomId,
+				'$roomSoldId': $ctrl.planning.active.roomSoldId, 
+				'$roomTypeId': $ctrl.planning.active.roomType.id,
+				'$startDate': $ctrl.planning.active.startDate,
+				'$endDate': $ctrl.planning.active.endDate
+			})"
+			can-drag="true"
+			on-drag-start="$ctrl.$initReservationDrag($event, $planning)"
+			on-drag-end="$ctrl.$finishReservationDrag($event, $planning)">
 		</ch-planning-reservation>
 		
-		<div flex ng-if="!$ctrl.viewDate.$planning.active" layout layout-align="end start">
-			<md-menu md-position-mode="target bottom" class="ch-planning-cell-menu">
-		 		<md-button class="md-icon-button" ng-class="{'no-margin-x-sides': !$ctrl.$mdMedia('gt-sm')}"
-		 			ng-click="$mdMenu.open($event)" ng-disabled="$ctrl.chPlanningCtrl.$$actionInProgress" aria-label="Open date menu">
-			   		<md-icon class="mdi mdi-dots-vertical md-24" ng-class="{'text-gray-light': !$ctrl.viewDate.$planning.roomClosed, 'text-white': $ctrl.viewDate.$planning.roomClosed}"></md-icon>
-			 	</md-button>
-			 	<md-menu-content>
-			   		<md-menu-item ng-if="!$ctrl.viewDate.isPast && $ctrl.onCloseRoom && !$ctrl.viewDate.$planning.roomClosed">
-			   			<md-button ng-click="$ctrl.$closeRoom()" aria-label="Close room availability">
-			   				<md-icon class="mdi mdi-lock md-24"></md-icon>
-			   				<span translate="hotel.availability.close"></span>
-			   			</md-button>
-			   		</md-menu-item>
-			   		<md-menu-item ng-if="$ctrl.onOpenRoom && $ctrl.viewDate.$planning.roomClosed">
-			   			<md-button ng-click="$ctrl.$openRoom()" aria-label="Open room availability">
-							<md-icon class="mdi mdi-lock-open md-24"></md-icon>			   			
-			   				<span translate="hotel.availability.open"></span>
-			   			</md-button>
-			   		</md-menu-item>
-			   		<md-menu-item ng-if="$ctrl.onViewRates && !$ctrl.viewDate.$planning.roomClosed">
-			   			<md-button ng-click="$ctrl.$viewRates()" aria-label="View rates">
-			   				<md-icon class="mdi mdi-cash-usd md-24"></md-icon>
-			   				<span translate="ratesheet.rates.view"></span>
-			   			</md-button>
-			   		</md-menu-item>
-			   		<md-menu-item ng-if="!$ctrl.viewDate.$planning.roomClosed">
-			   			<md-button ui-sref="hotel-reservations-new({checkin: $ctrl.viewDate.date})" aria-label="New reservation">
-			   				<md-icon class="mdi mdi-book-plus md-24"></md-icon>
-			   				<span translate="reservations.reservation.new"></span>
-			   			</md-button>
-			   		</md-menu-item>
-			 	</md-menu-content>
-			</md-menu>
-		</div> 
-		
-		<ch-planning-overbookings ng-if="$ctrl.viewDate.$planning.overbookings.length" class="animated fadeIn"
+		<ch-planning-overbookings ng-if="$ctrl.$$showOverbookings" class="animated fadeIn"
 			date="$ctrl.viewDate.date"
-			overbookings="$ctrl.viewDate.$planning.overbookings" 
+			overbookings="$ctrl.planning.overbookings" 
 			day-size="$ctrl.viewDate.$daySize"
 			on-click="$ctrl.onOverbookingClick({
+				'$event': $event,
 				'$reservation': $reservation,
 				'$roomId': $roomId, 
+				'$roomSoldId': $roomSoldId,
 				'$roomTypeId': $roomTypeId,
 				'$startDate': $startDate,
 				'$endDate': $endDate
-			})">
+			})"
+			on-drag-start="$ctrl.$initReservationDrag($event, $planning)"
+			on-drag-end="$ctrl.$finishReservationDrag($event, $planning)">
 		</ch-planning-overbookings>
+		
+		<div class="ch-planning-cell-available" ng-style="{'background-color': $ctrl.canDrop && $ctrl.viewDate.$droppable ? $ctrl.viewDate.$bgColor : null}" 
+			flex layout="column"
+			drop-container
+			drop-accepts="$ctrl.$isRoomAssignable($dragData)"
+			on-drag-enter="$ctrl.$initDrop($event, $dragData)"
+			on-drag-over="$ctrl.$onDragOver($event, $dragData)"
+			on-drag-leave="$ctrl.$cancelDrop($event, $dragData)"
+			on-drop="$ctrl.$dropReservation($event, $dragData)">
+		
+			<div ng-if="!$ctrl.planning.active" layout layout-align="end start">
+				<md-menu md-position-mode="target bottom" class="ch-planning-cell-menu">
+			 		<md-button class="md-icon-button no-margin-right" ng-class="{'no-margin-x-sides': !$ctrl.$mdMedia('gt-sm')}"
+			 			ng-click="$mdMenu.open($event)" ng-disabled="$ctrl.chPlanningCtrl.$$actionInProgress" aria-label="Open date menu">
+				   		<md-icon class="mdi mdi-dots-vertical md-24" ng-class="{'text-gray-light': !$ctrl.planning.roomClosed, 'text-white': $ctrl.planning.roomClosed}"></md-icon>
+				 	</md-button>
+				 	<md-menu-content>
+				   		<md-menu-item ng-if="!$ctrl.viewDate.isPast && $ctrl.onCloseRoom && !$ctrl.planning.roomClosed">
+				   			<md-button ng-click="$ctrl.$closeRoom($event)" aria-label="Close room availability">
+				   				<md-icon class="mdi mdi-lock md-24"></md-icon>
+				   				<span translate="hotel.availability.close"></span>
+				   			</md-button>
+				   		</md-menu-item>
+				   		<md-menu-item ng-if="$ctrl.onOpenRoom && $ctrl.planning.roomClosed">
+				   			<md-button ng-click="$ctrl.$openRoom($event)" aria-label="Open room availability">
+								<md-icon class="mdi mdi-lock-open md-24"></md-icon>			   			
+				   				<span translate="hotel.availability.open"></span>
+				   			</md-button>
+				   		</md-menu-item>
+				   		<md-menu-item ng-if="$ctrl.onViewRates && !$ctrl.planning.roomClosed">
+				   			<md-button ng-click="$ctrl.$viewRates($event)" aria-label="View rates">
+				   				<md-icon class="mdi mdi-cash-usd md-24"></md-icon>
+				   				<span translate="ratesheet.rates.view"></span>
+				   			</md-button>
+				   		</md-menu-item>
+				   		<md-menu-item ng-if="!$ctrl.planning.roomClosed">
+				   			<md-button ui-sref="hotel-reservations-new({checkin: $ctrl.viewDate.date})" aria-label="New reservation">
+				   				<md-icon class="mdi mdi-book-plus md-24"></md-icon>
+				   				<span translate="reservations.reservation.new"></span>
+				   			</md-button>
+				   		</md-menu-item>
+				 	</md-menu-content>
+				</md-menu>
+			</div> 
+
+			<div ng-if="!$ctrl.viewDate.isPast && $ctrl.planning.bestRate && !$ctrl.planning.active && !$ctrl.planning.overbookings.length"
+				flex layout="column" layout-align="end end" layout-padding-sm>
+				<md-button class="md-square-button auto-height minimal-button no-margin row-1" ng-click="$ctrl.$viewRates($event)" aria-label="View rates">
+					<div ng-class="{'text-white': $ctrl.planning.roomClosed}" 
+						ng-switch on="$ctrl.planning.bestRate.standard.amount.finalAmount < $ctrl.planning.bestRate.notRefundable.amount.finalAmount">
+						<small>
+							<span ng-switch-when="true" ng-class="{'text-success': !$ctrl.planning.roomClosed}"
+								ng-bind-html="$ctrl.planning.bestRate.standard.amount|chAmount"></span>
+							<span ng-switch-default ng-class="{'text-blue-sea': !$ctrl.planning.roomClosed}"
+								ng-bind-html="$ctrl.planning.bestRate.notRefundable.amount|chAmount"></span>
+						</small>
+					</div>
+				</md-button>
+			</div>
+		</div>
 	</div>
 </div>

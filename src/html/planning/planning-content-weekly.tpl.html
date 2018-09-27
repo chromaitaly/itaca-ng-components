@@ -7,7 +7,7 @@
 				</strong>
 			</div>
 			<div flex layout layout-padding-sm>
-				<div flex layout="column" class="border-right-white"
+				<div flex layout="column" class="no-padding-x-sides border-right-white"
 					ng-repeat="viewDate in $ctrl.$$viewDates track by viewDate.uid">
 					
 					<md-button tabindex="-1" ng-click="$ctrl.$onDateClick($event, viewDate)"
@@ -41,8 +41,11 @@
 			dates="$ctrl.$$viewDates"
 			planning="$ctrl.planning[room.id]"
 			settings="$ctrl.settings"
-			on-reservation-click="$ctrl.onReservationClick({'$reservation': $reservation, '$roomId': $roomId, '$roomTypeId': $roomTypeId, '$startDate': $startDate, '$endDate': $endDate})"
-			on-overbooking-click="$ctrl.onOverbookingClick({'$reservation': $reservation, '$roomId': $roomId, '$roomTypeId': $roomTypeId, '$startDate': $startDate, '$endDate': $endDate})">
+			on-reservation-click="$ctrl.onReservationClick({'$event': $event, '$reservation': $reservation, '$roomSoldId': $roomSoldId, '$roomId': $roomId, '$roomTypeId': $roomTypeId, '$startDate': $startDate, '$endDate': $endDate})"
+			on-overbooking-click="$ctrl.onOverbookingClick({'$event': $event, '$reservation': $reservation, '$roomSoldId': $roomSoldId, '$roomId': $roomId, '$roomTypeId': $roomTypeId, '$startDate': $startDate, '$endDate': $endDate})"
+			on-reservation-drag="$ctrl.$onReservationDrag($reservation, $startDate, $roomTypeId)"
+			on-finish-reservation-drag="$ctrl.$onFinishReservationDrag($reservation, $startDate, $roomTypeId)"
+			on-reservation-drop="$ctrl.onReservationMove({'$event': $event, '$planningStartDate': $ctrl.$$startDate, '$planningEndDate': $ctrl.$$endDate, '$reservation': $reservation, '$roomSoldId': $roomSoldId, '$newRoomId': $newRoomId, '$startDate': $startDate, '$endDate': $endDate})">
 		</ch-planning-room>
 		
 		<div flex ng-show="$ctrl.rooms.busy" flex layout="column" layout-padding layout-align="center center">

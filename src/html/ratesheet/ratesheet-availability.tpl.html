@@ -8,8 +8,8 @@
 	</div>
 	
 	<div ng-if="!$ctrl.availability.hotelClosed" flex layout="column">
-		<md-button ng-disabled="$ctrl.availability.pastDate" tabindex="-1"
-			aria-label="Availability" ng-click="$ctrl.$click($event)" class="no-margin row-1 forced" 
+		<md-button ng-disabled="$ctrl.availability.pastDate || $ctrl.availability.roomClosed" tabindex="-1"
+			aria-label="Availability" ng-click="$ctrl.$click($event)" class="md-square-button no-margin row-1 forced" 
 			ng-class="{'minimal-button': !$ctrl.$mdMedia('gt-xs'),
 				'bg-success': $ctrl.availability.counter.actual > 0 && !$ctrl.availability.hotelClosed && !$ctrl.availability.roomClosed, 
 				'bg-danger': $ctrl.availability.roomClosed, 

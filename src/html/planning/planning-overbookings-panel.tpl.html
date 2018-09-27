@@ -1,19 +1,23 @@
 <div flex layout-padding-sm>
-	<div>
-		<div ng-repeat="overbooking in $ctrl.$$overbookings track by overbooking.reservation.id">
-			<ch-planning-reservation class="animated fadeIn"
-				main-class="ch-planning-overbooking"
-				reservation="overbooking.reservation" 
-				room-people="overbooking.people" 
-				room-extra-people="overbooking.extraPeople"
-				on-click="$ctrl.onClick({
-					'$reservation': $reservation, 
-					$roomId: overbooking.roomId, 
-					$roomTypeId: overbooking.roomType.id,
-					$startDate: overbooking.startDate,
-					$endDate: overbooking.endDate
-				}); $ctrl.$close()">
-			</ch-planning-reservation>
-		</div>
+	<div ng-repeat="overbooking in $ctrl.$$overbookings track by $index"
+		ng-if="overbooking.reservation.$show"
+		class="no-padding-y-sides">
+		<ch-planning-reservation
+			class="animated fadeIn"
+			main-class="ch-planning-overbooking"
+			planning="overbooking" 
+			on-click="$ctrl.onClick({
+				'$event': $event,
+				'$reservation': $reservation, 
+				'$roomId': overbooking.roomId, 
+				'$roomSoldId': overbooking.roomSoldId,
+				'$roomTypeId': overbooking.roomType.id,
+				'$startDate': overbooking.startDate,
+				'$endDate': overbooking.endDate
+			}); $ctrl.$close()"
+			can-drag="true"
+			on-drag-start="$ctrl.$onDragStart($event, $planning)"
+			on-drag-end="$ctrl.onDragEnd({'$event': $event, '$planning': $planning})">
+		</ch-planning-reservation>
 	</div>
 </div>

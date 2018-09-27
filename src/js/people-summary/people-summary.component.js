@@ -11,7 +11,7 @@
         	noDetails: "<?"
         },
         controller: PeopleSummaryCtrl,
-        template: "<span>{{$ctrl.$$peopleSummary}}</span>"
+        template: "<span ng-bind='$ctrl.$$peopleSummary'></span>"
 	});
 
 	/* @ngInject */
@@ -19,7 +19,13 @@
 		var ctrl = this;
 		
 		this.$onInit = function() {
-			ctrl.$initWatchers();
+			ctrl.$updateSummary();
+		};
+		
+		this.$onChanges = function(changesObj) {
+			if (changesObj.people || changesObj.extraPeople || changesObj.noDetails) {
+				ctrl.$updateSummary();
+			}
 		};
 		
 		this.$updateSummary = function() {
@@ -42,20 +48,6 @@
 	    			ctrl.$$peopleSummary = message;
 	    		});
 			}
-		};
-		
-		this.$initWatchers = function() {		
-			$scope.$watchCollection(function() {
-				return ctrl.people;
-			}, ctrl.$updateSummary);
-			
-			$scope.$watchCollection(function() {
-				return ctrl.extraPeople;
-			}, ctrl.$updateSummary);
-			
-			$scope.$watchCollection(function() {
-				return ctrl.noDetails;
-			}, ctrl.$updateSummary);
 		};
 	}
 })();

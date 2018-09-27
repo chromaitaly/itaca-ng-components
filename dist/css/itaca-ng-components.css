@@ -273,6 +273,39 @@ ch-card .md-whiteframe-1dp {
 .ch-planning-cell md-icon {
   color: inherit;
 }
+.ch-planning-cell-content {
+  position: static !important;
+}
+.ch-planning-days-content.ch-planning-room-droppable .ch-planning-cell-content.ch-planning-cell-droppable > div.ch-planning-cell-available {
+  background-color: transparent;
+}
+.ch-planning-days-content.ch-planning-room-droppable .ch-planning-cell-content.ch-planning-cell-droppable > div.ch-planning-cell-drop-hint-cont {
+  position: absolute !important;
+  height: 100%;
+  color: #fff;
+  background-color: transparent;
+  z-index: 2;
+}
+.ch-planning-days-content.ch-planning-room-droppable .ch-planning-cell-content.ch-planning-cell-droppable > div.ch-planning-cell-drop-hint-cont.ch-planning-cell-drop-over {
+  box-shadow: 0 0 30px #999;
+}
+.ch-planning-days-content.ch-planning-room-droppable .ch-planning-cell-content.ch-planning-cell-droppable > div.ch-planning-cell-drop-over .ch-planning-cell-drop-over-hint {
+  height: 100%;
+  width: 100%;
+  font-weight: bold;
+  text-align: center;
+  color: #fff;
+  line-height: 18px;
+  padding: 0 4px;
+  position: absolute;
+  z-index: 3;
+}
+.ch-planning-content.ch-planning-dragging .ch-planning-days-content:not(.ch-planning-room-droppable) .ch-planning-cell-content,
+.ch-planning-content.ch-planning-dragging .ch-planning-days-content.ch-planning-room-droppable .ch-planning-cell-content:not(.ch-planning-cell-droppable) {
+  box-shadow: 0;
+  background-color: rgba(119, 119, 119, 0.2);
+  cursor: no-drop !important;
+}
 .ch-planning-cell-room {
   border: 1px solid #d9d9d9;
   border-top: none;
@@ -280,13 +313,12 @@ ch-card .md-whiteframe-1dp {
   padding: 6px 0;
 }
 ch-planning-reservation {
-  z-index: 2;
+  animation-timing-function: ease-in !important;
 }
 .ch-planning-reservation {
   position: absolute;
   text-overflow: ellipsis;
-  transition: all 1s ease-in-out;
-  -webkit-transition: all 1s ease-in-out;
+  color: #fff;
   padding: 6px 0;
 }
 .ch-planning-reservation > * {

@@ -8,9 +8,9 @@
 	</div>
 	
 	<div ng-if="!$ctrl.header.hotelClosed" flex layout="column">
-		<md-button ng-disabled="$ctrl.header.pastDate || $ctrl.header.availability.actual <= 0" 
+		<md-button ng-disabled="$ctrl.header.pastDate || ($ctrl.header.availability.actual <= 0 && !$ctrl.header.roomClosed)" 
 			ng-click="$ctrl.$toggleRoomTypeClosing($event)" aria-label="Enable/Disable all room rates" tabindex="-1"
-			class="no-margin row-1 forced" ng-class="{'minimal-button': !$ctrl.$mdMedia('gt-xs'), 
+			class="md-square-button no-margin row-1 forced" ng-class="{'minimal-button': !$ctrl.$mdMedia('gt-xs'), 
 				'bg-success': !$ctrl.header.roomClosed && $ctrl.header.availability.actual > 0, 
 				'bg-danger': $ctrl.header.roomClosed, 
 				'bg-warn': !$ctrl.header.roomClosed && $ctrl.header.availability.actual <= 0}">
