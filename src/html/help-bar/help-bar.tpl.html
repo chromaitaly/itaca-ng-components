@@ -1,0 +1,26 @@
+<div class="{{::$ctrl.bgClass}}">
+	<md-divider></md-divider>
+	<div layout layout-wrap layout-align="start center">
+		<div flex layout="column" layout-padding class="hide show-gt-sm">
+			<div layout layout-align="start center" class="no-padding">
+				<md-icon class="md-32 mdi mdi-help-circle-outline no-margin text-gray-5"></md-icon>
+				<strong translate="helpBar.title"></strong>
+				<md-button class="{{::$ctrl.bgSecondaryButton}}" ng-href="{{$ctrl.faqUrl}}" target="_blank" aria-label="go to faq">
+					<span translate="helpBar.button.secondary"></span>
+				</md-button>
+			</div>
+		</div>
+		<div flex="50" layout="column" class="hide-gt-sm">
+			<md-button layout-padding class="{{::$ctrl.bgSecondaryButton}}" ng-href="{{$ctrl.faqUrl}}" target="_blank" aria-label="go to faq">
+				<md-icon class="mdi mdi-help-circle-outline no-padding"></md-icon>
+				<span translate="helpBar.button.secondary"></span>
+			</md-button>
+		</div>
+		<div flex-xs="50" flex-sm="50" layout="column" ng-if="$ctrl.showHelpBtn">
+			<md-button class="{{::$ctrl.bgButton}}" ng-click="$ctrl.$recallDialog($event)" aria-label="contact us">
+				<md-icon class="mdi mdi-message-outline text-white no-padding"></md-icon>
+				<span class="no-padding-right no-padding-top no-padding-bottom" translate="helpBar.button"></span>
+			</md-button>
+		</div>
+	</div>
+</div>

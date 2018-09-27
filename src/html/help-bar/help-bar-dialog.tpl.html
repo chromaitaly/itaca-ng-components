@@ -1,0 +1,110 @@
+<md-dialog class="flex-90 flex-gt-sm-60" aria-label="Recall dialog">
+	<form name="$ctrl.contactForm">
+		<md-dialog-content class="md-padding">
+			<div class="layout-align-start-center layout-row layout-wrap">
+				<div class="flex flex-sm-100 flex-xs-100 layout-align-center-center layout-align-gt-sm-center-start layout-column">
+					<strong class="md-subhead" translate="helpBar.dialog.title"></strong>
+				</div>
+				<div class="flex-xs-50 flex-sm-50 layout-column">
+					<md-button  ng-click="$ctrl.message.type = 'PHONE'" aria-label="set phone" ng-class="$ctrl.message.type == 'PHONE' ? 'bg-success' : 'only-border'">
+						<md-icon class="mdi mdi-checkbox-marked-circle-outline text-white md-24" ng-if="$ctrl.message.type == 'PHONE'"></md-icon>
+						<md-icon class="mdi mdi-phone" ng-show="$ctrl.message.type != 'PHONE'"></md-icon>
+						<span translate="common.phone"></span>
+					</md-button>
+				</div>
+				<div class="flex-xs-50 flex-sm-50 layout-column">
+					<md-button  ng-click="$ctrl.message.type = 'EMAIL'" aria-label="set email"  ng-class="$ctrl.message.type == 'EMAIL' ? 'bg-success' : 'only-border'">
+						<md-icon class="mdi mdi-checkbox-marked-circle-outline text-white md-24" ng-if="$ctrl.message.type == 'EMAIL'"></md-icon>
+						<md-icon class="mdi mdi-email" ng-show="$ctrl.message.type != 'EMAIL'"></md-icon>
+						<span translate="common.email"></span>
+					</md-button>
+				</div>
+			</div>
+			<div ng-if="$ctrl.message.type == 'PHONE'" >
+				<div class="layout-padding">
+					<div>
+						<strong translate="helpBar.dialog.phone.text"></strong>
+					</div>
+					<div>
+						<ch-phone-input 
+							label="{{'contact.phone.primary'|translate}}"
+							prefix-label="{{'common.prefix'|translate}}"
+							search-placeholder="{{('search.search'|translate) + '...'}}"
+							input-name="phone"
+							ng-model="$ctrl.message.phone"
+							ng-pattern="$ctrl.REGEXP.phone"
+							ng-required="true"
+							prefix-error-messages="[{error: 'required', message: ('error.required'|translate)}]"
+							error-messages="[{error: 'pattern', message: ('error.phone.number'|translate)}]"></ch-phone-input>
+					</div>
+					
+					<div>
+						<md-input-container class="md-block flex no-padding no-margin">
+							<label translate="common.description.short"></label>
+							<textarea name="text" ng-model="$ctrl.message.text" required md-row="3"></textarea>
+							<div ng-messages="$ctrl.contactForm.text.$error">
+				          		<div ng-message="required"><span translate-once="error.required"></span></div>
+					        </div>
+						</md-input-container>
+					</div>
+					
+					<div>
+						<div>
+							<strong translate="helpBar.dialog.hour.label"></strong>
+						</div>
+						<div class="layout-row layout-wrap">
+							<div ng-repeat="hour in $ctrl.$hourArray track by $index" class="flex-50 flex-gt-sm-25 layout-column">
+								<md-button ng-click="$ctrl.message.hours = hour"  aria-label="set email"  ng-class="$ctrl.message.hours == hour ? 'bg-success' : 'only-border'">
+									<md-icon class="mdi material-icons" ng-class="$ctrl.message.hours == hour ? 'mdi-checkbox-marked-circle-outline text-white md-24' : 'mdi-clock md-18'"></md-icon>
+									<span>{{::hour}}</span>
+								</md-button>
+							</div>
+						</div>
+					</div>
+					<div>
+						<small translate="helpBar.dialog.phone.policy" translate-values="{company: $ctrl.appOptions.about.name}"></small>
+					</div>
+				</div>
+			</div>
+			<div ng-if="$ctrl.message.type == 'EMAIL'">
+				<div class="layout-padding">
+					<div>
+						<strong translate="helpBar.dialog.email.text"></strong>
+					</div>
+					<div>
+						<md-input-container class="md-block flex no-padding no-margin">
+							<label translate="common.email"></label>
+							<input ng-model="$ctrl.message.email" name="email" required ng-pattern="$ctrl.REGEXP.email" ng-disabled="$ctrl.ngDisabled">
+							<div ng-messages="$ctrl.contactForm.email.$error">
+				          		<div ng-message="required"><span translate-once="error.required"></span></div>
+				          		<div ng-message="pattern"><span translate-once="error.email.invalid"></span></div>
+				          		<div ng-message="email"><span translate-once="error.email.invalid"></span></div>
+					        </div>
+						</md-input-container>
+					</div>
+					<div>
+						<md-input-container class="md-block flex no-padding no-margin">
+							<label translate="common.description.short"></label>
+							<textarea name="text" ng-model="$ctrl.message.text" required md-row="3"></textarea>
+							<div ng-messages="$ctrl.contactForm.text.$error">
+				          		<div ng-message="required"><span translate-once="error.required"></span></div>
+					        </div>
+						</md-input-container>
+					</div>
+					<div>
+						<small translate="helpBar.dialog.email.policy" translate-values="{company: $ctrl.appOptions.about.name}"></small>
+					</div>
+				</div>
+			</div>
+		</md-dialog-content>
+	  	<md-dialog-actions class="layout-row">
+	  		<md-button ng-click="$ctrl.close()" aria-label="Close">
+	        	<span translate="common.close"></span>
+	      	</md-button>
+	  		<span flex></span>
+	  		<md-button ng-click="$ctrl.confirm()" class="bg-success md-raised" aria-label="Contact me">
+	        	<span translate="helpBar.dialog.button"></span>
+	      	</md-button>
+	    </md-dialog-actions>
+    </form>
+</md-dialog>
