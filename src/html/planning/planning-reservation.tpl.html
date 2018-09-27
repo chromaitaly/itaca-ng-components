@@ -1,52 +1,60 @@
 <div class="ch-planning-reservation {{$ctrl.mainClass}}" ng-class="{
-		'ch-planning-reservation-continue-start': $ctrl.reservation.$startsEarlier, 
-		'ch-planning-reservation-continue-end': $ctrl.reservation.$endsLater
-	}" ng-style="$ctrl.reservation.$style">
+		'ch-planning-reservation-continue-start': $ctrl.planning.reservation.$startsEarlier, 
+		'ch-planning-reservation-continue-end': $ctrl.planning.reservation.$endsLater
+	}" ng-style="$ctrl.planning.reservation.$style"
+	drag-container="$ctrl.canDrag && $ctrl.$$canDrag"
+	drag-data="$ctrl.planning"
+	on-drag-start="$ctrl.onDragStart({'$event': $event, '$planning': $dragData})"
+	on-drag-end="$ctrl.onDragEnd({'$event': $event, '$planning': $ctrl.planning})">
 	
 	<div class="ch-planning-reservation-content-wrapper">
-		<div class="ch-planning-reservation-content" ng-class="{'bg-blue-sea border-blue-sea': !$ctrl.mainClass && !$ctrl.settings.reservationColorLegend[$ctrl.reservation.source]}"
-			ng-style="{'background-color': $ctrl.settings.reservationColorLegend[$ctrl.reservation.source], 'border-color': $ctrl.settings.reservationColorLegend[$ctrl.reservation.source]}">
-			<md-button class="text-small" ng-class="{'no-padding-x-sides': $ctrl.reservation.$days < 2}" 
-				ng-click="$ctrl.onClick({'$reservation': $ctrl.reservation})" aria-label="Open reservation details">
+		<div class="ch-planning-reservation-content" ng-class="{'bg-blue-sea border-blue-sea': !$ctrl.mainClass && !$ctrl.settings.reservationColorLegend[$ctrl.planning.reservation.source]}"
+			ng-style="{'background-color': $ctrl.settings.reservationColorLegend[$ctrl.planning.reservation.source], 'border-color': $ctrl.settings.reservationColorLegend[$ctrl.planning.reservation.source]}">
+			<div class="md-button text-small" ng-class="{'no-padding-x-sides': $ctrl.planning.reservation.$days < 2}" 
+				ng-click="$ctrl.onClick({'$event': $event, '$reservation': $ctrl.planning.reservation})" aria-label="Open reservation details">
 				<div layout-padding-sm>
 					<div flex layout layout-align="center center" class="no-padding-top">
 						<div class="text-no-wrap">
 							<strong>
 								<span>
-									<span ng-if="$ctrl.reservation.$days >= ($ctrl.$mdMedia('gt-xs') ? 2 : 3)">
-										<span ng-bind="$ctrl.reservation.guest.name"></span>&nbsp;
+									<span ng-if="$ctrl.planning.reservation.$days >= ($ctrl.$mdMedia('gt-xs') ? 2 : 3)">
+										<span ng-bind="$ctrl.planning.reservation.guest.name"></span>&nbsp;
 									</span>
-									<span ng-if="$ctrl.reservation.$days <= ($ctrl.$mdMedia('gt-xs') ? 1 : 2)">
-										<span ng-bind="$ctrl.reservation.guest.name.charAt(0)"></span>.&nbsp;
+									<span ng-if="$ctrl.planning.reservation.$days <= ($ctrl.$mdMedia('gt-xs') ? 1 : 2)">
+										<span ng-bind="$ctrl.planning.reservation.guest.name.charAt(0)"></span>.&nbsp;
 									</span>
 								</span>
-								<span ng-bind="$ctrl.reservation.guest.surname"></span>
+								<span ng-bind="$ctrl.planning.reservation.guest.surname"></span>
 							</strong>
 							
 							<span class="text-small">&nbsp;
 								(<ch-people-summary
-									people="$ctrl.roomPeople" 
-									extra-people="$ctrl.roomExtraPeople" 
+									people="$ctrl.planning.people" 
+									extra-people="$ctrl.planning.extraPeople" 
 									no-details="true">
 								</ch-people-summary>)
 							</span>
 							
-							<small>&nbsp;#<span ng-bind="$ctrl.reservation.serial"></span></small>
+							<small>&nbsp;#<span ng-bind="$ctrl.planning.reservation.serial"></span></small>
 						</div>
 					</div>
 					<div class="no-padding-x-sides no-padding-top">
 						<strong>
-							<span ng-if="$ctrl.reservation.$differentMonths" ng-bind="$ctrl.reservation.checkin|date:'d MMM'"></span>
-							<span ng-if="!$ctrl.reservation.$differentMonths" ng-bind="$ctrl.reservation.checkin|date:'d'"></span>&nbsp;-&nbsp;
-							<span ng-bind="$ctrl.reservation.checkout|date:'d MMM'"></span>
+							<span ng-if="$ctrl.planning.reservation.$differentMonths" ng-bind="$ctrl.planning.reservation.checkin|date:'d MMM'"></span>
+							<span ng-if="!$ctrl.planning.reservation.$differentMonths" ng-bind="$ctrl.planning.reservation.checkin|date:'d'"></span>&nbsp;-&nbsp;
+							<span ng-bind="$ctrl.planning.reservation.checkout|date:'d MMM'"></span>
 						</strong>
+						<small>&nbsp;
+							<span ng-if="$ctrl.planning.rateType == 'STANDARD'">(<span translate-once="ratesheet.rate.type.standard.acronym"></span>)</span>
+							<span ng-if="$ctrl.planning.rateType == 'NOT_REFUNDABLE'">(<span translate-once="ratesheet.rate.type.notRefundable.acronym"></span>)</span>
+						</small>
 					</div>
 				</div>
 				
 				<md-tooltip>
 					<span translate="common.details.view"></span>
 				</md-tooltip>
-			</md-button>
+			</div>
 		</div>
 	</div>
 </div>

@@ -5,7 +5,7 @@
         <md-tooltip md-direction="left"><span translate-once="reservations.reservation.new"></span></md-tooltip>
     </md-button>
     
-    <md-content flex id="planningCont" ng-switch="$ctrl.$$currentView">
+    <md-content flex id="planningCont" ng-switch="$ctrl.$$currentView" class="ch-planning-content" ng-class="{'ch-planning-dragging': $ctrl.$$dragging}">
     	<ch-planning-header></ch-planning-header>
     
 	    <div ng-switch-when="D" flex layout="column"> 

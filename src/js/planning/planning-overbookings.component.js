@@ -9,7 +9,9 @@
 			date: "<",
 			overbookings: "<",
 			daySize: "<",
-			onClick: "&?"
+			onClick: "&?",
+			onDragStart: "&?",
+			onDragEnd: "&?"
 		},
 		controller : PlanningOverbookingsCtrl,
 		templateUrl : "/tpls/planning/planning-overbookings.tpl"
@@ -55,7 +57,13 @@
 			ctrl.$$overbookingsPanelConfig.animation = animation;
 			ctrl.$$overbookingsPanelConfig.targetEvent = ev;
 			ctrl.$$overbookingsPanelConfig.openFrom = ev;
-			ctrl.$$overbookingsPanelConfig.locals = {date: ctrl.date, overbookings: ctrl.overbookings, onClick: ctrl.onClick};
+			ctrl.$$overbookingsPanelConfig.locals = {
+				date: ctrl.date, 
+				overbookings: ctrl.overbookings, 
+				onClick: ctrl.onClick,
+				onDragStart: ctrl.onDragStart,
+				onDragEnd: ctrl.onDragEnd
+			};
 			 
 			// apro il pannello 
 			$mdPanel.open(ctrl.$$overbookingsPanelConfig);
@@ -68,10 +76,23 @@
 		
 		this.$init = function() {
 			ctrl.$$overbookings = _.map(ctrl.overbookings, function(overbooking) {
-				var copy = angular.copy(overbooking); 
+				var copy = angular.copy(overbooking);
+				// memorizzo style originale
+				copy.reservation.$oriStyle = angular.copy(copy.reservation.$style);
 				copy.reservation.$style = {width: "100%", position: "initial"};
 				return copy;
 			});
+		};
+		
+		this.$onDragStart = function(ev, planning) {
+			// ripristino style originale
+			var $planning = angular.copy(planning);
+			$planning.reservation.$style = $planning.reservation.$oriStyle;
+			
+			if (ctrl.onDragStart) {
+				ctrl.onDragStart({'$event': ev, '$planning': $planning});
+				ctrl.$close();
+			}
 		};
 		
 		this.$close = function() {
