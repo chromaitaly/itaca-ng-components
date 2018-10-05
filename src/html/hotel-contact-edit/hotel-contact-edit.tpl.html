@@ -1,0 +1,81 @@
+<div ng-show="!$ctrl.$show" layout="column" class="no-padding">
+	<md-button class="md-square-button forced" ng-class="$ctrl.list.length > 0 ? 'bg-success' : 'only-border'" ng-click="$ctrl.$toggle()" ng-disabled="$ctrl.isDisabled" aria-label="show">
+		<div layout-align="start center" layout-padding layout class="no-padding">
+			<div><md-icon class="{{::$ctrl.type.icon}} material-icons no-padding-y-sides no-padding-right" ng-class="{'text-white' : $ctrl.list.length}"></md-icon></div>
+			<div class="layout-column flex no-padding text-initial text-left">
+				<span class="md-subhead" translate="{{::$ctrl.type.label}}"></span>
+				<small class="row-mini"> 
+					<span ng-repeat="contactInfo in $ctrl.list">
+						<span>{{contactInfo.value}}</span><span ng-if="!$last">,&nbsp;</span>
+					</span>
+				</small>
+			</div>
+			<div class="md-button auto-height layout-padding minimal-button no-margin no-padding row-mini" ng-show="!$ctrl.isDisabled">
+				<md-icon class="mdi material-icons" ng-class="$ctrl.list.length ? 'mdi-pencil text-white' : 'mdi-plus'"></md-icon>
+			</div>
+		</div>
+	</md-button>
+</div>
+<ng-form name="$ctrl.contactForm">
+	<div ng-if="$ctrl.$show" class="border-radius-6 only-border fadeInUp" style="overflow:hidden">
+		<div layout-align="start center" layout-padding layout class="bg-gray-lighter">
+			<div><md-icon class="{{::$ctrl.type.icon}} material-icons no-padding-y-sides no-padding-right"></md-icon></div>
+			<div layout="column" flex>
+				<span class="md-subhead" translate="{{::$ctrl.type.label}}"></span>
+			</div>
+			<md-button class="md-icon-button no-padding no-margin" ng-click="$ctrl.$close()" aria-label="Close">
+				<md-icon class="mdi mdi-close"></md-icon>
+				<md-tooltip class="hide show-gt-sm"><span translate="common.close"></span></md-tooltip>
+			</md-button>
+		</div>
+		<md-divider></md-divider>
+		<div>
+			<div layout-padding>
+				<div class="no-padding" ng-if="$ctrl.type.value == 'FACEBOOK' || $ctrl.type.value == 'TWITTER' || $ctrl.type.value == 'INSTAGRAM'">
+					<md-icon class="mdi mdi-information-outline md-14 text-gray-light"></md-icon>
+					<small translate="contact.website.social" translate-values="{social : $ctrl.type.value.toLowerCase()}"></small>
+				</div>
+				<div class="no-padding" ng-if="$ctrl.type.value == 'WEBSITE'">
+					<md-icon class="mdi mdi-information-outline md-14 text-gray-light"></md-icon>
+					<small translate="contact.website.info"></small>
+				</div>
+			</div>
+			<div layout layout-padding layout-align="start center" class="no-padding-bottom" ng-repeat="contactInfo in $ctrl.list">
+				<div layout="column" flex class="no-padding" ng-switch="contactInfo.type">
+					<md-input-container md-no-float class="md-block no-margin-bottom">
+						<input ng-switch-when="PHONE" type="tel" name="contactInfo_{{$index}}" ng-model="contactInfo.value" ng-disabled="$ctrl.isDisabled" placeholder="{{'contact.phone.sample' | translate}}" ng-pattern="$ctrl.REGEXP.phone" required aria-label="Phone number">
+						<input ng-switch-when="MOBILE" type="tel" name="contactInfo_{{$index}}" ng-model="contactInfo.value" ng-disabled="$ctrl.isDisabled" placeholder="{{'contact.mobile.sample' | translate}}" ng-pattern="$ctrl.REGEXP.phone" required aria-label="Mobile number">
+						<input ng-switch-when="WHATSAPP" type="tel" name="contactInfo_{{$index}}" ng-model="contactInfo.value" ng-disabled="$ctrl.isDisabled" placeholder="{{'contact.mobile.sample' | translate}}" ng-pattern="$ctrl.REGEXP.phone" required aria-label="Mobile number">
+						<input ng-switch-when="FAX" type="tel" name="contactInfo_{{$index}}" ng-model="contactInfo.value" ng-disabled="$ctrl.isDisabled" placeholder="{{'contact.fax.sample' | translate}}" ng-pattern="$ctrl.REGEXP.phone" required aria-label="Fax number">
+						<input ng-switch-when="EMAIL" type="email" name="contactInfo_{{$index}}" ng-model="contactInfo.value" ng-disabled="$ctrl.isDisabled" placeholder="{{'contact.email.sample' | translate}}" required aria-label="Email">
+						<input ng-switch-default type="text" name="contactInfo_{{$index}}" ng-model="contactInfo.value" ng-disabled="$ctrl.isDisabled" placeholder="{{'common.address' | translate}}" required aria-label="Address">
+						<div ng-messages="$ctrl.contactForm['contactInfo_' + $index].$error">
+			          		<div ng-message="email"><span translate="error.field.generic.invalid"></span></div>
+			          		<div ng-message="pattern"><span translate="error.field.generic.invalid"></span></div>
+			          		<div ng-message="required"><span translate="error.required"></span></div>
+				        </div>
+					</md-input-container>
+				</div>
+				<div class="no-padding">
+					<md-button class="md-icon-button" ng-click="$ctrl.$remove(contactInfo)" aria-label="Remove contact">
+						<md-icon class="mdi mdi-delete md-24"></md-icon>
+						<md-tooltip><span translate="common.delete"></span></md-tooltip>
+					</md-button>
+				</div>
+			</div>
+			<div class="text-left layout-padding no-padding-left no-padding-top">
+				<md-button layout-padding class="only-border border-success auto-height no-padding row-mini" ng-click="$ctrl.$add()" aria-label="Add contact" ng-disabled="$ctrl.isDisabled">
+					<md-icon class="mdi mdi-plus md-24 text-success no-padding"></md-icon>
+					<small class="no-padding-left text-success" translate="common.add.another.contact"></small>
+				</md-button>
+			</div>
+			<div layout layout-wrap>
+				<div layout="column" flex="100">
+					<md-button layout-padding class="bg-success auto-height row-mini" ng-click="$ctrl.$save()" aria-label="Save contact" ng-disabled="$ctrl.isDisabled">
+						<span class="no-padding text-white" translate="common.save"></span>
+					</md-button>
+				</div>
+			</div>		
+		</div>
+	</div>
+</ng-form>
