@@ -1,6 +1,6 @@
-<div ng-if="!$ctrl.service.inEdit" class="layout-row md-margin border-radius" ng-class="$ctrl.isChecked ? 'bg-success' : 'only-border'">
+<div ng-if="!$ctrl.service.inEdit" class="layout-row md-margin border-radius-6" ng-class="$ctrl.isChecked ? 'bg-success' : 'only-border'">
 	<div class="layout-column flex">
-		<md-button class="no-margin" ng-click="$ctrl.$toggle()" aria-label="Toggle service">
+		<md-button class="no-margin md-square-button" ng-click="$ctrl.$toggle()" aria-label="Toggle service">
 			<div class="layout-row layout-padding layout-align-start-center" ng-class="{'no-padding': $ctrl.isChecked}">
 				<div>
 					<md-icon class="mdi mdi-checkbox-marked-circle-outline text-white md-24 no-padding-y-sides no-padding-right" ng-if="$ctrl.isChecked"></md-icon>
@@ -23,7 +23,7 @@
 	</div>
 </div>
 <ng-form name="$ctrl.serviceForm">
-	<div ng-if="$ctrl.service.inEdit" class="border-radius md-margin ng-scope only-border fadeInUp">
+	<div ng-if="$ctrl.service.inEdit" class="border-radius-6 md-margin ng-scope only-border fadeInUp">
 		<div class="bg-gray-lighter layout-align-start-center layout-padding layout-row no-padding">
 			<span class="flex md-subhead" translate="{{$ctrl.service.type.nameKey}}"></span>
 			<md-button class="auto-height auto-width layout-padding no-margin" ng-click="$ctrl.$cancel()" aria-label="Cancel">
