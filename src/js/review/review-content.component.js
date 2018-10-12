@@ -51,7 +51,7 @@
 		    	"<div ng-if=\"$ctrl.review.createdDate && $ctrl.showDate\">" +
 		    		"<md-divider></md-divider>" +
 		    		"<div class=\"layout-padding text-gray-light\">" +
-	    				"<small>{{$ctrl.review.createdDate|utcDate:$ctrl.dateFormat}}</small>" +
+	    				"<small>{{$ctrl.review.createdDate|date:$ctrl.dateFormat}}</small>" +
     				"</div>" +
 	    		"</div>" +
 	    	"</div>"
