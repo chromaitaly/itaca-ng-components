@@ -1,0 +1,34 @@
+<ng-form name="chTimePickerTriggerForm" layout>
+	<md-button class="ch-time-picker-button flex text-center {{$ctrl.buttonClass}}" 
+		mdp-time-picker 
+		ng-model="$ctrl.ngModel" 
+       	mdp-auto-switch="true" 
+       	mdp-fullscreen="$ctrl.fullScreen"
+       	mdp-use-utc="$ctrl.useUtc"
+		aria-label="Change time"
+		ng-disabled="$ctrl.ngDisabled"
+		ng-readonly="$ctrl.ngReadonly">
+		<div class="{{$ctrl.wrapperClass}} layout-align-center-center" ng-class="$ctrl.labelPosition == 'top' ? 'layout-column' : 'layout-row'">
+ 			<div ng-if="!$ctrl.hideLabel" class="no-padding row-mini"><small class="row-mini text-gray-light text-initial" ng-bind-html="$ctrl.label"></small></div>
+			<div class="layout-row row-mini layout-align-center-center">
+				<span ng-if="$ctrl.showIcon" class="no-padding"><md-icon class="{{$ctrl.iconClass || 'mdi mdi-clock-outline md-24'}}"></md-icon></span>
+				<strong ng-if="!$ctrl.hideValue">
+					<span ng-if="$ctrl.useUtc && $ctrl.ngModel" ng-bind="$ctrl.ngModel|utcDate:'HH:mm'"></span>
+					<span ng-if="!$ctrl.useUtc && $ctrl.ngModel" ng-bind="$ctrl.ngModel|date:'HH:mm'"></span>
+					<span ng-if="!$ctrl.ngModel" translate="common.select"></span>
+				</strong>
+			</div>
+		</div>
+		
+		<md-input-container class="md-block no-margin no-padding minimal-input text-initial">
+			<input style="visibility: hidden;" name="time" ng-model="$ctrl.ngModel" ng-required="$ctrl.ngRequired" aria-label="time" class="hidden">
+			<div ng-messages="chTimePickerTriggerForm.time.$error" ng-show="chTimePickerTriggerForm.$submitted || chTimePickerTriggerForm.time.$touched || chTimePickerTriggerForm.time.$dirty">
+          		<div ng-message="required"><span class="text-initial" translate-once="error.required"></span></div>
+			</div>
+		</md-input-container>
+		
+		<md-tooltip ng-if="$ctrl.tooltip">
+			<span ng-bind="$ctrl.tooltip"></span>
+		</md-tooltip>
+	</md-button>
+</ng-form>

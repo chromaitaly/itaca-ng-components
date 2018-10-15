@@ -256,7 +256,7 @@
 			</span>
 			<span ng-if="$ctrl.reservation.checkinDetails && $ctrl.reservation.checkinDetails.amount.finalAmount">
 				<span ng-if="$ctrl.hotelCityTax">,&nbsp;</span>
-				"{{::($ctrl.reservation.checkinDetails.amount.finalAmount|chCurrency:$ctrl.hotelCurrency)}}&nbsp;
+				{{::($ctrl.reservation.checkinDetails.amount.finalAmount|chCurrency:$ctrl.hotelCurrency)}}&nbsp;
 				<span translate="reservation.checkinDetails.description"></span>
 			</span>
 		</small>

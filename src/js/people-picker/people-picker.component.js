@@ -71,7 +71,9 @@
 			    	var tbc = _.isBoolean(ctrl.hasConfirm) ? ctrl.hasConfirm : false;
 			    	
 			    	if (!tbc || (_.isBoolean(closeReason) && closeReason)) {
-			    		_.assign(ctrl.people, ctrl.$$workingData.people);
+			    		ctrl.people = angular.copy(ctrl.$$workingData.people);
+//			    		_.assign(ctrl.people, ctrl.$$workingData.people);
+			    		
 			    		ctrl.onClose && ctrl.onClose({$people: ctrl.people});
 			    	}
 			    	

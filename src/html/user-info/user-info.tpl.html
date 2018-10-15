@@ -60,25 +60,25 @@
 	<div ng-if="$ctrl.isDisabled"  class="layout-row layout-wrap layout-padding">
 		<div class="layout-column flex-100 flex-gt-sm-50">
 			<small><span translate="common.name"></span>:&nbsp;</small>
-			<strong class="md-title text-bold">{{::$ctrl.user.name}}</strong>
+			<strong class="md-title text-bold text-force-wrap">{{::$ctrl.user.name}}</strong>
 		</div>
 		<div class="layout-column flex-100 flex-gt-sm-50">
 			<small><span translate="common.surname"></span>:&nbsp;</small>
-			<strong class="md-title text-bold">{{::$ctrl.user.surname}}</strong>
+			<strong class="md-title text-bold text-force-wrap">{{::$ctrl.user.surname}}</strong>
 		</div>
 		<div class="layout-column flex-100 flex-gt-sm-50">
 			<small><span translate="common.email"></span>:&nbsp;</small>
-			<strong class="md-title text-bold" ng-if="!$ctrl.isClickable">{{::$ctrl.user.email}}</strong>
+			<strong class="md-title text-bold text-force-wrap" ng-if="!$ctrl.isClickable">{{::$ctrl.user.email}}</strong>
 			<a ng-href="{{'mailto:' + $ctrl.user.email}}" title="send email" class="text-blue-sea" ng-if="$ctrl.isClickable"><strong class="md-title text-bold">{{::$ctrl.user.email}}</strong></a>
 		</div>
 		<div class="layout-column flex-100 flex-gt-sm-25">
 			<small><span translate="common.phone"></span>:&nbsp;</small>
-			<strong class="md-title text-bold" ng-if="!$ctrl.isClickable">{{::$ctrl.user.phone}}</strong>
+			<strong class="md-title text-bold text-force-wrap" ng-if="!$ctrl.isClickable">{{::$ctrl.user.phone}}</strong>
 			<a ng-href="{{'tel:' + $ctrl.user.phone}}" title="call" class="text-blue-sea" ng-if="$ctrl.isClickable"><strong class="md-title text-bold">{{::$ctrl.user.phone}}</strong></a>
 		</div>
 		<div class="layout-column flex-100 flex-gt-sm-25">
 			<small><span translate="common.nationality"></span>:&nbsp;</small>
-			<strong class="md-title text-bold">
+			<strong class="md-title text-bold text-force-wrap">
 				<ch-country-iso iso="$ctrl.user.countryIso" current-lang="$ctrl.appOptions.currentLang"></ch-country-iso>
 			</strong>
 		</div>
