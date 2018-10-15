@@ -32,7 +32,7 @@
 			</div>
 		</div>
  	</md-subheader>
-
+ 	
 	<div ng-switch-when="2" flex layout="column" infinite-scroll="$ctrl.rooms.nextPage()" infinite-scroll-container="'#planningCont'" 
 		infinite-scroll-disabled="$ctrl.rooms.busy" infinite-scroll-distance="1">
 		
@@ -47,6 +47,15 @@
 			on-finish-reservation-drag="$ctrl.$onFinishReservationDrag($reservation, $startDate, $roomTypeId)"
 			on-reservation-drop="$ctrl.onReservationMove({'$event': $event, '$planningStartDate': $ctrl.$$startDate, '$planningEndDate': $ctrl.$$endDate, '$reservation': $reservation, '$roomSoldId': $roomSoldId, '$newRoomId': $newRoomId, '$startDate': $startDate, '$endDate': $endDate})">
 		</ch-planning-room>
+		
+		<div ng-if="$ctrl.rooms.executed && !$ctrl.rooms.items.length" flex layout layout-padding layout-align="center center">
+	 		<div class="text-gray-light">
+	 			<div layout-padding class="text-center">
+	 				<div><md-icon md-font-set="fas" class="fas fa-door-open md-120 text-opaque"></md-icon></div>
+	 				<div><em><span translate="hotel.norooms"></span></em></div>
+	 			</div>
+	 		</div>
+	 	</div>
 		
 		<div flex ng-show="$ctrl.rooms.busy" flex layout="column" layout-padding layout-align="center center">
    	 		<div><md-progress-circular class="md-primary ch-progress" md-mode="indeterminate" md-diameter="40"></md-progress-circular></div>
