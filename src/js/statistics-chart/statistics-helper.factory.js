@@ -10,6 +10,8 @@
     	$$service.createChartData = function(type, datasets, tooltips, extra, onHoverEv, onClickEv){
     		var chartData = $$service.$createDefaultChartData(datasets, tooltips, extra, onHoverEv, onClickEv);
     		
+    		var format = _.size(datasets[0]) > 13 ? "shortDate" : "MMM YY";
+    		
     		switch(type) {
     		case "RESERVATIONS_AMOUNT_TREND":
     			chartData.type = 'bar';
@@ -32,9 +34,12 @@
     			// X
     			chartData.options.scales.xAxes[0].ticks.callback = function(value, index, values) {
     				if(!$mdMedia('gt-sm')){
-    					return index % 2 === 0 ? moment.unix(value).format("MMM YY") : '';
+    					if(index % 2 === 0){
+    						return value ? moment.unix(value).format(format) : '';
+    					}
+    					return '';
     				}
-                	return moment.unix(value).format("MMM YY");
+                	return value ? moment.unix(value).format(format) : '';
 				};
     			
 				chartData.options.tooltips.callbacks.label = function(tooltipItem, data) {
@@ -141,9 +146,9 @@
     		
     			chartData.options.scales.xAxes[0].ticks.callback = function(value, index, values) {
     				if(!$mdMedia('gt-sm')){
-    					return index % 2 === 0 ? moment.unix(value).format("MMM YY") : '';
+    					return index % 2 === 0 ? moment.unix(value).format(format) : '';
     				}
-                    return moment.unix(value).format("MMM YY");
+                    return moment.unix(value).format(format);
  				};
 
  				chartData.options.legend.display = false;
@@ -228,7 +233,7 @@
     				mode: 'index',
 					callbacks: {
 						title: function(tp, data) {
-							return _.capitalize(moment.unix(data.labels[tp[0].index]).format("MMMM YYYY"));
+							return _.capitalize(moment.unix(data.labels[tp[0].index]).format(_.size(datasets[0]) > 13 ? "fullDate" : "MMMM YYYY"));
 						},
 						
 						label: function(tooltipItem, data) {
@@ -273,7 +278,10 @@
     			
     		} else if (_.isArray(datasets)) {
 	    		_.forEach(datasets, function(v) {
-	    			chartData.data.labels = Object.keys(v);
+	    			//prendo le labels solo dal primo dataset
+	    			if(_.isEmpty(chartData.data.labels)){
+	    				chartData.data.labels = Object.keys(v);
+	    			}
 	    			chartData.data.datasets.push({
 	    				data: Object.values(v),
 	    				backgroundColor:backgroundColor,

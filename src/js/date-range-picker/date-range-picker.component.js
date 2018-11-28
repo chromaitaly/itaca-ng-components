@@ -28,6 +28,7 @@
     		showDiffInCalendar: "<?",
     		diffLabelSingular: "@",
     		diffLabelPlural: "@",
+    		mdMode: "@",
     		hasBackdrop: "<?",
     		largeTemplate: "<?",
     		disableParentScroll: "<?",
@@ -57,6 +58,9 @@
 			ctrl.labelClass = ctrl.labelClass || "text-gray-light";
 			ctrl.showDiff = _.isBoolean(ctrl.showDiff) ? ctrl.showDiff : true;
 			ctrl.showDiffInCalendar = _.isBoolean(ctrl.showDiffInCalendar) ? ctrl.showDiffInCalendar : true;
+			
+			// imposto la possibilità di scegliere solo il mese o anche il giorno
+			ctrl.mdMode = ctrl.mdMode && _.includes(['month', 'day'],ctrl.mdMode) ? ctrl.mdMode : 'day';
 			
 			//mostro un layout piu grande
 			ctrl.largeTemplate = ctrl.largeTemplate || false;
@@ -132,7 +136,8 @@
 				end: ctrl.end,
 				endMinDate: ctrl.endMinDate,
 				endMaxDate: ctrl.endMaxDate,
-				maxRange: ctrl.maxRange
+				maxRange: ctrl.maxRange,
+				mdMode: ctrl.mdMode
 			 };
 			 
 			 var locals = {
@@ -242,7 +247,7 @@
 			
 			var start = _self.$$getMoment(_self.data.start);
 			var end = _self.$$getMoment(_self.data.end);
-			var minEnd = _self.$$getMoment(start).add(1, "days");
+			var minEnd = (_self.data.mdMode && _self.data.mdMode == 'month') ? _self.$$getMoment(start).add(1, "month") : _self.$$getMoment(start).add(1, "days");
 			
 			var maxEnd = null;
 			if (_self.data.maxRange) {	        		
@@ -261,6 +266,11 @@
 		
 		this.updateEnd = function(date, minDate, maxDate) {
 			_self.data.end = date ? _self.$$getMoment(date).toDate() : null;
+			
+			//se la vista è mensile (mdMode = 'month') allora l'end è la fine del mese
+			if(_self.data.mdMode && _self.data.mdMode == 'month'){
+				_self.data.end = _self.$$getMoment(_self.data.end).endOf('month').set({hours:0,minutes:0}).toDate();
+			}
 			
 			if (minDate) {
 				_self.data.endMinDate = minDate;
