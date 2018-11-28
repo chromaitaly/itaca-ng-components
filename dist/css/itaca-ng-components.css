@@ -326,6 +326,7 @@ ch-help-bar {
   cursor: no-drop !important;
 }
 .ch-planning-cell-room {
+  height: 95px;
   border: 1px solid #d9d9d9;
   border-top: none;
   border-left: none;

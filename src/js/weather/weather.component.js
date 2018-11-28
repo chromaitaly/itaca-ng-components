@@ -4,14 +4,16 @@
 	angular.module("itaca.components").component('chWeather', {
 		bindings: {
 			city: "@",
-			country: "@"
+			country: "@",
+			onChange: "&?"
 	    },
 	    controller: WeatherCtrl,
 	    template: 
 	    	"<div>"+
 	    		"<div class=\"relative overflow-hidden weather-container\">"+
 	    			"<i ng-if=\"$ctrl.$$weather.label == 'partly.cloudy'\" ng-class=\"$ctrl.$$weather.isNight ? 'starry' : 'sunny'\" class=\"cloud\"></i>"+
-	    			"<i class=\"{{$ctrl.$$weather.icon}}\"></i>"+
+	    			"<i ng-if=\"$ctrl.$$weather.icon\" class=\"{{$ctrl.$$weather.icon}}\"></i>"+
+	    			"<md-icon ng-if=\"!$ctrl.$$weather.icon\" class=\"mdi mdi-minus material-icons md-164 text-white\"></md-icon>"+
 	    		"</div>"+
 	    		"<div ng-if=\"$ctrl.$$weather.label\" class=\"text-white\"><span translate=\"weather.{{$ctrl.$$weather.label}}\"></span></div>"+
 	    		"<div class=\"md-headline text-bold text-white text-capitalize\"><span>{{$ctrl.city}}</span></div>"+
@@ -38,7 +40,7 @@
 		};
 		
 		this.$reset = function() {
-			ctrl.$$weather = {icon: "mdi mdi-minus material-icons md-164", temp: "-"};
+			ctrl.$$weather = {icon: null, temp: "-"};
 		};
 		
 		this.$getWeather = function() {
@@ -46,6 +48,7 @@
 				if(!_.isNil(response)){
 		    		ctrl.$$weather.temp = NumberUtils.fixedDecimals(response.main.temp, 1);
 		    		ctrl.$getInfo(response.weather[0].icon);
+		    		ctrl.onChange && ctrl.onChange({$weather: ctrl.$$weather});
 		    		
 		    	} else {
 		    		$log.error("Error getting weather");
