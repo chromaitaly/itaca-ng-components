@@ -10,11 +10,22 @@
 		</h4>
 	</div>
 	
-	<div class="layout-row layout-wrap layout-padding" ng-if="!$ctrl.isDisabled">	
+	<div class="layout-row layout-wrap layout-padding" ng-if="!$ctrl.isDisabled">
+		<div class="flex-100" ng-if="$ctrl.$$isNewUser">
+  			<md-input-container class="md-block">
+				<label translate="common.email">Email</label>
+				<input type="text" name="email" ng-model="$ctrl.user.email" ng-required="$ctrl.isRequired" ng-disabled="$ctrl.isDisabled">
+				<div ng-messages="userForm.email.$error">
+	          		<div ng-message="required"><span translate="error.required"></span></div>
+		        </div>						        
+			</md-input-container>
+		</div>
+		
+	
 		<div class="flex-100 flex-gt-sm-50">
   			<md-input-container class="md-block">
 				<label translate="common.name">Name</label>
-				<input type="text" name="name" ng-model="$ctrl.user.name" required ng-disabled="$ctrl.isDisabled">
+				<input type="text" name="name" ng-model="$ctrl.user.name" ng-required="$ctrl.isRequired" ng-disabled="$ctrl.isDisabled">
 				<div ng-messages="userForm.name.$error">
 	          		<div ng-message="required"><span translate="error.required"></span></div>
 		        </div>						        
@@ -24,7 +35,7 @@
 		<div class="flex-100 flex-gt-sm-50">
   			<md-input-container class="md-block">
 				<label translate="common.surname">Surname</label>
-				<input type="text" name="surname" ng-model="$ctrl.user.surname" required  ng-disabled="$ctrl.isDisabled">
+				<input type="text" name="surname" ng-model="$ctrl.user.surname" ng-required="$ctrl.isRequired"  ng-disabled="$ctrl.isDisabled">
 				<div ng-messages="userForm.surname.$error">
 	          		<div ng-message="required"><span translate="error.required"></span></div>
 		        </div>
@@ -39,7 +50,7 @@
 				input-name="phone"
 				ng-model="$ctrl.user.phone"
 				ng-pattern="$ctrl.REGEXP.phone"
-				ng-required="true"
+				ng-required="$ctrl.isRequired"
 				ng-disabled="$ctrl.isDisabled"
 				prefix-error-messages="[{error: 'required', message: ('error.required'|translate)}]"
 				error-messages="[{error: 'pattern', message: ('error.phone.number'|translate)}]"></ch-phone-input>
@@ -47,8 +58,8 @@
 
 	   	<div class="flex-100 flex-gt-sm-50">
 		    <ch-country-autocomplete 
-		    	ng-model="$ctrl.user.countryIso" 
-		    	is-required="true" 
+		    	ng-model="$ctrl.user.countryIso"
+		    	is-required="$ctrl.isRequired"
 		    	dropdown-position="BOTTOM" 
 		    	clear-button="true"
 		    	current-lang="$ctrl.appOptions.currentLang"

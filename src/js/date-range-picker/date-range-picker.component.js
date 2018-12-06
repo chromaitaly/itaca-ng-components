@@ -60,7 +60,7 @@
 			ctrl.showDiffInCalendar = _.isBoolean(ctrl.showDiffInCalendar) ? ctrl.showDiffInCalendar : true;
 			
 			// imposto la possibilità di scegliere solo il mese o anche il giorno
-			ctrl.mdMode = ctrl.mdMode && _.includes(['month', 'day'],ctrl.mdMode) ? ctrl.mdMode : 'day';
+			ctrl.mdMode = ctrl.mdMode && _.includes(['month', 'day'],ctrl.mdMode) ? ctrl.mdMode : null;
 			
 			//mostro un layout piu grande
 			ctrl.largeTemplate = ctrl.largeTemplate || false;
