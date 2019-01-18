@@ -20,11 +20,11 @@
 						<strong>{{::($ctrl.cancellationPolicy.limitDate|date:"shortDate")}}</strong>
 						<span translate="date.time.to" class="text-lowercase"></span>
 						<span><strong>{{::($ctrl.cancellationPolicy.limitDate|offsetDate:"HH:mm":$ctrl.offset)}}</strong></span>
-						<span>[{{::$ctrl.city}}].</span>
+						<span>[{{$ctrl.city}}].</span>
 						<span translate="reservation.cancellation.room.condition.free.label2"></span>
 					</span>
 					<span ng-if="$ctrl.cancellationPolicy.flexible">
-						<span translate="reservation.cancellation.room.condition.flex.label" translate-values="{limit: ($ctrl.cancellationPolicy.limitDate|offsetDate:'short':$ctrl.offset) + ' [' + $ctrl.city + ']'}"></span>
+						<span translate="reservation.cancellation.room.condition.flex.label" translate-values="{limit: (($ctrl.cancellationPolicy.limitDate|offsetDate:'short':$ctrl.offset) + ' [' + $ctrl.city + ']')}"></span>
 					</span>
 					<span ng-if="$ctrl.cancellationPolicy.cancellation.chargeNights != $ctrl.cancellationPolicy.cancellation.stayNights">
 						{{::$ctrl.cancellationPolicy.cancellation.percentage}}
@@ -62,7 +62,7 @@
 						<strong>{{::($ctrl.cancellationPolicy.limitDate|date:"shortDate")}}</strong>
 						<span translate="date.time.to" class="text-lowercase"></span>
 						<span><strong>{{::($ctrl.cancellationPolicy.limitDate|offsetDate:"HH:mm":$ctrl.offset)}}</strong></span>
-						<span>[{{::$ctrl.city}}],</span>
+						<span>[{{$ctrl.city}}],</span>
 						<span translate="reservation.cancellation.room.condition.notRef.label3"></span>
 						<span ng-if="$ctrl.cancellationPolicy.cancellation.chargeNights != $ctrl.cancellationPolicy.cancellation.stayNights">
 							{{::$ctrl.cancellationPolicy.cancellation.percentage}}

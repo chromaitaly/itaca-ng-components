@@ -7,7 +7,7 @@
 	<div ng-if="!$ctrl.step || $ctrl.step <= 1" class="no-padding-top no-padding-bottom" layout="column" layout-padding-sm>
 		<div flex layout="column">
 			<ch-date-range-picker 
-				label="{{'reservation.when.question'|translate}}"
+				label="{{('date.checkin'|translate) + ' ' + ('date.checkout'|translate)}}"
 				start-label="{{'date.checkin'|translate}}"
 				start-hint-label="{{'date.checkin.select.alt'|translate}}"
 				start="$ctrl.reservation.checkin"
@@ -29,7 +29,7 @@
 		
 		<div flex layout="column">
 			<ch-people-picker  
-				label="{{'reservation.people.question'|translate}}" 
+				label="{{'reservation.people.question.generic'|translate}}" 
 				people="$ctrl.reservation.people" 
 				ng-required="true" 
 				has-confirm="true" 
@@ -73,7 +73,7 @@
 					class="text-lowercase text-small text-warn">
 					<md-icon class="mdi mdi-alert md-14 text-warn"></md-icon>
 					<span translate="reservation.people.unsatisfied"></span>:&nbsp;<strong><ch-people-summary people="$ctrl.$$remainingPeople"></ch-people-summary>&nbsp;<span translate="reservation.people.unsatisfied.to.arrange"></span></strong>.&nbsp;
-					<span class="text-initial" translate="reservation.people.unsatisfied.add.beds.or.rooms"></span>.
+					<span class="text-initial" translate="reservation.people.unsatisfied.add.beds.or.rooms"></span>.&nbsp;<span class="text-initial" translate="reservation.people.unsatisfied.otherwise"></span>
 				</div>
 			</div>
 		</div>

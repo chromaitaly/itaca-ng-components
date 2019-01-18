@@ -6,6 +6,7 @@
 			type: "<",
 			data: "<",
 			options: "<?",
+			linearGradient: "<?"
 		},
 		controller: ChartCtrl,
 		template: "<canvas class=\"chartjs\"></canvas>"
@@ -27,26 +28,66 @@
 		
 		this.$onChanges = function(changesObj) {
 			if (changesObj.type && !changesObj.type.isFirstChange()) {
+				ctrl.$destory();
 				ctrl.$createChart();
 			}
 			
 			if (changesObj.data && !changesObj.data.isFirstChange()) {
-				_.assign(ctrl.$$chart.data, ctrl.data);
-				ctrl.$update();
+				ctrl.$$chart.data = ctrl.data;
+				ctrl.$$chart.update({
+				    duration: 800,
+				    easing: 'easeOutBounce'
+				});
 			}
 			
 			if (changesObj.options && !changesObj.options.isFirstChange()) {
-				_.assign(ctrl.$$chart.options, ctrl.options);
+				ctrl.$$chart.options = ctrl.options;
+				ctrl.$update();
+			}
+			
+			if (changesObj.linearGradient && !changesObj.linearGradient.isFirstChange()) {
 				ctrl.$update();
 			}
 		};
 		
 		this.$update = function(){
+			ctrl.$generateGradient();
 			ctrl.$$chart.update();
 			ctrl.$$chart.resize();
 			
 			// fix per aggiornare il chart se cambiano i colori
 			ctrl.data.$$updateChart = false;
+		};
+		
+		this.$destory = function(){
+			ctrl.$$chart.destroy();
+		};
+		
+		/**
+		 * funzione che genera e applica il colore gradiente al dataset assegnato
+		 * 
+		 * linear-gradient deve essere una array di dataset contenente una mappa di colori
+		 * <position:colore> position: (posizione del gradiente), colore: hex o rgba
+		 * 
+		 * es: [{0:'#000', 1:'#fff'}, {0:'#000', 1:'#fff'}]
+		 */
+		this.$generateGradient = function(){
+			if(_.isNil(ctrl.linearGradient) || _.isEmpty(ctrl.linearGradient)){
+				return;
+			}
+			
+			_.forEach(ctrl.linearGradient, function(color, idx){
+				
+				var gradient = ctrl.ctx.createLinearGradient(0, 0, 0, 400);
+				
+				_.forEach(color, function(v,k){
+					gradient.addColorStop(k, v);
+				})
+				
+				if(ctrl.data.datasets[idx]){
+					ctrl.data.datasets[idx].backgroundColor = gradient;
+				}
+			});
 		};
 		
 		this.$createChart = function(){
@@ -66,6 +107,8 @@
 			    	var line = chartInstance.options.horizontalLine[i];
 			    	
 			    	var style, yValue;
+			    	
+			    	var textPosition = line.textPosition || 5;
 
 			        if (!line.style) {
 			          style = "rgba(0, 0, 0, .7)";
@@ -97,7 +140,7 @@
 			          ctx.fillStyle = style;
 			          ctx.font = "12px sans-serif";
 			          ctx.textBaseline = "top";
-			          ctx.fillText(line.text, xScale.getPixelForTick(0) + 2, yValue + ctx.lineWidth + 5 );
+			          ctx.fillText(line.text, xScale.getPixelForTick(0) + 2, yValue + ctx.lineWidth + textPosition );
 			        }
 			      }
 			      return;

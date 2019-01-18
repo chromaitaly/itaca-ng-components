@@ -77,36 +77,6 @@
     		ctrl.selectedItem  = null;
     		
     		ctrl.precopileSearchText();
-    		
-//    		ctrl.ngModelCtrl.$formatters.push(function(value) {
-//    			return CountryAPI.getByIso(value).then(function(response){
-//    				var country = _.find(response, function(item){
-//    					return item.translations[ctrl.currentLang];
-//    				});
-//    				
-//    				if(country){
-//    					return country.translations[ctrl.currentLang] ? country.translations[ctrl.currentLang] : country.name;
-//    				}
-//    				
-//    				return value;
-//	    		});
-//    		});
-//    		
-//    		ctrl.ngModelCtrl.$parsers.push(function(value) {
-//    			return CountryAPI.getByName(value).then(function(response){
-//    				var country = _.find(response, function(item){
-//    					return item.translations[ctrl.currentLang];
-//    				});
-//    				
-//    				if(country){
-//    					return country.translations[ctrl.currentLang] ? country.translations[ctrl.currentLang] : country.name;
-//    				}
-//    				
-//    				return value;
-//	    		});
-//    		});
-    		
-
     	};
     	
     	this.precopileSearchText = function(){
@@ -114,9 +84,12 @@
     			
     			if(ctrl.ngModel.length > 2){
     				CountryAPI.getByName(ctrl.ngModel).then(function(response){
-    					var country = _.find(response, function(item){
-        					return item.translations[ctrl.currentLang];
-        				});
+    					var country = response;
+    					if(_.isArray(response)){
+	    					country = _.find(response, function(item){
+	    						return item && !_.isEmpty(item.translations) && item.translations[ctrl.currentLang];
+	        				});
+    					} 
         				
         				if(country){
         					ctrl.searchText = country.translations[ctrl.currentLang] ? country.translations[ctrl.currentLang] : country.name;
@@ -124,10 +97,13 @@
     	    		});
     			} else if(ctrl.ngModel.length == 2){
     				CountryAPI.getByIso(ctrl.ngModel).then(function(response){
-    					var country = _.find(response, function(item){
-        					return item.translations[ctrl.currentLang];
-        				});
-        				
+						var country = response;
+    					if(_.isArray(response)){
+	    					country = _.find(response, function(item){
+	    						return item && !_.isEmpty(item.translations) && item.translations[ctrl.currentLang];
+	        				});
+    					} 
+    					
         				if(country){
         					ctrl.searchText = country.translations[ctrl.currentLang] ? country.translations[ctrl.currentLang] : country.name;
         				}

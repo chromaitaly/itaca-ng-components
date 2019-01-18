@@ -6,6 +6,7 @@
 			hotel: "<",
 			type: "<?",
 			isDisabled: "<?",
+			showInfo: "<?",
 			nameRequired: "<?",
 			mapMarker: "@",
 		},
@@ -26,6 +27,8 @@
     		ctrl.type = ctrl.type || 'HOTEL';
     		
     		ctrl.isDisabled = _.isBoolean(ctrl.isDisabled) ? ctrl.isDisabled : false;
+    		
+    		ctrl.showInfo = _.isBoolean(ctrl.showInfo) ? ctrl.showInfo : true;
     		
     		ctrl.nameRequired = _.isBoolean(ctrl.isDisabled) ? ctrl.isDisabled : false;
     		

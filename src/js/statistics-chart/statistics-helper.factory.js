@@ -8,19 +8,36 @@
     	var $$service = {};
     	
     	$$service.createChartData = function(type, datasets, tooltips, extra, onHoverEv, onClickEv){
-    		var chartData = $$service.$createDefaultChartData(datasets, tooltips, extra, onHoverEv, onClickEv);
     		
-    		var format = _.size(datasets[0]) > 13 ? "shortDate" : "MMM YY";
+    		extra = extra || {};
+    		
+    		if(extra.xType){
+    			extra.format = extra.xType == 'DAYS' ? {small: 'DD/MM/YY', big: 'DD MMM YYYY', tooltips: 'DD MMMM YYYY'} :  extra.xType == 'MONTHS' ? {small: 'MMM', big: 'MMMM', tooltips: 'MMMM YYYY'} : {small: 'YYYY', big: 'YYYY', tooltips: 'YYYY'};
+			} else {
+				extra.format = {small: 'DD/MM/YY', big: 'DD MMM YYYY', tooltips: 'DD MMMM YYYY'};
+			}
+    		
+    		var chartData = $$service.$createDefaultChartData(datasets, tooltips, extra, onHoverEv, onClickEv);
     		
     		switch(type) {
     		case "RESERVATIONS_AMOUNT_TREND":
     			chartData.type = 'bar';
     			
-    			_.forEach(chartData.data.datasets, function(data){
- 					data.backgroundColor = ColorsUtils.hex2rgba("#92278f", 80);
- 					data.borderColor = ColorsUtils.hex2rgba("#92278f");
- 					data.fill = true;
- 				});
+    			// 1 dataset primary 
+    			chartData.data.datasets[0].backgroundColor = ColorsUtils.hex2rgba("#42a5f5", 80);
+    			chartData.data.datasets[0].borderColor = ColorsUtils.hex2rgba("#42a5f5");
+    			chartData.data.datasets[0].fill = true;
+    			chartData.data.datasets[0].label = $translate.instant('reservations.reservations'); 
+    			
+    			// 2 dataset primary light 
+    			if(chartData.data.datasets[1]){
+    				chartData.data.datasets[0].label = $translate.instant('statistics.statistics.trend.basic'); 
+	    			chartData.data.datasets[1].backgroundColor = ColorsUtils.hex2rgba("#1976d2", 80);
+	    			chartData.data.datasets[1].borderColor = ColorsUtils.hex2rgba("#1976d2");
+	    			chartData.data.datasets[1].fill = true;
+	    			chartData.data.datasets[1].label = $translate.instant('common.comparison'); 
+    			}
+    			
     			
     			// Y
     			chartData.options.scales.yAxes[0].ticks.callback = function(value, index, values) {
@@ -28,25 +45,61 @@
 				};
 				chartData.options.scales.yAxes[0].scaleLabel = {
 					display: true,
-		        	labelString: 'Euro €',
+		        	labelString: extra.yType == 'CURRENCY' ? 'Euro €' : extra.yType == 'PERCENTAGE' ? $translate.instant('common.percentage') + ' %' : '',
 				};
     			
     			// X
     			chartData.options.scales.xAxes[0].ticks.callback = function(value, index, values) {
-    				if(!$mdMedia('gt-sm')){
-    					if(index % 2 === 0){
-    						return value ? moment.unix(value).format(format) : '';
-    					}
-    					return '';
+    				if(value){
+    					return moment.unix(value).format((extra.isSmall || !$mdMedia('gt-sm')) ? extra.format.small : extra.format.big );
     				}
-                	return value ? moment.unix(value).format(format) : '';
 				};
+				chartData.options.scales.xAxes[0].scaleLabel = {
+						display: true,
+			        	labelString: '', //TODO mettere un range di anni (o di mesi nel caso di vista giornaliera)
+					};
+				
     			
 				chartData.options.tooltips.callbacks.label = function(tooltipItem, data) {
 					return $translate.instant('reservations.reservations'); 
-				},
+				};
 				
     			chartData.options.legend.display = false;
+    			
+    			// Tooltips in caso di più di un dataset
+    			if(chartData.data.datasets.length > 1){
+					chartData.options.tooltips = {
+							backgroundColor: '#FFF',
+	    					borderColor: 'rgba(0,0,0, .7)',
+	    					titleFontColor: '#000',
+	    					bodyFontColor: '#000',
+	    					footerFontColor: '#000',
+	    					mode: 'index',
+	    		            intersect: false,
+	    					callbacks: {
+	    						label: function(tooltipItem, data) {
+	    							var label = '';
+	    							
+	    							if(extra.tooltipTitle){
+	    								label = $translate.instant(extra.tooltipTitle);
+	    							}
+	    							
+	    							if(tooltipItem.datasetIndex > 0 && extra.comparationTitle){
+	    								if(_.isFinite(extra.comparationTitle)){
+	    									label = label + ' (' + extra.comparationTitle + ') ';
+	    								} else {
+	    									label = label + ' (' + (extra.comparationTitle == 'PORTAL' ? AppOptions.about.uiName : $translate.instant('channel.source.' + extra.comparationTitle.toLowerCase())) + ') ';
+	    								}
+	    							}
+	    							
+	    							label = label + ': ' + chValueFilter({count: tooltipItem.yLabel, unit: extra.yType });
+	    							return label;
+	    						}
+	    					}
+					};
+					chartData.options.legend.display = true;
+				}
+    			
     			
     			break;
     			
@@ -59,7 +112,6 @@
     				ds.borderWidth = 4;
     				ds.hoverBorderWidth = 0;
     				ds.hoverBorderColor = "#FFF";
-//    				ds.fill = false;
     			});
     			
     			var tp = chartData.options.tooltips;
@@ -98,8 +150,6 @@
 					},
 					animationSteps : 100,
 					animationEasing : "easeOutBounce",
-    					
-    					
     				responsive: true,
     				legend: false,
     				tooltips: tp,
@@ -126,52 +176,177 @@
     			chartData.type = 'line';
     			
     			//mostro la linea di divisione
-    			if(extra && extra.benchmarkValue){
-    				chartData.options.horizontalLine = [{
-				      "y": extra.benchmarkValue,
-				      "style": "#444",
-				      "text": $translate.instant("statistics.statistic.benchmark"),
-				    }];
+    			if(extra && (extra.benchmarkValue || extra.currentValue) && (extra.tooltipTitle == "statistics.reviews.avg" ||  extra.tooltipTitle == "statistics.reviews.avg.monthly" || extra.tooltipTitle == "statistics.reviews.avg.daily" || extra.tooltipTitle == "statistics.reviews.avg.yearly")){
+    				chartData.options.horizontalLine = chartData.options.horizontalLine || [];
     				
+    				if(extra.benchmarkValue){
+	    				chartData.options.horizontalLine.push({
+					      "y": extra.benchmarkValue,
+					      "style": "#444",
+					      "text": $translate.instant("statistics.statistic.benchmark"),
+					      "textPosition" : 5,
+					    });
+    				}
+    				
+    				if(extra.currentValue){
+    					chartData.options.horizontalLine.push({
+					      "y": extra.currentValue,
+					      "style": "#444",
+					      "text": extra.currentValue + ' ' + $translate.instant("statistics.reviews.score.current"),
+					      "textPosition" : 5,
+					    });
+    					
+    					// posiziono il testo distanziandolo in caso di vicinanza di 1 punto base
+    					// applico la distanza all' elemento che si trova più in alto
+    					if((extra.currentValue - extra.benchmarkValue) < 1 || (extra.currentValue - extra.benchmarkValue) > -1){
+    						chartData.options.horizontalLine[extra.currentValue > extra.benchmarkValue ? 1 : 0].textPosition = -20;
+    						chartData.options.horizontalLine[0].style = "#888";
+        				}
+    				}
     			}
     			
-    			_.forEach(chartData.data.datasets, function(ds){
-    				ds.backgroundColor = ColorsUtils.hex2rgba("#92278f", 60);
-    				ds.borderColor = ColorsUtils.hex2rgba("#92278f");
-    				ds.pointBackgroundColor = ColorsUtils.hex2rgba("#92278f");
-    				ds.pointRadius = 2;
-    				ds.pointHoverRadius = 4;
-    				ds.lineTension = 0;
-    			});
+    			// 1 dataset primary 
+    			chartData.data.datasets[0].backgroundColor = ColorsUtils.hex2rgba("#42a5f5", 50);
+    			chartData.data.datasets[0].borderColor = ColorsUtils.hex2rgba("#42a5f5");
+    			chartData.data.datasets[0].fill = true;
+    			chartData.data.datasets[0].pointRadius = 2;
+    			chartData.data.datasets[0].pointHoverRadius = 4;
+    			chartData.data.datasets[0].lineTension = 0;
+    			
+    			// 2 dataset primary light 
+    			if(chartData.data.datasets[1]){
+    				chartData.data.datasets[0].label = $translate.instant('statistics.statistics.trend.basic'); 
+	    			chartData.data.datasets[1].backgroundColor = ColorsUtils.hex2rgba("#1976d2", 80);
+	    			chartData.data.datasets[1].borderColor = ColorsUtils.hex2rgba("#1976d2");
+	    			chartData.data.datasets[1].fill = true;
+	    			chartData.data.datasets[0].pointRadius = 2;
+	    			chartData.data.datasets[0].pointHoverRadius = 4;
+	    			chartData.data.datasets[0].lineTension = 0;
+    			}
     		
     			chartData.options.scales.xAxes[0].ticks.callback = function(value, index, values) {
-    				if(!$mdMedia('gt-sm')){
-    					return index % 2 === 0 ? moment.unix(value).format(format) : '';
+    				if(value){
+    					return moment.unix(value).format((extra.isSmall || !$mdMedia('gt-sm')) ? extra.format.small : extra.format.big );
     				}
-                    return moment.unix(value).format(format);
  				};
 
  				chartData.options.legend.display = false;
  				
- 				chartData.options.scales.yAxes[0].ticks.min = 4;
- 				chartData.options.scales.yAxes[0].ticks.max = 10;
+ 				if(extra.isSmall || _.includes(['statistics.reviews.avg','statistics.reviews.avg.daily','statistics.reviews.avg.monthly','statistics.reviews.avg.yearly'], extra.tooltipTitle)){
+	 				chartData.options.scales.yAxes[0].ticks.min = 4;
+	 				chartData.options.scales.yAxes[0].ticks.max = 12;
+ 				}
  				
  				chartData.options.tooltips.callbacks.label = function(tooltipItem, data) {
 					return $translate.instant('reviews.reviews');
 				};
 				
-				chartData.options.scales.yAxes[0].scaleLabel = {
-					display: true,
-		        	labelString: $translate.instant('common.opinion'),
-				};
+				if(_.includes(['statistics.reviews.avg','statistics.reviews.avg.daily','statistics.reviews.avg.monthly','statistics.reviews.avg.yearly'], extra.tooltipTitle)){
+					chartData.options.scales.yAxes[0].scaleLabel = {
+						display: true,
+			        	labelString: $translate.instant('common.opinion'),
+					};
+				}
+				
+				if(chartData.data.datasets[1]){
+					chartData.data.datasets[0].label = $translate.instant('statistics.statistics.trend.basic'); 
+					chartData.data.datasets[1].label = $translate.instant('common.comparison'); 
+				}
+				
+				chartData.gradient = [
+					{0: "rgba(33, 150, 243, 0.3)", 1: "rgba(133, 150, 243, 0.00)"},
+					{0: "rgba(25, 118, 210, 0.3)", 1: "rgba(25, 118, 210, 0.00)"}
+				];
+				
+				// Tooltips in caso di più di un dataset
+    			if(chartData.data.datasets.length > 1){
+					chartData.options.tooltips = {
+	    					backgroundColor: '#FFF',
+	    					borderColor: 'rgba(0,0,0, .7)',
+	    					titleFontColor: '#000',
+	    					bodyFontColor: '#000',
+	    					footerFontColor: '#000',
+	    					mode: 'index',
+	    		            intersect: false,
+	    					callbacks: {
+	    						label: function(tooltipItem, data) {
+	    							var label = '';
+	    							
+	    							if(extra.tooltipTitle){
+	    								label = $translate.instant(extra.tooltipTitle);
+	    							}
+	    							
+	    							if(tooltipItem.datasetIndex > 0 && extra.comparationTitle){
+	    								if(_.isFinite(extra.comparationTitle)){
+	    									label = label + ' (' + extra.comparationTitle + ') ';
+	    								}
+	    							}
+	    							
+	    							label = label + ': ' + chValueFilter({count: tooltipItem.yLabel, unit: extra.yType });
+	    							return label;
+	    						}
+	    					}
+					};
+					chartData.options.legend.display = true;
+				}
  				
     			break;
-    		}    	
+    			
+    		case "TRANSFERS_TREND":
+    			chartData.type = 'bar';
+    			
+ 				// Y
+    			chartData.options.scales.yAxes[0].ticks.callback = function(value, index, values) {
+                    return NumberUtils.formatter(value, 2);
+				};
+				chartData.options.scales.yAxes[0].scaleLabel = {
+					display: true,
+		        	labelString: extra.yType == 'CURRENCY' ? 'Euro €' : extra.yType == 'PERCENTAGE' ? $translate.instant('common.percentage') + ' %' : '',
+				};
+    			
+    			// X
+    			chartData.options.scales.xAxes[0].ticks.callback = function(value, index, values) {
+    				if(value){
+    					return moment.unix(value).format((extra.isSmall || !$mdMedia('gt-sm')) ? extra.format.small : extra.format.big );
+    				}
+				};
+
+ 				chartData.options.legend.display = false;
+ 				
+ 				chartData.options.tooltips.callbacks.label = function(tooltipItem, data) {
+					return $translate.instant('service.transfer');
+				};
+				
+				
+				// 1 dataset primary 
+    			chartData.data.datasets[0].backgroundColor = ColorsUtils.hex2rgba("#42a5f5", 80);
+    			chartData.data.datasets[0].borderColor = ColorsUtils.hex2rgba("#42a5f5");
+    			chartData.data.datasets[0].fill = true;
+    			chartData.data.datasets[0].label = $translate.instant('reservations.reservations'); 
+    			
+    			// 2 dataset primary light 
+    			if(chartData.data.datasets[1]){
+    				chartData.data.datasets[0].label = $translate.instant('statistics.statistics.trend.basic'); 
+	    			chartData.data.datasets[1].backgroundColor = ColorsUtils.hex2rgba("#1976d2", 80);
+	    			chartData.data.datasets[1].borderColor = ColorsUtils.hex2rgba("#1976d2");
+	    			chartData.data.datasets[1].fill = true;
+	    			chartData.data.datasets[1].label = $translate.instant('common.comparison'); 
+    			}
+				
+    			
+    			break;
+    		} 
     		
     		return chartData;
     	};
     	
     	$$service.$createDefaultChartData = function(datasets, tooltips, extra, onHoverEv, onClickEv) {
+    		
+			var max = _.isArray(datasets) ? _.max(datasets[0]) : null;
+			if(max){
+				max = max + 10;
+			}
+    		
     		var chartData = {
 				data: {
 					labels: [],
@@ -189,11 +364,13 @@
 								display: true,
 							},
 							ticks: {
-								 beginAtZero: true //imposto l'asse x a partire da 0
+								 beginAtZero: true, //imposto l'asse x a partire da 0
+				    			 max: max,
 							},
 							gridLines: {
 							   tickMarkLength: 10
 							},
+							offset: true,
 			            }],
 			            xAxes: [{
 							display: true,
@@ -233,7 +410,7 @@
     				mode: 'index',
 					callbacks: {
 						title: function(tp, data) {
-							return _.capitalize(moment.unix(data.labels[tp[0].index]).format(_.size(datasets[0]) > 13 ? "fullDate" : "MMMM YYYY"));
+							return _.capitalize(moment.unix(data.labels[tp[0].index]).format(extra.format.tooltips));
 						},
 						
 						label: function(tooltipItem, data) {
@@ -265,14 +442,11 @@
 				}
     		}
     		
-    		//default background color
-    		var backgroundColor = ColorsUtils.hex2rgba("#92278f");
-    		
     		if (_.isPlainObject(datasets)) {
     			chartData.data.labels = Object.keys(datasets);
     			chartData.data.datasets.push({
     				data: Object.values(datasets),
-    				backgroundColor:backgroundColor,
+    				backgroundColor:ColorsUtils.hex2rgba("#42a5f5", 80),
     				fill: true,
     			});
     			
@@ -284,7 +458,7 @@
 	    			}
 	    			chartData.data.datasets.push({
 	    				data: Object.values(v),
-	    				backgroundColor:backgroundColor,
+	    				backgroundColor: ColorsUtils.hex2rgba("#1976d2", 80),
 	    				fill: true,
 	    			});
 	    		});

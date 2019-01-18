@@ -24,17 +24,18 @@
 						<span translate="bed.{{bedSold.bed.type}}.description"></span>
 					</div>
 					
-					<div class="text-gray-light text-small">
+					<div class="text-gray-light text-small" ng-if="$ctrl.configBed">
 						<ch-people-summary people="bedSold.people"></ch-people-summary>
  					</div>
  					
- 					<div ng-if="bedSold.amount" class="md-subhead">
+ 					<div ng-if="$ctrl.configBed && bedSold.amount" class="md-subhead">
 			        	<span ng-if="bedSold.amount.finalAmount > 0">{{bedSold.amount.finalAmount|chCurrency}}</span>
 			        	<span ng-if="bedSold.amount.finalAmount == 0" class="text-success"><span translate="common.free"></span></span>
 				    </div>
 				</div>
 				
-				<div class="no-padding-right" ng-if="!$ctrl.minCount || $ctrl.$$availableBeds.length > $ctrl.minCount">
+<!-- 				<div class="no-padding-right" ng-if="!$ctrl.minCount || $ctrl.$$availableBeds.length > $ctrl.minCount || ($ctrl.maxCount && $ctrl.$$preselectedBeds.length != $ctrl.maxCount)"> -->
+				<div class="no-padding-right" ng-if="!$ctrl.minCount || ($ctrl.$$availableBeds.length - $ctrl.$$preselectedBeds.length) > $ctrl.minCount">
 					<md-button class="button-small no-margin text-small text-blue-sea" ng-click="$ctrl.$toggleDetails(true)" aria-label="Edit beds">
 						<md-icon class="mdi mdi-pencil md-18 text-blue-sea"></md-icon>
 						<span translate="common.edit"></span>
@@ -63,7 +64,7 @@
 	</div>
 	
 	<div class="md-margin no-margin-x-sides no-margin-top" ng-if="$ctrl.$$showDetails">
-		<div ng-if="!$ctrl.$$availableBeds.length">
+		<div ng-if="!$ctrl.$$availableBeds.length" class="md-padding text-center">
 			<span class="text-italic" translate="bed.beds.none.alt"></span>
 		</div>
 		
@@ -128,18 +129,18 @@
 							
 							<div class="flex flex-order-xs-1 flex-order-sm-1" ng-if="!bed.$$available">
 								<strong ng-click="$ctrl.$showBedInfo($event, bed)" aria-label="Bed info" class="clickable">
-									<span translate="bed.bed"></span>
+									<span translate="bed.bed"></span>&nbsp;
 									<span translate="bed.{{bed.bed.type}}"></span>&nbsp;
 									<md-icon class="mdi mdi-information-outline md-14"></md-icon>
 								</strong>
 								<div class="text-gray-light text-small">
 									<span translate="bed.{{bed.bed.type}}.description"></span>
 								</div>
-								<div class="text-gray-light text-small">
+								<div class="text-gray-light text-small" ng-if="$ctrl.configBed">
 									<ch-people-summary people="bed.people"></ch-people-summary>
 								</div>
 								
-								<div ng-if="bed.amount" class="md-subhead">
+								<div ng-if="$ctrl.configBed && bed.amount" class="md-subhead">
 						        	<span ng-if="bed.amount.finalAmount > 0">{{bed.amount.finalAmount|chCurrency}}</span>
 						        	<span ng-if="bed.amount.finalAmount == 0" class="text-success"><span translate="common.free"></span></span>
 							    </div>

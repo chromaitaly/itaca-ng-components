@@ -14,7 +14,7 @@
 		<div class="flex-100" ng-if="$ctrl.$$isNewUser">
   			<md-input-container class="md-block">
 				<label translate="common.email">Email</label>
-				<input type="text" name="email" ng-model="$ctrl.user.email" ng-required="$ctrl.isRequired" ng-disabled="$ctrl.isDisabled">
+				<input type="text" name="email" ng-model="$ctrl.user.email" ng-required="true" ng-disabled="$ctrl.isDisabled">
 				<div ng-messages="userForm.email.$error">
 	          		<div ng-message="required"><span translate="error.required"></span></div>
 		        </div>						        
@@ -71,27 +71,32 @@
 	<div ng-if="$ctrl.isDisabled"  class="layout-row layout-wrap layout-padding">
 		<div class="layout-column flex-100 flex-gt-sm-50">
 			<small><span translate="common.name"></span>:&nbsp;</small>
-			<strong class="md-title text-bold text-force-wrap">{{::$ctrl.user.name}}</strong>
+			<strong ng-if="$ctrl.user.name" class="md-title text-bold text-force-wrap">{{::$ctrl.user.name}}</strong>
+			<strong ng-if="!$ctrl.user.name" class="md-title text-bold" translate="common.unknown"></strong>
 		</div>
 		<div class="layout-column flex-100 flex-gt-sm-50">
 			<small><span translate="common.surname"></span>:&nbsp;</small>
-			<strong class="md-title text-bold text-force-wrap">{{::$ctrl.user.surname}}</strong>
+			<strong ng-if="$ctrl.user.surname" class="md-title text-bold text-force-wrap">{{::$ctrl.user.surname}}</strong>
+			<strong ng-if="!$ctrl.user.surname" class="md-title text-bold" translate="common.unknown"></strong>
 		</div>
 		<div class="layout-column flex-100 flex-gt-sm-50">
 			<small><span translate="common.email"></span>:&nbsp;</small>
-			<strong class="md-title text-bold text-force-wrap" ng-if="!$ctrl.isClickable">{{::$ctrl.user.email}}</strong>
-			<a ng-href="{{'mailto:' + $ctrl.user.email}}" title="send email" class="text-blue-sea" ng-if="$ctrl.isClickable"><strong class="md-title text-bold">{{::$ctrl.user.email}}</strong></a>
+			<strong class="md-title text-bold text-force-wrap" ng-if="$ctrl.user.email && !$ctrl.isClickable">{{::$ctrl.user.email}}</strong>
+			<a ng-href="{{'mailto:' + $ctrl.user.email}}" title="send email" class="text-blue-sea" ng-if="$ctrl.user.email && $ctrl.isClickable"><strong class="md-title text-bold">{{::$ctrl.user.email}}</strong></a>
+			<strong ng-if="!$ctrl.user.email" class="md-title text-bold" translate="common.unknown.female"></strong>
 		</div>
 		<div class="layout-column flex-100 flex-gt-sm-25">
 			<small><span translate="common.phone"></span>:&nbsp;</small>
-			<strong class="md-title text-bold text-force-wrap" ng-if="!$ctrl.isClickable">{{::$ctrl.user.phone}}</strong>
-			<a ng-href="{{'tel:' + $ctrl.user.phone}}" title="call" class="text-blue-sea" ng-if="$ctrl.isClickable"><strong class="md-title text-bold">{{::$ctrl.user.phone}}</strong></a>
+			<strong class="md-title text-bold text-force-wrap" ng-if="$ctrl.user.phone && !$ctrl.isClickable">{{::$ctrl.user.phone}}</strong>
+			<a ng-href="{{'tel:' + $ctrl.user.phone}}" title="call" class="text-blue-sea" ng-if="$ctrl.user.phone && $ctrl.isClickable"><strong class="md-title text-bold">{{::$ctrl.user.phone}}</strong></a>
+			<strong ng-if="!$ctrl.user.phone" class="md-title text-bold" translate="common.unknown"></strong>
 		</div>
 		<div class="layout-column flex-100 flex-gt-sm-25">
 			<small><span translate="common.nationality"></span>:&nbsp;</small>
-			<strong class="md-title text-bold text-force-wrap">
+			<strong class="md-title text-bold text-force-wrap" ng-if="$ctrl.user.countryIso">
 				<ch-country-iso iso="$ctrl.user.countryIso" current-lang="$ctrl.appOptions.currentLang"></ch-country-iso>
 			</strong>
+			<strong ng-if="!$ctrl.user.countryIso" class="md-title text-bold" translate="common.unknown.female"></strong>
 		</div>
 	</div>
 </ng-form>

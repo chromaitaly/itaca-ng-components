@@ -371,7 +371,7 @@
       			<ch-cancellation-policy-info
       				rate-type="$ctrl.rate.type"
    					cancellation-policy="$ctrl.rate.cancellationPolicy"
-   					city="$ctrl.chRoomCtrl.city"
+   					city="{{$ctrl.chRoomCtrl.city}}"
    					offset="$ctrl.chRoomCtrl.offset"
    					title="{{$ctrl.rate.cancellationPolicy.cancellation.deposit ? ('reservation.deposit.conditions'|translate) : null}}"></ch-cancellation-policy-info>
    					

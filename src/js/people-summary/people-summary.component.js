@@ -11,12 +11,14 @@
         	noDetails: "<?"
         },
         controller: PeopleSummaryCtrl,
-        template: "<span ng-bind='$ctrl.$$peopleSummary'></span>"
+        template: "<span ng-bind=\"$ctrl.$$peopleSummary.text\"></span>"
 	});
 
 	/* @ngInject */
 	function PeopleSummaryCtrl($scope, ReservationUtils, $translate) {
 		var ctrl = this;
+		
+		this.$$peopleSummary = {text: ""};
 		
 		this.$onInit = function() {
 			ctrl.$updateSummary();
@@ -34,18 +36,18 @@
 				
 				if(!guestsCount && guestsCount.total <= 0) {
 					$translate('people.none').then(function(message){
-						ctrl.$$peopleSummary = message;
+						ctrl.$$peopleSummary.text = message;
 					});
 
 				} else {					
 					$translate('people.pax').then(function(message){
-						ctrl.$$peopleSummary = _.toLower(guestsCount.total  +' '+ message);
+						ctrl.$$peopleSummary.text = _.toLower(guestsCount.total  +' '+ message);
 					});
 				}
 				
 			} else {
 	        	ReservationUtils.peopleSummary(ctrl.people, ctrl.extraPeople).then(function(message) {
-	    			ctrl.$$peopleSummary = message;
+	    			ctrl.$$peopleSummary.text = message;
 	    		});
 			}
 		};

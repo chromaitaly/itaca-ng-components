@@ -5,14 +5,14 @@
    		</div>
 	   	<div class="layout-row layout-align-center-center flex">
 			<md-button class="{{$ctrl.btnClass}} no-margin" ng-class="!$ctrl.$$decreaseDisabled ? $ctrl.btnActiveClass : ''" aria-label="Decrease" 
-				ng-disabled="$ctrl.ngDisabled || $ctrl.minusDisabled || ($ctrl.min && $ctrl.count <= $ctrl.min)" ng-click="$ctrl.$decrease($event)">
+				ng-disabled="$ctrl.ngDisabled || $ctrl.minusDisabled || ($ctrl.min && $ctrl.count <= $ctrl.min)|| ($ctrl.min === 0 && $ctrl.count == $ctrl.min)" ng-click="$ctrl.$decrease($event)">
 	  			<md-icon class="material-icons mdi mdi-minus md-18 {{$ctrl.iconClass}}" ng-class="!$ctrl.$$decreaseDisabled ? $ctrl.iconActiveClass : ''"></md-icon>
 	  		</md-button>
 	  		<div class="layout-column layout-padding layout-align-center-center" ng-class="{'flex': $ctrl.flexible, 'text-gray-light': $ctrl.ngDisabled}">
 	  			<span class="{{$ctrl.countClass}} border-gray-lighter border-radius">{{$ctrl.count || 0}}</span>
 	  		</div>
 	  		<md-button class="{{$ctrl.btnClass}} no-margin" ng-class="!$ctrl.$$increaseDisabled ? $ctrl.btnActiveClass : ''" aria-label="Increase" 
-	  			ng-disabled="$ctrl.ngDisabled || $ctrl.plusDisabled || ($ctrl.max && $ctrl.count >= $ctrl.max)" ng-click="$ctrl.$increase($event)">
+	  			ng-disabled="$ctrl.ngDisabled || $ctrl.plusDisabled || ($ctrl.max && $ctrl.count >= $ctrl.max) || ($ctrl.max === 0 && $ctrl.count == $ctrl.max)" ng-click="$ctrl.$increase($event)">
 	  			<md-icon class="material-icons mdi mdi-plus md-18 {{$ctrl.iconClass}}" ng-class="!$ctrl.$$increaseDisabled ? $ctrl.iconActiveClass : ''"></md-icon>
 	  		</md-button>
 	  	</div>

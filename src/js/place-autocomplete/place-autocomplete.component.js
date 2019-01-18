@@ -1,12 +1,12 @@
 (function() {
 	'use strict';
 	
-	angular.module("itaca.components").component("chAddressAutocomplete", {
+	angular.module("itaca.components").component("chPlaceAutocomplete", {
 		require: {
         	ngModelCtrl: 'ngModel' 
         },
 		bindings: {
-			ngModel: '=',
+			ngModel: '<',
 			isDisabled: "<?",
 			isRequired: "<?",
 			noCache: "<?",
@@ -15,24 +15,22 @@
 			dropdownPosition: "@",
 			clearButton: "<?",
 		},
-		controller: AddressAutocompleteCtrl,
+		controller: PlaceAutocompleteCtrl,
 		template : 
-			"<ng-form class=\"flex\" name=\"autocompleteForm\">" +
+			"<ng-form class=\"flex\" name=\"placeAutocompleteForm\">" +
 				"<md-autocomplete " +
-					" class=\"ch-address-autocomplete\" " +
-					" md-input-name=\"address\" " + 
+					" class=\"ch-place-autocomplete\" " +
+					" md-input-name=\"place\" " + 
           			" ng-disabled=\"$ctrl.isDisabled\" "+
           			" ng-required=\"$ctrl.isRequired\" "+
           			" md-no-cache=\"$ctrl.noCache\" "+
           			" md-selected-item=\"$ctrl.selectedItem\" "+
           			" md-search-text=\"$ctrl.searchText\" "+
-          			" md-require-match=\"true\" " +
-          			" md-match-case-insensitive=\"true\" " +
           			" md-selected-item-change=\"$ctrl.$selectedItemChange(item)\"  "+
           			" md-items=\"item in $ctrl.$querySearch($ctrl.searchText)\" "+
           			" md-item-text=\"item.description\"  "+
           			" md-min-length=\"$ctrl.minLength\"  " +
-          			" md-floating-label=\"{{'common.address'|translate}}\" " +
+          			" md-floating-label=\"{{'common.place'|translate}}\" " +
           			" md-dropdown-position=\"$ctrl.dropdownPosition\" " +
           			" md-clear-button=\"$ctrl.clearButton\" " +
           			" placeholder=\"$ctrl.placeholder\">  "+
@@ -42,18 +40,18 @@
   						"<span class=\"text-gray-light\">,&nbsp;{{item.structured_formatting.secondary_text}}</span>" +
   						"<md-divider></md-divider>" +
 					"</md-item-template>" +
-					"<div ng-messages=\"autocompleteForm.address.$error\">" +
+					"<div ng-messages=\"placeAutocompleteForm.place.$error\">" +
 						"<div ng-message=\"required\"><span translate=\"error.required\"></span></div>" +
 						"<div ng-message=\"minlength\"><span translate=\"error.field.generic.minlength\" translate-values=\"{count: $ctrl.minLength}\"></span></div>" +
-						"<div ng-message=\"connection\"><span translate=\"error.address.not.found\"></span></div>" +
-						"<div ng-message=\"md-require-match\"><span translate=\"error.address.not.match\"></span></div>" +
+						"<div ng-message=\"connection\"><span translate=\"error.place.not.found\"></span></div>" +
+						"<div ng-message=\"md-require-match\"><span translate=\"error.place.not.match\"></span></div>" +
 					"</div>" +
 				"</md-autocomplete>" +
 			"</ng-form>"
 	});
 	
 	 /* @ngInject */
-	function AddressAutocompleteCtrl($scope, $mdMedia, AppOptions, $translate, GoogleAPI) {
+	function PlaceAutocompleteCtrl($scope, $mdMedia, AppOptions, $translate, GoogleAPI) {
 		var ctrl = this;
 		
     	this.$onInit = function(){
@@ -78,9 +76,9 @@
     	
     	this.precopileSearchText = function(){
     		if(ctrl.ngModel && ctrl.ngModel.address){
-    			var address = ctrl.ngModel.address ? ctrl.ngModel.address  + ", " : '';
-	    			address += ctrl.ngModel.city ? ctrl.ngModel.city  + ", " : '';
+	    			var address = ctrl.ngModel.city ? ctrl.ngModel.city  + ", " : '';
 	    			address += ctrl.ngModel.province ? ctrl.ngModel.province  + ", " : '';
+	    			address += ctrl.ngModel.region ? ctrl.ngModel.region  + ", " : '';
 	    			address += ctrl.ngModel.country ? ctrl.ngModel.country : '';
     			
     			ctrl.searchText = address;
@@ -92,7 +90,7 @@
     	};
     	
     	this.$querySearch = function(query){
-    		return GoogleAPI.addresses(query).then(function(response){
+    		return GoogleAPI.places(query).then(function(response){
     			ctrl.$setError(false);
     			return response;
     		},function(error){
@@ -108,7 +106,7 @@
 	    		
 	    	GoogleAPI.placeDetails(place.place_id).then(function(data){
 	    		ctrl.$setError(false);
-	    		
+
 	    		var addressInfo = {};
 	    	
 	    		 for (var i = 0; i < data.address_components.length; i++) {
@@ -156,8 +154,6 @@
 		    		}
 		    	}
 	    	
-		    	// via e civico
-		    	addressInfo.address = addressInfo.street + (addressInfo.number ? ' ' + addressInfo.number : '');
 		    	addressInfo.lat = data.geometry.location.lat();
 		    	addressInfo.lng = data.geometry.location.lng();
 		    	addressInfo.offset = data.utc_offset ? parseInt(data.utc_offset)*60 : data.utc_offset;
@@ -170,7 +166,7 @@
 	    };
 	    
 	    this.$setError = function(bool){
-	    	$scope.autocompleteForm.address.$setValidity('connection', !bool);
+	    	$scope.placeAutocompleteForm.place.$setValidity('connection', !bool);
 	    	ctrl.$$error = bool;
 	    	
 	    	if(bool){
@@ -178,5 +174,6 @@
     			ctrl.selectedItem  = null;
 	    	}
 	    };
+	    
 	}
 })();

@@ -6,11 +6,11 @@
 			<div ng-messages="$ctrl.hotelForm.name.$error">
           		<div ng-message="required"><span translate="error.required"></span></div>
 	        </div>
-	        <div>
+	        <div ng-if="$ctrl.showInfo">
 	        	<small class="text-gray-light" translate="join.quote.hotel.name.text"></small>
 	        </div>	        
 		</md-input-container>
-		<div class="bg-info border-radius layout-padding text-white" th:if="${#strings.equals(@mainProps.joinType,'QUOTE')}">
+		<div ng-if="$ctrl.showInfo" class="bg-info border-radius-6 layout-padding text-white" th:if="${#strings.equals(@mainProps.joinType,'QUOTE')}">
 			<md-icon class="mdi mdi-information-outline text-white no-padding"></md-icon>
 			<span translate="join.quote.hotel.name.quote.text" translate-values="{company: $ctrl.appOptions.about.name}"></span>
 		</div>
@@ -37,7 +37,7 @@
        		</md-input-container>	
 		</div>
 		<div class="flex-100 flex-gt-sm-40">
-			<div class="bg-info-light border-radius md-padding text-gray-3" ng-if="$ctrl.hotel.type">
+			<div class="bg-info-light border-radius-6 md-padding text-gray-3" ng-if="$ctrl.hotel.type">
 				<small translate="{{('hotel.type.'+ $ctrl.hotel.type)}}"></small>
 				<p translate="{{('hotel.type.'+ $ctrl.hotel.type +'.description')}}"></p>
 			</div>
@@ -216,13 +216,13 @@
 		    	<marker position="{{$ctrl.hotel.addressInfo.lat}},{{$ctrl.hotel.addressInfo.lng}}" icon="{{$ctrl.mapMarker}}">
 		    	</marker>
 			</ng-map>
-			<div class="layout-padding bg-info md-margin no-margin-x-sides border-radius wow slideInUp" ng-if="!$ctrl.isDisabled">
+			<div class="layout-padding bg-info md-margin no-margin-x-sides border-radius-6 wow slideInUp" ng-if="!$ctrl.isDisabled">
 				<span class="no-padding" translate="join.quote.hotel.address.label"></span>
 			</div>
 		</div>
 		<div class="layout-column flex-100" ng-if="!$ctrl.isDisabled && (!$ctrl.hotel.addressInfo.lat || !$ctrl.hotel.addressInfo.lng)">
 		
-			<div class="md-padding bg-info layout-align-start-center layout-row md-margin no-margin-x-sides border-radius wow slideInUp">
+			<div ng-if="$ctrl.showInfo" class="md-padding bg-info layout-align-start-center layout-row md-margin no-margin-x-sides border-radius-6 wow slideInUp">
 				<span class="flex-xs-100 flex-sm-100"><md-icon class="mdi mdi-map-marker-radius md-48 text-white"></md-icon></span>
 				<span class="flex-xs-100 flex-sm-100" translate="join.quote.hotel.address.info"></span>
 			</div>
