@@ -1,5 +1,5 @@
 <ng-form name="chAmountInputForm">	
-	<div layout layout-padding class="no-padding">
+	<div layout layout-padding layout-align="start top" class="no-padding">
 		<div>
 			<md-input-container md-no-float="$ctrl.labelNoFloat" class="{{$ctrl.inputContainerClass}}" 
 				ng-class="{'md-icon-left': $ctrl.amountType, 'no-padding-left': !$ctrl.amountType}">
@@ -28,7 +28,7 @@
 		</div>
 		
 		<div ng-if="!$ctrl.amountType">
-			<md-input-container md-no-float>
+			<md-input-container md-no-float class="{{$ctrl.inputContainerClass}}">
 				<md-select name="amountType" placeholder="{{::('common.amount.type'|translate)}}" ng-model="$ctrl.ngModel.type"
 					ng-required="$ctrl.ngRequired" ng-readonly="$ctrl.readonly" ng-change="$ctrl.$update()" aria-label="Amount type" ng-disabled="$ctrl.ngDisabled">
 	         		<md-option value="PRICE" ng-selected="!$ctrl.ngModel.type || $ctrl.ngModel.type == 'PRICE'">

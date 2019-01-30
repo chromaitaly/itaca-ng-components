@@ -20,7 +20,7 @@
     });
     
     /* @ngInject */
-    function RatesheetRateEditAmountCtrl($scope, $mdMedia, REGEXP) {
+    function RatesheetRateEditAmountCtrl($scope, $mdMedia, REGEXP, StringUtils) {
     	var ctrl = this;
     	
     	this.$mdMedia = $mdMedia;
@@ -51,11 +51,11 @@
     	};
     	
     	this.$initErrorIcon = function() {
-    		ctrl.errorIcon = _.isNil(ctrl.errorIcon) || _.isBoolean(ctrl.errorIcon) && ctrl.errorIcon ? "mdi mdi-alert" : ctrl.errorIcon;
+    		ctrl.errorIcon = _.isNil(ctrl.errorIcon) || StringUtils.isBoolean(ctrl.errorIcon) && StringUtils.toBoolean(ctrl.errorIcon) ? "mdi mdi-key md-24" : _.isNil(StringUtils.toBoolean(ctrl.errorIcon)) ? ctrl.errorIcon : StringUtils.toBoolean(ctrl.errorIcon);
     	};
     	
     	this.$initErrorBg = function() {
-    		ctrl.errorBg = _.isNil(ctrl.errorBg) || _.isBoolean(ctrl.errorBg) && ctrl.errorBg ? "bg-warn opaque" : ctrl.errorBg;
+    		ctrl.errorBg = _.isNil(ctrl.errorBg) || StringUtils.isBoolean(ctrl.errorBg) && StringUtils.toBoolean(ctrl.errorBg) ? "mdi mdi-key md-24" : _.isNil(StringUtils.toBoolean(ctrl.errorBg)) ? ctrl.errorBg : StringUtils.toBoolean(ctrl.errorBg);
     	};
     	
     	this.$onChanges = function(changesObj) {

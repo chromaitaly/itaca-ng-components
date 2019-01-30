@@ -15,7 +15,7 @@
 	});
 	
 	 /* @ngInject */
-	function ShowOnScrollCtrl($scope, $element, $window, $timeout) {
+	function ShowOnScrollCtrl($scope, $element, $window, $timeout, StringUtils) {
 		var ctrl = this;
     	
     	this.$onInit = function(){
@@ -23,12 +23,12 @@
     		ctrl.offset = isFinite(parseInt(ctrl.offset)) ? parseInt(ctrl.offset) : 500;
     		ctrl.ngDisabled = _.isBoolean(ctrl.ngDisabled) ? ctrl.ngDisabled : false;
     		ctrl.showClass = ctrl.showClass || "zoomIn";
-    		if (_.isBoolean(ctrl.showClass)) {
-    			ctrl.showClass = ctrl.showClass ? "zoomIn" : "";
+    		if (StringUtils.isBoolean(ctrl.showClass)) {
+    			ctrl.showClass = StringUtils.toBoolean(ctrl.showClass) ? "zoomIn" : "";
     		}
     		ctrl.hideClass = ctrl.hideClass || "zoomOut";
-    		if (_.isBoolean(ctrl.hideClass)) {
-    			ctrl.hideClass = ctrl.hideClass ? "zoomOut" : "";
+    		if (StringUtils.isBoolean(ctrl.hideClass)) {
+    			ctrl.hideClass = StringUtils.toBoolean(ctrl.hideClass) ? "zoomOut" : "";
     		}
     		
     		angular.element($element.children()).addClass('hide');

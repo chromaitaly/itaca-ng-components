@@ -33,14 +33,15 @@
 	});
 	
 	 /* @ngInject */
-	function ReviewHotelInfoCtrl($scope, AppOptions) {
+	function ReviewHotelInfoCtrl($scope, AppOptions, StringUtils) {
 		var ctrl = this;
 		
 		this.$onInit = function() {
 			ctrl.hideImage = _.isBoolean(ctrl.hideImage) ? ctrl.hideImage : false;
 			ctrl.imgBaseUrl = ctrl.imgBaseUrl || ctrl.chReviewCtrl.imgBaseUrl;
-    		if (_.isBoolean(ctrl.imgBaseUrl)) {
-    			ctrl.imgBaseUrl = ctrl.imgBaseUrl && AppOptions.config && AppOptions.config.amz ? AppOptions.config.amz.baseUrl+"/"+AppOptions.config.amz.bucketName+"/" : "";
+			
+    		if (StringUtils.isBoolean(ctrl.imgBaseUrl)) {
+    			ctrl.imgBaseUrl = StringUtils.toBoolean(ctrl.imgBaseUrl) && AppOptions.config && AppOptions.config.amz ? AppOptions.config.amz.baseUrl+"/"+AppOptions.config.amz.bucketName+"/" : "";
     		}
 			
 			ctrl.$initReview();

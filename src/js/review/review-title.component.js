@@ -33,13 +33,13 @@
 	});
 	
 	 /* @ngInject */
-	function ReviewTitleCtrl($scope, ReviewsUtils, $mdMedia) {
+	function ReviewTitleCtrl($scope, ReviewsUtils, $mdMedia, StringUtils) {
 		$scope.$mdMedia = $mdMedia;
 		
 		var ctrl = this;
 		
 		this.$onInit = function() {
-			ctrl.titleQuote = _.isBoolean(ctrl.titleQuote) ? ctrl.titleQuote : true;
+			ctrl.titleQuote = StringUtils.isBoolean(ctrl.titleQuote) ? StringUtils.toBoolean(ctrl.titleQuote) : true;
 			ctrl.hideNewIcon = _.isBoolean(ctrl.hideNewIcon) ? ctrl.hideNewIcon : false;
 			
 			ctrl.$initReview();
