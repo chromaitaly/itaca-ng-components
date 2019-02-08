@@ -28,13 +28,14 @@
 	});
 	
 	 /* @ngInject */
-	function ReviewGalleryCtrl(AppOptions, $translate, Dialog) {
+	function ReviewGalleryCtrl(AppOptions, $translate, Dialog, StringUtils) {
 		var ctrl = this;
 		
 		this.$onInit = function() {
 			ctrl.imgBaseUrl = ctrl.imgBaseUrl || ctrl.chReviewCtrl.imgBaseUrl;
-    		if (_.isBoolean(ctrl.imgBaseUrl)) {
-    			ctrl.imgBaseUrl = ctrl.imgBaseUrl && AppOptions.config && AppOptions.config.amz ? AppOptions.config.amz.baseUrl+"/"+AppOptions.config.amz.bucketName+"/" : "";
+			
+    		if (StringUtils.isBoolean(ctrl.imgBaseUrl)) {
+    			ctrl.imgBaseUrl = StringUtils.toBoolean(ctrl.imgBaseUrl) && AppOptions.config && AppOptions.config.amz ? AppOptions.config.amz.baseUrl+"/"+AppOptions.config.amz.bucketName+"/" : "";
     		}
     		
     		ctrl.defaultImgUrl = ctrl.defaultImgUrl || '/resources/public/img/no-gallery-image.png';

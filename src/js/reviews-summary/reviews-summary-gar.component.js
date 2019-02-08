@@ -32,13 +32,13 @@
 	});
 	
 	 /* @ngInject */
-	function ReviewsSummaryGarCtrl() {
+	function ReviewsSummaryGarCtrl(StringUtils) {
 		var ctrl = this;
 		
 		this.$onInit = function() {
 			ctrl.bgClass = ctrl.bgClass || "bg-primary";
-			ctrl.$$hideTitle = _.isBoolean(ctrl.title) && !ctrl.title;
-			ctrl.$$hideSubtitle = _.isBoolean(ctrl.subtitle) && !ctrl.subtitle;
+			ctrl.$$hideTitle = StringUtils.isBoolean(ctrl.title) && !StringUtils.toBoolean(ctrl.title);
+			ctrl.$$hideSubtitle = StringUtils.isBoolean(ctrl.subtitle) && !StringUtils.toBoolean(ctrl.subtitle);
 			ctrl.size = _.includes(["small", "big"], _.toLower(ctrl.size)) ? _.toLower(ctrl.size) : "big";
 			
 			ctrl.$initSummary();
