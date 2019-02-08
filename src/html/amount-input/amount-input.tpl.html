@@ -14,8 +14,8 @@
 		        
 				<input type="text" name="{{$ctrl.inputName}}" placeholder="{{$ctrl.label}}" ng-model="$ctrl.ngModel.finalAmount" 
 					ng-required="$ctrl.ngRequired" ng-readonly="$ctrl.readonly" ng-change="$ctrl.$update()" ng-disabled="$ctrl.ngDisabled"
-					ng-min="$ctrl.ngMin" ng-step="$ctrl.ngStep" ng-max="$ctrl.ngModel.type == 'PERCENTAGE' ? 100 : $ctrl.ngMax" 
-					ng-pattern="$ctrl.allowNegative ? $ctrl.$$REGEXP.priceNoStrict : $ctrl.$$REGEXP.price" aria-label="Amount">
+					ng-min="$ctrl.ngMin" ng-step="$ctrl.ngStep" ng-max="($ctrl.ngModel.type == 'PERCENTAGE' ? 100 : $ctrl.ngMax)" 
+					ng-pattern="($ctrl.allowNegative ? $ctrl.$$REGEXP.priceNoStrict : $ctrl.$$REGEXP.price)" aria-label="Amount">
 		        
 		        <div ng-if="$ctrl.errorMessages" ng-messages="chAmountInputForm[$ctrl.inputName].$error">
 	         		<div ng-repeat="errorObj in $ctrl.errorMessages" ng-message="{{errorObj.error}}">

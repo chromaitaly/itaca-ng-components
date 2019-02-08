@@ -31,6 +31,8 @@
 	function AmountInputCtrl($scope, REGEXP) {
 	   var ctrl = this;
 	   
+	   this.REGEXP = REGEXP;
+	   
 	   this.$onInit = function() {
 		   ctrl.ngModel = _.isPlainObject(ctrl.ngModel) ? ctrl.ngModel : {};
 		   ctrl.inputName = ctrl.inputName || 'amount';
