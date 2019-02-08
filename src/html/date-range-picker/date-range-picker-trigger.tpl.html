@@ -1,6 +1,6 @@
 <ng-form name="chDateRangePickerTriggerForm" layout="column" flex="100">
-  	<md-button class="ch-date-range-picker-button minimal-button flex text-lowercase text-center {{$ctrl.buttonClass}}" ng-click="$ctrl.$openPanel($event)" aria-label="Change period" ng-disabled="$ctrl.ngDisabled">
-  		<div class="{{$ctrl.wrapperClass}}">
+  	<md-button class="ch-date-range-picker-button minimal-button flex text-lowercase text-center layout-row layout-wrap {{$ctrl.buttonClass}}" ng-click="$ctrl.$openPanel($event)" aria-label="Change period" ng-disabled="$ctrl.ngDisabled">
+  		<div class="{{$ctrl.wrapperClass}} layout-column flex no-padding-right">
   			<div ng-if="$ctrl.label || ($ctrl.placeholder && !$ctrl.start && !$ctrl.end)" class="layout-row layout-align-center-center" ng-class="{'no-padding-top': $ctrl.$mdMedia('gt-xs'), 'md-padding': !$ctrl.$mdMedia('gt-xs') || $ctrl.start || $ctrl.end}">
 	  			<div class="{{$ctrl.labelClass}} text-initial text-wrap row-1" ng-class="{'text-small': $ctrl.start || $ctrl.end}">
 	  				<span ng-if="$ctrl.placeholder && !$ctrl.start && !$ctrl.end" ng-bind-html="$ctrl.placeholder"></span>
@@ -54,30 +54,34 @@
 		       	</div>
 			</div>
 		</div>
-
-		<md-input-container class="md-block no-margin no-padding">
-			<input type="hidden" style="visibility: hidden;" name="{{$ctrl.startInputName}}" ng-model="$ctrl.start" ng-required="$ctrl.ngRequired">
-		
-			<div ng-messages="chDateRangePickerTriggerForm[$ctrl.startInputName].$error" class="font-12 text-center text-danger">
-		  		<div ng-repeat="errorObj in $ctrl.startErrorMessages" ng-message="{{errorObj.error}}" class="no-padding">
-					<span ng-if="errorObj.message" ng-bind="{{errorObj.message}}"></span>
-		 			<span ng-if="!errorObj.message && errorObj.messageKey" translate="{{errorObj.messageKey}}" 
-		 				translate-values="errorObj.messageKeyParams"></span>
-		 		</div>
-		  	</div>
-	  	</md-input-container>
-	  	
-	  	<md-input-container class="md-block no-margin no-padding">
-		  	<input type="hidden" style="visibility: hidden;" name="{{$ctrl.endInputName}}" ng-model="$ctrl.end" ng-required="$ctrl.ngRequired">
+		<div class="layout-column" ng-class="$ctrl.$mdMedia('gt-sm') ? 'no-padding' : 'layout-padding no-padding-right'">
+			<md-icon class="mdi mdi-menu-down md-18"></md-icon>
+		</div>
+		<div class="layout-column flex-100 no-margin no-padding">
+			<md-input-container class="md-block no-margin no-padding">
+				<input type="hidden" style="visibility: hidden;" name="{{$ctrl.startInputName}}" ng-model="$ctrl.start" ng-required="$ctrl.ngRequired">
+			
+				<div ng-messages="chDateRangePickerTriggerForm[$ctrl.startInputName].$error" class="font-12 text-center text-danger">
+			  		<div ng-repeat="errorObj in $ctrl.startErrorMessages" ng-message="{{errorObj.error}}" class="no-padding">
+						<span ng-if="errorObj.message" ng-bind="{{errorObj.message}}"></span>
+			 			<span ng-if="!errorObj.message && errorObj.messageKey" translate="{{errorObj.messageKey}}" 
+			 				translate-values="errorObj.messageKeyParams"></span>
+			 		</div>
+			  	</div>
+		  	</md-input-container>
 		  	
-		  	<div ng-messages="chDateRangePickerTriggerForm[$ctrl.endInputName].$error" class="font-12 text-center text-danger" 
-		  		ng-show="!chDateRangePickerTriggerForm[$ctrl.startInputName].$invalid && (chDateRangePickerTriggerForm[$ctrl.endInputName].$dirty || chDateRangePickerTriggerForm[$ctrl.endInputName].$touched)">
-		  		<div ng-repeat="errorObj in $ctrl.endErrorMessages" ng-message="{{errorObj.error}}" class="no-padding">
-					<span ng-if="errorObj.message" ng-bind="{{errorObj.message}}"></span>
-		 			<span ng-if="!errorObj.message && errorObj.messageKey" translate="{{errorObj.messageKey}}" 
-		 				translate-values="errorObj.messageKeyParams"></span>
-		 		</div>
-		  	</div>
-	  	</md-input-container>
+		  	<md-input-container class="md-block no-margin no-padding">
+			  	<input type="hidden" style="visibility: hidden;" name="{{$ctrl.endInputName}}" ng-model="$ctrl.end" ng-required="$ctrl.ngRequired">
+			  	
+			  	<div ng-messages="chDateRangePickerTriggerForm[$ctrl.endInputName].$error" class="font-12 text-center text-danger" 
+			  		ng-show="!chDateRangePickerTriggerForm[$ctrl.startInputName].$invalid && (chDateRangePickerTriggerForm[$ctrl.endInputName].$dirty || chDateRangePickerTriggerForm[$ctrl.endInputName].$touched)">
+			  		<div ng-repeat="errorObj in $ctrl.endErrorMessages" ng-message="{{errorObj.error}}" class="no-padding">
+						<span ng-if="errorObj.message" ng-bind="{{errorObj.message}}"></span>
+			 			<span ng-if="!errorObj.message && errorObj.messageKey" translate="{{errorObj.messageKey}}" 
+			 				translate-values="errorObj.messageKeyParams"></span>
+			 		</div>
+			  	</div>
+		  	</md-input-container>
+		  </div>
  	</md-button>
 </ng-form>

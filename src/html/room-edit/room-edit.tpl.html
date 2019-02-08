@@ -124,6 +124,7 @@
 		<div class="layout-column flex-100 layout-align-center-center margin-20-no-x-sides">
 			<div class="md-title text-center">
 				<span translate="reservation.rooms.config.title"></span>
+				<em class="text-small">&nbsp;(<span translate="common.optional.multiple.female"></span>)</em>
 			</div>
 		</div>
 	
@@ -131,7 +132,16 @@
 			<div>
 				<div class="md-subhead md-margin text-blue-sea">
 					<md-icon class="mdi mdi-account-multiple md-32 text-blue-sea no-margin"></md-icon>&nbsp;
-					<span translate="bed.sleep.here.room"></span>
+					<span flex>
+						<span>{{$ctrl.$$guestsCount.total}}</span>&nbsp;
+						<span ng-if="$ctrl.$$guestsCount.total != 1" translate="people.people"></span>
+						<span ng-if="$ctrl.$$guestsCount.total == 1" translate="people.person"></span>
+						<span class="text-lowercase">
+							&nbsp;
+							<span ng-if="$ctrl.$$guestsCount.standard == 1" translate="bed.will.sleep.here.room"></span>
+							<span ng-if="$ctrl.$$guestsCount.standard > 1" translate="bed.will.sleep.here.room.plur"></span>
+						</span>
+					</span>
 				</div>
 				
 				<md-divider></md-divider>
@@ -161,15 +171,8 @@
 				<div class="md-subhead md-margin text-blue-sea">
 					<md-icon class="mdi mdi-hotel md-32 text-blue-sea no-margin"></md-icon>&nbsp;
 					<span flex>
-						<ch-people-summary people="$ctrl.room.people"></ch-people-summary>
-						<span class="text-lowercase">
-							&nbsp;
-							<span ng-if="$ctrl.$$guestsCount.standard == 1" translate="people.person.will.sleep"></span>
-							<span ng-if="$ctrl.$$guestsCount.standard > 1" translate="people.people.will.sleep"></span>
-							&nbsp;
-							<span ng-if="$ctrl.room.beds.length == 1" translate="bed.bed.follow"></span>
-							<span ng-if="$ctrl.room.beds.length > 1" translate="bed.beds.follow"></span>
-						</span>
+						<span ng-if="$ctrl.$$guestsCount.standard == 1" translate="people.person.will.sleep.title"></span>
+						<span ng-if="$ctrl.$$guestsCount.standard > 1" translate="people.people.will.sleep.title"></span>
 					</span>
 				</div>
 				

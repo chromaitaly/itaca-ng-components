@@ -21,11 +21,11 @@
 
 	<div class="layout-column layout-align-center-center">
 		<div ng-switch-when="end">
-			<md-calendar class="no-today-selection" ng-model="$ctrl.data.end" ng-model-options="$ctrl.modelOptions" md-min-date="$ctrl.data.endMinDate" md-max-date="$ctrl.data.endMaxDate"></md-calendar>
+			<md-calendar class="no-today-selection" ng-model="$ctrl.data.end" ng-model-options="$ctrl.modelOptions" md-min-date="$ctrl.data.endMinDate" md-max-date="$ctrl.data.endMaxDate" md-mode="{{$ctrl.data.mdMode}}"></md-calendar>
 		</div>
 		
 		<div ng-switch-default>
-			<md-calendar class="no-today-selection" ng-model="$ctrl.data.start" ng-model-options="$ctrl.modelOptions" md-min-date="$ctrl.data.startMinDate" md-max-date="$ctrl.data.startMaxDate"></md-calendar>
+			<md-calendar class="no-today-selection" ng-model="$ctrl.data.start" ng-model-options="$ctrl.modelOptions" md-min-date="$ctrl.data.startMinDate" md-max-date="$ctrl.data.startMaxDate" md-mode="{{$ctrl.data.mdMode}}"></md-calendar>
 		</div>
 	</div>
 	

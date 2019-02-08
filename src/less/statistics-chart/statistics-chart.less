@@ -34,3 +34,43 @@ ch-chart {
 @media @query-gt-sm {
 
 }
+
+.ch-statistics-report {
+	background: linear-gradient(rgba(25, 118, 210, 1), rgba(255, 244, 255, 0.42));
+	color: #FFF;
+}
+
+/* FIX CHART REPORT CHART MINI */
+ch-statistics-report .chartjs-size-monitor, ch-statistics-report ch-chart {
+	max-height: 100px;
+	height: 100px;
+	min-height: 0!important;
+	margin-left: -11px;
+    margin-bottom: -11px;
+}
+
+/* FIX CHART TORTA LARGHEZZA MASSIMA */
+.chart-pie-max-width {
+	max-width: 600px !important;
+	margin: 20px auto !important;
+	width: 100% !important;
+}
+
+
+/* Progress bar report */
+.reviews-big-progress >  md-progress-linear .md-bar {
+	background-color: #42a5f5 !important;
+}
+
+.reviews-big-progress-compared >  md-progress-linear .md-bar {
+	background-color: #1976d2 !important;
+}
+
+.reviews-big-progress md-progress-linear .md-container, .reviews-big-progress-compared md-progress-linear .md-container {
+	background-color: rgba(25, 118, 210, 0.2)
+}
+
+.reviews-big-progress md-progress-linear, .reviews-big-progress md-progress-linear .md-container, .reviews-big-progress md-progress-linear .md-container .md-bar, 
+.reviews-big-progress-compared md-progress-linear, .reviews-big-progress-compared md-progress-linear .md-container, .reviews-big-progress-compared md-progress-linear .md-container .md-bar {
+	height: 22px
+}

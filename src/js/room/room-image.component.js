@@ -9,8 +9,8 @@
     	bindings: {},
 		controller: RoomImageCtrl,
 		template:
-			"<div class=\"flex layout-column layout-align-center-center\">"+
-   				"<img ng-src=\"{{$ctrl.roomImage}}\" class=\"full-width display-block img-size\" ng-class=\"{'clickable': $ctrl.chRoomCtrl.room.gallery.length}\" ng-click=\"$ctrl.openGallery($event)\" alt=\"Room cover image\" lazy-image default-img-url=\"'/resources/public/img/no-gallery-image.png'\">"+
+			"<div class=\"flex layout-column layout-align-center-center responsive-content\">"+
+   				"<img ng-src=\"{{$ctrl.roomImage}}\" class=\"full-width responsive-item\" ng-class=\"{'clickable': $ctrl.chRoomCtrl.room.gallery.length}\" ng-click=\"$ctrl.openGallery($event)\" alt=\"Room cover image\" lazy-image default-img-url=\"'/resources/public/img/no-gallery-image.png'\">"+
    				"<md-tooltip ng-if=\"$ctrl.chRoomCtrl.room.gallery.length\"><span translate=\"photo.photos.view.all\"></span></md-tooltip>"+
    			"</div>",
     });

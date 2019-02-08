@@ -76,7 +76,7 @@
     	
     	this.precopileSearchText = function(){
     		if(ctrl.ngModel && ctrl.ngModel.address){
-	    			address += ctrl.ngModel.city ? ctrl.ngModel.city  + ", " : '';
+    			var address = ctrl.ngModel.city ? ctrl.ngModel.city  + ", " : '';
 	    			address += ctrl.ngModel.province ? ctrl.ngModel.province  + ", " : '';
 	    			address += ctrl.ngModel.country ? ctrl.ngModel.country : '';
     			
@@ -134,6 +134,11 @@
 		    		
 		    		if(type == 'locality'){
 		    			addressInfo.city = address.long_name;
+		    			continue;
+		    		}
+		    		
+		    		if(type == 'administrative_area_level_1'){
+		    			addressInfo.region = address.short_name;
 		    			continue;
 		    		}
 		    		

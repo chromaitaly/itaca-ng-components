@@ -5,6 +5,7 @@
 		bindings: {
 			user: "<",
 			isDisabled: "<?",
+			isRequired: "<?",
 			isClickable: "<?",
 			hideTitle: "<?"
 		},
@@ -23,7 +24,10 @@
     		ctrl.REGEXP = REGEXP;
     		ctrl.user = ctrl.user || {};
     		
+    		ctrl.isNewUser = (!ctrl.user.id || !ctrl.user.email) ? true : false;
+    		
     		ctrl.isDisabled = _.isBoolean(ctrl.isDisabled) ? ctrl.isDisabled : false;
+    		ctrl.isRequired = _.isBoolean(ctrl.isRequired) ? ctrl.isRequired : true;
     		ctrl.isClickable = _.isBoolean(ctrl.isClickable) ? ctrl.isClickable : false;
     		ctrl.hideTitle = _.isBoolean(ctrl.hideTitle) ? ctrl.hideTitle : false;
     		
@@ -48,6 +52,9 @@
     		if(ctrl.user.surname == "$surname$"){
     			ctrl.user.surname = null;
     		}
+    		
+			ctrl.$$isNewUser = (!ctrl.user.id || !ctrl.user.email) ? true : false;
+    		
     		
     		//Adeguo il countryIso
     		if(ctrl.user.nationality && !ctrl.user.countryIso){
