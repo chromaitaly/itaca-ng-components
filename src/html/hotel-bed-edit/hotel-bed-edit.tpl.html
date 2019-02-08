@@ -2,7 +2,7 @@
 	<div class="layout-column flex layout-padding no-padding layout-align-center-start" ng-if="!$ctrl.bed.inEdit">
 		<div class="no-padding-left">
 			<strong>
-				<span translate="bed.bed"></span>&nbsp;<span translate="bed.{{$ctrl.bed.type}}"></span>&nbsp;
+				<span>{{$ctrl.bed.count}}&nbsp;x&nbsp;</span><span translate="bed.bed"></span>&nbsp;<span translate="bed.{{$ctrl.bed.type}}"></span>&nbsp;
 			</strong>
 			<span class="text-lowercase">
 				<span translate="bed.max.person"></span>&nbsp;
@@ -71,7 +71,7 @@
 				<md-input-container class="md-block no-padding">
 					<label translate="bed.type">type</label>
 					<md-select ng-model="$ctrl.bed.type" name="type" aria-label="type" ng-required="true">
-						<md-option ng-repeat="type in $ctrl.bedTypes track by $index" ng-value="type">
+						<md-option ng-repeat="type in $ctrl.$$bedTypes track by $index" ng-value="type">
 							<span translate="bed.{{::type}}"></span>
 						</md-option>
 					</md-select>
@@ -92,9 +92,22 @@
 				</div>
 			</div>
 		</div>
+		
+		<div class="layout-row layout-wrap layout-align-center-center layout-align-gt-sm-start-center layout-padding" ng-if="$ctrl.showCounter">
+			<div class="layout-column flex flex-xs-100 flex-sm-100 no-padding">
+				<strong class="flex flex-xs-100 flex-sm-100">
+					<span translate="bed.people.count.text"></span>
+				</strong>
+			</div>
+	   		<div class="no-padding">		
+				<ch-counter label="{{::('bed.count'|translate)}}" ng-model="$ctrl.bed.count" min="1" max="form.maxOtherBeds" aria-label="Bed count" on-minus="$ctrl.$adeguatePeople()" on-plus="$ctrl.$adeguatePeople()"></ch-counter>
+			</div>
+		</div>
+		
+		
 		<div class="layout-row layout-wrap layout-align-center-center layout-align-gt-sm-start-center layout-padding">
 			<div class="layout-column flex flex-xs-100 flex-sm-100 no-padding">
-				<strong translate="bed.people.config.question"></strong>
+				<strong translate="bed.people.count.text"></strong>
 				<small translater="bed.people.config.text"></small>
 	   		</div>
 	   		<div class="no-padding">
