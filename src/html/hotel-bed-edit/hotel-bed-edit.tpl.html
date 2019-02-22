@@ -100,15 +100,15 @@
 				</strong>
 			</div>
 	   		<div class="no-padding">		
-				<ch-counter label="{{::('bed.count'|translate)}}" ng-model="$ctrl.bed.count" min="1" max="form.maxOtherBeds" aria-label="Bed count" on-minus="$ctrl.$adeguatePeople()" on-plus="$ctrl.$adeguatePeople()"></ch-counter>
+				<ch-counter label="{{::('bed.count'|translate)}}" ng-model="$ctrl.bed.count" min="1" aria-label="Bed count" on-minus="$ctrl.$adeguatePeople()" on-plus="$ctrl.$adeguatePeople()"></ch-counter>
 			</div>
 		</div>
 		
 		
 		<div class="layout-row layout-wrap layout-align-center-center layout-align-gt-sm-start-center layout-padding">
 			<div class="layout-column flex flex-xs-100 flex-sm-100 no-padding">
-				<strong translate="bed.people.count.text"></strong>
-				<small translater="bed.people.config.text"></small>
+				<strong translate="bed.people.config.question"></strong>
+				<small translate="bed.people.config.text"></small>
 	   		</div>
 	   		<div class="no-padding">
 	   			<md-button ng-click="$ctrl.bed.showPeopleType = false" aria-label="bath not included" ng-class="!$ctrl.bed.showPeopleType ? 'bg-success' : 'only-border'">
