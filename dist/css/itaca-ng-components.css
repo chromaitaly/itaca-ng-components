@@ -176,6 +176,118 @@ ch-card .md-whiteframe-1dp {
   vertical-align: middle;
   padding-right: 2px;
 }
+credit-card-view .card-layout {
+  width: 100%;
+  max-width: 340px;
+  min-width: 260px;
+  padding: 6px;
+  border-radius: 6px;
+  height: 180px;
+  box-shadow: 2px 2px 4px rgba(0, 0, 0, 0.2);
+  position: relative;
+  overflow: hidden;
+  background: #959595;
+  background: -moz-linear-gradient(-45deg, #959595 0%, #0d0d0d 46%, #010101 50%, #0a0a0a 53%, #4e4e4e 76%, #383838 87%, #1b1b1b 100%);
+  background: -webkit-linear-gradient(-45deg, #959595 0%, #0d0d0d 46%, #010101 50%, #0a0a0a 53%, #4e4e4e 76%, #383838 87%, #1b1b1b 100%);
+  background: linear-gradient(135deg, #959595 0%, #0d0d0d 46%, #010101 50%, #0a0a0a 53%, #4e4e4e 76%, #383838 87%, #1b1b1b 100%);
+  filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#959595', endColorstr='#1b1b1b', GradientType=1);
+}
+credit-card-view .card-mastercard,
+credit-card-view .card-maestro,
+credit-card-view .card-cirrus {
+  background: #6db3f2;
+  background: -moz-linear-gradient(-45deg, #6db3f2 0%, #54a3ee 50%, #3690f0 51%, #1e69de 100%);
+  background: -webkit-linear-gradient(-45deg, #6db3f2 0%, #54a3ee 50%, #3690f0 51%, #1e69de 100%);
+  background: linear-gradient(135deg, #6db3f2 0%, #54a3ee 50%, #3690f0 51%, #1e69de 100%);
+  filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#6db3f2', endColorstr='#1e69de', GradientType=1);
+}
+credit-card-view .card-visa,
+credit-card-view .card-visa_electron,
+credit-card-view .card-v_pay {
+  background: #3b679e;
+  background: -moz-linear-gradient(-45deg, #3b679e 0%, #2b88d9 50%, #207cca 51%, #7db9e8 100%);
+  background: -webkit-linear-gradient(-45deg, #3b679e 0%, #2b88d9 50%, #207cca 51%, #7db9e8 100%);
+  background: linear-gradient(135deg, #3b679e 0%, #2b88d9 50%, #207cca 51%, #7db9e8 100%);
+  filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#3b679e', endColorstr='#7db9e8', GradientType=1);
+}
+credit-card-view .card-union_pay {
+  background: #efc5ca;
+  background: -moz-linear-gradient(-45deg, #efc5ca 0%, #d24b5a 50%, #ba2737 51%, #f18e99 100%);
+  background: -webkit-linear-gradient(-45deg, #efc5ca 0%, #d24b5a 50%, #ba2737 51%, #f18e99 100%);
+  background: linear-gradient(135deg, #efc5ca 0%, #d24b5a 50%, #ba2737 51%, #f18e99 100%);
+  filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#efc5ca', endColorstr='#f18e99', GradientType=1);
+}
+credit-card-view .card-jcb {
+  background: #b7deed;
+  background: -moz-linear-gradient(-45deg, #b7deed 0%, #71ceef 50%, #21b4e2 51%, #b7deed 100%);
+  background: -webkit-linear-gradient(-45deg, #b7deed 0%, #71ceef 50%, #21b4e2 51%, #b7deed 100%);
+  background: linear-gradient(135deg, #b7deed 0%, #71ceef 50%, #21b4e2 51%, #b7deed 100%);
+  filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#b7deed', endColorstr='#b7deed', GradientType=1);
+}
+credit-card-view .card-discover {
+  background: #87e0fd;
+  background: -moz-linear-gradient(-45deg, #87e0fd 0%, #53cbf1 40%, #05abe0 100%);
+  background: -webkit-linear-gradient(-45deg, #87e0fd 0%, #53cbf1 40%, #05abe0 100%);
+  background: linear-gradient(135deg, #87e0fd 0%, #53cbf1 40%, #05abe0 100%);
+  filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#87e0fd', endColorstr='#05abe0', GradientType=1);
+}
+credit-card-view .card-diners_club {
+  background: #ada9ad;
+  background: -moz-linear-gradient(-45deg, #ada9ad 1%, #c7c6d3 50%, #a09db2 51%, #dedaf2 100%);
+  background: -webkit-linear-gradient(-45deg, #ada9ad 1%, #c7c6d3 50%, #a09db2 51%, #dedaf2 100%);
+  background: linear-gradient(135deg, #ada9ad 1%, #c7c6d3 50%, #a09db2 51%, #dedaf2 100%);
+  filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#ada9ad', endColorstr='#dedaf2', GradientType=1);
+}
+credit-card-view .card-amex {
+  background: #26A69A;
+  background: -moz-linear-gradient(-45deg, #009688 0%, #26A69A 50%, #009688 51%, #26A69A 100%);
+  background: -webkit-linear-gradient(-45deg, #009688 0%, #26A69A 50%, #009688 51%, #26A69A 100%);
+  background: linear-gradient(135deg, #009688 0%, #26A69A 50%, #009688 51%, #26A69A 100%);
+  filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#26A69A', endColorstr='#009688', GradientType=1);
+  padding: 10px 8px !important;
+}
+credit-card-view .card-amex:before {
+  content: "";
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  box-shadow: inset 0 0 0px 2px #fff;
+  z-index: 1;
+  border: solid 3px transparent;
+  border-radius: 8px;
+}
+credit-card-view .card-fill:after {
+  background: url("../../public/img/credit-card-chip.png") no-repeat;
+  background-size: 40px;
+  background-position: 22px 20px;
+  content: '';
+  width: 70px;
+  height: 55px;
+  position: absolute;
+  top: 38px;
+  left: 0px;
+}
+credit-card-view .card-fill {
+  position: relative;
+  z-index: 1;
+}
+.card-contactless {
+  position: absolute;
+  right: 23px;
+  top: 50%;
+  margin-top: -6px;
+}
+credit-card-view .card-pattern {
+  background: url("../../public/img/credit-card-pattern.png");
+  width: 100%;
+  height: 100%;
+  top: 0;
+  left: 0;
+  position: absolute;
+  background-size: 380px;
+}
 ch-help-bar {
   position: fixed;
   z-index: 20;
