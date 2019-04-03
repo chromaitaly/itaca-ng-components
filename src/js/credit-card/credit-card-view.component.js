@@ -29,9 +29,9 @@
 						"</span>" +
 					"</div>" +
 					"<div layout layout-padding class=\"no-padding\">" +
-						"<div layout=\"column\" flex class=\"text-left\" ng-if=\"$ctrl.paymentMethod.holder\">" +
+						"<div layout=\"column\" flex class=\"text-left no-padding-right\" ng-if=\"$ctrl.paymentMethod.holder\">" +
 							"<small class=\"text-mini\" translate=\"payment.card.holder\"></small>" +
-							"<span class=\"md-title text-bold\">{{$ctrl.paymentMethod.holder}}</span>" +
+							"<span class=\"md-subhead text-bold\">{{$ctrl.paymentMethod.holder}}</span>" +
 						"</div>" +
 						"<div layout=\"column\" layout-align=\"start center\" ng-if=\"$ctrl.paymentMethod.expiration || (($ctrl.paymentMethod.expirationMonth+1) && $ctrl.paymentMethod.expirationYear)\">" +
 							"<small class=\"text-mini\" translate=\"common.document.expirationDate\"></small>" +

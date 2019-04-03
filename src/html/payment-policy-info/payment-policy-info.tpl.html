@@ -13,7 +13,7 @@
 	
 	<div flex ng-if="$ctrl.cancellationPolicy">		
 		<!-- Cancellation Policy -->
-		<div ng-if="!$ctrl.cancellationPolicy.cancellation.deposit">
+		<div ng-if="!$ctrl.cancellationPolicy.cancellation.deposit && !$ctrl.isCharged">
 			<div ng-if="$ctrl.rateType == 'STANDARD' && !$ctrl.cancellationPolicy.flexible">
 				<span translate="reservation.payment.room.policy.free.label"></span>
 				<span translate="reservation.payment.room.policy.free.label2"></span>
@@ -64,7 +64,7 @@
 		</div>
 		
 		<!-- Deposit Policy -->
-		<div class="layout-column" ng-if="$ctrl.cancellationPolicy.cancellation.deposit">
+		<div class="layout-column" ng-if="$ctrl.cancellationPolicy.cancellation.deposit && !$ctrl.isCharged">
 			<span class="no-margin-top">
 				<span translate="reservation.payment.room.policy.deposit.label"></span>
 				<span ng-if="$ctrl.cancellationPolicy.cancellation.chargeNights != $ctrl.cancellationPolicy.cancellation.stayNights">
@@ -96,6 +96,10 @@
 				<strong>{{$ctrl.cancellationPolicy.amount.finalAmount|chCurrency}}</strong>
 				<span translate="reservation.payment.room.policy.notRef.label2"></span>
 			</span>
+		</div>
+		
+		<div ng-if="$ctrl.isCharged">
+			<span translate="reservation.payment.room.policy.charged.label"></span>
 		</div>
 	</div>
 </div>

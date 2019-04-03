@@ -8,7 +8,8 @@
     		city: "@",
 			offset: "@",
 			title: "@",
-    		titleClass: "@"
+    		titleClass: "@",
+    		isCharged: "<?"
     	},
 		controller: PaymentPolicyCtrl,
 		templateUrl: "/tpls/payment-policy-info/payment-policy-info.tpl"
@@ -20,6 +21,8 @@
     	
     	this.$onInit = function(){
     		ctrl.titleClass = "md-body-1 no-margin-bottom";
+    		
+    		ctrl.isCharged = _.isBoolean(ctrl.isCharged) ? ctrl.isCharged : false; 
     	};
     }
 })();

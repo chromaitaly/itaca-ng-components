@@ -28,8 +28,10 @@
 			
 			ctrl.$$paymentIcons = IconUtils.paymentIcons();
 			
-			//preompilo il circuito se non presente
-			ctrl.paymentMethod.circuit = ctrl.paymentMethod.circuit || ctrl.circuits[0];
+			//precompilo il circuito se non presente
+			if(!ctrl.paymentMethod.circuit){
+				ctrl.paymentMethod.circuit =  !_.isEmpty(ctrl.circuits) ? ctrl.circuits[0] : null;
+			}
 			
 			ctrl.$createMonths();
 			ctrl.$createYears();

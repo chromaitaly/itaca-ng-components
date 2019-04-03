@@ -17,10 +17,10 @@
 				<div ng-switch-when="STANDARD">
 					<span ng-if="!$ctrl.cancellationPolicy.flexible">
 						<span translate="reservation.cancellation.room.condition.free.label"></span>
-						<strong>{{::($ctrl.cancellationPolicy.limitDate|date:"shortDate")}}</strong>
+						<strong>&nbsp;{{::($ctrl.cancellationPolicy.limitDate|date:"shortDate")}}&nbsp;</strong>
 						<span translate="date.time.to" class="text-lowercase"></span>
-						<span><strong>{{::($ctrl.cancellationPolicy.limitDate|offsetDate:"HH:mm":$ctrl.offset)}}</strong></span>
-						<span>[{{$ctrl.city}}].</span>
+						<span>&nbsp;<strong>{{::($ctrl.cancellationPolicy.limitDate|offsetDate:"HH:mm":$ctrl.offset)}}</strong>&nbsp;</span>
+						<span>[{{$ctrl.city}}].&nbsp;</span>
 						<span translate="reservation.cancellation.room.condition.free.label2"></span>
 					</span>
 					<span ng-if="$ctrl.cancellationPolicy.flexible">
@@ -47,25 +47,25 @@
 						</span>
 					</span>
 					<span ng-if="$ctrl.cancellationPolicy.cancellation.chargeNights == $ctrl.cancellationPolicy.cancellation.stayNights">	
-						{{::$ctrl.cancellationPolicy.cancellation.percentage}}
+						&nbsp;{{::$ctrl.cancellationPolicy.cancellation.percentage}}
 						<span translate="reservation.percentage.total.stay"></span>
 					</span>
 					
 					<span translate="reservation.total.night"></span>
-					<strong>{{$ctrl.cancellationPolicy.amount.finalAmount|chCurrency}}</strong>.
+					<strong>&nbsp;{{$ctrl.cancellationPolicy.amount.finalAmount|chCurrency}}</strong>.
 				</div>
 				
 				<div ng-switch-when="NOT_REFUNDABLE">
 					<span translate="reservation.cancellation.room.condition.notRef.label"></span>
 					<span ng-if="$ctrl.cancellationPolicy.limitDate">
 						<span translate="reservation.cancellation.room.condition.notRef.label2"></span>
-						<strong>{{::($ctrl.cancellationPolicy.limitDate|date:"shortDate")}}</strong>
+						<strong>&nbsp;{{::($ctrl.cancellationPolicy.limitDate|date:"shortDate")}}&nbsp;</strong>
 						<span translate="date.time.to" class="text-lowercase"></span>
-						<span><strong>{{::($ctrl.cancellationPolicy.limitDate|offsetDate:"HH:mm":$ctrl.offset)}}</strong></span>
+						<span><strong>&nbsp;{{::($ctrl.cancellationPolicy.limitDate|offsetDate:"HH:mm":$ctrl.offset)}}&nbsp;</strong></span>
 						<span>[{{$ctrl.city}}],</span>
 						<span translate="reservation.cancellation.room.condition.notRef.label3"></span>
 						<span ng-if="$ctrl.cancellationPolicy.cancellation.chargeNights != $ctrl.cancellationPolicy.cancellation.stayNights">
-							{{::$ctrl.cancellationPolicy.cancellation.percentage}}
+							&nbsp;{{::$ctrl.cancellationPolicy.cancellation.percentage}}&nbsp;
 							<span ng-if="$ctrl.cancellationPolicy.cancellation.chargeNights == 1">
 								<span translate="reservation.percentage.firstNight"></span>&nbsp;
 								<span translate="common.night" class="text-lowercase"></span>
@@ -87,16 +87,21 @@
 						<span ng-if="$ctrl.cancellationPolicy.cancellation.chargeNights == $ctrl.cancellationPolicy.cancellation.stayNights">	
 							{{::$ctrl.cancellationPolicy.cancellation.percentage}}
 							<span translate="reservation.percentage.total.stay"></span>
+							&nbsp;
 						</span>
 						
 						<span translate="reservation.total.night"></span>
-						<strong>{{$ctrl.cancellationPolicy.amount.finalAmount|chCurrency}}</strong>.
+						<strong>&nbsp;{{$ctrl.cancellationPolicy.amount.finalAmount|chCurrency}}</strong>.
 					</span>
 					<span ng-if="!$ctrl.cancellationPolicy.limitDate">
-						<span translate-once="reservation.cancellation.room.condition.notRef.label4"></span>
-						<strong>{{room.total$ctrl.cancellationPolicy.amount.finalAmount|chCurrency}}</strong>.
+						&nbsp;
+						<span translate="reservation.cancellation.room.condition.notRef.label4"></span>
+						<strong>&nbsp;{{room.total$ctrl.cancellationPolicy.amount.finalAmount|chCurrency}}</strong>.
 					</span>
 				</div>
+			</div>
+			<div ng-if="$ctrl.isCharged">
+				<strong translate="reservation.cancellation.room.condition.charged.label"></strong>
 			</div>
 		</div>
 		
