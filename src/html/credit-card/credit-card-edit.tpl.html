@@ -1,5 +1,5 @@
 <div>
-	<ng-form name="creditCardForm">
+	<ng-form name="creditCardForm" novalidate>
 		<div layout layout-wrap layout-padding>
 		
 			<div layou="column" flex="100" >
@@ -16,38 +16,45 @@
 	          	</md-input-container>
 			</div>
 		
-			<div layou="column" flex="100" flex-gt-sm="50">
-				<md-input-container class="md-block no-margin-bottom">
-					<label translate="payment.type.of.card">Card type</label>
-					<md-select name="circuit" ng-model="$ctrl.paymentMethod.circuit" ng-required="$ctrl.ngRequired">
-						<md-option ng-repeat="circuit in $ctrl.circuits track by $index" ng-value="circuit.circuit">
-							<md-icon class="{{$ctrl.$$paymentIcons[circuit.circuit]}} ch-pay-icon-single"></md-icon>
-							<strong translate="{{'payment.type.carrier.' + circuit.circuit}}"></strong>
-							<em> (<span translate="{{'payment.type.' + circuit.type}}"></span>)</em>
-						</md-option>
-			        </md-select>
-			        <div ng-messages="creditCardForm.circuit.$error">
-		          		<div ng-message="required"><span translate="error.required"></span></div>
-			        </div>
-			    </md-input-container>
-			</div>
+<!-- 			<div layou="column" flex="100" flex-gt-sm="50"> -->
+<!-- 				<md-input-container class="md-block no-margin-bottom"> -->
+<!-- 					<label translate="payment.type.of.card">Card type</label> -->
+<!-- 					<md-select name="circuit" ng-model="$ctrl.paymentMethod.circuit" ng-required="$ctrl.ngRequired"> -->
+<!-- 						<md-option ng-repeat="circuit in $ctrl.circuits track by $index" ng-value="circuit.circuit"> -->
+<!-- 							<md-icon class="{{$ctrl.$$paymentIcons[circuit.circuit]}} ch-pay-icon-single"></md-icon> -->
+<!-- 							<strong translate="{{'payment.type.carrier.' + circuit.circuit}}"></strong> -->
+<!-- 							<em> (<span translate="{{'payment.type.' + circuit.type}}"></span>)</em> -->
+<!-- 						</md-option> -->
+<!-- 			        </md-select> -->
+<!-- 			        <div ng-messages="creditCardForm.circuit.$error"> -->
+<!-- 		          		<div ng-message="required"><span translate="error.required"></span></div> -->
+<!-- 			        </div> -->
+<!-- 			    </md-input-container> -->
+<!-- 			</div> -->
 			
-			<div layou="column" flex="100" flex-gt-sm="50">
+			<div layou="column" flex="100" flex-gt-sm="100">
 				<md-input-container class="md-block no-margin-bottom">
 					<label><span translate="payment.card.number"></span></label>
-		            <input type="text" name="number" ng-model="$ctrl.paymentMethod.pan" ng-required="$ctrl.ngRequired" ng-pattern="$ctrl.REGEXP.creditCard">
+					<md-icon class="{{$ctrl.$$paymentIcons[$ctrl.paymentMethod.circuit]}} ch-pay-icon-single"></md-icon>
+		            <input type="text" name="number" ng-model="$ctrl.paymentMethod.pan" ng-required="$ctrl.ngRequired" cc-format cc-number cc-eager-type  cc-type="$ctrl.paymentMethod.circuit">
+		            
+
 		            <div class="text-gray-light text-italic">
 						<md-icon class="mdi mdi-information-outline md-14"></md-icon>
 						<small translate="payment.card.number.description"></small>
 					</div>
 		            <div ng-messages="creditCardForm.number.$error">
 		          		<div ng-message="required"><span translate="error.required"></span></div>
+		          		
+		          		<div ng-message="invalid">Looks like you're typing a {{creditCardForm.number.$ccEagerType}} number!</div>
+		          		<div ng-message="ccNumberType">That's not a valid {{$ctrl.paymentMethod.circuit}}</div>
+		          		
 		          		<div ng-message="pattern"><span translate="error.credit.card.invalid"></span></div>
 			        </div>
 	          	</md-input-container>
 			</div>
 				
-			<div layou="column" flex="100" flex-gt-sm="25">
+			<div layou="column" flex="100" flex-gt-sm="50">
 				<md-input-container class="md-block no-margin-bottom">
 					<label translate="date.month.expiration">Month</label>
 					<md-select name="month" ng-model="$ctrl.paymentMethod.expirationMonth" ng-required="$ctrl.ngRequired">
@@ -59,7 +66,7 @@
 			    </md-input-container>
 			</div>
 			
-			<div layou="column" flex="100" flex-gt-sm="25">
+			<div layou="column" flex="100" flex-gt-sm="50">
 				<md-input-container class="md-block no-margin-bottom">
 					<label translate="date.year.expiration">Year</label>
 					<md-select name="year" ng-model="$ctrl.paymentMethod.expirationYear" ng-required="$ctrl.ngRequired">
@@ -71,20 +78,20 @@
 			    </md-input-container>
 			</div>
 			
-			<div layou="column" flex-gt-sm="25" hide show-gt-sm></div>
+<!-- 			<div layou="column" flex-gt-sm="25" hide show-gt-sm></div> -->
 			
-			<div layou="column" flex="100" flex-gt-sm="25">
-				<md-input-container class="md-block no-margin-bottom md-icon-right">
-					<label><span translate="payment.cvv"></span></label>
-		            <input type="text" name="cvv" ng-model="$ctrl.paymentMethod.CVV" ng-required="$ctrl.ngRequired" minlength="3" maxlength="4">
-		            <md-icon class="mdi mdi-help-circle-outline clickable text-gray-light" ng-click="$ctrl.$cvvInfo($event)"></md-icon>
-		            <div ng-messages="creditCardForm.cvv.$error">
-		          		<div ng-message="required"><span translate="error.required"></span></div>
-		          		<div ng-message="minlength"><span translate="error.field.generic.minlength" translate-values="{count: 3}"></span></div>
-		          		<div ng-message="maxlength"><span translate="error.field.generic.maxlength" translate-values="{count: 4}"></span></div>
-			        </div>
-	          	</md-input-container>
-			</div>
+<!-- 			<div layou="column" flex="100" flex-gt-sm="25"> -->
+<!-- 				<md-input-container class="md-block no-margin-bottom md-icon-right"> -->
+<!-- 					<label><span translate="payment.cvv"></span></label> -->
+<!-- 		            <input type="text" name="cvv" ng-model="$ctrl.paymentMethod.CVV" ng-required="$ctrl.ngRequired" minlength="3" maxlength="4"> -->
+<!-- 		            <md-icon class="mdi mdi-help-circle-outline clickable text-gray-light" ng-click="$ctrl.$cvvInfo($event)"></md-icon> -->
+<!-- 		            <div ng-messages="creditCardForm.cvv.$error"> -->
+<!-- 		          		<div ng-message="required"><span translate="error.required"></span></div> -->
+<!-- 		          		<div ng-message="minlength"><span translate="error.field.generic.minlength" translate-values="{count: 3}"></span></div> -->
+<!-- 		          		<div ng-message="maxlength"><span translate="error.field.generic.maxlength" translate-values="{count: 4}"></span></div> -->
+<!-- 			        </div> -->
+<!-- 	          	</md-input-container> -->
+<!-- 			</div> -->
 	
 		</div>
 	</ng-form>

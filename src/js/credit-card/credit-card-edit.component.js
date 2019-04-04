@@ -17,8 +17,24 @@
 	function CreditCardEditCtrl($scope, $mdMedia, $translate, AppOptions, Dialog, REGEXP, IconUtils) {
 		var ctrl = this;
 		
+		/**
+		 * Usa angular-credit-cards (da importare nel gruntjs)
+		 */
+		
 		this.$mdMedia = $mdMedia;
 		this.REGEXP = REGEXP;
+		
+		//circuiti accettati da angular-credit-cards
+		this.$$ccType = {
+			'Visa'				:'VISA',
+			'Mastercard'		:'MASTERCARD',
+			'Maestro'			:'MAESTRO',
+			'American Express'	:'AMEX',
+			'Diners Club'		:'DINERS_CLUB',
+			'Discover'			:'DISCOVER',
+			'JCB'				:'JCB',
+			'UnionPay'			:'UNION_PAY'
+		};
 		
 		this.$onInit = function(){
 			
@@ -35,28 +51,44 @@
 			
 			ctrl.$createMonths();
 			ctrl.$createYears();
+			ctrl.$getCcType();
 			
 			ctrl.$initWatch();
 			
 		};
 		
 		this.$initWatch = function(){
-			$scope.$watch(function(){return ctrl.paymentMethod.circuit;}, function(newVal, oldVal){
-				ctrl.$$updateMethod();
+			$scope.$watch('creditCardForm.number.ccNumberType', function(newVal, oldVal){
+				var _cardType = _.find(ctrl.$$cardType, function(v,k){
+					return k === newVal;
+				});
+				
+				if(_cardType){
+					var ct =_.find(ctrl.circuits, function(c){
+						return c.circuit == _cardType;
+					});
+					
+					ctrl.paymentMethod.circuit = ct ? ct.circuit : null;
+					ctrl.$$updateMethod(ct.type);
+				}
 			});
 		};
 		
-		
-		this.$$updateMethod = function(){
-			var _cc = _.find(ctrl.circuits, function(c){
-				return c.circuit == ctrl.paymentMethod.circuit;
+		this.$getCcType = function(){
+			ctrl.$$cardType = [];
+			_.forEach(ctrl.circuits, function(c){
+				ctrl.$$validCcType[c.circuit] && ctrl.$$cardType.push(ctrl.$$validCcType[c.circuit]);
 			});
-			
-			if(_cc){
-				ctrl.paymentType = _cc.type;
-				ctrl.paymentMethod.type = _cc.type;
-				ctrl.onPaymentTypeChange && ctrl.onPaymentTypeChange({$type: ctrl.paymentType});
+		};
+		
+		this.$$updateMethod = function(type){
+			if(!type){
+				return;
 			}
+			
+			ctrl.paymentType = type;
+			ctrl.paymentMethod.type = type;
+			ctrl.onPaymentTypeChange && ctrl.onPaymentTypeChange({$type: ctrl.paymentType});
 		};
 		
 		this.$createMonths = function(){

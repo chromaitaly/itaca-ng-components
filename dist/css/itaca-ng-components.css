@@ -176,7 +176,8 @@ ch-card .md-whiteframe-1dp {
   vertical-align: middle;
   padding-right: 2px;
 }
-credit-card-view .card-layout {
+credit-card-view .card-layout,
+virtual-card-view .card-layout {
   width: 100%;
   max-width: 340px;
   min-width: 260px;
@@ -191,6 +192,40 @@ credit-card-view .card-layout {
   background: -webkit-linear-gradient(-45deg, #959595 0%, #0d0d0d 46%, #010101 50%, #0a0a0a 53%, #4e4e4e 76%, #383838 87%, #1b1b1b 100%);
   background: linear-gradient(135deg, #959595 0%, #0d0d0d 46%, #010101 50%, #0a0a0a 53%, #4e4e4e 76%, #383838 87%, #1b1b1b 100%);
   filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#959595', endColorstr='#1b1b1b', GradientType=1);
+}
+credit-card-view .card-fill,
+virtual-card-view .card-fill {
+  position: relative;
+  z-index: 1;
+}
+credit-card-view .card-fill:after,
+virtual-card-view .card-fill:after {
+  background: url("../../public/img/credit-card-chip.png") no-repeat;
+  background-size: 40px;
+  background-position: 22px 20px;
+  content: '';
+  width: 70px;
+  height: 55px;
+  position: absolute;
+  top: 38px;
+  left: 0px;
+}
+credit-card-view .card-pattern,
+virtual-card-view .card-pattern {
+  background: url("../../public/img/credit-card-pattern.png");
+  width: 100%;
+  height: 100%;
+  top: 0;
+  left: 0;
+  position: absolute;
+  background-size: 380px;
+}
+credit-card-view .card-contactless,
+virtual-card-view .card-contactless {
+  position: absolute;
+  right: 23px;
+  top: 50%;
+  margin-top: -6px;
 }
 credit-card-view .card-mastercard,
 credit-card-view .card-maestro,
@@ -257,36 +292,6 @@ credit-card-view .card-amex:before {
   z-index: 1;
   border: solid 3px transparent;
   border-radius: 8px;
-}
-credit-card-view .card-fill:after {
-  background: url("../../public/img/credit-card-chip.png") no-repeat;
-  background-size: 40px;
-  background-position: 22px 20px;
-  content: '';
-  width: 70px;
-  height: 55px;
-  position: absolute;
-  top: 38px;
-  left: 0px;
-}
-credit-card-view .card-fill {
-  position: relative;
-  z-index: 1;
-}
-.card-contactless {
-  position: absolute;
-  right: 23px;
-  top: 50%;
-  margin-top: -6px;
-}
-credit-card-view .card-pattern {
-  background: url("../../public/img/credit-card-pattern.png");
-  width: 100%;
-  height: 100%;
-  top: 0;
-  left: 0;
-  position: absolute;
-  background-size: 380px;
 }
 ch-help-bar {
   position: fixed;

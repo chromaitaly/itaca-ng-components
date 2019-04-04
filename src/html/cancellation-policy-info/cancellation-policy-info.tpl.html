@@ -27,7 +27,7 @@
 						<span translate="reservation.cancellation.room.condition.flex.label" translate-values="{limit: (($ctrl.cancellationPolicy.limitDate|offsetDate:'short':$ctrl.offset) + ' [' + $ctrl.city + ']')}"></span>
 					</span>
 					<span ng-if="$ctrl.cancellationPolicy.cancellation.chargeNights != $ctrl.cancellationPolicy.cancellation.stayNights">
-						{{::$ctrl.cancellationPolicy.cancellation.percentage}}
+						&nbsp;{{::$ctrl.cancellationPolicy.cancellation.percentage}}&nbsp;
 						<span ng-if="$ctrl.cancellationPolicy.cancellation.chargeNights == 1">
 							<span translate="reservation.percentage.firstNight"></span>&nbsp;
 							<span translate="common.night" class="text-lowercase"></span>
@@ -35,7 +35,7 @@
 						<span ng-if="$ctrl.cancellationPolicy.cancellation.chargeNights > 1">
 							<span ng-if="$ctrl.cancellationPolicy.cancellation.chargeNights < reservation.nights">
 								<span translate="reservation.percentage.nights"></span>
-							 	{{::$ctrl.cancellationPolicy.cancellation.chargeNights}}&nbsp;
+							 	&nbsp;{{::$ctrl.cancellationPolicy.cancellation.chargeNights}}&nbsp;
 							 	<span translate="common.nights" class="text-lowercase"></span>
 							</span>
 							<span ng-if="$ctrl.cancellationPolicy.cancellation.chargeNights >= reservation.nights">
@@ -50,7 +50,7 @@
 						&nbsp;{{::$ctrl.cancellationPolicy.cancellation.percentage}}
 						<span translate="reservation.percentage.total.stay"></span>
 					</span>
-					
+					&nbsp;
 					<span translate="reservation.total.night"></span>
 					<strong>&nbsp;{{$ctrl.cancellationPolicy.amount.finalAmount|chCurrency}}</strong>.
 				</div>
@@ -85,23 +85,19 @@
 							</span>
 						</span>
 						<span ng-if="$ctrl.cancellationPolicy.cancellation.chargeNights == $ctrl.cancellationPolicy.cancellation.stayNights">	
-							{{::$ctrl.cancellationPolicy.cancellation.percentage}}
+							&nbsp;{{::$ctrl.cancellationPolicy.cancellation.percentage}}&nbsp;
 							<span translate="reservation.percentage.total.stay"></span>
-							&nbsp;
 						</span>
-						
+						&nbsp;
 						<span translate="reservation.total.night"></span>
 						<strong>&nbsp;{{$ctrl.cancellationPolicy.amount.finalAmount|chCurrency}}</strong>.
 					</span>
 					<span ng-if="!$ctrl.cancellationPolicy.limitDate">
 						&nbsp;
 						<span translate="reservation.cancellation.room.condition.notRef.label4"></span>
-						<strong>&nbsp;{{room.total$ctrl.cancellationPolicy.amount.finalAmount|chCurrency}}</strong>.
+						<strong>&nbsp;{{$ctrl.cancellationPolicy.amount.finalAmount|chCurrency}}</strong>.
 					</span>
 				</div>
-			</div>
-			<div ng-if="$ctrl.isCharged">
-				<strong translate="reservation.cancellation.room.condition.charged.label"></strong>
 			</div>
 		</div>
 		
@@ -110,7 +106,7 @@
 			<div class="no-margin-top">
 				<span translate="reservation.room.deposit.label1"></span>
 				<span ng-if="$ctrl.cancellationPolicy.cancellation.chargeNights != $ctrl.cancellationPolicy.cancellation.stayNights">
-					{{::$ctrl.cancellationPolicy.cancellation.percentage}}
+					&nbsp;{{::$ctrl.cancellationPolicy.cancellation.percentage}}&nbsp;
 					<span ng-if="$ctrl.cancellationPolicy.cancellation.chargeNights == 1">
 						<span translate="reservation.percentage.firstNight"></span>&nbsp;
 						<span translate="common.night" class="text-lowercase"></span>
@@ -118,7 +114,7 @@
 					<span ng-if="$ctrl.cancellationPolicy.cancellation.chargeNights > 1">
 						<span ng-if="$ctrl.cancellationPolicy.cancellation.chargeNights < reservation.nights">
 							<span translate="reservation.percentage.nights"></span>
-						 	{{::$ctrl.cancellationPolicy.cancellation.chargeNights}}&nbsp;
+						 	&nbsp;{{::$ctrl.cancellationPolicy.cancellation.chargeNights}}&nbsp;
 						 	<span translate="common.nights" class="text-lowercase"></span>
 						</span>
 						<span ng-if="$ctrl.cancellationPolicy.cancellation.chargeNights >= reservation.nights">
@@ -130,12 +126,12 @@
 					</span>
 				</span>
 				<span ng-if="$ctrl.cancellationPolicy.cancellation.chargeNights == $ctrl.cancellationPolicy.cancellation.stayNights">	
-					{{::$ctrl.cancellationPolicy.cancellation.percentage}}
+					&nbsp;{{::$ctrl.cancellationPolicy.cancellation.percentage}}&nbsp;
 					<span translate="reservation.percentage.total.stay"></span>
 				</span>
-				
+				&nbsp;
 				<span translate="reservation.total.night"></span>
-				<strong>{{$ctrl.cancellationPolicy.amount.finalAmount|chCurrency}}</strong>.
+				<strong>&nbsp;{{$ctrl.cancellationPolicy.amount.finalAmount|chCurrency}}&nbsp;</strong>.
 				<span translate="reservation.room.deposit.label2"></span>
 			</div>
 		</div>
