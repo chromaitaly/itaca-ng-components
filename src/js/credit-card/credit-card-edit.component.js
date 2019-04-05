@@ -18,14 +18,14 @@
 		var ctrl = this;
 		
 		/**
-		 * Usa angular-credit-cards (da importare nel gruntjs)
+		 * Usa angular-credit-cards
 		 */
 		
 		this.$mdMedia = $mdMedia;
 		this.REGEXP = REGEXP;
 		
 		//circuiti accettati da angular-credit-cards
-		this.$$ccType = {
+		this.$$types = {
 			'Visa'				:'VISA',
 			'Mastercard'		:'MASTERCARD',
 			'Maestro'			:'MAESTRO',
@@ -51,44 +51,32 @@
 			
 			ctrl.$createMonths();
 			ctrl.$createYears();
-			ctrl.$getCcType();
-			
-			ctrl.$initWatch();
+			ctrl.$generateValidTypes();
 			
 		};
 		
-		this.$initWatch = function(){
-			$scope.$watch('creditCardForm.number.ccNumberType', function(newVal, oldVal){
-				var _cardType = _.find(ctrl.$$cardType, function(v,k){
-					return k === newVal;
-				});
-				
-				if(_cardType){
-					var ct =_.find(ctrl.circuits, function(c){
-						return c.circuit == _cardType;
-					});
-					
-					ctrl.paymentMethod.circuit = ct ? ct.circuit : null;
-					ctrl.$$updateMethod(ct.type);
-				}
-			});
-		};
-		
-		this.$getCcType = function(){
-			ctrl.$$cardType = [];
+		this.$generateValidTypes = function(){
+			ctrl.types = {};
 			_.forEach(ctrl.circuits, function(c){
-				ctrl.$$validCcType[c.circuit] && ctrl.$$cardType.push(ctrl.$$validCcType[c.circuit]);
+				_.forEach(ctrl.$$types, function(v,k){
+					if(v == c.circuit){
+						ctrl.types[k] = v;
+					}
+				});
 			});
 		};
 		
-		this.$$updateMethod = function(type){
-			if(!type){
+		this.$updateMethod = function(ccType){
+			if(!ccType){
 				return;
 			}
 			
-			ctrl.paymentType = type;
-			ctrl.paymentMethod.type = type;
-			ctrl.onPaymentTypeChange && ctrl.onPaymentTypeChange({$type: ctrl.paymentType});
+			var type = _.find(ctrl.circuits, ['circuit', ccType]);
+			if(type){
+				ctrl.paymentType = type;
+				ctrl.paymentMethod.type = type;
+				ctrl.onPaymentTypeChange && ctrl.onPaymentTypeChange({$type: ctrl.paymentType});
+			}
 		};
 		
 		this.$createMonths = function(){
@@ -104,12 +92,6 @@
 				ctrl.$$years.push(now.year());
 				now.add(1, "years");
 			}
-		};
-		
-		this.$cvvInfo = function(ev){
-			$translate(['payment.cvv.question', 'payment.cvv.info', 'payment.cvv.amex.info']).then(function(translate){
-				Dialog.showAlert(ev, translate['payment.cvv.question'], ctrl.paymentMethod.circuit == 'AMEX' ? translate['payment.cvv.amex.info'] :  translate['payment.cvv.info']);
-			});
 		};
 	}
 })();
