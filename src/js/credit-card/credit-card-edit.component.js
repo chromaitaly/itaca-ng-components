@@ -1,3 +1,9 @@
+/**
+ * Componente per la creazione di carte di credito
+ * richiede angular-credit-cards
+ * è richiesto il "novalidate" nei form altrimenti va in errore
+ * @returns
+ */
 (function() {
 	'use strict';
 	
@@ -17,17 +23,13 @@
 	function CreditCardEditCtrl($scope, $mdMedia, $translate, AppOptions, Dialog, REGEXP, IconUtils) {
 		var ctrl = this;
 		
-		/**
-		 * Usa angular-credit-cards
-		 */
-		
 		this.$mdMedia = $mdMedia;
 		this.REGEXP = REGEXP;
 		
 		//circuiti accettati da angular-credit-cards
 		this.$$types = {
 			'Visa'				:'VISA',
-			'Mastercard'		:'MASTERCARD',
+			'MasterCard'		:'MASTERCARD',
 			'Maestro'			:'MAESTRO',
 			'American Express'	:'AMEX',
 			'Diners Club'		:'DINERS_CLUB',
@@ -55,6 +57,12 @@
 			
 		};
 		
+		this.$onChanges = function(changesObj){
+			if(changesObj.circuits){
+				ctrl.$generateValidTypes();
+			}
+		};
+		
 		this.$generateValidTypes = function(){
 			ctrl.types = {};
 			_.forEach(ctrl.circuits, function(c){
@@ -71,10 +79,11 @@
 				return;
 			}
 			
-			var type = _.find(ctrl.circuits, ['circuit', ccType]);
-			if(type){
-				ctrl.paymentType = type;
-				ctrl.paymentMethod.type = type;
+			var _cc = _.find(ctrl.circuits, ['circuit', ccType]);
+			if(_cc){
+				ctrl.paymentType = _cc.type;
+				ctrl.paymentMethod.type = _cc.type;
+				ctrl.paymentMethod.circuit = _cc.circuit;
 				ctrl.onPaymentTypeChange && ctrl.onPaymentTypeChange({$type: ctrl.paymentType});
 			}
 		};
