@@ -41,7 +41,7 @@
 		   ctrl.$$currentLang = Locale.current();
 			
 			// Classi
-		   ctrl.cssClass = ctrl.cssClass || "font-18 no-margin minimal-input max-width-130px ";
+		   ctrl.cssClass = ctrl.cssClass || "font-18 no-margin minimal-input max-width-180px ";
 		   ctrl.iconClass = ctrl.iconClass || "mdi mdi-pencil md-18 text-primary material-icons";
 		   ctrl.originalValueClass = ctrl.originalValueClass || "md-caption text-gray-light";
 		   ctrl.refreshIconClass = ctrl.refreshIconClass || "mdi mdi-refresh md-18 material-icons";
