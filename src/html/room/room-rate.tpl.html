@@ -134,8 +134,7 @@
       			<ch-payment-policy-info
       				rate-type="$ctrl.rate.type"
    					cancellation-policy="$ctrl.rate.cancellationPolicy"
-   					city="$ctrl.chRoomCtrl.city"
-   					offset="$ctrl.chRoomCtrl.offset"></ch-payment-policy-info>
+   					city="$ctrl.chRoomCtrl.city"></ch-payment-policy-info>
       		</div>
      		
    			<div layout="column">
@@ -372,7 +371,6 @@
       				rate-type="$ctrl.rate.type"
    					cancellation-policy="$ctrl.rate.cancellationPolicy"
    					city="{{$ctrl.chRoomCtrl.city}}"
-   					offset="$ctrl.chRoomCtrl.offset"
    					title="{{$ctrl.rate.cancellationPolicy.cancellation.deposit ? ('reservation.deposit.conditions'|translate) : null}}"></ch-cancellation-policy-info>
    					
    				<!-- mostro solo se la policy di cancellazione non prevede deposito (se c'è, è tutto specificato nelle condizioni di cancellazione) -->	

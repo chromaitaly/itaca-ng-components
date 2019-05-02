@@ -46,7 +46,7 @@
 		"grunt-less-imports": "latest",
 		"grunt-ng-annotate": "latest",
 		"grunt-postcss": "^0.9.0",
-		"jit-grunt": "latest",
+		"jit-grunt": "^0.10.0",
 		"jshint-stylish": "latest",
 		"material-design-inspired-color-picker": "latest",
 		"pixrem": "^4.0.1",

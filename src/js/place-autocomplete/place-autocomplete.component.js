@@ -98,7 +98,7 @@
     		});
 	    };
 	    
-	    this.$selectedItemChange = function(place){
+	    this.$selectedItemChange = function(place, deepSearch){
 	    	if(!place){
 	    		ctrl.ngModelCtrl.$setViewValue(null);
 	    		return;
@@ -154,14 +154,28 @@
 		    		}
 		    	}
 	    	
-		    	addressInfo.lat = data.geometry.location.lat();
-		    	addressInfo.lng = data.geometry.location.lng();
+	    		// Place Id di google
+	    		addressInfo.placeId = data.place_id;
+	    		
+	    		//GeoJson (long lat)
+	    		addressInfo.geo = {type: "Point", coordinates: []};
+	    		addressInfo.geo.coordinates.push(data.geometry.location.lng());
+	    		addressInfo.geo.coordinates.push(data.geometry.location.lat());
+	    		
 		    	addressInfo.offset = data.utc_offset ? parseInt(data.utc_offset)*60 : data.utc_offset;
 		    	addressInfo.addressComplete = ctrl.selectedItem;
 		    	
 		    	ctrl.ngModelCtrl.$setViewValue(addressInfo);
 	    	}, function(error){
-	    		ctrl.$setError(true);
+	    		if(!deepSearch){
+		    		GoogleAPI.textSearch(ctrl.searchText).then(function(data){
+		    			ctrl.$selectedItemChange(data[0], true);
+		    		}, function(error){
+		    			ctrl.$setError(true);
+		    		});
+	    		}else {
+	    			ctrl.$setError(true);
+	    		}
 	    	});
 	    };
 	    

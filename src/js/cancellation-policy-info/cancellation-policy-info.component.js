@@ -8,7 +8,7 @@
     		city: "@",
 			offset: "@",
 			title: "@",
-    		titleClass: "@"
+    		titleClass: "@",
     	},
 		controller: CancellationPolicyCtrl,
 		templateUrl: "/tpls/cancellation-policy-info/cancellation-policy-info.tpl"

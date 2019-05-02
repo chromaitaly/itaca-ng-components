@@ -205,17 +205,24 @@
 			</div>
 		</div>
 		
-		<div id="maps" class="layout-column flex-100" ng-if="$ctrl.hotel.addressInfo.lat && $ctrl.hotel.addressInfo.lng">
+		<div id="maps" class="layout-column flex-100" ng-if="$ctrl.hotel.addressInfo.lat && $ctrl.hotel.addressInfo.lng || $ctrl.hotel.addressInfo.geo.coordinates">
 		
 			<div class="md-padding text-center no-padding-top wow slideInLeft text-success" ng-if="!$ctrl.isDisabled">
 				<md-icon class="mdi mdi-checkbox-marked-circle-outline text-success"></md-icon>
 				<span translate="join.quote.hotel.address.ok"></span>
 			</div>
-		
-			<ng-map zoom="15" center="{{$ctrl.hotel.addressInfo.lat}},{{$ctrl.hotel.addressInfo.lng}}" disable-default-ui="true" scrollwheel="false">
-		    	<marker position="{{$ctrl.hotel.addressInfo.lat}},{{$ctrl.hotel.addressInfo.lng}}" icon="{{$ctrl.mapMarker}}">
-		    	</marker>
-			</ng-map>
+			
+			<div ng-if="$ctrl.hotel.addressInfo.geo">
+				<ng-map zoom="15" center="{{$ctrl.hotel.addressInfo.geo.coordinates[1]}},{{$ctrl.hotel.addressInfo.geo.coordinates[0]}}" disable-default-ui="true" scrollwheel="false">
+			    	<marker position="{{$ctrl.hotel.addressInfo.geo.coordinates[1]}},{{$ctrl.hotel.addressInfo.geo.coordinates[0]}}" icon="{{$ctrl.mapMarker}}"></marker>
+				</ng-map>
+			</div>
+			<div ng-if="$ctrl.hotel.addressInfo.lat && $ctrl.hotel.addressInfo.lng">
+				<ng-map zoom="15" center="{{$ctrl.hotel.addressInfo.lat}},{{$ctrl.hotel.addressInfo.lng}}" disable-default-ui="true" scrollwheel="false">
+			    	<marker position="{{$ctrl.hotel.addressInfo.lat}},{{$ctrl.hotel.addressInfo.lng}}" icon="{{$ctrl.mapMarker}}"></marker>
+				</ng-map>
+			</div>
+			
 			<div class="layout-padding bg-info md-margin no-margin-x-sides border-radius-6 wow slideInUp" ng-if="!$ctrl.isDisabled">
 				<span class="no-padding" translate="join.quote.hotel.address.label"></span>
 			</div>

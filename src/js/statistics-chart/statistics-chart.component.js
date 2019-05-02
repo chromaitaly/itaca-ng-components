@@ -39,7 +39,7 @@
 				"</div>" + 
 			"</div>" +
 			"<div layout=\"column\" flex=\"100\">" +
-				"<ch-chart ng-if=\"$ctrl.$$chart\" class=\"display-block flex\" ng-class=\"{'auto-height': $ctrl.extra.noData, 'chart-pie-max-width': $ctrl.type == 'RESERVATIONS_SOURCE_TREND'}\" type=\"$ctrl.$$chart.type\" data=\"$ctrl.$$chart.data\" options=\"$ctrl.$$chart.options\"></ch-chart>" +
+				"<ch-chart ng-if=\"$ctrl.$$chart\" class=\"display-block flex\" ng-class=\"{'chart-pie-max-width': $ctrl.type == 'RESERVATIONS_SOURCE_TREND'}\" type=\"$ctrl.$$chart.type\" data=\"$ctrl.$$chart.data\" options=\"$ctrl.$$chart.options\"></ch-chart>" +
 				"<div ng-if=\"$ctrl.$$loading || (!$ctrl.$$loading && $ctrl.extra.noData)\" class=\"overlay text-center\" layout layout-align=\"center center\">" +
 					"<div ng-if=\"$ctrl.$$loading && !$ctrl.ctrl.datasets.length\">" +
 						"<md-progress-circular class=\"md-primary ch-progress\" md-mode=\"indeterminate\" md-diameter=\"32\"></md-progress-circular>" +

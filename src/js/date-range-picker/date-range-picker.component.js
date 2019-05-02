@@ -8,6 +8,8 @@
         	placeholder: "@",
         	label: "@",
         	labelClass: "@",
+        	iconClass: "@",
+			iconFontSet: "@",
         	startLabel: "@",
         	startHintLabel: "@",
         	startInputName: "@",

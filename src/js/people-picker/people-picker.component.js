@@ -5,10 +5,8 @@
 		bindings: {
 			buttonClass: "@",
         	wrapperClass: "@",
-//        	counterBtnClass: "@",
-//	  		counterBtnActiveClass: "@",
-//	  		iconClass: "@",
-//	  		iconActiveClass: "@",
+        	iconClass: "@",
+			iconFontSet: "@",
         	label: "@",
         	labelClass: "@",
         	people: "=",
@@ -45,8 +43,6 @@
 	    	ctrl.hasBackdrop = _.isNil(ctrl.hasBackdrop) ? false : ctrl.hasBackdrop;
 	    	ctrl.buttonClass = ctrl.buttonClass || "no-padding no-margin layout-padding";
 	    	ctrl.wrapperClass = ctrl.wrapperClass || "md-padding";
-//	    	ctrl.counterBtnClass = ctrl.counterBtnClass || "md-fab md-mini";
-//        	ctrl.counterBtnActiveClass = ctrl.counterBtnActiveClass || "md-primary";
         	ctrl.labelClass = ctrl.labelClass || "text-gray-light";
         	
 	    	ctrl.$$panelClass = "bg-white md-whiteframe-15dp";

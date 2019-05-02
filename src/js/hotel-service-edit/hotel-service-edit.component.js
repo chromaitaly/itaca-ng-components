@@ -49,7 +49,7 @@
 	  	this.$$descriptionGenerator = function(service){
 
 			$translate(['service.type.default', 'service.type.default.room', 'service.type.bookable.alt', 'service.type.included',
-				'service.type.room=', 'service.type.hotel', 'service.type.external', 'service.type.payment.free', 
+				'service.type.room', 'service.type.hotel', 'service.type.external', 'service.type.payment.free', 
 				'service.type.payment.single.alt', 'service.type.payment.person',
 				'service.type.payment.at.DAILY', 'service.type.payment.at.MONTHLY', 'service.type.payment.at.YEARLY']).then(function(translations){
 				
