@@ -81,29 +81,22 @@
 		};
 		
 		this.toggleOption = function(option) {
-			ctrl.ngModel = angular.isArray(ctrl.ngModel) ? ctrl.ngModel : [];
+			var selected = angular.isArray(ctrl.ngModel) ? ctrl.ngModel.slice() : [];
 			
 			if (!option.selected) {
-				ctrl.ngModel.push(option.value);
+				selected.push(option.value);
 			
 			} else {
-				_.pull(ctrl.ngModel, option.value);
+				_.pull(selected, option.value);
 			}
 			
-			option.selected = !option.selected; 
+			option.selected = !option.selected;
+			
+			ctrl.ngModelCtrl.$setViewValue(selected);
 		};
 		
 		this.$checkAll = function(checked){
-			if(_.isNil(ctrl.ngModel) || !checked){
-				ctrl.ngModel = [];
-			}
-			
-			_.forEach(ctrl.options, function(option){
-				option.selected = checked; 
-				if(checked){
-					ctrl.ngModel.push(option.value);
-				}
-			});
+			_.forEach(ctrl.options, ctrl.toggleOption);
 		};
 	}
 })();

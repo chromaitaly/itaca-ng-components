@@ -15,22 +15,24 @@
 				'bg-danger': $ctrl.header.roomClosed, 
 				'bg-warn': !$ctrl.header.roomClosed && $ctrl.header.availability.actual <= 0}">
 			
-			<div class="text-small" ng-if="$ctrl.header.roomClosed">
-				<strong hide-xs translate="common.closed.female"></strong>
-				<span hide show-xs><md-icon class="mdi mdi-lock md-24 text-white"></md-icon></span>
-			</div>
-			
-			<div class="text-small" ng-if="!$ctrl.header.roomClosed">
-				<strong>
-					<span ng-if="$ctrl.header.availability.actual > 0">
-						<span hide-xs translate="ratesheet.available"></span>
-						<span hide show-xs><md-icon class="mdi mdi-lock-open md-24 text-white"></md-icon></span>
-					</span>
-					<span ng-if="$ctrl.header.availability.actual <= 0">
-						<span hide-xs translate="hotel.availability.none.abbr"></span>
-						<span hide show-xs><md-icon class="mdi mdi-close md-24 text-white"></md-icon></span>
-					</span>
-				</strong>
+			<div layout-margin-sm>
+				<div class="text-small" ng-if="$ctrl.header.roomClosed">
+					<strong hide-xs translate="common.closed.female"></strong>
+					<span hide show-xs><md-icon class="mdi mdi-lock md-18 text-white"></md-icon></span>
+				</div>
+				
+				<div class="text-small" ng-if="!$ctrl.header.roomClosed">
+					<strong>
+						<span ng-if="$ctrl.header.availability.actual > 0">
+							<span hide-xs translate="ratesheet.available"></span>
+							<span hide show-xs><md-icon class="mdi mdi-lock-open md-18 text-white"></md-icon></span>
+						</span>
+						<span ng-if="$ctrl.header.availability.actual <= 0">
+							<span hide-xs translate="hotel.availability.none.abbr"></span>
+							<span hide show-xs><md-icon class="mdi mdi-close md-18 text-white"></md-icon></span>
+						</span>
+					</strong>
+				</div>
 			</div>
 			
 			<md-tooltip>

@@ -20,8 +20,9 @@
         	ngRequired: "<?",
         	ngDisabled: "<?",
         	ngReadonly: "<?",
+        	ngChange: "&",
         	mdNoAsterisk: "<?",
-        	
+        	autocomplete: "@?"
         },
         controller: PasswordInputCtrl,
         templateUrl: "/tpls/password-input/password-input.tpl"

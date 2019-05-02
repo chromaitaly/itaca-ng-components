@@ -14,7 +14,8 @@
 				'bg-success': $ctrl.availability.counter.actual > 0 && !$ctrl.availability.hotelClosed && !$ctrl.availability.roomClosed, 
 				'bg-danger': $ctrl.availability.roomClosed, 
 				'bg-warn': $ctrl.availability.counter.actual <= 0 && !$ctrl.availability.hotelClosed && !$ctrl.availability.roomClosed}">																		
-			<div layout layout-wrap layout-align="center center" class="md-margin" ng-class="{'text-small': $ctrl.$mdMedia('xs')}">
+			<div layout layout-wrap layout-align="center center" class="no-margin-x-sides" ng-class="{'text-small': $ctrl.$mdMedia('xs'), 
+				'layout-margin-sm': $ctrl.availability.counter.actual <= 0, 'md-margin': $ctrl.availability.counter.actual > 0}">
 				<div ng-if="$ctrl.availability.counter.actual > 0">
 					<strong>{{$ctrl.availability.counter.actual}}</strong><small>/{{$ctrl.availability.counter.total}}</small>
 				</div>
