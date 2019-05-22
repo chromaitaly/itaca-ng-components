@@ -6,7 +6,7 @@
     		rateType: "<",
     		cancellationPolicy: "<",
     		city: "@",
-			offset: "@",
+			timeZoneId: "@",
 			title: "@",
     		titleClass: "@",
     		room: "<?"
