@@ -293,6 +293,9 @@ credit-card-view .card-amex:before {
   border: solid 3px transparent;
   border-radius: 8px;
 }
+.credit-card-input md-input-container > div {
+  margin-left: -36px;
+}
 ch-help-bar {
   position: fixed;
   z-index: 20;
@@ -946,7 +949,7 @@ ch-simple-step-actions {
 }
 .ch-simple-stepper-vertical .ch-simple-stepper-scope {
   margin-left: 20px;
-  border-left: 1px solid  #E8E8E8;
+  border-left: 1px solid #E8E8E8;
   padding-left: 20px;
 }
 .ch-simple-stepper-vertical .ch-simple-stepper-header.ch-simple-stepper-horizontal {
@@ -1390,14 +1393,14 @@ ch-statistics-report ch-chart {
   50% {
     -webkit-transform: translateY(20px) scale(1);
     transform: translateY(20px) scale(1);
-    opacity: .05;
+    opacity: 0.05;
   }
 }
 @keyframes cloudy_shadow {
   50% {
     -webkit-transform: translateY(20px) scale(1);
     transform: translateY(20px) scale(1);
-    opacity: .05;
+    opacity: 0.05;
   }
 }
 /* RAINY */
@@ -1433,8 +1436,8 @@ ch-statistics-report ch-chart {
   transform: scale(0.7);
 }
 .rainy:before {
-  -webkit-animation: rainy_rain .7s infinite linear;
-  animation: rainy_rain .7s infinite linear;
+  -webkit-animation: rainy_rain 0.7s infinite linear;
+  animation: rainy_rain 0.7s infinite linear;
   content: '';
   background: #CCCCCC;
   border-radius: 50%;

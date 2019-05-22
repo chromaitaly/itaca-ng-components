@@ -13,19 +13,23 @@
 					'bg-success': !$ctrl.rate.roomClosed && $ctrl.rate[$ctrl.$$rateDataKey].enabled && $ctrl.rate[$ctrl.$$rateDataKey].amount.finalAmount && $ctrl.rate.availability.actual > 0, 
 					'bg-warn': !$ctrl.rate.roomClosed && $ctrl.rate[$ctrl.$$rateDataKey].enabled && (!$ctrl.rate[$ctrl.$$rateDataKey].amount.finalAmount || $ctrl.rate.availability.actual <= 0),
 					'bg-danger': $ctrl.rate.roomClosed || !$ctrl.rate[$ctrl.$$rateDataKey].enabled}" tabindex="-1">
-				<div ng-show="!$ctrl.rate.roomClosed && $ctrl.rate[$ctrl.$$rateDataKey].enabled" flex layout layout-xs="column" layout-align="center center">
-					<div flex ng-show="$ctrl.rate[$ctrl.$$rateDataKey].amount.finalAmount">
-						<span ng-class="{'text-small': $ctrl.$mdMedia('xs')}">{{$ctrl.rate[$ctrl.$$rateDataKey].amount.finalAmount|currency:'€'}}</span>
+				<div class="md-margin no-margin-x-sides">
+					<div ng-show="!$ctrl.rate.roomClosed && $ctrl.rate[$ctrl.$$rateDataKey].enabled" flex layout layout-xs="column" layout-align="center center">
+						<div flex ng-show="$ctrl.rate[$ctrl.$$rateDataKey].amount.finalAmount">
+							<span ng-class="{'text-small': $ctrl.$mdMedia('xs')}">{{$ctrl.rate[$ctrl.$$rateDataKey].amount.finalAmount|currency:'€'}}</span>
+						</div>
+						<div ng-if="!$ctrl.rate[$ctrl.$$rateDataKey].amount.finalAmount">
+							<md-icon class="mdi mdi-currency-usd-off text-white md-24"></md-icon>
+						</div>
+						<small ng-show="$ctrl.rate[$ctrl.$$rateDataKey].amount.finalAmount && $ctrl.rate[$ctrl.$$rateDataKey].minStay > 1">
+							<md-icon class="mdi mdi-calendar-plus md-14 text-white"></md-icon>
+							<md-tooltip>
+								<span translate="ratesheet.rate.minstay" translate-value-count="{{$ctrl.rate[$ctrl.$$rateDataKey].minStay}}"></span>
+							</md-tooltip>
+						</small>
 					</div>
-					<div ng-if="!$ctrl.rate[$ctrl.$$rateDataKey].amount.finalAmount">
-						<md-icon class="mdi mdi-currency-usd-off text-white md-24"></md-icon>
-					</div>
-					<small ng-show="$ctrl.rate[$ctrl.$$rateDataKey].amount.finalAmount && $ctrl.rate[$ctrl.$$rateDataKey].minStay > 1">
-						<md-icon class="mdi mdi-calendar-plus md-14 text-white"></md-icon>
-						<md-tooltip>
-							<span translate="ratesheet.rate.minstay" translate-value-count="{{$ctrl.rate[$ctrl.$$rateDataKey].minStay}}"></span>
-						</md-tooltip>
-					</small>
+					
+					<div ng-show="$ctrl.rate.roomClosed || !$ctrl.rate[$ctrl.$$rateDataKey].enabled">&nbsp;</div>
 				</div>
 				
 				<md-tooltip>
