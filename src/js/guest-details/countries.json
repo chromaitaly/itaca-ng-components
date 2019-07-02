@@ -1,0 +1,2012 @@
+{"content":[
+  {
+    "code": 100000234,
+    "description": "PORTOGALLO",
+    "province": "ES",
+    "startDate": "01/01/1800 00:00:00",
+    "endDate": ""
+  },
+  {
+    "code": 100000789,
+    "description": "PROTETTORATO DELLA ARABIA MERIDIONALE",
+    "province": "ES",
+    "startDate": "01/01/1800 00:00:00",
+    "endDate": "07/03/2018 00:00:00"
+  },
+  {
+    "code": 100000345,
+    "description": "QATAR",
+    "province": "ES",
+    "startDate": "01/01/1800 00:00:00",
+    "endDate": ""
+  },
+  {
+    "code": 100000788,
+    "description": "PRINCIPE",
+    "province": "ES",
+    "startDate": "01/01/1800 00:00:00",
+    "endDate": "07/03/2018 00:00:00"
+  },
+  {
+    "code": 100000790,
+    "description": "PUERTO RICO",
+    "province": "ES",
+    "startDate": "01/01/1800 00:00:00",
+    "endDate": ""
+  },
+  {
+    "code": 100000516,
+    "description": "REP. DOMINICANA",
+    "province": "ES",
+    "startDate": "01/01/1800 00:00:00",
+    "endDate": ""
+  },
+  {
+    "code": 100000257,
+    "description": "REPUBBLICA CECA",
+    "province": "ES",
+    "startDate": "01/01/1800 00:00:00",
+    "endDate": ""
+  },
+  {
+    "code": 100000998,
+    "description": "REPUBBLICA DEMOCRATICA DEL CONGO",
+    "province": "ES",
+    "startDate": "01/01/1800 00:00:00",
+    "endDate": ""
+  },
+  {
+    "code": 100000255,
+    "description": "REPUBBLICA SLOVACCA",
+    "province": "ES",
+    "startDate": "01/01/1800 00:00:00",
+    "endDate": ""
+  },
+  {
+    "code": 100000219,
+    "description": "REGNO UNITO",
+    "province": "ES",
+    "startDate": "01/01/1800 00:00:00",
+    "endDate": ""
+  },
+  {
+    "code": 100000800,
+    "description": "SAVAGE",
+    "province": "ES",
+    "startDate": "01/01/1800 00:00:00",
+    "endDate": "07/03/2018 00:00:00"
+  },
+  {
+    "code": 100000449,
+    "description": "SEICELLE",
+    "province": "ES",
+    "startDate": "01/01/1800 00:00:00",
+    "endDate": ""
+  },
+  {
+    "code": 100000450,
+    "description": "SENEGAL",
+    "province": "ES",
+    "startDate": "01/01/1800 00:00:00",
+    "endDate": ""
+  },
+  {
+    "code": 100000801,
+    "description": "SIKKIM",
+    "province": "ES",
+    "startDate": "01/01/1800 00:00:00",
+    "endDate": "06/03/2018 00:00:00"
+  },
+  {
+    "code": 100000348,
+    "description": "SIRIA",
+    "province": "ES",
+    "startDate": "01/01/1800 00:00:00",
+    "endDate": ""
+  },
+  {
+    "code": 110000008,
+    "description": "SIRIA-ETNIA CURDA",
+    "province": "ES",
+    "startDate": "01/01/1800 00:00:00",
+    "endDate": "07/03/2018 00:00:00"
+  },
+  {
+    "code": 100000451,
+    "description": "SIERRA LEONE",
+    "province": "ES",
+    "startDate": "01/01/1800 00:00:00",
+    "endDate": ""
+  },
+  {
+    "code": 100000346,
+    "description": "SINGAPORE",
+    "province": "ES",
+    "startDate": "01/01/1800 00:00:00",
+    "endDate": ""
+  },
+  {
+    "code": 100000251,
+    "description": "SLOVENIA",
+    "province": "ES",
+    "startDate": "01/01/1800 00:00:00",
+    "endDate": ""
+  },
+  {
+    "code": 100000732,
+    "description": "VANUATU",
+    "province": "ES",
+    "startDate": "01/01/1800 00:00:00",
+    "endDate": ""
+  },
+  {
+    "code": 100000619,
+    "description": "VENEZUELA",
+    "province": "ES",
+    "startDate": "01/01/1800 00:00:00",
+    "endDate": ""
+  },
+  {
+    "code": 100000811,
+    "description": "VENDA",
+    "province": "ES",
+    "startDate": "01/01/1800 00:00:00",
+    "endDate": "07/03/2018 00:00:00"
+  },
+  {
+    "code": 100000812,
+    "description": "VERGINI BRITANNICHE (ISOLE)",
+    "province": "ES",
+    "startDate": "01/01/1800 00:00:00",
+    "endDate": ""
+  },
+  {
+    "code": 100000813,
+    "description": "VIETNAM DEL NORD",
+    "province": "ES",
+    "startDate": "01/01/1800 00:00:00",
+    "endDate": "06/03/2018 00:00:00"
+  },
+  {
+    "code": 100000814,
+    "description": "VIETNAM DEL SUD",
+    "province": "ES",
+    "startDate": "01/01/1800 00:00:00",
+    "endDate": "06/03/2018 00:00:00"
+  },
+  {
+    "code": 100000353,
+    "description": "VIETNAM",
+    "province": "ES",
+    "startDate": "01/01/1800 00:00:00",
+    "endDate": ""
+  },
+  {
+    "code": 100000604,
+    "description": "BOLIVIA",
+    "province": "ES",
+    "startDate": "01/01/1800 00:00:00",
+    "endDate": ""
+  },
+  {
+    "code": 100000740,
+    "description": "BOPHUTHATSWANA",
+    "province": "ES",
+    "startDate": "06/12/1977 00:00:00",
+    "endDate": "01/05/1994 00:00:00"
+  },
+  {
+    "code": 100000252,
+    "description": "BOSNIA ED ERZEGOVINA",
+    "province": "ES",
+    "startDate": "01/01/1800 00:00:00",
+    "endDate": ""
+  },
+  {
+    "code": 100000408,
+    "description": "BOTSWANA",
+    "province": "ES",
+    "startDate": "01/01/1800 00:00:00",
+    "endDate": ""
+  },
+  {
+    "code": 100000605,
+    "description": "BRASILE",
+    "province": "ES",
+    "startDate": "01/01/1800 00:00:00",
+    "endDate": ""
+  },
+  {
+    "code": 100000309,
+    "description": "BRUNEI",
+    "province": "ES",
+    "startDate": "01/01/1800 00:00:00",
+    "endDate": ""
+  },
+  {
+    "code": 100000210,
+    "description": "CECOSLOVACCHIA",
+    "province": "ES",
+    "startDate": "01/01/1800 00:00:00",
+    "endDate": "01/01/1993 00:00:00"
+  },
+  {
+    "code": 100000414,
+    "description": "CENTRAFRICA",
+    "province": "ES",
+    "startDate": "01/01/1800 00:00:00",
+    "endDate": ""
+  },
+  {
+    "code": 100000743,
+    "description": "CHRISTMAS",
+    "province": "ES",
+    "startDate": "01/01/1800 00:00:00",
+    "endDate": ""
+  },
+  {
+    "code": 100000415,
+    "description": "CIAD",
+    "province": "ES",
+    "startDate": "01/01/1800 00:00:00",
+    "endDate": ""
+  },
+  {
+    "code": 100000606,
+    "description": "CILE",
+    "province": "ES",
+    "startDate": "01/01/1800 00:00:00",
+    "endDate": ""
+  },
+  {
+    "code": 100000314,
+    "description": "CINA POPOLARE",
+    "province": "ES",
+    "startDate": "01/01/1800 00:00:00",
+    "endDate": ""
+  },
+  {
+    "code": 100000744,
+    "description": "CINA REPUBBLICA NAZIONALE",
+    "province": "ES",
+    "startDate": "01/01/1800 00:00:00",
+    "endDate": "07/03/2018 00:00:00"
+  },
+  {
+    "code": 100000745,
+    "description": "CISKEI",
+    "province": "ES",
+    "startDate": "01/01/1800 00:00:00",
+    "endDate": "06/03/2018 00:00:00"
+  },
+  {
+    "code": 100000315,
+    "description": "CIPRO",
+    "province": "ES",
+    "startDate": "01/01/1800 00:00:00",
+    "endDate": ""
+  },
+  {
+    "code": 100000246,
+    "description": "CITTA' DEL VATICANO",
+    "province": "ES",
+    "startDate": "01/01/1800 00:00:00",
+    "endDate": ""
+  },
+  {
+    "code": 100000746,
+    "description": "COCOS",
+    "province": "ES",
+    "startDate": "01/01/1800 00:00:00",
+    "endDate": ""
+  },
+  {
+    "code": 100000360,
+    "description": "GEORGIA",
+    "province": "ES",
+    "startDate": "01/01/1800 00:00:00",
+    "endDate": ""
+  },
+  {
+    "code": 100000423,
+    "description": "GHANA",
+    "province": "ES",
+    "startDate": "01/01/1800 00:00:00",
+    "endDate": ""
+  },
+  {
+    "code": 100000216,
+    "description": "GERMANIA",
+    "province": "ES",
+    "startDate": "01/01/1800 00:00:00",
+    "endDate": ""
+  },
+  {
+    "code": 100000757,
+    "description": "GERMANIA REP. DEMOCRATICA",
+    "province": "ES",
+    "startDate": "01/01/1800 00:00:00",
+    "endDate": "06/03/2018 00:00:00"
+  },
+  {
+    "code": 100000518,
+    "description": "GIAMAICA",
+    "province": "ES",
+    "startDate": "01/01/1800 00:00:00",
+    "endDate": ""
+  },
+  {
+    "code": 100000326,
+    "description": "GIAPPONE",
+    "province": "ES",
+    "startDate": "01/01/1800 00:00:00",
+    "endDate": ""
+  },
+  {
+    "code": 110000004,
+    "description": "GIBILTERRA",
+    "province": "ES",
+    "startDate": "01/01/1800 00:00:00",
+    "endDate": "07/03/2018 00:00:00"
+  },
+  {
+    "code": 100000424,
+    "description": "GIBUTI",
+    "province": "ES",
+    "startDate": "01/01/1800 00:00:00",
+    "endDate": ""
+  },
+  {
+    "code": 100000327,
+    "description": "GIORDANIA",
+    "province": "ES",
+    "startDate": "01/01/1800 00:00:00",
+    "endDate": ""
+  },
+  {
+    "code": 100000519,
+    "description": "GRENADA",
+    "province": "ES",
+    "startDate": "01/01/1800 00:00:00",
+    "endDate": ""
+  },
+  {
+    "code": 100000220,
+    "description": "GRECIA",
+    "province": "ES",
+    "startDate": "01/01/1800 00:00:00",
+    "endDate": ""
+  },
+  {
+    "code": 100000758,
+    "description": "GROENLANDIA",
+    "province": "ES",
+    "startDate": "01/01/1800 00:00:00",
+    "endDate": ""
+  },
+  {
+    "code": 100000760,
+    "description": "GUAM",
+    "province": "ES",
+    "startDate": "01/01/1800 00:00:00",
+    "endDate": ""
+  },
+  {
+    "code": 100000759,
+    "description": "GUADALUPA",
+    "province": "ES",
+    "startDate": "01/01/1800 00:00:00",
+    "endDate": ""
+  },
+  {
+    "code": 100000425,
+    "description": "GUINEA",
+    "province": "ES",
+    "startDate": "01/01/1800 00:00:00",
+    "endDate": ""
+  },
+  {
+    "code": 100000426,
+    "description": "GUINEA BISSAU",
+    "province": "ES",
+    "startDate": "01/01/1800 00:00:00",
+    "endDate": ""
+  },
+  {
+    "code": 100000427,
+    "description": "GUINEA EQUATORIALE",
+    "province": "ES",
+    "startDate": "01/01/1800 00:00:00",
+    "endDate": ""
+  },
+  {
+    "code": 100000523,
+    "description": "GUATEMALA",
+    "province": "ES",
+    "startDate": "01/01/1800 00:00:00",
+    "endDate": ""
+  },
+  {
+    "code": 100000761,
+    "description": "GUAYANA FRANCESE",
+    "province": "ES",
+    "startDate": "01/01/1800 00:00:00",
+    "endDate": ""
+  },
+  {
+    "code": 100000762,
+    "description": "IFNI",
+    "province": "ES",
+    "startDate": "01/01/1800 00:00:00",
+    "endDate": "07/03/2018 00:00:00"
+  },
+  {
+    "code": 100000524,
+    "description": "HAITI",
+    "province": "ES",
+    "startDate": "01/01/1800 00:00:00",
+    "endDate": ""
+  },
+  {
+    "code": 100000525,
+    "description": "HONDURAS",
+    "province": "ES",
+    "startDate": "01/01/1800 00:00:00",
+    "endDate": ""
+  },
+  {
+    "code": 110000005,
+    "description": "HONG KONG",
+    "province": "ES",
+    "startDate": "01/01/1800 00:00:00",
+    "endDate": ""
+  },
+  {
+    "code": 100000330,
+    "description": "INDIA",
+    "province": "ES",
+    "startDate": "01/01/1800 00:00:00",
+    "endDate": ""
+  },
+  {
+    "code": 100000331,
+    "description": "INDONESIA",
+    "province": "ES",
+    "startDate": "01/01/1800 00:00:00",
+    "endDate": ""
+  },
+  {
+    "code": 100000341,
+    "description": "MONGOLIA",
+    "province": "ES",
+    "startDate": "01/01/1800 00:00:00",
+    "endDate": ""
+  },
+  {
+    "code": 100001001,
+    "description": "MONTENEGRO",
+    "province": "ES",
+    "startDate": "14/06/2006 00:00:00",
+    "endDate": ""
+  },
+  {
+    "code": 100000777,
+    "description": "MONTSERRAT",
+    "province": "ES",
+    "startDate": "01/01/1800 00:00:00",
+    "endDate": ""
+  },
+  {
+    "code": 100000354,
+    "description": "YEMEN",
+    "province": "ES",
+    "startDate": "01/01/1800 00:00:00",
+    "endDate": ""
+  },
+  {
+    "code": 100000816,
+    "description": "YEMEN REP. DEM. POPOLARE",
+    "province": "ES",
+    "startDate": "01/01/1800 00:00:00",
+    "endDate": "06/03/2018 00:00:00"
+  },
+  {
+    "code": 100000463,
+    "description": "ZAIRE",
+    "province": "ES",
+    "startDate": "01/01/1800 00:00:00",
+    "endDate": "06/03/2018 00:00:00"
+  },
+  {
+    "code": 100000464,
+    "description": "ZAMBIA",
+    "province": "ES",
+    "startDate": "01/01/1800 00:00:00",
+    "endDate": ""
+  },
+  {
+    "code": 100000817,
+    "description": "ZANZIBAR",
+    "province": "ES",
+    "startDate": "01/01/1800 00:00:00",
+    "endDate": "07/03/2018 00:00:00"
+  },
+  {
+    "code": 100000815,
+    "description": "WALLIS",
+    "province": "ES",
+    "startDate": "01/01/1800 00:00:00",
+    "endDate": ""
+  },
+  {
+    "code": 100000465,
+    "description": "ZIMBABWE",
+    "province": "ES",
+    "startDate": "01/01/1800 00:00:00",
+    "endDate": ""
+  },
+  {
+    "code": 100000301,
+    "description": "AFGHANISTAN",
+    "province": "ES",
+    "startDate": "01/01/1800 00:00:00",
+    "endDate": ""
+  },
+  {
+    "code": 100000201,
+    "description": "ALBANIA",
+    "province": "ES",
+    "startDate": "01/01/1800 00:00:00",
+    "endDate": ""
+  },
+  {
+    "code": 100000401,
+    "description": "ALGERIA",
+    "province": "ES",
+    "startDate": "01/01/1800 00:00:00",
+    "endDate": ""
+  },
+  {
+    "code": 100000402,
+    "description": "ANGOLA",
+    "province": "ES",
+    "startDate": "01/01/1800 00:00:00",
+    "endDate": ""
+  },
+  {
+    "code": 100000733,
+    "description": "ANGUILLA (ISOLA)",
+    "province": "ES",
+    "startDate": "01/01/1800 00:00:00",
+    "endDate": ""
+  },
+  {
+    "code": 100000202,
+    "description": "ANDORRA",
+    "province": "ES",
+    "startDate": "01/01/1800 00:00:00",
+    "endDate": ""
+  },
+  {
+    "code": 100000503,
+    "description": "ANTIGUA E BARBUDA",
+    "province": "ES",
+    "startDate": "01/01/1800 00:00:00",
+    "endDate": ""
+  },
+  {
+    "code": 100000734,
+    "description": "ANTILLE BRITANNICHE",
+    "province": "ES",
+    "startDate": "01/01/1800 00:00:00",
+    "endDate": "06/03/2018 00:00:00"
+  },
+  {
+    "code": 100000735,
+    "description": "ANTILLE OLANDESI",
+    "province": "ES",
+    "startDate": "01/01/1800 00:00:00",
+    "endDate": "06/03/2018 00:00:00"
+  },
+  {
+    "code": 100000999,
+    "description": "APOLIDE",
+    "province": "ES",
+    "startDate": "01/01/1800 00:00:00",
+    "endDate": ""
+  },
+  {
+    "code": 100000736,
+    "description": "ARABIA MERIDIONALE",
+    "province": "ES",
+    "startDate": "01/01/1800 00:00:00",
+    "endDate": "06/03/2018 00:00:00"
+  },
+  {
+    "code": 100000302,
+    "description": "ARABIA SAUDITA",
+    "province": "ES",
+    "startDate": "01/01/1800 00:00:00",
+    "endDate": ""
+  },
+  {
+    "code": 100000602,
+    "description": "ARGENTINA",
+    "province": "ES",
+    "startDate": "01/01/1800 00:00:00",
+    "endDate": ""
+  },
+  {
+    "code": 100000358,
+    "description": "ARMENIA",
+    "province": "ES",
+    "startDate": "01/01/1800 00:00:00",
+    "endDate": ""
+  },
+  {
+    "code": 100000701,
+    "description": "AUSTRALIA",
+    "province": "ES",
+    "startDate": "01/01/1800 00:00:00",
+    "endDate": ""
+  },
+  {
+    "code": 100000203,
+    "description": "AUSTRIA",
+    "province": "ES",
+    "startDate": "01/01/1800 00:00:00",
+    "endDate": ""
+  },
+  {
+    "code": 100000359,
+    "description": "AZERBAIGIAN",
+    "province": "ES",
+    "startDate": "01/01/1800 00:00:00",
+    "endDate": ""
+  },
+  {
+    "code": 100000505,
+    "description": "BAHAMA",
+    "province": "ES",
+    "startDate": "01/01/1800 00:00:00",
+    "endDate": ""
+  },
+  {
+    "code": 100000304,
+    "description": "BAHREIN",
+    "province": "ES",
+    "startDate": "01/01/1800 00:00:00",
+    "endDate": ""
+  },
+  {
+    "code": 100000305,
+    "description": "BANGLADESH",
+    "province": "ES",
+    "startDate": "01/01/1800 00:00:00",
+    "endDate": ""
+  },
+  {
+    "code": 100000506,
+    "description": "BARBADOS",
+    "province": "ES",
+    "startDate": "01/01/1800 00:00:00",
+    "endDate": ""
+  },
+  {
+    "code": 100000738,
+    "description": "BECIUANIA SUD AFRICA BRITANNICO",
+    "province": "ES",
+    "startDate": "01/01/1800 00:00:00",
+    "endDate": "06/03/2018 00:00:00"
+  },
+  {
+    "code": 100000737,
+    "description": "BASUTOLAND SUD AFRICA BRITANNICO",
+    "province": "ES",
+    "startDate": "01/01/1800 00:00:00",
+    "endDate": "06/03/2018 00:00:00"
+  },
+  {
+    "code": 100000206,
+    "description": "BELGIO",
+    "province": "ES",
+    "startDate": "01/01/1800 00:00:00",
+    "endDate": ""
+  },
+  {
+    "code": 100000507,
+    "description": "BELIZE",
+    "province": "ES",
+    "startDate": "01/01/1800 00:00:00",
+    "endDate": ""
+  },
+  {
+    "code": 100000406,
+    "description": "BENIN",
+    "province": "ES",
+    "startDate": "01/01/1800 00:00:00",
+    "endDate": ""
+  },
+  {
+    "code": 100000739,
+    "description": "BERMUDE",
+    "province": "ES",
+    "startDate": "01/01/1800 00:00:00",
+    "endDate": ""
+  },
+  {
+    "code": 100000306,
+    "description": "BHUTAN",
+    "province": "ES",
+    "startDate": "01/01/1800 00:00:00",
+    "endDate": ""
+  },
+  {
+    "code": 100000256,
+    "description": "BIELORUSSIA",
+    "province": "ES",
+    "startDate": "01/01/1800 00:00:00",
+    "endDate": ""
+  },
+  {
+    "code": 100000209,
+    "description": "BULGARIA",
+    "province": "ES",
+    "startDate": "01/01/1800 00:00:00",
+    "endDate": ""
+  },
+  {
+    "code": 100000409,
+    "description": "BURKINA FASO",
+    "province": "ES",
+    "startDate": "01/01/1800 00:00:00",
+    "endDate": ""
+  },
+  {
+    "code": 100000410,
+    "description": "BURUNDI",
+    "province": "ES",
+    "startDate": "01/01/1800 00:00:00",
+    "endDate": ""
+  },
+  {
+    "code": 100000310,
+    "description": "CAMBOGIA",
+    "province": "ES",
+    "startDate": "01/01/1800 00:00:00",
+    "endDate": ""
+  },
+  {
+    "code": 100000411,
+    "description": "CAMERUN",
+    "province": "ES",
+    "startDate": "01/01/1800 00:00:00",
+    "endDate": ""
+  },
+  {
+    "code": 110000002,
+    "description": "CANARIE ISOLE",
+    "province": "ES",
+    "startDate": "01/01/1800 00:00:00",
+    "endDate": "07/03/2018 00:00:00"
+  },
+  {
+    "code": 100000509,
+    "description": "CANADA",
+    "province": "ES",
+    "startDate": "01/01/1800 00:00:00",
+    "endDate": ""
+  },
+  {
+    "code": 100000413,
+    "description": "CAPO VERDE",
+    "province": "ES",
+    "startDate": "01/01/1800 00:00:00",
+    "endDate": ""
+  },
+  {
+    "code": 100000741,
+    "description": "CAROLINE",
+    "province": "ES",
+    "startDate": "01/01/1800 00:00:00",
+    "endDate": "07/03/2018 00:00:00"
+  },
+  {
+    "code": 100000742,
+    "description": "CAYMAN (ISOLE)",
+    "province": "ES",
+    "startDate": "01/01/1800 00:00:00",
+    "endDate": ""
+  },
+  {
+    "code": 100000608,
+    "description": "COLOMBIA",
+    "province": "ES",
+    "startDate": "01/01/1800 00:00:00",
+    "endDate": ""
+  },
+  {
+    "code": 100000417,
+    "description": "COMORE",
+    "province": "ES",
+    "startDate": "01/01/1800 00:00:00",
+    "endDate": ""
+  },
+  {
+    "code": 100000418,
+    "description": "CONGO",
+    "province": "ES",
+    "startDate": "01/01/1800 00:00:00",
+    "endDate": ""
+  },
+  {
+    "code": 100000319,
+    "description": "COREA DEL NORD",
+    "province": "ES",
+    "startDate": "01/01/1800 00:00:00",
+    "endDate": ""
+  },
+  {
+    "code": 100000320,
+    "description": "COREA DEL SUD",
+    "province": "ES",
+    "startDate": "01/01/1800 00:00:00",
+    "endDate": ""
+  },
+  {
+    "code": 100000513,
+    "description": "COSTARICA",
+    "province": "ES",
+    "startDate": "01/01/1800 00:00:00",
+    "endDate": ""
+  },
+  {
+    "code": 100000404,
+    "description": "COSTA D'AVORIO",
+    "province": "ES",
+    "startDate": "01/01/1800 00:00:00",
+    "endDate": ""
+  },
+  {
+    "code": 100000250,
+    "description": "CROAZIA",
+    "province": "ES",
+    "startDate": "01/01/1800 00:00:00",
+    "endDate": ""
+  },
+  {
+    "code": 100000514,
+    "description": "CUBA",
+    "province": "ES",
+    "startDate": "01/01/1800 00:00:00",
+    "endDate": ""
+  },
+  {
+    "code": 100000212,
+    "description": "DANIMARCA",
+    "province": "ES",
+    "startDate": "01/01/1800 00:00:00",
+    "endDate": ""
+  },
+  {
+    "code": 100000747,
+    "description": "DIPENDENZE AUSTRALIANE",
+    "province": "ES",
+    "startDate": "01/01/1800 00:00:00",
+    "endDate": "07/03/2018 00:00:00"
+  },
+  {
+    "code": 100000748,
+    "description": "DIPENDENZE BRITANNICHE",
+    "province": "ES",
+    "startDate": "01/01/1800 00:00:00",
+    "endDate": "07/03/2018 00:00:00"
+  },
+  {
+    "code": 100000749,
+    "description": "DIPENDENZE CANADESI",
+    "province": "ES",
+    "startDate": "01/01/1800 00:00:00",
+    "endDate": "07/03/2018 00:00:00"
+  },
+  {
+    "code": 100000750,
+    "description": "DIPENDENZE FRANCESI",
+    "province": "ES",
+    "startDate": "01/01/1800 00:00:00",
+    "endDate": "07/03/2018 00:00:00"
+  },
+  {
+    "code": 100000751,
+    "description": "DIPENDENZE NEOZELANDESI",
+    "province": "ES",
+    "startDate": "01/01/1800 00:00:00",
+    "endDate": "07/03/2018 00:00:00"
+  },
+  {
+    "code": 100000752,
+    "description": "DIPENDENZE SOVIETICHE",
+    "province": "ES",
+    "startDate": "01/01/1800 00:00:00",
+    "endDate": "07/03/2018 00:00:00"
+  },
+  {
+    "code": 100000753,
+    "description": "DIPENDENZE SUDAFRICANE",
+    "province": "ES",
+    "startDate": "01/01/1800 00:00:00",
+    "endDate": "07/03/2018 00:00:00"
+  },
+  {
+    "code": 100000515,
+    "description": "DOMINICA",
+    "province": "ES",
+    "startDate": "01/01/1800 00:00:00",
+    "endDate": ""
+  },
+  {
+    "code": 100000609,
+    "description": "ECUADOR",
+    "province": "ES",
+    "startDate": "01/01/1800 00:00:00",
+    "endDate": ""
+  },
+  {
+    "code": 100000419,
+    "description": "EGITTO",
+    "province": "ES",
+    "startDate": "01/01/1800 00:00:00",
+    "endDate": ""
+  },
+  {
+    "code": 100000754,
+    "description": "ELLICE",
+    "province": "ES",
+    "startDate": "01/01/1800 00:00:00",
+    "endDate": "06/03/2018 00:00:00"
+  },
+  {
+    "code": 100000517,
+    "description": "EL SALVADOR",
+    "province": "ES",
+    "startDate": "01/01/1800 00:00:00",
+    "endDate": ""
+  },
+  {
+    "code": 100000322,
+    "description": "EMIRATI ARABI UNITI",
+    "province": "ES",
+    "startDate": "01/01/1800 00:00:00",
+    "endDate": ""
+  },
+  {
+    "code": 100000466,
+    "description": "ERITREA",
+    "province": "ES",
+    "startDate": "01/01/1800 00:00:00",
+    "endDate": ""
+  },
+  {
+    "code": 100000247,
+    "description": "ESTONIA",
+    "province": "ES",
+    "startDate": "01/01/1800 00:00:00",
+    "endDate": ""
+  },
+  {
+    "code": 100000420,
+    "description": "ETIOPIA",
+    "province": "ES",
+    "startDate": "01/01/1800 00:00:00",
+    "endDate": ""
+  },
+  {
+    "code": 100000755,
+    "description": "FAER OER",
+    "province": "ES",
+    "startDate": "01/01/1800 00:00:00",
+    "endDate": ""
+  },
+  {
+    "code": 100000703,
+    "description": "FIGI",
+    "province": "ES",
+    "startDate": "01/01/1800 00:00:00",
+    "endDate": ""
+  },
+  {
+    "code": 100000323,
+    "description": "FILIPPINE",
+    "province": "ES",
+    "startDate": "01/01/1800 00:00:00",
+    "endDate": ""
+  },
+  {
+    "code": 100000214,
+    "description": "FINLANDIA",
+    "province": "ES",
+    "startDate": "01/01/1800 00:00:00",
+    "endDate": ""
+  },
+  {
+    "code": 100000215,
+    "description": "FRANCIA",
+    "province": "ES",
+    "startDate": "01/01/1800 00:00:00",
+    "endDate": ""
+  },
+  {
+    "code": 100000421,
+    "description": "GABON",
+    "province": "ES",
+    "startDate": "01/01/1800 00:00:00",
+    "endDate": ""
+  },
+  {
+    "code": 100000422,
+    "description": "GAMBIA",
+    "province": "ES",
+    "startDate": "01/01/1800 00:00:00",
+    "endDate": ""
+  },
+  {
+    "code": 100000612,
+    "description": "GUYANA",
+    "province": "ES",
+    "startDate": "01/01/1800 00:00:00",
+    "endDate": ""
+  },
+  {
+    "code": 100000332,
+    "description": "IRAN",
+    "province": "ES",
+    "startDate": "01/01/1800 00:00:00",
+    "endDate": ""
+  },
+  {
+    "code": 110000006,
+    "description": "IRAN-ETNIA CURDA",
+    "province": "ES",
+    "startDate": "01/01/1800 00:00:00",
+    "endDate": "07/03/2018 00:00:00"
+  },
+  {
+    "code": 100000333,
+    "description": "IRAQ",
+    "province": "ES",
+    "startDate": "01/01/1800 00:00:00",
+    "endDate": ""
+  },
+  {
+    "code": 110000007,
+    "description": "IRAQ-ETNIA CURDA",
+    "province": "ES",
+    "startDate": "01/01/1800 00:00:00",
+    "endDate": "07/03/2018 00:00:00"
+  },
+  {
+    "code": 100000763,
+    "description": "IRIAN OCCIDENTALE",
+    "province": "ES",
+    "startDate": "01/01/1800 00:00:00",
+    "endDate": "07/03/2018 00:00:00"
+  },
+  {
+    "code": 100000221,
+    "description": "IRLANDA",
+    "province": "ES",
+    "startDate": "01/01/1800 00:00:00",
+    "endDate": ""
+  },
+  {
+    "code": 100000223,
+    "description": "ISLANDA",
+    "province": "ES",
+    "startDate": "01/01/1800 00:00:00",
+    "endDate": ""
+  },
+  {
+    "code": 100000764,
+    "description": "ISOLE VERGINI",
+    "province": "ES",
+    "startDate": "01/01/1800 00:00:00",
+    "endDate": ""
+  },
+  {
+    "code": 100000334,
+    "description": "ISRAELE",
+    "province": "ES",
+    "startDate": "01/01/1800 00:00:00",
+    "endDate": ""
+  },
+  {
+    "code": 100000224,
+    "description": "JUGOSLAVIA (SERBIA-MONTENEGRO)",
+    "province": "ES",
+    "startDate": "01/01/1800 00:00:00",
+    "endDate": "20/02/2018 00:00:00"
+  },
+  {
+    "code": 110000010,
+    "description": "JUGOSLAVIA ETNIA KOSSOVARA",
+    "province": "ES",
+    "startDate": "01/01/1800 00:00:00",
+    "endDate": "07/03/2018 00:00:00"
+  },
+  {
+    "code": 100000356,
+    "description": "KAZAKISTAN",
+    "province": "ES",
+    "startDate": "01/01/1800 00:00:00",
+    "endDate": ""
+  },
+  {
+    "code": 100000428,
+    "description": "KENIA",
+    "province": "ES",
+    "startDate": "01/01/1800 00:00:00",
+    "endDate": ""
+  },
+  {
+    "code": 100000765,
+    "description": "LA REUNION",
+    "province": "ES",
+    "startDate": "01/01/1800 00:00:00",
+    "endDate": ""
+  },
+  {
+    "code": 100000361,
+    "description": "KIRGHIZISTAN",
+    "province": "ES",
+    "startDate": "01/01/1800 00:00:00",
+    "endDate": ""
+  },
+  {
+    "code": 100000100,
+    "description": "ITALIA",
+    "province": "ES",
+    "startDate": "01/01/1800 00:00:00",
+    "endDate": ""
+  },
+  {
+    "code": 100000708,
+    "description": "KIRIBATI",
+    "province": "ES",
+    "startDate": "01/01/1800 00:00:00",
+    "endDate": ""
+  },
+  {
+    "code": 100000335,
+    "description": "KUWAIT",
+    "province": "ES",
+    "startDate": "01/01/1800 00:00:00",
+    "endDate": ""
+  },
+  {
+    "code": 100000336,
+    "description": "LAOS",
+    "province": "ES",
+    "startDate": "01/01/1800 00:00:00",
+    "endDate": ""
+  },
+  {
+    "code": 100001002,
+    "description": "KOSOVO",
+    "province": "ES",
+    "startDate": "21/02/2008 00:00:00",
+    "endDate": ""
+  },
+  {
+    "code": 100000429,
+    "description": "LESOTHO",
+    "province": "ES",
+    "startDate": "01/01/1800 00:00:00",
+    "endDate": ""
+  },
+  {
+    "code": 100000248,
+    "description": "LETTONIA",
+    "province": "ES",
+    "startDate": "01/01/1800 00:00:00",
+    "endDate": ""
+  },
+  {
+    "code": 100000431,
+    "description": "LIBIA",
+    "province": "ES",
+    "startDate": "01/01/1800 00:00:00",
+    "endDate": ""
+  },
+  {
+    "code": 100000225,
+    "description": "LIECHTENSTEIN",
+    "province": "ES",
+    "startDate": "01/01/1800 00:00:00",
+    "endDate": ""
+  },
+  {
+    "code": 100000337,
+    "description": "LIBANO",
+    "province": "ES",
+    "startDate": "01/01/1800 00:00:00",
+    "endDate": ""
+  },
+  {
+    "code": 100000430,
+    "description": "LIBERIA",
+    "province": "ES",
+    "startDate": "01/01/1800 00:00:00",
+    "endDate": ""
+  },
+  {
+    "code": 100000249,
+    "description": "LITUANIA",
+    "province": "ES",
+    "startDate": "01/01/1800 00:00:00",
+    "endDate": ""
+  },
+  {
+    "code": 100000226,
+    "description": "LUSSEMBURGO",
+    "province": "ES",
+    "startDate": "01/01/1800 00:00:00",
+    "endDate": ""
+  },
+  {
+    "code": 110000003,
+    "description": "MACAO",
+    "province": "ES",
+    "startDate": "01/01/1800 00:00:00",
+    "endDate": ""
+  },
+  {
+    "code": 100000253,
+    "description": "MACEDONIA",
+    "province": "ES",
+    "startDate": "01/01/1800 00:00:00",
+    "endDate": ""
+  },
+  {
+    "code": 100000766,
+    "description": "MACQUARIE",
+    "province": "ES",
+    "startDate": "01/01/1800 00:00:00",
+    "endDate": "08/03/2018 00:00:00"
+  },
+  {
+    "code": 100000432,
+    "description": "MADAGASCAR",
+    "province": "ES",
+    "startDate": "01/01/1800 00:00:00",
+    "endDate": ""
+  },
+  {
+    "code": 100000434,
+    "description": "MALAWI",
+    "province": "ES",
+    "startDate": "01/01/1800 00:00:00",
+    "endDate": ""
+  },
+  {
+    "code": 100000767,
+    "description": "MALAYSIA",
+    "province": "ES",
+    "startDate": "01/01/1800 00:00:00",
+    "endDate": ""
+  },
+  {
+    "code": 100000339,
+    "description": "MALDIVE",
+    "province": "ES",
+    "startDate": "01/01/1800 00:00:00",
+    "endDate": ""
+  },
+  {
+    "code": 100000340,
+    "description": "MALESIA",
+    "province": "ES",
+    "startDate": "01/01/1800 00:00:00",
+    "endDate": "07/03/2018 00:00:00"
+  },
+  {
+    "code": 100000435,
+    "description": "MALI",
+    "province": "ES",
+    "startDate": "01/01/1800 00:00:00",
+    "endDate": ""
+  },
+  {
+    "code": 100000227,
+    "description": "MALTA",
+    "province": "ES",
+    "startDate": "01/01/1800 00:00:00",
+    "endDate": ""
+  },
+  {
+    "code": 100000768,
+    "description": "MALVINE",
+    "province": "ES",
+    "startDate": "01/01/1800 00:00:00",
+    "endDate": ""
+  },
+  {
+    "code": 100000769,
+    "description": "MAN",
+    "province": "ES",
+    "startDate": "01/01/1800 00:00:00",
+    "endDate": ""
+  },
+  {
+    "code": 100000770,
+    "description": "MARCUS",
+    "province": "ES",
+    "startDate": "01/01/1800 00:00:00",
+    "endDate": "07/03/2018 00:00:00"
+  },
+  {
+    "code": 100000771,
+    "description": "MARIANNE",
+    "province": "ES",
+    "startDate": "01/01/1800 00:00:00",
+    "endDate": "07/03/2018 00:00:00"
+  },
+  {
+    "code": 100000772,
+    "description": "MARSHALL",
+    "province": "ES",
+    "startDate": "01/01/1800 00:00:00",
+    "endDate": ""
+  },
+  {
+    "code": 100000773,
+    "description": "MARTINICA",
+    "province": "ES",
+    "startDate": "01/01/1800 00:00:00",
+    "endDate": ""
+  },
+  {
+    "code": 100000436,
+    "description": "MAROCCO",
+    "province": "ES",
+    "startDate": "01/01/1800 00:00:00",
+    "endDate": ""
+  },
+  {
+    "code": 100000437,
+    "description": "MAURITANIA",
+    "province": "ES",
+    "startDate": "01/01/1800 00:00:00",
+    "endDate": ""
+  },
+  {
+    "code": 100000438,
+    "description": "MAURIZIO",
+    "province": "ES",
+    "startDate": "01/01/1800 00:00:00",
+    "endDate": ""
+  },
+  {
+    "code": 100000774,
+    "description": "MAYOTTE",
+    "province": "ES",
+    "startDate": "01/01/1800 00:00:00",
+    "endDate": ""
+  },
+  {
+    "code": 100000527,
+    "description": "MESSICO",
+    "province": "ES",
+    "startDate": "01/01/1800 00:00:00",
+    "endDate": ""
+  },
+  {
+    "code": 100000775,
+    "description": "MICRONESIA STATI FEDERALI",
+    "province": "ES",
+    "startDate": "01/01/1800 00:00:00",
+    "endDate": ""
+  },
+  {
+    "code": 100000776,
+    "description": "MIDWAY",
+    "province": "ES",
+    "startDate": "01/01/1800 00:00:00",
+    "endDate": "07/03/2018 00:00:00"
+  },
+  {
+    "code": 100000254,
+    "description": "MOLDAVIA",
+    "province": "ES",
+    "startDate": "01/01/1800 00:00:00",
+    "endDate": ""
+  },
+  {
+    "code": 100000229,
+    "description": "MONACO",
+    "province": "ES",
+    "startDate": "01/01/1800 00:00:00",
+    "endDate": ""
+  },
+  {
+    "code": 100000440,
+    "description": "MOZAMBICO",
+    "province": "ES",
+    "startDate": "01/01/1800 00:00:00",
+    "endDate": ""
+  },
+  {
+    "code": 100000307,
+    "description": "MYANMAR (BIRMANIA)",
+    "province": "ES",
+    "startDate": "01/01/1800 00:00:00",
+    "endDate": ""
+  },
+  {
+    "code": 100000441,
+    "description": "NAMIBIA",
+    "province": "ES",
+    "startDate": "01/01/1800 00:00:00",
+    "endDate": ""
+  },
+  {
+    "code": 100000715,
+    "description": "NAURU",
+    "province": "ES",
+    "startDate": "01/01/1800 00:00:00",
+    "endDate": ""
+  },
+  {
+    "code": 110000011,
+    "description": "NAZ. BRITANNICO(OLTREMARE)-HONG KONG",
+    "province": "ES",
+    "startDate": "01/07/1997 00:00:00",
+    "endDate": "07/03/2018 00:00:00"
+  },
+  {
+    "code": 100000342,
+    "description": "NEPAL",
+    "province": "ES",
+    "startDate": "01/01/1800 00:00:00",
+    "endDate": ""
+  },
+  {
+    "code": 100000443,
+    "description": "NIGERIA",
+    "province": "ES",
+    "startDate": "01/01/1800 00:00:00",
+    "endDate": ""
+  },
+  {
+    "code": 100000529,
+    "description": "NICARAGUA",
+    "province": "ES",
+    "startDate": "01/01/1800 00:00:00",
+    "endDate": ""
+  },
+  {
+    "code": 100000442,
+    "description": "NIGER",
+    "province": "ES",
+    "startDate": "01/01/1800 00:00:00",
+    "endDate": ""
+  },
+  {
+    "code": 100000778,
+    "description": "NORFOLK",
+    "province": "ES",
+    "startDate": "01/01/1800 00:00:00",
+    "endDate": ""
+  },
+  {
+    "code": 100000779,
+    "description": "NORMANNE",
+    "province": "ES",
+    "startDate": "01/01/1800 00:00:00",
+    "endDate": "07/03/2018 00:00:00"
+  },
+  {
+    "code": 100000231,
+    "description": "NORVEGIA",
+    "province": "ES",
+    "startDate": "01/01/1800 00:00:00",
+    "endDate": ""
+  },
+  {
+    "code": 100000780,
+    "description": "NUOVA CALEDONIA",
+    "province": "ES",
+    "startDate": "01/01/1800 00:00:00",
+    "endDate": ""
+  },
+  {
+    "code": 100000781,
+    "description": "NUOVA GUINEA",
+    "province": "ES",
+    "startDate": "01/01/1800 00:00:00",
+    "endDate": "07/03/2018 00:00:00"
+  },
+  {
+    "code": 100000719,
+    "description": "NUOVA ZELANDA",
+    "province": "ES",
+    "startDate": "01/01/1800 00:00:00",
+    "endDate": ""
+  },
+  {
+    "code": 100000782,
+    "description": "NUOVE EBRIDI",
+    "province": "ES",
+    "startDate": "01/01/1800 00:00:00",
+    "endDate": "07/03/2018 00:00:00"
+  },
+  {
+    "code": 100000343,
+    "description": "OMAN",
+    "province": "ES",
+    "startDate": "01/01/1800 00:00:00",
+    "endDate": ""
+  },
+  {
+    "code": 100000232,
+    "description": "PAESI BASSI",
+    "province": "ES",
+    "startDate": "01/01/1800 00:00:00",
+    "endDate": ""
+  },
+  {
+    "code": 100000783,
+    "description": "PALAU REPUBBLICA",
+    "province": "ES",
+    "startDate": "01/01/1800 00:00:00",
+    "endDate": ""
+  },
+  {
+    "code": 100000344,
+    "description": "PAKISTAN",
+    "province": "ES",
+    "startDate": "01/01/1800 00:00:00",
+    "endDate": ""
+  },
+  {
+    "code": 110000001,
+    "description": "PALESTINA",
+    "province": "ES",
+    "startDate": "01/01/1800 00:00:00",
+    "endDate": ""
+  },
+  {
+    "code": 100000530,
+    "description": "PANAMA",
+    "province": "ES",
+    "startDate": "01/01/1800 00:00:00",
+    "endDate": ""
+  },
+  {
+    "code": 100000784,
+    "description": "PANAMA ZONA DEL CANALE",
+    "province": "ES",
+    "startDate": "01/01/1800 00:00:00",
+    "endDate": "06/03/2018 00:00:00"
+  },
+  {
+    "code": 100000721,
+    "description": "PAPUASIA-N.GUINEA",
+    "province": "ES",
+    "startDate": "01/01/1800 00:00:00",
+    "endDate": ""
+  },
+  {
+    "code": 100000614,
+    "description": "PARAGUAY",
+    "province": "ES",
+    "startDate": "01/01/1800 00:00:00",
+    "endDate": ""
+  },
+  {
+    "code": 100000785,
+    "description": "PASQUA",
+    "province": "ES",
+    "startDate": "01/01/1800 00:00:00",
+    "endDate": "07/03/2018 00:00:00"
+  },
+  {
+    "code": 100000615,
+    "description": "PERU'",
+    "province": "ES",
+    "startDate": "01/01/1800 00:00:00",
+    "endDate": ""
+  },
+  {
+    "code": 100000786,
+    "description": "PITCAIRN",
+    "province": "ES",
+    "startDate": "01/01/1800 00:00:00",
+    "endDate": ""
+  },
+  {
+    "code": 100000233,
+    "description": "POLONIA",
+    "province": "ES",
+    "startDate": "01/01/1800 00:00:00",
+    "endDate": ""
+  },
+  {
+    "code": 100000787,
+    "description": "POLINESIA",
+    "province": "ES",
+    "startDate": "01/01/1800 00:00:00",
+    "endDate": ""
+  },
+  {
+    "code": 100000235,
+    "description": "ROMANIA",
+    "province": "ES",
+    "startDate": "01/01/1800 00:00:00",
+    "endDate": ""
+  },
+  {
+    "code": 100000446,
+    "description": "RUANDA",
+    "province": "ES",
+    "startDate": "01/01/1800 00:00:00",
+    "endDate": ""
+  },
+  {
+    "code": 100000245,
+    "description": "RUSSIA",
+    "province": "ES",
+    "startDate": "01/01/1800 00:00:00",
+    "endDate": ""
+  },
+  {
+    "code": 100000794,
+    "description": "RYUKYU",
+    "province": "ES",
+    "startDate": "01/01/1800 00:00:00",
+    "endDate": "07/03/2018 00:00:00"
+  },
+  {
+    "code": 100000534,
+    "description": "S. CHRISTOPHER E NEVIS",
+    "province": "ES",
+    "startDate": "01/01/1800 00:00:00",
+    "endDate": ""
+  },
+  {
+    "code": 100000797,
+    "description": "SAINT VINCENT E GRENADINE",
+    "province": "ES",
+    "startDate": "01/01/1800 00:00:00",
+    "endDate": ""
+  },
+  {
+    "code": 100000795,
+    "description": "SAHARA SPAGNOLO",
+    "province": "ES",
+    "startDate": "01/01/1800 00:00:00",
+    "endDate": ""
+  },
+  {
+    "code": 100000533,
+    "description": "S. VINCENT E GRENADINE",
+    "province": "ES",
+    "startDate": "01/01/1800 00:00:00",
+    "endDate": "22/11/2001 00:00:00"
+  },
+  {
+    "code": 100000796,
+    "description": "SAINT PIERRE ET MIQUELON",
+    "province": "ES",
+    "startDate": "01/01/1800 00:00:00",
+    "endDate": ""
+  },
+  {
+    "code": 100000532,
+    "description": "SAINT LUCIA",
+    "province": "ES",
+    "startDate": "01/01/1800 00:00:00",
+    "endDate": ""
+  },
+  {
+    "code": 100000725,
+    "description": "SALOMONE",
+    "province": "ES",
+    "startDate": "01/01/1800 00:00:00",
+    "endDate": ""
+  },
+  {
+    "code": 100000727,
+    "description": "SAMOA",
+    "province": "ES",
+    "startDate": "01/01/1800 00:00:00",
+    "endDate": ""
+  },
+  {
+    "code": 100000798,
+    "description": "SAMOA AMERICANE",
+    "province": "ES",
+    "startDate": "01/01/1800 00:00:00",
+    "endDate": ""
+  },
+  {
+    "code": 100001000,
+    "description": "SERBIA",
+    "province": "ES",
+    "startDate": "14/06/2006 00:00:00",
+    "endDate": ""
+  },
+  {
+    "code": 100000236,
+    "description": "SAN MARINO",
+    "province": "ES",
+    "startDate": "01/01/1800 00:00:00",
+    "endDate": ""
+  },
+  {
+    "code": 100000799,
+    "description": "SANT ELENA",
+    "province": "ES",
+    "startDate": "01/01/1800 00:00:00",
+    "endDate": ""
+  },
+  {
+    "code": 100000448,
+    "description": "SAO TOME' E PRINCIPE",
+    "province": "ES",
+    "startDate": "01/01/1800 00:00:00",
+    "endDate": ""
+  },
+  {
+    "code": 100000453,
+    "description": "SOMALIA",
+    "province": "ES",
+    "startDate": "01/01/1800 00:00:00",
+    "endDate": ""
+  },
+  {
+    "code": 100000802,
+    "description": "SOMALIA FRANCESE",
+    "province": "ES",
+    "startDate": "01/01/1800 00:00:00",
+    "endDate": "06/03/2018 00:00:00"
+  },
+  {
+    "code": 100000239,
+    "description": "SPAGNA",
+    "province": "ES",
+    "startDate": "01/01/1800 00:00:00",
+    "endDate": ""
+  },
+  {
+    "code": 100000311,
+    "description": "SRI LANKA (CEYLON)",
+    "province": "ES",
+    "startDate": "01/01/1800 00:00:00",
+    "endDate": ""
+  },
+  {
+    "code": 100000536,
+    "description": "STATI UNITI D'AMERICA",
+    "province": "ES",
+    "startDate": "01/01/1800 00:00:00",
+    "endDate": ""
+  },
+  {
+    "code": 100000454,
+    "description": "SUD AFRICA",
+    "province": "ES",
+    "startDate": "01/01/1800 00:00:00",
+    "endDate": ""
+  },
+  {
+    "code": 100000455,
+    "description": "SUDAN",
+    "province": "ES",
+    "startDate": "01/01/1800 00:00:00",
+    "endDate": ""
+  },
+  {
+    "code": 100000467,
+    "description": "SUD SUDAN",
+    "province": "ES",
+    "startDate": "09/07/2011 00:00:00",
+    "endDate": ""
+  },
+  {
+    "code": 100000616,
+    "description": "SURINAME",
+    "province": "ES",
+    "startDate": "01/01/1800 00:00:00",
+    "endDate": ""
+  },
+  {
+    "code": 100000363,
+    "description": "TAIWAN",
+    "province": "ES",
+    "startDate": "01/01/1800 00:00:00",
+    "endDate": ""
+  },
+  {
+    "code": 100000240,
+    "description": "SVEZIA",
+    "province": "ES",
+    "startDate": "01/01/1800 00:00:00",
+    "endDate": ""
+  },
+  {
+    "code": 100000241,
+    "description": "SVIZZERA",
+    "province": "ES",
+    "startDate": "01/01/1800 00:00:00",
+    "endDate": ""
+  },
+  {
+    "code": 100000456,
+    "description": "SWAZILAND",
+    "province": "ES",
+    "startDate": "01/01/1800 00:00:00",
+    "endDate": ""
+  },
+  {
+    "code": 100000362,
+    "description": "TAGIKISTAN",
+    "province": "ES",
+    "startDate": "01/01/1800 00:00:00",
+    "endDate": ""
+  },
+  {
+    "code": 100000803,
+    "description": "TANGANICA",
+    "province": "ES",
+    "startDate": "01/01/1800 00:00:00",
+    "endDate": "06/03/2018 00:00:00"
+  },
+  {
+    "code": 100000457,
+    "description": "TANZANIA",
+    "province": "ES",
+    "startDate": "01/01/1800 00:00:00",
+    "endDate": ""
+  },
+  {
+    "code": 100000804,
+    "description": "TERRITORIO DI GAZA",
+    "province": "ES",
+    "startDate": "01/01/1800 00:00:00",
+    "endDate": "07/03/2018 00:00:00"
+  },
+  {
+    "code": 100000458,
+    "description": "TOGO",
+    "province": "ES",
+    "startDate": "01/01/1800 00:00:00",
+    "endDate": ""
+  },
+  {
+    "code": 100000805,
+    "description": "TIMOR",
+    "province": "ES",
+    "startDate": "01/01/1800 00:00:00",
+    "endDate": ""
+  },
+  {
+    "code": 100000349,
+    "description": "THAILANDIA",
+    "province": "ES",
+    "startDate": "01/01/1800 00:00:00",
+    "endDate": ""
+  },
+  {
+    "code": 100000730,
+    "description": "TONGA",
+    "province": "ES",
+    "startDate": "01/01/1800 00:00:00",
+    "endDate": ""
+  },
+  {
+    "code": 100000806,
+    "description": "TOKELAU",
+    "province": "ES",
+    "startDate": "01/01/1800 00:00:00",
+    "endDate": ""
+  },
+  {
+    "code": 100000808,
+    "description": "TRANSKEI",
+    "province": "ES",
+    "startDate": "01/01/1800 00:00:00",
+    "endDate": "07/03/2018 00:00:00"
+  },
+  {
+    "code": 100000617,
+    "description": "TRINIDAD E TOBAGO",
+    "province": "ES",
+    "startDate": "01/01/1800 00:00:00",
+    "endDate": ""
+  },
+  {
+    "code": 100000460,
+    "description": "TUNISIA",
+    "province": "ES",
+    "startDate": "01/01/1800 00:00:00",
+    "endDate": ""
+  },
+  {
+    "code": 100000364,
+    "description": "TURKMENISTAN",
+    "province": "ES",
+    "startDate": "01/01/1800 00:00:00",
+    "endDate": ""
+  },
+  {
+    "code": 100000810,
+    "description": "TURKS",
+    "province": "ES",
+    "startDate": "01/01/1800 00:00:00",
+    "endDate": ""
+  },
+  {
+    "code": 100000731,
+    "description": "TUVALU",
+    "province": "ES",
+    "startDate": "01/01/1800 00:00:00",
+    "endDate": ""
+  },
+  {
+    "code": 100000243,
+    "description": "UCRAINA",
+    "province": "ES",
+    "startDate": "01/01/1800 00:00:00",
+    "endDate": ""
+  },
+  {
+    "code": 100000461,
+    "description": "UGANDA",
+    "province": "ES",
+    "startDate": "01/01/1800 00:00:00",
+    "endDate": ""
+  },
+  {
+    "code": 100000351,
+    "description": "TURCHIA",
+    "province": "ES",
+    "startDate": "01/01/1800 00:00:00",
+    "endDate": ""
+  },
+  {
+    "code": 110000009,
+    "description": "TURCHIA-ETNIA CURDA",
+    "province": "ES",
+    "startDate": "01/01/1800 00:00:00",
+    "endDate": "07/03/2018 00:00:00"
+  },
+  {
+    "code": 100000244,
+    "description": "UNGHERIA",
+    "province": "ES",
+    "startDate": "01/01/1800 00:00:00",
+    "endDate": ""
+  },
+  {
+    "code": 100000793,
+    "description": "URSS",
+    "province": "ES",
+    "startDate": "01/01/1800 00:00:00",
+    "endDate": "06/03/2018 00:00:00"
+  },
+  {
+    "code": 100000618,
+    "description": "URUGUAY",
+    "province": "ES",
+    "startDate": "01/01/1800 00:00:00",
+    "endDate": ""
+  },
+  {
+    "code": 100000357,
+    "description": "UZBEKISTAN",
+    "province": "ES",
+    "startDate": "01/01/1800 00:00:00",
+    "endDate": ""
+  }
+]
+}

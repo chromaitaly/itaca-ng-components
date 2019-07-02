@@ -417,15 +417,7 @@
 			</div>
 			
 			<div ng-if="$ctrl.$$showIdentityDocuments" id="ch-room-edit-{{$ctrl.$$index}}-config-documents">
-				<ch-room-edit-identity-documents
-					identity-documents="$ctrl.room.identityDocuments"
-					total-count="$ctrl.$$guestsCount.total"
-					guest-type="$ctrl.identityDocumentGuestType"
-					on-add="$ctrl.$onIdentityDocumentAdd($document)"
-					on-remove="$ctrl.$onIdentityDocumentRemove($document)"
-					on-change="$ctrl.$onIdentityDocumentChange($document)">
-				</ch-room-edit-identity-documents>
-<!-- 						<div th:replace="public/partials/hotel/content/book/rooms/guests/guests-details"></div> -->
+				<ch-room-edit-identity-documents room="$ctrl.room" legal-age="$ctrl.legalAge"></ch-room-edit-identity-documents>
 			</div>
 		</div>
 		
