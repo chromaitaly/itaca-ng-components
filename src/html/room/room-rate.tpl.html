@@ -2,22 +2,32 @@
 	<md-list-item class="no-padding secondary-button-padding">
 		<div class="md-list-item-text no-padding" layout-xs="column" layout-sm="column" layout-gt-sm="row" layout-padding flex>
 			<div flex layout layout-wrap layout-align="center center" ng-class="{'no-padding-bottom': !$ctrl.$mdMedia('gt-sm')}">
-				<md-button class="md-fab md-micro hide show-gt-sm" ng-click="$ctrl.$toggleInfo()" aria-label="Show rate info">
-					<md-icon class="mdi md-18 text-white" ng-class="{'mdi-chevron-down': !$ctrl.$$showInfo, 'mdi-chevron-up': $ctrl.$$showInfo}"></md-icon>
-				</md-button>
+<!-- 				<md-button class="md-fab md-micro hide show-gt-sm" ng-click="$ctrl.$toggleInfo()" aria-label="Show rate info"> -->
+<!-- 					<md-icon class="mdi md-18 text-white" ng-class="{'mdi-chevron-down': !$ctrl.$$showInfo, 'mdi-chevron-up': $ctrl.$$showInfo}"></md-icon> -->
+<!-- 				</md-button> -->
 				
 				<div class="clickable flex layout" layout-xs="column" ng-class="::{'layout-padding': $ctrl.$mdMedia('gt-xs')}" ng-click="$ctrl.$toggleInfo()" aria-label="Rate info">
-					<div layout="column" layout-align="center center">
-						<div ng-class="{'text-warn': $ctrl.rate.type == 'STANDARD' && $ctrl.rate.cancellationPolicy.flexible, 'text-success': $ctrl.rate.type == 'STANDARD' && !$ctrl.rate.cancellationPolicy.flexible, 
-							'text-blue-sea': $ctrl.rate.type == 'NOT_REFUNDABLE'}" class="layout-align-start-center layout-column row-mini layout-padding">
-							<small class="no-padding" ng-if="$ctrl.$$nights != 1"><span translate="reservation.price.for.nights" translate-values="::{count: $ctrl.$$nights}"></span></small>
-							<small class="no-padding" ng-if="$ctrl.$$nights == 1"><span translate="reservation.price.for.one.night"></span></small>
-							<small class="no-padding" ng-if="$ctrl.rate.amount.initialAmount > 0 && $ctrl.rate.amount.initialAmount > $ctrl.rate.amount.finalAmount">
-				        		<span class="text-initial" translate="common.from"></span>
-				        		<i><del>{{$ctrl.rate.amount.initialAmount|chCurrency}}</del></i>
-				        	</small>
-							<span class="no-padding md-title" ng-switch-when="STANDARD"><strong>{{$ctrl.rate.amount.finalAmount|chCurrency}}</strong></span>
-							<span class="no-padding md-title" ng-switch-when="NOT_REFUNDABLE"><strong>{{$ctrl.rate.amount.finalAmount|chCurrency}}</strong></span>
+					<div layout="column" layout-align-gt-sm="center center">
+						<div ng-class="{'text-warn border-warn': $ctrl.rate.type == 'STANDARD' && $ctrl.rate.cancellationPolicy.flexible, 'text-success border-success': $ctrl.rate.type == 'STANDARD' && !$ctrl.rate.cancellationPolicy.flexible, 
+							'text-blue-sea border-blue-sea': $ctrl.rate.type == 'NOT_REFUNDABLE'}" layout-align="start center" layout="column" layout-padding class="row-mini only-border border-radius-6">
+							<div layout class="no-padding">
+								<small class="no-padding" ng-if="$ctrl.$$nights != 1"><span translate="reservation.price.for.nights" translate-values="::{count: $ctrl.$$nights}"></span></small>
+								<small class="no-padding" ng-if="$ctrl.$$nights == 1"><span translate="reservation.price.for.one.night"></span></small>
+							</div>
+							<div layout layout-padding class="no-padding">
+								<div layout-align="start center" layout="column" flex class="no-padding-top">
+									<small class="no-padding" ng-if="$ctrl.rate.amount.initialAmount > 0 && $ctrl.rate.amount.initialAmount > $ctrl.rate.amount.finalAmount">
+						        		<span class="text-initial" translate="common.from"></span>&nbsp;
+						        		<i><del>{{$ctrl.rate.amount.initialAmount|chCurrency}}</del></i>
+						        	</small>
+									<span class="no-padding md-title"><strong>{{$ctrl.rate.amount.finalAmount|chCurrency}}</strong></span>
+									<small ng-if="$ctrl.$$extraCost" class="text-lowercase">+&nbsp;{{$ctrl.$$extraCost|chCurrency}}&nbsp;<span translate="common.service.included.paid"></span></small>
+								</div>
+								<div layout-align="start center" layout="column" class="no-padding-top no-padding-left">
+									<md-icon class="mdi mdi-information-outline md-18 material-icons" ng-class="{'text-warn': $ctrl.rate.type == 'STANDARD' && $ctrl.rate.cancellationPolicy.flexible, 
+										'text-success': $ctrl.rate.type == 'STANDARD' && !$ctrl.rate.cancellationPolicy.flexible, 'text-blue-sea': $ctrl.rate.type == 'NOT_REFUNDABLE'}" aria-hidden="true"></md-icon>
+								</div>
+							</div>
 						</div>
 					</div>
 					<div layout="column" layout-align="center" class="row-mini g">
@@ -27,8 +37,6 @@
      							<span ng-if="!$ctrl.rate.cancellationPolicy.flexible" class="row-mini text-success" translate="reservation.cancellation.free"></span>
      						</span>
 							<span ng-switch-when="NOT_REFUNDABLE" class="row-mini text-blue-sea" translate="ratesheet.rate.type.notRefundable.abbr"></span>
-							<span><md-icon class="mdi mdi-information-outline md-14 material-icons" ng-class="{'text-warn': $ctrl.rate.type == 'STANDARD' && $ctrl.rate.cancellationPolicy.flexible, 
-								'text-success': $ctrl.rate.type == 'STANDARD' && !$ctrl.rate.cancellationPolicy.flexible, 'text-blue-sea': $ctrl.rate.type == 'NOT_REFUNDABLE'}" aria-hidden="true"></md-icon></span>
 						</div>
 						<div layout layout-align="center center" layout-align-gt-sm="start end" class="text-gray-light">
 							<small ng-switch-when="STANDARD" layout>
@@ -128,27 +136,98 @@
 					          
 	<div id="{{'ch-room-' + $ctrl.chRoomCtrl.$$index + '-rates-' + $ctrl.$$index}}" ng-show="$ctrl.$$showInfo" 
 		layout="column" layout-padding ng-class="{'animated fadeIn': $ctrl.$$showInfo}" class="text-gray-light text-small">
-		<div>
-      		<!-- PAYMENT INFO -->
-      		<div class="md-margin no-margin-top no-margin-left no-margin-right">
-      			<ch-payment-policy-info
-      				rate-type="$ctrl.rate.type"
-   					cancellation-policy="$ctrl.rate.cancellationPolicy"
-   					city="$ctrl.chRoomCtrl.city"></ch-payment-policy-info>
-      		</div>
+		<div class="no-padding-x-sides">
      		
-   			<div layout="column">
-      			<span>
+   			<div layout="column" flex="100" layout-padding class="no-padding md-body-1">
+   				<h4 class="md-body-1 no-margin-bottom no-margin-top no-padding-x-sides">
+	      			<strong translate="reservation.room.cost.details"></strong>
+	      		</h4>
+   			
+   				<div layout layout-wrap class="only-border no-border-bottom bg-white" ng-repeat="dailyRate in $ctrl.rate.dailyRates track by $index">
+   					<div layout="column" flex>
+   						<strong>
+   							<span translate="room.room"></span>&nbsp;<span>{{dailyRate.date|date:"shortDate"}}</span>
+   						</strong>
+						<span ng-if="dailyRate.promotion" ng-switch="dailyRate.promotion.promotionType">
+							<span ng-switch-when="STANDARD" class="label label-xs bg-info"><ch-truncate text="{{dailyRate.promotion.name[$ctrl.chRoomCtrl.localeIso]}}" max-length="20" suffix="..."></ch-truncate>&nbsp;<span ng-if="dailyRate.promotion.discount.type=='PERCENTAGE'">-{{dailyRate.promotion.discount.finalAmount}}%</span><span ng-if="dailyRate.promotion.discount.type=='PRICE'">-{{dailyRate.promotion.discount.finalAmount|chCurrency}}</span></span>
+				      		<span ng-switch-when="MINIMUM_STAY" class="label label-xs bg-primary-light"><span translate="promotions.promotion.label.minstay.nights" translate-value-count="{{promotion.minStay}}"></span>&nbsp;<span ng-if="dailyRate.promotion.discount.type=='PERCENTAGE'">-{{dailyRate.promotion.discount.finalAmount}}%</span><span ng-if="dailyRate.promotion.discount.type=='PRICE'">-{{dailyRate.promotion.discount.finalAmount|chCurrency}}</span></span>
+				      		<span ng-switch-when="BOOK_TODAY" class="label label-xs bg-primary"><span translate="promotions.promotion.label.only.today"></span>!&nbsp;<span ng-if="dailyRate.promotion.discount.type=='PERCENTAGE'">-{{dailyRate.promotion.discount.finalAmount}}%</span><span ng-if="dailyRate.promotion.discount.type=='PRICE'">-{{dailyRate.promotion.discount.finalAmount|chCurrency}}</span></span>
+				      		<span ng-switch-when="EARLY_BOOKING" class="label label-xs bg-success"><span translate="promotions.early"></span>&nbsp;<span ng-if="dailyRate.promotion.discount.type=='PERCENTAGE'">-{{dailyRate.promotion.discount.finalAmount}}%</span><span ng-if="dailyRate.promotion.discount.type=='PRICE'">-{{dailyRate.promotion.discount.finalAmount|chCurrency}}</span></span>
+				      		<span ng-switch-when="LAST_MINUTE" class="label label-xs bg-blue-sea"><span translate="promotions.last.minute"></span>&nbsp;<span ng-if="dailyRate.promotion.discount.type=='PERCENTAGE'">-{{dailyRate.promotion.discount.finalAmount}}%</span><span ng-if="dailyRate.promotion.discount.type=='PRICE'">-{{dailyRate.promotion.discount.finalAmount|chCurrency}}</span></span>
+				      		<span ng-switch-when="LAST_SECOND" class="label label-xs bg-warn"><span translate="promotions.last.second"></span>&nbsp;<span ng-if="dailyRate.promotion.discount.type=='PERCENTAGE'">-{{dailyRate.promotion.discount.finalAmount}}%</span><span ng-if="dailyRate.promotion.discount.type=='PRICE'">-{{dailyRate.promotion.discount.finalAmount|chCurrency}}</span></span>
+						</span>  
+					</div>				
+   					<div>
+   						<small class="text-gray-light" ng-if="dailyRate.amount.initialAmount > 0 && dailyRate.amount.initialAmount > dailyRate.amount.finalAmount">
+			        		<i><del>{{dailyRate.amount.initialAmount|chCurrency}}</del></i>&nbsp;
+			        	</small>
+			        	<strong class="no-padding-top">{{dailyRate.amount.finalAmount|chCurrency}}</strong>
+   					</div>
+   				</div>
+   				<div layout layout-wrap class="only-border no-border-bottom bg-white" ng-repeat="service in $ctrl.$$requiredservices">
+   					<div layout="column" flex>
+   						<strong translate="{{service.service.type.nameKey}}"></strong>
+						<span ng-switch="service.service.paymentType" class="text-lowercase text-gray-light">
+							<small ng-switch-when="FREE">
+								<span><span translate="common.free"></span></span>
+							</small>
+							<small ng-switch-when="SINGLE">
+								<span ng-bind="(service.service.paymentOptions[0].amount.finalAmount|chCurrency)"></span>&nbsp;
+								<span ng-if="service.service.frequency == 'DAILY'" class="text-lowercase"><span translate="date.frequency.daily"></span></span>
+	   							<span ng-if="service.service.frequency == 'MONTHLY'" class="text-lowercase"><span translate="date.frequency.monthly"></span></span>
+	   							<span ng-if="service.service.frequency == 'YEARLY'" class="text-lowercase"><span translate="date.frequency.yearly"></span></span>
+	   							<span ng-if="service.service.frequency == 'LUMP_SUM'" class="text-lowercase"><span translate="common.entire.stay"></span></span>
+							</small>
+							<small ng-switch-when="PER_PERSON">
+								<span>
+									<span translate="reservation.starting.from"></span>:&nbsp;
+									<span ng-bind="(service.service.startingFrom|chCurrency)"></span>&nbsp;
+									<span ng-if="service.service.frequency == 'DAILY'" class="text-lowercase"><span translate="date.frequency.daily"></span></span>
+	   								<span ng-if="service.service.frequency == 'MONTHLY'" class="text-lowercase"><span translate="date.frequency.monthly"></span></span>
+	   								<span ng-if="service.service.frequency == 'YEARLY'" class="text-lowercase"><span translate="date.frequency.yearly"></span></span>
+	   								<span ng-if="service.service.frequency == 'LUMP_SUM'" class="text-lowercase"><span translate="common.entire.stay"></span></span>
+								</span>
+							</small>
+						</span>	
+   						
+   						
+   					</div>
+   					<div>
+   						<small class="text-gray-light" ng-if="service.amount.initialAmount > 0 && service.amount.initialAmount > service.amount.finalAmount">
+			        		<i><del>{{service.amount.initialAmount|chCurrency}}</del></i>&nbsp;
+			        	</small>
+   						<strong>{{service.amount.finalAmount|chCurrency}}</strong>
+   					</div>
+   				</div>
+   				<div layout layout-wrap class="only-border" class="md-body-1">
+   					<div layout="column" flex>
+   						<strong translate="common.total"></strong>
+   					</div>
+   					<div>
+   						<small class="text-gray-light" ng-if="$ctrl.$$totalAmount.initialAmount > 0 && $ctrl.$$totalAmount.initialAmount > $ctrl.$$totalAmount.finalAmount">
+			        		<i><del>{{$ctrl.$$totalAmount.initialAmount|chCurrency}}</del></i>&nbsp;
+			        	</small>
+   						<strong>{{$ctrl.$$totalAmount.finalAmount|chCurrency}}</strong>
+   					</div>
+   				</div>
+   			</div>
+   			
+   			<div layout="column" layout-padding class="no-padding-x-sides">
+      			<span class="no-padding-bottom no-padding-x-sides">
       				<span ng-if="$ctrl.$$nights == 1" translate="reservation.rates.info.night"></span>
       				<span ng-if="$ctrl.$$nights > 1" translate="reservation.rates.info.nights" translate-value-count="{{$ctrl.$$nights}}"></span>
       			</span>
      			
-      			<span ng-if="$ctrl.$$vatTax">
+      			<span ng-if="$ctrl.$$vatTax" class="no-padding-bottom no-padding-x-sides">
       				<strong><span translate="common.included"></span>:</strong>&nbsp;{{$ctrl.$$vatTax}}%&nbsp;<span translate="billing.vat.tax"></span>
       			</span>
      			
-      			<span ng-if="$ctrl.$$cityTax">
+      			<span ng-if="$ctrl.$$cityTax" class="no-padding-bottom no-padding-x-sides">
       				<strong><span translate="common.included.not"></span>:</strong>&nbsp;{{$ctrl.$$cityTax|chCurrency}}&nbsp;<span translate="reservation.cityTax.description"></span>
+      			</span>
+      			
+      			<span ng-if="$ctrl.$$deposit" class="no-padding-bottom no-padding-x-sides">
+      				<strong><span translate="common.included.not"></span>:</strong>&nbsp;{{$ctrl.$$deposit}}%&nbsp;<span translate="reservation.deposit.description"></span>
       			</span>
    			</div>
    		
@@ -156,6 +235,8 @@
    				<md-icon md-font-set="fas" class="fas fa-h-square md-18 text-white"></md-icon>
    				<span translate="reservation.policy.payment.onArrival"></span>
    			</div>
+   			
+   			
      		
 			<div ng-if="$ctrl.paymentSettings" layout="column" class="md-padding no-padding-left">
 				<strong><span translate="payment.methods.accepted"></span>:</strong>
@@ -338,33 +419,16 @@
    			</div>
    		</div>
    	
-   		<div>
-      		<h4 class="md-body-1 no-margin-bottom no-margin-top">
-      			<strong translate="reservation.rates.daily.details"></strong>
-      		</h4>
-      		
-      		<div layout layout-wrap layout-padding-sm>
-      			<div ng-repeat="dailyRate in $ctrl.rate.dailyRates track by $index" layout="column" layout-padding-sm layout-align="start center">
-      				<strong class="no-padding-bottom">{{dailyRate.date|date:"shortDate"}}</strong>
-      				<div class="no-padding-bottom row-mini" layout="column" layout-align="center center">
-						<div ng-if="dailyRate.promotion" ng-switch="dailyRate.promotion.promotionType">
-							<span ng-switch-when="STANDARD" class="label label-xs bg-info"><ch-truncate text="{{dailyRate.promotion.name[$ctrl.chRoomCtrl.localeIso]}}" max-length="20" suffix="..."></ch-truncate>&nbsp;<span ng-if="dailyRate.promotion.discount.type=='PERCENTAGE'">-{{dailyRate.promotion.discount.finalAmount}}%</span><span ng-if="dailyRate.promotion.discount.type=='PRICE'">-{{dailyRate.promotion.discount.finalAmount|chCurrency}}</span></span>
-				      		<span ng-switch-when="MINIMUM_STAY" class="label label-xs bg-primary-light"><span translate="promotions.promotion.label.minstay.nights" translate-value-count="{{promotion.minStay}}"></span>&nbsp;<span ng-if="dailyRate.promotion.discount.type=='PERCENTAGE'">-{{dailyRate.promotion.discount.finalAmount}}%</span><span ng-if="dailyRate.promotion.discount.type=='PRICE'">-{{dailyRate.promotion.discount.finalAmount|chCurrency}}</span></span>
-				      		<span ng-switch-when="BOOK_TODAY" class="label label-xs bg-primary"><span translate="promotions.promotion.label.only.today"></span>!&nbsp;<span ng-if="dailyRate.promotion.discount.type=='PERCENTAGE'">-{{dailyRate.promotion.discount.finalAmount}}%</span><span ng-if="dailyRate.promotion.discount.type=='PRICE'">-{{dailyRate.promotion.discount.finalAmount|chCurrency}}</span></span>
-				      		<span ng-switch-when="EARLY_BOOKING" class="label label-xs bg-success"><span translate="promotions.early"></span>&nbsp;<span ng-if="dailyRate.promotion.discount.type=='PERCENTAGE'">-{{dailyRate.promotion.discount.finalAmount}}%</span><span ng-if="dailyRate.promotion.discount.type=='PRICE'">-{{dailyRate.promotion.discount.finalAmount|chCurrency}}</span></span>
-				      		<span ng-switch-when="LAST_MINUTE" class="label label-xs bg-blue-sea"><span translate="promotions.last.minute"></span>&nbsp;<span ng-if="dailyRate.promotion.discount.type=='PERCENTAGE'">-{{dailyRate.promotion.discount.finalAmount}}%</span><span ng-if="dailyRate.promotion.discount.type=='PRICE'">-{{dailyRate.promotion.discount.finalAmount|chCurrency}}</span></span>
-				      		<span ng-switch-when="LAST_SECOND" class="label label-xs bg-warn"><span translate="promotions.last.second"></span>&nbsp;<span ng-if="dailyRate.promotion.discount.type=='PERCENTAGE'">-{{dailyRate.promotion.discount.finalAmount}}%</span><span ng-if="dailyRate.promotion.discount.type=='PRICE'">-{{dailyRate.promotion.discount.finalAmount|chCurrency}}</span></span>
-						</div>
-						<small class="text-gray-light" ng-if="dailyRate.amount.initialAmount > 0 && dailyRate.amount.initialAmount > dailyRate.amount.finalAmount">
-			        		<i><del>{{dailyRate.amount.initialAmount|chCurrency}}</del></i>
-			        	</small>
-        			</div>
-      				<div class="no-padding-top">{{dailyRate.amount.finalAmount|chCurrency}}</div>
-      			</div>
-      		</div>
-      	</div>
-     	
    		<div class="no-padding">
+   		
+   			<!-- PAYMENT INFO -->
+      		<div class="md-margin no-margin-top no-margin-left no-margin-right">
+      			<ch-payment-policy-info
+      				rate-type="$ctrl.rate.type"
+   					cancellation-policy="$ctrl.rate.cancellationPolicy"
+   					city="$ctrl.chRoomCtrl.city"></ch-payment-policy-info>
+      		</div>
+   		
 			<!-- POLICY -->
 			<div class="md-margin no-margin-top no-margin-left no-margin-right">
       			<ch-cancellation-policy-info

@@ -18,7 +18,7 @@
 	});
 	
 	 /* @ngInject */
-	function HotelServiceEditCtrl($scope, $mdMedia, $log, Notification, $translate, Services, Locale) {
+	function HotelServiceEditCtrl($scope, $mdMedia, $log, Notification, $translate, FormUtils, Services, Locale) {
 		var ctrl = this;
 		
     	this.$onInit = function(){
@@ -46,16 +46,27 @@
     		
 	  	};
 	  	
+	  	this.$onChanges = function(changedObj){
+			if(changedObj.list){
+				ctrl.$$check();
+			};
+		};
+	  	
 	  	this.$$descriptionGenerator = function(service){
 
-			$translate(['service.type.default', 'service.type.default.room', 'service.type.bookable.alt', 'service.type.included',
-				'service.type.room', 'service.type.hotel', 'service.type.external', 'service.type.payment.free', 
+	  		$translate(['service.type.default', 'service.type.default.room', 'service.type.bookable.alt', 'service.type.included',
+				'service.type.room', 'service.type.hotel', 'service.type.external', 'service.type.payment.free', 'service.type.room.for.fee',
 				'service.type.payment.single.alt', 'service.type.payment.person',
 				'service.type.payment.at.DAILY', 'service.type.payment.at.MONTHLY', 'service.type.payment.at.YEARLY']).then(function(translations){
 				
 				var desc = translations['service.type.default'];
-				if(service.bookability == 'BOOKABLE'){
-					desc = translations['service.type.' + service.category.toLowerCase()] + ' '+ translations['service.type.bookable.alt'].toLowerCase() + ' ';
+				if(service.bookability == 'BOOKABLE' || (service.bookability == 'INCLUDED' && service.category == 'ROOM' && service.paymentType && service.paymentType != 'FREE')){
+					
+					if(service.bookability == 'INCLUDED' && service.category == 'ROOM' && service.paymentType && service.paymentType != 'FREE'){
+						desc = translations['service.type.room.for.fee'].toLowerCase() + ' ';
+					} else {
+						desc = translations['service.type.' + service.category.toLowerCase()] + ' '+ translations['service.type.bookable.alt'].toLowerCase() + ' ';
+					}
 					
 					if(service.paymentType == 'FREE'){
 						desc += '('+translations['service.type.payment.free']+')';
@@ -78,12 +89,12 @@
 						desc += ')';
 					}
 				}
-				if(service.bookability == 'INCLUDED' && service.category == 'ROOM'){
+				if(service.bookability == 'INCLUDED' && service.category == 'ROOM' && (service.paymentType == 'FREE' || !service.paymentType)){
 					desc = translations['service.type.default.room'];
 				}
 				service.$$description =  desc;
 			});
-		}
+		};
 	  	
 	  	this.$$check = function(){
 	  		ctrl.isChecked = false;
@@ -121,7 +132,6 @@
 	    				
 	    			},function(error){
 	    				Notification.error(error);
-	    				$log.error(error);
 	    				ctrl.isChecked = false;    				
 	    			});
 	    		}
@@ -137,7 +147,6 @@
 	    				
 	    			},function(error){
 	    				Notification.error(error);
-	    				$log.error(error);
 	    				ctrl.isChecked = true;
 	    			});
 	    		}
@@ -147,6 +156,15 @@
 	  	this.$edit = function(){
   			ctrl.oldSerivce = angular.copy(ctrl.service);
 	  		ctrl.service.inEdit = true;
+	  		
+	  		if(ctrl.service.paymentOptions){
+	  			ctrl.service.pay = ctrl.service.pay || {};
+				for(var i=0; i <  ctrl.service.paymentOptions.length; i++){
+					var size = ctrl.service.paymentOptions[i].size;
+					var amount = ctrl.service.paymentOptions[i].amount;
+					ctrl.service.pay[size] =  {'price' : amount.finalAmount, 'vat' : amount.vatRate};
+				}
+			}
 	  	};
 	  	
 	  	this.$cancel = function(){
@@ -155,11 +173,13 @@
 	  	};
 	  	
 	  	this.$save = function(){
-	  		ctrl.serviceForm.$setSubmitted();
-	  		if (ctrl.serviceForm.$valid) {
+	  		var form = $scope.serviceForm;
+	  		form.$setSubmitted();
+	  		
+	  		if (form.$valid) {
 				
 				// check if service its free and included
-				if(ctrl.service.bookability == 'INCLUDED'){
+	  			if(ctrl.service.bookability == 'INCLUDED' && ctrl.service.category != 'ROOM'){
 					var service = angular.copy(ctrl.baseService);
 					service.paymentType = 'FREE';
 		    		service.type = ctrl.service.type;
@@ -186,9 +206,14 @@
 	    					Notification.message(data.message);
 	    				}
 					},function(error){
-						$log.error(error);
+						Notification.error(message);
 					});
 				}
+			} else {
+				$translate('error.validation.fields.text').then(function(message) {
+					Notification.error(message);
+					FormUtils.focusFirstInvalid(form.$name);
+				});
 			}
 	  	};
 	}

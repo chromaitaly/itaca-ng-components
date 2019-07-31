@@ -2,15 +2,12 @@
     'use strict';
     
     angular.module("itaca.components").component("chRoomInfo", {
+    	transclude: true,
     	require: {
     		chRoomCtrl: '^chRoom',
 		},
-    	bindings: {
-    		availability: "<",
-    	},
 		controller: RoomInfoCtrl,
-		transclude: true,
-		templateUrl: "/tpls/room/room-info.tpl"			
+		templateUrl: "/tpls/room/room-info.tpl"
     });
     
     /* @ngInject */
@@ -18,19 +15,64 @@
     	var ctrl = this;
     	
     	this.$onInit = function(){
-    		ctrl.chRoomCtrl.showInfoBtn = true;
+    		ctrl.chRoomCtrl.$$hasInfo = true;
     		
-    		ctrl.getIncludedServices();
-    		ctrl.getBookableServices();
-    		ctrl.getPopularServices();
+    		ctrl.$initRoom();    		
+    		ctrl.$hasFreeBeds();
+    		ctrl.$getIncludedFreeServices();
+    		ctrl.$getIncludedPaidServices();
+    		ctrl.$getBookableServices();
+    		ctrl.$getPopularServices();
+    	};
+    	
+    	this.$initRoom = function() {
+    		ctrl.$$room = ctrl.chRoomCtrl.room;
+    	};
+    	
+    	this.$hasFreeBeds = function(){
+    		if(!_.isEmpty(ctrl.$$room.otherBeds)){
+    			ctrl.chRoomCtrl.$$hasFreeBeds = _.some(ctrl.$$room.otherBeds, function(bed){
+    				if(!bed.people){
+    					return false;
+    				}
+
+    				if(bed.people.adults){
+    					return bed.adultsPrice <= 0;
+    				
+    				} else if(bed.people.boys){
+    					return bed.boysPrice <= 0;
+    				
+    				} else if(bed.people.children){
+    					return bed.childrenPrice <= 0;
+    				
+    				} else if(bed.people.kids){
+    					return bed.kidsPrice <= 0;
+    				
+    				} else {
+    					return false;
+    				}
+    			});
+    		}
+    	};
+    	
+    	this.$getIncludedFreeServices = function() {
+			ctrl.$$includedServices = _.filter(ctrl.$$room.services, function(srv){ return srv.bookability == 'INCLUDED' && (srv.category != 'ROOM' || !srv.paymentType || srv.paymentType == 'FREE')});
+		};
+    	
+    	this.$getIncludedPaidServices = function() {
+    		ctrl.chRoomCtrl.$$includedPaidServices = _.filter(ctrl.$$room.services, function(srv){ return srv.bookability == 'INCLUDED' && srv.category == 'ROOM' && srv.paymentType && srv.paymentType != 'FREE'});
+		};
+    	
+    	this.$getBookableServices = function() {
+    		ctrl.chRoomCtrl.$$bookableServices = _.filter(ctrl.$$room.services, ['bookability', 'BOOKABLE']);
     	};
     	
     	//prendo solo i servizi più importanti inclusi
-    	this.getPopularServices = function(){
+    	this.$getPopularServices = function(){
     		var isSmokingRoom = false;
-    		ctrl.chRoomCtrl.popularServices = [];
+    		ctrl.chRoomCtrl.$$popularServices = [];
     		
-    		_.forEach(ctrl.includedServices, function(roomService){
+    		_.forEach(ctrl.$$includedServices, function(roomService){
 				var service = {};
 				
 				if(roomService.type.nameKey == 'service.type.popular.wifi.room'){
@@ -58,29 +100,22 @@
 				
 				service.labelKey = "service.type.inroom." + service.type;
 				
-				ctrl.chRoomCtrl.popularServices.push(service);
+				ctrl.chRoomCtrl.$$popularServices.push(service);
 			});
     		
     		if(!isSmokingRoom){
-    			ctrl.chRoomCtrl.popularServices.push({type: 'NO-SMOKING', icon: "mdi mdi-smoking-off md-24", labelKey: "service.type.inroom.NO-SMOKING"});
+    			ctrl.chRoomCtrl.$$popularServices.push({type: 'NO-SMOKING', icon: "mdi mdi-smoking-off md-24", labelKey: "service.type.inroom.NO-SMOKING"});
     		}
+    	}
+    	
+    	this.$toggleInfo = function(show) {
+    		ctrl.chRoomCtrl.$toggleInfo(show);
+    		ctrl.chRoomCtrl.$toggleRates(false);
     	};
     	
-    	this.getIncludedServices = function() {
-    		ctrl.includedServices = _.filter(ctrl.chRoomCtrl.room.services, ['bookability', 'INCLUDED']);
+    	this.$toggleRates = function(show) {
+    		ctrl.chRoomCtrl.$toggleRates(show);
+    		ctrl.chRoomCtrl.$toggleInfo(false);
     	};
-    	
-    	this.getBookableServices = function() {
-    		ctrl.bookableServices = _.filter(ctrl.chRoomCtrl.room.services, ['bookability', 'BOOKABLE']);
-    	};
-    	
-    	this.toggleInfo = function(){
-    		ctrl.chRoomCtrl.showRoomInfo = !ctrl.chRoomCtrl.showRoomInfo;
-    		ctrl.chRoomCtrl.showRoomRates = false;
-    		if(!ctrl.chRoomCtrl.showRoomInfo){
-    			Navigator.scrollToAnchor('av-'+ctrl.chRoomCtrl.$$index);
-    		}
-    	};
-    }
-    
+    }    
 })();
