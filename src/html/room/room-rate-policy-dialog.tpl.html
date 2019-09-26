@@ -1,0 +1,59 @@
+<md-dialog aria-label="rate policy info" flex-gt-lg="60" flex-gt-sm="80">
+
+     <div layout class="md-padding no-padding-bottom" ng-switch="$ctrl.rate.type">
+   		<div layout="column" flex>
+    		<h2 class="no-margin md-title"><strong translate="{{$ctrl.$$roomtype.nameKey}}"></strong></h2>
+	        <div class="text-gray-light">
+	        	<span translate="ratesheet.rate"></span>&nbsp;
+				<span ng-switch-when="STANDARD" class="text-lowercase">
+					<span ng-if="$ctrl.rate.cancellationPolicy.flexible" class="row-mini" translate="reservation.rate.flexible"></span>
+					<span ng-if="!$ctrl.rate.cancellationPolicy.flexible" class="row-mini" translate="reservation.cancellation.free"></span>
+				</span>
+				<span ng-switch-when="NOT_REFUNDABLE" class="text-lowercase" translate="ratesheet.rate.type.notRefundable.abbr"></span>
+			</div>
+        </div>
+        <div layout="column">
+	        <md-button class="md-icon-button" ng-click="$ctrl.$close()" aria-label="close">
+	          <md-icon class="mdi mdi-close text-gray-base"></md-icon>
+	        </md-button>
+	    </div>
+     </div>
+
+    <md-dialog-content class="md-padding no-padding-y-sides text-gray-light">
+		<div class="no-padding">
+			<!-- PAYMENT INFO -->
+	  		<div class="md-margin no-margin-top no-margin-left no-margin-right">
+	  			<ch-payment-policy-info
+	  				title="{{'reservation.payment.room.policy.payment.title'|translate}}"
+	  				rate-type="$ctrl.rate.type"
+					cancellation-policy="$ctrl.rate.cancellationPolicy"
+					city="$ctrl.$$city}"></ch-payment-policy-info>
+	  		</div>
+	  		
+	  		<!-- PRE AUTH -->
+			<div class="md-margin no-margin-top no-margin-left no-margin-right">
+			
+	  		</div>
+		
+			<!-- POLICY -->
+			<div class="md-margin no-margin-top no-margin-left no-margin-right">
+	   			<ch-cancellation-policy-info
+	   				rate-type="$ctrl.rate.type"
+						cancellation-policy="$ctrl.rate.cancellationPolicy"
+						city="{{$ctrl.$$city}}}"
+						title="{{$ctrl.rate.cancellationPolicy.cancellation.deposit ? ('reservation.deposit.conditions'|translate) : null}}"></ch-cancellation-policy-info>
+						
+				<ch-no-show-policy-info ng-if="$ctrl.rate.cancellationPolicy && !$ctrl.rate.cancellationPolicy.cancellation.deposit" no-show-policy="$ctrl.rate.noShowPolicy"></ch-no-show-policy-info>
+	  		</div>
+	   	</div>
+	</md-dialog-content>
+    
+    <md-dialog-actions>
+    	<div>
+			<md-button class="bg-success-light" ng-click="$ctrl.$close()" aria-label="i Got It">
+				<md-icon class="mdi mdi-check text-success"></md-icon>
+				<span translate="common.got.it"></span>
+			</md-button>
+		</div>
+    </md-dialog-actions>
+</md-dialog>

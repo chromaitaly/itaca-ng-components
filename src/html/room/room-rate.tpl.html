@@ -1,57 +1,35 @@
 <div ng-switch="$ctrl.rate.type">
-	<md-list-item class="no-padding secondary-button-padding">
-		<div class="md-list-item-text no-padding" layout-xs="column" layout-sm="column" layout-gt-sm="row" layout-padding flex>
-			<div flex layout layout-wrap layout-align="center center" ng-class="{'no-padding-bottom': !$ctrl.$mdMedia('gt-sm')}">
-<!-- 				<md-button class="md-fab md-micro hide show-gt-sm" ng-click="$ctrl.$toggleInfo()" aria-label="Show rate info"> -->
-<!-- 					<md-icon class="mdi md-18 text-white" ng-class="{'mdi-chevron-down': !$ctrl.$$showInfo, 'mdi-chevron-up': $ctrl.$$showInfo}"></md-icon> -->
-<!-- 				</md-button> -->
-				
-				<div class="clickable flex layout" layout-xs="column" ng-class="::{'layout-padding': $ctrl.$mdMedia('gt-xs')}" ng-click="$ctrl.$toggleInfo()" aria-label="Rate info">
-					<div layout="column" layout-align-gt-sm="center center">
-						<div ng-class="{'text-warn border-warn': $ctrl.rate.type == 'STANDARD' && $ctrl.rate.cancellationPolicy.flexible, 'text-success border-success': $ctrl.rate.type == 'STANDARD' && !$ctrl.rate.cancellationPolicy.flexible, 
-							'text-blue-sea border-blue-sea': $ctrl.rate.type == 'NOT_REFUNDABLE'}" layout-align="start center" layout="column" layout-padding class="row-mini only-border border-radius-6">
-							<div layout class="no-padding">
-								<small class="no-padding" ng-if="$ctrl.$$nights != 1"><span translate="reservation.price.for.nights" translate-values="::{count: $ctrl.$$nights}"></span></small>
-								<small class="no-padding" ng-if="$ctrl.$$nights == 1"><span translate="reservation.price.for.one.night"></span></small>
-							</div>
-							<div layout layout-padding class="no-padding">
-								<div layout-align="start center" layout="column" flex class="no-padding-top">
-									<small class="no-padding" ng-if="$ctrl.rate.amount.initialAmount > 0 && $ctrl.rate.amount.initialAmount > $ctrl.rate.amount.finalAmount">
-						        		<span class="text-initial" translate="common.from"></span>&nbsp;
-						        		<i><del>{{$ctrl.rate.amount.initialAmount|chCurrency}}</del></i>
-						        	</small>
-									<span class="no-padding md-title"><strong>{{$ctrl.rate.amount.finalAmount|chCurrency}}</strong></span>
-									<small ng-if="$ctrl.$$extraCost" class="text-lowercase">+&nbsp;{{$ctrl.$$extraCost|chCurrency}}&nbsp;<span translate="common.service.included.paid"></span></small>
-								</div>
-								<div layout-align="start center" layout="column" class="no-padding-top no-padding-left">
-									<md-icon class="mdi mdi-information-outline md-18 material-icons" ng-class="{'text-warn': $ctrl.rate.type == 'STANDARD' && $ctrl.rate.cancellationPolicy.flexible, 
-										'text-success': $ctrl.rate.type == 'STANDARD' && !$ctrl.rate.cancellationPolicy.flexible, 'text-blue-sea': $ctrl.rate.type == 'NOT_REFUNDABLE'}" aria-hidden="true"></md-icon>
-								</div>
-							</div>
-						</div>
+	<div class="no-padding" layout-xs="column" layout-sm="column" layout-gt-sm="row" flex>
+		<div flex layout layout-wrap layout-align="center center" ng-class="{'no-padding-bottom': !$ctrl.$mdMedia('gt-sm')}">
+			
+			<div class="no-padding-y-sides" flex layout layout-xs="column" ng-class="::{'layout-padding': $ctrl.$mdMedia('gt-xs')}">
+
+				<div layout="column" flex layout-align="center" class="row-mini">
+					<div layout layout-align="center center" layout-align-gt-sm="start end" class="md-subhead clickable"  ng-click="$ctrl.$showPolicy($event)" aria-label="Rate info policy">
+						<span ng-switch-when="STANDARD" layout>
+    							<span ng-if="$ctrl.rate.cancellationPolicy.flexible" class="row-mini" translate="reservation.rate.flexible"></span>
+    							<span ng-if="!$ctrl.rate.cancellationPolicy.flexible" class="row-mini" translate="reservation.cancellation.free"></span>
+    						</span>
+						<span ng-switch-when="NOT_REFUNDABLE" class="row-mini" translate="ratesheet.rate.type.notRefundable.abbr"></span>
+						&nbsp;<md-icon class="mdi mdi-information-outline md-18 material-icons no-margin"></md-icon>
+						<md-tooltip><span translate="reservation.policies.room"></span></md-tooltip>
 					</div>
-					<div layout="column" layout-align="center" class="row-mini g">
-						<div layout layout-align="center center" layout-align-gt-sm="start end">
-							<span ng-switch-when="STANDARD" layout>
-     							<span ng-if="$ctrl.rate.cancellationPolicy.flexible" class="row-mini text-warn" translate="reservation.rate.flexible"></span>
-     							<span ng-if="!$ctrl.rate.cancellationPolicy.flexible" class="row-mini text-success" translate="reservation.cancellation.free"></span>
-     						</span>
-							<span ng-switch-when="NOT_REFUNDABLE" class="row-mini text-blue-sea" translate="ratesheet.rate.type.notRefundable.abbr"></span>
-						</div>
-						<div layout layout-align="center center" layout-align-gt-sm="start end" class="text-gray-light">
-							<small ng-switch-when="STANDARD" layout>
-     							<span ng-if="$ctrl.rate.cancellationPolicy.flexible">
-     								<span translate="reservation.rate.flexible.info.label"></span>
-     							</span>
-     							<span ng-if="!$ctrl.rate.cancellationPolicy.flexible">
-     								<span translate="reservation.rate.free.info.label"></span>
-     							</span>
-     						</small>
-							<small ng-switch-when="NOT_REFUNDABLE">
-								<span translate="reservation.rate.not.refundable.info.label"></span>
-							</small>
-						</div>
-						<div ng-if="$ctrl.$$promotion" ng-switch="$ctrl.$$promotion.promotionType" class="layout-gt-sm-row layout-wrap" ng-class="{'text-center': !$ctrl.$mdMedia('gt-sm')}">
+					<div layout layout-align="center center" layout-align-gt-sm="start end" class="text-gray-light clickable" ng-click="$ctrl.$showPolicy($event)" aria-label="Rate info policy">
+						<small ng-switch-when="STANDARD" layout>
+    							<span ng-if="$ctrl.rate.cancellationPolicy.flexible">
+    								<span translate="reservation.rate.flexible.info.label"></span>
+    							</span>
+    							<span ng-if="!$ctrl.rate.cancellationPolicy.flexible">
+    								<span translate="reservation.rate.free.info.label"></span>
+    							</span>
+    						</small>
+						<small ng-switch-when="NOT_REFUNDABLE">
+							<span translate="reservation.rate.not.refundable.info.label"></span>
+						</small>
+					</div>
+					
+					<div layout layout-wrap layout-align="center center" layout-align-gt-sm="start center" layout-padding class="no-padding">
+						<div ng-if="$ctrl.$$promotion" ng-switch="$ctrl.$$promotion.promotionType" layout-gt-sm="row" layout-wrap class="no-padding-left no-padding-bottom" ng-class="{'text-center': !$ctrl.$mdMedia('gt-sm')}">
 							<span ng-switch-when="STANDARD" class="label flex-xs flex-sm label-inline-block text-wrap bg-info"><ch-truncate text="{{$ctrl.$$promotion.name[$ctrl.chRoomCtrl.localeIso]}}" max-length="20" suffix="..."></ch-truncate>&nbsp;<span ng-if="$ctrl.$$promotion.discount.type=='PERCENTAGE'">-{{$ctrl.$$promotion.discount.finalAmount}}%</span><span ng-if="$ctrl.$$promotion.discount.type=='PRICE'">-{{$ctrl.$$promotion.discount.finalAmount|chCurrency}}</span></span>
 				      		<span ng-switch-when="MINIMUM_STAY" class="label flex-xs flex-sm label-inline-block text-wrap bg-primary-light"><span translate="promotions.promotion.label.minstay.nights" translate-value-count="{{$ctrl.$$promotion.minStay}}"></span>&nbsp;<span ng-if="$ctrl.$$promotion.discount.type=='PERCENTAGE'">-{{$ctrl.$$promotion.discount.finalAmount}}%</span><span ng-if="$ctrl.$$promotion.discount.type=='PRICE'">-{{$ctrl.$$promotion.discount.finalAmount|chCurrency}}</span></span>
 				      		<span ng-switch-when="BOOK_TODAY" class="label flex-xs flex-sm label-inline-block text-wrap bg-primary"><span translate="promotions.promotion.label.only.today"></span>!&nbsp;<span ng-if="$ctrl.$$promotion.discount.type=='PERCENTAGE'">-{{$ctrl.$$promotion.discount.finalAmount}}%</span><span ng-if="$ctrl.$$promotion.discount.type=='PRICE'">-{{$ctrl.$$promotion.discount.finalAmount|chCurrency}}</span></span>
@@ -60,394 +38,75 @@
 				      		<span ng-switch-when="LAST_SECOND" class="label flex-xs flex-sm label-inline-block text-wrap bg-warn"><span translate="promotions.last.second"></span>&nbsp;<span ng-if="$ctrl.$$promotion.discount.type=='PERCENTAGE'">-{{$ctrl.$$promotion.discount.finalAmount}}%</span><span ng-if="$ctrl.$$promotion.discount.type=='PRICE'">-{{$ctrl.$$promotion.discount.finalAmount|chCurrency}}</span></span>
 						</div>
 						
-						<div ng-if="$ctrl.rate.type == 'STANDARD' && ($ctrl.$$promotion.onArrival || !$ctrl.rate.cancellationPolicy.flexible)" class="md-margin no-margin-left no-margin-top" ng-class="{'text-center': !$ctrl.$mdMedia('gt-sm')}">
-							<span class="label label-sm bg-success">
-								<span translate="reservation.no.advance.payment"></span>
-							</span>
+						<div ng-if="$ctrl.rate.type == 'STANDARD' && ($ctrl.$$promotion.onArrival || !$ctrl.rate.cancellationPolicy.flexible)" class="no-padding-left no-padding-bottom">
+							<small class="label bg-success">
+								<strong translate="reservation.no.advance.payment"></strong>
+							</small>
 						</div>
-					</div>													
+						
+						<div class="no-padding-left no-padding-bottom" ng-if="$ctrl.isBestRate">
+							<small class="label bg-primary-lighter">
+					      		<strong translate="reservation.bestHotelRate.description"></strong>
+							</small>
+						</div>
+						<div class="no-padding-left no-padding-bottom" ng-if="!$ctrl.isBestRate && !$ctrl.$$promotion && $ctrl.rate.type == 'STANDARD' && !$ctrl.rate.cancellationPolicy.flexible">
+							<small class="label bg-primary-lighter">
+								<strong translate="reservation.rate.free.text.description.short"></strong>
+							</small>
+						</div>
+						<div class="no-padding-left no-padding-bottom" ng-if="!$ctrl.isBestRate && !$ctrl.$$promotion && $ctrl.rate.type == 'NOT_REFUNDABLE' && $ctrl.rate.savingAmount.finalAmount">
+							<small  class="label bg-blue-sea">
+								<strong translate="reservation.rate.not.refundable.text.description.short" translate-value-price="{{$ctrl.rate.savingAmount.finalAmount|chCurrency}}"></strong>
+							</small>
+						</div>
+					</div>
 				</div>
+				
+				<div layout="column" layout-align-gt-sm="center center" ng-class="{'no-padding-y-sides': !$ctrl.$mdMedia('gt-sm')}">
+					<div layout-align="start center" layout="column" layout-padding class="row-mini no-padding">
+						<div layout layout-padding class="no-padding md-button md-square-button row-mini clickable"  ng-click="$ctrl.$showInfo($event)" aria-label="Rate info">
+							<div layout-align="start center" layout="column" flex class="no-padding-top">
+								<small class="no-padding" ng-if="$ctrl.rate.amount.initialAmount > 0 && $ctrl.rate.amount.initialAmount > $ctrl.rate.amount.finalAmount">
+					        		<span class="text-initial" translate="common.from"></span>&nbsp;
+					        		<i><del ng-bind="$ctrl.rate.amount.initialAmount|chCurrency"></del></i>
+					        	</small>
+								<span class="no-padding md-title"><strong ng-bind="$ctrl.rate.amount.finalAmount|chCurrency"></strong></span>
+								<small ng-if="$ctrl.$$extraCost" class="text-lowercase">+&nbsp;{{$ctrl.$$extraCost|chCurrency}}&nbsp;<span translate="common.service.included.paid"></span></small>
+							</div>
+							<div layout-align="start center" layout="column" class="no-padding-top no-padding-left">
+								<md-icon class="mdi mdi-information-outline md-18 material-icons"></md-icon>
+							</div>
+							<md-tooltip><span translate="common.payment.info"></span></md-tooltip>
+						</div>
+					</div>
+				</div>
+																
 			</div>
-
-			<div layout layout-align="end center"  ng-class="{'no-padding-top': !$ctrl.$mdMedia('gt-sm')}">	
-				<div ng-if="!$ctrl.rate.count || $ctrl.rate.count <= 0" class="layout-column flex">																							
-					<md-button class="border-radius only-border" ng-class="{'border-warn text-warn': $ctrl.$$totalCounter.actual > 0 && $ctrl.$$counter.actual > 0 && $ctrl.rate.type == 'STANDARD' && $ctrl.rate.cancellationPolicy.flexible, 'border-success text-success': $ctrl.$$totalCounter.actual > 0 && $ctrl.$$counter.actual > 0 && $ctrl.rate.type == 'STANDARD' && !$ctrl.rate.cancellationPolicy.flexible, 
-							'border-blue-sea text-blue-sea': $ctrl.$$totalCounter.actual > 0 && $ctrl.$$counter.actual > 0 && $ctrl.rate.type == 'NOT_REFUNDABLE', 'text-gray-medium': $ctrl.$$totalCounter.actual <= 0 || $ctrl.$$counter.actual <= 0}" aria-label="Add room" ng-disabled="$ctrl.$$totalCounter.actual <= 0 || $ctrl.$$counter.actual <= 0" ng-click="$ctrl.$selectRate()">
-	          			<span translate="common.select"></span>
-	          		</md-button>
-				</div>
-			  	<div ng-if="$ctrl.rate.count && $ctrl.rate.count > 0" flex>
-			  		<div class="layout-align-center-center layout-align-gt-sm-end-center layout-row">
-			  			<small class="text-bold text-gray-light" ng-if="$ctrl.$$totalCounter.actual > 0 && $ctrl.$$counter.actual > 0" translate="room.add.other.one"></small>
-			  			<small class="text-bold text-success text-center" ng-class="{'text-warn': $ctrl.rate.type == 'STANDARD' && $ctrl.rate.cancellationPolicy.flexible, 'text-success': $ctrl.rate.type == 'STANDARD' && !$ctrl.rate.cancellationPolicy.flexible, 
-			  				'text-blue-sea': $ctrl.rate.type == 'NOT_REFUNDABLE'}" ng-if="$ctrl.$$totalCounter.actual <= 0 || $ctrl.$$counter.actual <= 0" translate="room.last.rate.selected"></small>
-			  		</div>
-			  		<div class="layout-align-center-center layout-align-gt-sm-end-center layout-row">
-			  			<ch-counter ng-model="$ctrl.rate.count" 
-			  				min="0" 
-			  				btn-class="md-icon-button only-border" 
-			  				btn-active-class="{{$ctrl.rate.type == 'STANDARD' ? $ctrl.rate.cancellationPolicy.flexible ? 'border-warn' : 'border-success' : 'border-blue-sea'}}"
-			  				icon-active-class="{{$ctrl.rate.type == 'STANDARD' ? $ctrl.rate.cancellationPolicy.flexible ? 'text-warn' : 'text-success' : 'text-blue-sea'}}" 
-			  				plus-disabled="$ctrl.$$totalCounter.actual <= 0 || $ctrl.$$counter.actual <= 0" 
-			  				on-plus="$ctrl.$addRate()" 
-			  				on-minus="$ctrl.$removeRate()">
-			  			</ch-counter>
-			  		</div>
-			  	</div> 
-          	</div>
 		</div>
-	</md-list-item>
-					          
-	<div class="layout-row layout-wrap layout-padding-sm text-center">
-		<span ng-if="$ctrl.isBestRate" class="text-success md-subhead">
-			<md-icon class="mdi mdi-check-all text-success animated infinite tada"></md-icon>
-      		<strong>&nbsp;<span translate="reservation.bestHotelRate.description"></span></strong>
-		</span>
-	
-		<span ng-if="!$ctrl.isBestRate && $ctrl.$$promotion" ng-switch="$ctrl.$$promotion.promotionType" class="layout-row layout-wrap">
-			<span ng-switch-when="STANDARD|EARLY_BOOKING|MINIMUM_STAY" ng-switch-when-separator="|" class="text-wrap" ng-class="{'text-info': $ctrl.$$promotion.promotionType == 'STANDARD', 'text-primary-light': $ctrl.$$promotion.promotionType == 'EARLY_BOOKING',  'text-success': $ctrl.$$promotion.promotionType == 'MINIMUM_STAY'}">
-				<md-icon class="mdi mdi-alarm-check animated infinite tada" ng-class="{'text-info': $ctrl.$$promotion.promotionType == 'STANDARD', 'text-primary-light': $ctrl.$$promotion.promotionType == 'EARLY_BOOKING',  'text-success': $ctrl.$$promotion.promotionType == 'MINIMUM_STAY'}"></md-icon>
-				<span>&nbsp;<span translate="reservation.promotion.STANDARD.description"></span></span>
-			</span>
-			<span ng-switch-when="BOOK_TODAY" class="text-wrap text-primary">
-				<md-icon class="mdi mdi-alarm-check text-primary animated infinite tada"></md-icon>
-				<span>&nbsp;<span translate="reservation.promotion.BOOK_TODAY.description"></span></span>
-			</span>
-      		<span ng-switch-when="LAST_MINUTE" class="text-wrap text-blue-sea">
-      			<md-icon class="mdi mdi-alarm-check text-blue-sea animated infinite tada"></md-icon>
-      			<span>&nbsp;<span translate="reservation.promotion.LAST_MINUTE.description"></span></span>
-			</span>
-			<span ng-switch-when="LAST_SECOND" class="text-wrap text-warn">
-				<md-icon class="mdi mdi-alarm-check text-warn animated infinite tada"></md-icon>
-				<span>&nbsp;<span translate="reservation.promotion.LAST_SECOND.description"></span></span>
-			</span>
-		</span>
-		
-		<span ng-if="!$ctrl.isBestRate && !$ctrl.$$promotion && $ctrl.rate.type == 'STANDARD' && !$ctrl.rate.cancellationPolicy.flexible" class="text-success">
-			<md-icon class="mdi mdi-heart-pulse text-success animated infinite tada"></md-icon>
-			<span>&nbsp;<span translate="reservation.rate.free.text.description"></span></span>
-		</span>
-		
-		<span ng-if="!$ctrl.isBestRate && !$ctrl.$$promotion && $ctrl.rate.type == 'NOT_REFUNDABLE' && $ctrl.rate.savingAmount.finalAmount" class="text-blue-sea">
-			<md-icon class="mdi mdi-auto-fix text-blue-sea animated infinite tada"></md-icon>
-			<span>&nbsp;<span translate="reservation.rate.not.refundable.text.description" translate-value-price="{{$ctrl.rate.savingAmount.finalAmount|chCurrency}}"></span></span>
-		</span>
+
+		<div layout layout-align="end center" layout-padding class="no-padding"  ng-class="{'no-padding-top': !$ctrl.$mdMedia('gt-sm')}">	
+			<div ng-if="!$ctrl.rate.count || $ctrl.rate.count <= 0" layout="column" flex ng-class="{'no-padding-top': !$ctrl.$mdMedia('gt-sm')}">																							
+				<md-button class="md-square-button" ng-class="$ctrl.$$totalCounter.actual <= 0 || $ctrl.$$counter.actual <= 0? 'text-gray-medium' : 'bg-success-light'" aria-label="Add room" ng-disabled="$ctrl.$$totalCounter.actual <= 0 || $ctrl.$$counter.actual <= 0" ng-click="$ctrl.$selectRate()">
+          			<span translate="common.book"></span>
+          		</md-button>
+			</div>
+		  	<div ng-if="$ctrl.rate.count && $ctrl.rate.count > 0" flex>
+		  		<div layout layout-align="center center" layout-align-gt-sm="end center">
+		  			<small class="text-bold text-gray-light" ng-if="$ctrl.$$totalCounter.actual > 0 && $ctrl.$$counter.actual > 0" translate="room.add.other.one"></small>
+		  			<small class="text-bold text-success text-center" ng-if="$ctrl.$$totalCounter.actual <= 0 || $ctrl.$$counter.actual <= 0" translate="room.last.rate.selected"></small>
+		  		</div>
+		  		<div layout layout-align="center center" layout-align-gt-sm="end center">
+		  			<ch-counter ng-model="$ctrl.rate.count" 
+		  				min="0" 
+		  				btn-class="md-icon-button only-border" 
+		  				btn-active-class="bg-success-light border-success"
+		  				icon-active-class="text-success" 
+		  				plus-disabled="$ctrl.$$totalCounter.actual <= 0 || $ctrl.$$counter.actual <= 0" 
+		  				on-plus="$ctrl.$addRate()" 
+		  				on-minus="$ctrl.$removeRate()">
+		  			</ch-counter>
+		  		</div>
+		  	</div> 
+         </div>
 	</div>
-					          
-	<div id="{{'ch-room-' + $ctrl.chRoomCtrl.$$index + '-rates-' + $ctrl.$$index}}" ng-show="$ctrl.$$showInfo" 
-		layout="column" layout-padding ng-class="{'animated fadeIn': $ctrl.$$showInfo}" class="text-gray-light text-small">
-		<div class="no-padding-x-sides">
-     		
-   			<div layout="column" flex="100" layout-padding class="no-padding md-body-1">
-   				<h4 class="md-body-1 no-margin-bottom no-margin-top no-padding-x-sides">
-	      			<strong translate="reservation.room.cost.details"></strong>
-	      		</h4>
-   			
-   				<div layout layout-wrap class="only-border no-border-bottom bg-white" ng-repeat="dailyRate in $ctrl.rate.dailyRates track by $index">
-   					<div layout="column" flex>
-   						<strong>
-   							<span translate="room.room"></span>&nbsp;<span>{{dailyRate.date|date:"shortDate"}}</span>
-   						</strong>
-						<span ng-if="dailyRate.promotion" ng-switch="dailyRate.promotion.promotionType">
-							<span ng-switch-when="STANDARD" class="label label-xs bg-info"><ch-truncate text="{{dailyRate.promotion.name[$ctrl.chRoomCtrl.localeIso]}}" max-length="20" suffix="..."></ch-truncate>&nbsp;<span ng-if="dailyRate.promotion.discount.type=='PERCENTAGE'">-{{dailyRate.promotion.discount.finalAmount}}%</span><span ng-if="dailyRate.promotion.discount.type=='PRICE'">-{{dailyRate.promotion.discount.finalAmount|chCurrency}}</span></span>
-				      		<span ng-switch-when="MINIMUM_STAY" class="label label-xs bg-primary-light"><span translate="promotions.promotion.label.minstay.nights" translate-value-count="{{promotion.minStay}}"></span>&nbsp;<span ng-if="dailyRate.promotion.discount.type=='PERCENTAGE'">-{{dailyRate.promotion.discount.finalAmount}}%</span><span ng-if="dailyRate.promotion.discount.type=='PRICE'">-{{dailyRate.promotion.discount.finalAmount|chCurrency}}</span></span>
-				      		<span ng-switch-when="BOOK_TODAY" class="label label-xs bg-primary"><span translate="promotions.promotion.label.only.today"></span>!&nbsp;<span ng-if="dailyRate.promotion.discount.type=='PERCENTAGE'">-{{dailyRate.promotion.discount.finalAmount}}%</span><span ng-if="dailyRate.promotion.discount.type=='PRICE'">-{{dailyRate.promotion.discount.finalAmount|chCurrency}}</span></span>
-				      		<span ng-switch-when="EARLY_BOOKING" class="label label-xs bg-success"><span translate="promotions.early"></span>&nbsp;<span ng-if="dailyRate.promotion.discount.type=='PERCENTAGE'">-{{dailyRate.promotion.discount.finalAmount}}%</span><span ng-if="dailyRate.promotion.discount.type=='PRICE'">-{{dailyRate.promotion.discount.finalAmount|chCurrency}}</span></span>
-				      		<span ng-switch-when="LAST_MINUTE" class="label label-xs bg-blue-sea"><span translate="promotions.last.minute"></span>&nbsp;<span ng-if="dailyRate.promotion.discount.type=='PERCENTAGE'">-{{dailyRate.promotion.discount.finalAmount}}%</span><span ng-if="dailyRate.promotion.discount.type=='PRICE'">-{{dailyRate.promotion.discount.finalAmount|chCurrency}}</span></span>
-				      		<span ng-switch-when="LAST_SECOND" class="label label-xs bg-warn"><span translate="promotions.last.second"></span>&nbsp;<span ng-if="dailyRate.promotion.discount.type=='PERCENTAGE'">-{{dailyRate.promotion.discount.finalAmount}}%</span><span ng-if="dailyRate.promotion.discount.type=='PRICE'">-{{dailyRate.promotion.discount.finalAmount|chCurrency}}</span></span>
-						</span>  
-					</div>				
-   					<div>
-   						<small class="text-gray-light" ng-if="dailyRate.amount.initialAmount > 0 && dailyRate.amount.initialAmount > dailyRate.amount.finalAmount">
-			        		<i><del>{{dailyRate.amount.initialAmount|chCurrency}}</del></i>&nbsp;
-			        	</small>
-			        	<strong class="no-padding-top">{{dailyRate.amount.finalAmount|chCurrency}}</strong>
-   					</div>
-   				</div>
-   				<div layout layout-wrap class="only-border no-border-bottom bg-white" ng-repeat="service in $ctrl.$$requiredservices">
-   					<div layout="column" flex>
-   						<strong translate="{{service.service.type.nameKey}}"></strong>
-						<span ng-switch="service.service.paymentType" class="text-lowercase text-gray-light">
-							<small ng-switch-when="FREE">
-								<span><span translate="common.free"></span></span>
-							</small>
-							<small ng-switch-when="SINGLE">
-								<span ng-bind="(service.service.paymentOptions[0].amount.finalAmount|chCurrency)"></span>&nbsp;
-								<span ng-if="service.service.frequency == 'DAILY'" class="text-lowercase"><span translate="date.frequency.daily"></span></span>
-	   							<span ng-if="service.service.frequency == 'MONTHLY'" class="text-lowercase"><span translate="date.frequency.monthly"></span></span>
-	   							<span ng-if="service.service.frequency == 'YEARLY'" class="text-lowercase"><span translate="date.frequency.yearly"></span></span>
-	   							<span ng-if="service.service.frequency == 'LUMP_SUM'" class="text-lowercase"><span translate="common.entire.stay"></span></span>
-							</small>
-							<small ng-switch-when="PER_PERSON">
-								<span>
-									<span translate="reservation.starting.from"></span>:&nbsp;
-									<span ng-bind="(service.service.startingFrom|chCurrency)"></span>&nbsp;
-									<span ng-if="service.service.frequency == 'DAILY'" class="text-lowercase"><span translate="date.frequency.daily"></span></span>
-	   								<span ng-if="service.service.frequency == 'MONTHLY'" class="text-lowercase"><span translate="date.frequency.monthly"></span></span>
-	   								<span ng-if="service.service.frequency == 'YEARLY'" class="text-lowercase"><span translate="date.frequency.yearly"></span></span>
-	   								<span ng-if="service.service.frequency == 'LUMP_SUM'" class="text-lowercase"><span translate="common.entire.stay"></span></span>
-								</span>
-							</small>
-						</span>	
-   						
-   						
-   					</div>
-   					<div>
-   						<small class="text-gray-light" ng-if="service.amount.initialAmount > 0 && service.amount.initialAmount > service.amount.finalAmount">
-			        		<i><del>{{service.amount.initialAmount|chCurrency}}</del></i>&nbsp;
-			        	</small>
-   						<strong>{{service.amount.finalAmount|chCurrency}}</strong>
-   					</div>
-   				</div>
-   				<div layout layout-wrap class="only-border" class="md-body-1">
-   					<div layout="column" flex>
-   						<strong translate="common.total"></strong>
-   					</div>
-   					<div>
-   						<small class="text-gray-light" ng-if="$ctrl.$$totalAmount.initialAmount > 0 && $ctrl.$$totalAmount.initialAmount > $ctrl.$$totalAmount.finalAmount">
-			        		<i><del>{{$ctrl.$$totalAmount.initialAmount|chCurrency}}</del></i>&nbsp;
-			        	</small>
-   						<strong>{{$ctrl.$$totalAmount.finalAmount|chCurrency}}</strong>
-   					</div>
-   				</div>
-   			</div>
-   			
-   			<div layout="column" layout-padding class="no-padding-x-sides">
-      			<span class="no-padding-bottom no-padding-x-sides">
-      				<span ng-if="$ctrl.$$nights == 1" translate="reservation.rates.info.night"></span>
-      				<span ng-if="$ctrl.$$nights > 1" translate="reservation.rates.info.nights" translate-value-count="{{$ctrl.$$nights}}"></span>
-      			</span>
-     			
-      			<span ng-if="$ctrl.$$vatTax" class="no-padding-bottom no-padding-x-sides">
-      				<strong><span translate="common.included"></span>:</strong>&nbsp;{{$ctrl.$$vatTax}}%&nbsp;<span translate="billing.vat.tax"></span>
-      			</span>
-     			
-      			<span ng-if="$ctrl.$$cityTax" class="no-padding-bottom no-padding-x-sides">
-      				<strong><span translate="common.included.not"></span>:</strong>&nbsp;{{$ctrl.$$cityTax|chCurrency}}&nbsp;<span translate="reservation.cityTax.description"></span>
-      			</span>
-      			
-      			<span ng-if="$ctrl.$$deposit" class="no-padding-bottom no-padding-x-sides">
-      				<strong><span translate="common.included.not"></span>:</strong>&nbsp;{{$ctrl.$$deposit}}%&nbsp;<span translate="reservation.deposit.description"></span>
-      			</span>
-   			</div>
-   		
-   			<div ng-if="$ctrl.rate.type == 'STANDARD' && $ctrl.$$promotion.onArrival" class="bg-success text-white layout-margin">
-   				<md-icon md-font-set="fas" class="fas fa-h-square md-18 text-white"></md-icon>
-   				<span translate="reservation.policy.payment.onArrival"></span>
-   			</div>
-   			
-   			
-     		
-			<div ng-if="$ctrl.paymentSettings" layout="column" class="md-padding no-padding-left">
-				<strong><span translate="payment.methods.accepted"></span>:</strong>
-      		
-	       		<span ng-if="$ctrl.$$promotion.paymentMethod.length" 
-	       			ng-repeat="paymentMethod in $ctrl.$$promotion.paymentMethod track by $index" ng-switch="paymentMethod.type"
-	       			class="layout-margin ng-scope layout-wrap layout-row layout-align-start-center">
-	       			<span ng-switch-when="PAYPAL" ng-if="$ctrl.paymentSettings.paypal" class="no-margin-left">
-	       				<md-icon class="pf pf-paypal md-18"></md-icon>
-	       				<md-tooltip><span translate="payment.type.PAYPAL"></span></md-tooltip>
-	       			</span>
-	       			<span ng-switch-when="CREDIT_CARD" ng-if="$ctrl.paymentSettings.creditCards.length">
-	       				<span ng-repeat="type in $ctrl.paymentSettings.creditCards track by $index" ng-switch="type.circuit">
-	       					<span ng-switch-when="VISA" class="layout-margin no-margin-left">
-	        					<md-icon class="pf pf-visa md-18"></md-icon>
-	        					<md-tooltip><span translate="payment.type.carrier.VISA"></span></md-tooltip>
-	        				</span>
-	        				<span ng-switch-when="MASTERCARD" class="layout-margin no-margin-left">
-	        					<md-icon class="pf pf-mastercard md-18"></md-icon>
-	        					<md-tooltip><span translate="payment.type.carrier.MASTERCARD"></span></md-tooltip>
-	        				</span>
-	        				<span ng-switch-when="AMEX" class="layout-margin no-margin-left">
-	        					<md-icon class="pf pf-american-express md-18"></md-icon>
-	        					<md-tooltip><span translate="payment.type.carrier.AMEX"></span></md-tooltip>
-	        				</span>
-	        				<span ng-switch-when="BIT_COIN" class="layout-margin no-margin-left">
-	        					<md-icon class="pf pf-bitcoin md-18"></md-icon>
-	        					<md-tooltip><span translate="payment.type.carrier.BIT_COIN"></span></md-tooltip>
-	        				</span>
-	        				<span ng-switch-when="CARTA_SI" class="layout-margin no-margin-left">
-	        					<md-icon class="pf pf-carta-si md-18"></md-icon>
-	        					<md-tooltip><span translate="payment.type.carrier.CARTA_SI"></span></md-tooltip>
-	        				</span>
-	        				<span ng-switch-when="DINERS_CLUB" class="layout-margin no-margin-left">
-	        					<md-icon class="pf pf-diners md-18"></md-icon>
-	        					<md-tooltip><span translate="payment.type.carrier.DINERS_CLUB"></span></md-tooltip>
-	        				</span>
-	        				<span ng-switch-when="DISCOVER" class="layout-margin no-margin-left">
-	        					<md-icon class="pf pf-discover md-18"></md-icon>
-	        					<md-tooltip><span translate="payment.type.carrier.DISCOVER"></span></md-tooltip>
-	        				</span>
-	        				<span ng-switch-when="JCB" class="layout-margin no-margin-left">
-	        					<md-icon class="pf pf-jcb md-18"></md-icon>
-	        					<md-tooltip><span translate="payment.type.carrier.JCB"></span></md-tooltip>
-	        				</span>
-	        				<span ng-switch-when="UNION_PAY" class="layout-margin no-margin-left">
-	        					<md-icon class="pf pf-unionpay md-18"></md-icon>
-	        					<md-tooltip><span translate="payment.type.carrier.UNION_PAY"></span></md-tooltip>
-	        				</span>
-	        			</span>
-	       			</span>
-	       			<span ng-switch-when="OTHER_CARD" ng-if="$ctrl.paymentSettings.otherCards.length">
-	       				<span ng-repeat="type in $ctrl.paymentSettings.otherCards track by $index" ng-switch="type.circuit">
-							<span ng-switch-when="VISA_ELECTRON" class="layout-margin no-margin-left">
-        						<md-icon class="pf pf-visa-electron md-18"></md-icon>
-	        					<md-tooltip><span translate="payment.type.carrier.VISA_ELECTRON"></span></md-tooltip>
-	        				</span>
-	        				<span ng-switch-when="V_PAY" class="layout-margin no-margin-left">
-	        					<md-icon class="pf pf-visa md-18"></md-icon>
-	        					<md-tooltip><span translate="payment.type.carrier.V_PAY"></span></md-tooltip>
-	        				</span>
-	        				<span ng-switch-when="MAESTRO" class="layout-margin no-margin-left">
-	        					<md-icon class="pf pf-maestro md-18"></md-icon>
-	        					<md-tooltip><span translate="payment.type.carrier.MAESTRO"></span></md-tooltip>
-	        				</span>
-	        				<span ng-switch-when="CIRRUS" class="layout-margin no-margin-left">
-	        					<md-icon class="pf pf-cirrus md-18"></md-icon>
-	        					<md-tooltip><span translate="payment.type.carrier.CIRRUS"></span></md-tooltip>
-	        				</span>
-	        				<span ng-switch-when="POSTEPAY" class="layout-margin no-margin-left">
-	        					<md-icon class="pf pf-postepay md-18"></md-icon>
-	        					<md-tooltip><span translate="payment.type.carrier.POSTEPAY"></span></md-tooltip>
-	        				</span>
-	        				<span ng-switch-when="APPLE_PAY" class="layout-margin no-margin-left">
-	        					<md-icon class="pf pf-apple-pay md-18"></md-icon>
-	        					<md-tooltip><span translate="payment.type.carrier.APPLE_PAY"></span></md-tooltip>
-	        				</span>
-	        				<span ng-switch-when="PAGSEGURO" class="layout-margin no-margin-left">
-	        					<md-icon class="pf pf-pagseguro md-18"></md-icon>
-	        					<md-tooltip><span translate="payment.type.carrier.PAGSEGURO"></span></md-tooltip>
-	        				</span>
-	        				<span ng-switch-when="BANCONTACT" class="layout-margin no-margin-left">
-	        					<md-icon class="pf pf-bancontact-mister-cash md-18"></md-icon>
-	        					<md-tooltip><span translate="payment.type.carrier.BANCONTACT"></span></md-tooltip>
-	        				</span>
-	        				<span ng-switch-when="BANCOMAT" class="layout-margin no-margin-left">
-	        					<md-icon class="pf pf-card md-18"></md-icon>
-	        					<md-tooltip><span translate="payment.type.carrier.BANCOMAT"></span></md-tooltip>
-	        				</span>
-	        			</span>
-	       			</span>
-	       		</span>
-      		
-	       		<span ng-if="!$ctrl.$$promotion.paymentMethod" class="layout-margin ng-scope layout-wrap layout-row layout-align-start-center">
-	       			<span ng-if="$ctrl.paymentSettings.paypal" class="layout-margin no-margin-left">
-	       				<md-icon class="pf pf-paypal md-18"></md-icon>
-	       				<md-tooltip><span translate="payment.type.PAYPAL"></span></md-tooltip>
-	       			</span>
-	       			<span ng-if="$ctrl.paymentSettings.creditCards.length"  class="no-margin">
-	       				<span ng-repeat="type in $ctrl.paymentSettings.creditCards track by $index" ng-switch="type.circuit">
-	        				<span ng-switch-when="VISA" class="layout-margin no-margin-left">
-	        					<md-icon class="pf pf-visa md-18"></md-icon>
-	        					<md-tooltip><span translate="payment.type.carrier.VISA"></span></md-tooltip>
-	        				</span>
-	        				<span ng-switch-when="MASTERCARD" class="layout-margin no-margin-left">
-	        					<md-icon class="pf pf-mastercard md-18"></md-icon>
-	        					<md-tooltip><span translate="payment.type.carrier.MASTERCARD"></span></md-tooltip>
-	        				</span>
-	        				<span ng-switch-when="AMEX" class="layout-margin no-margin-left">
-	        					<md-icon class="pf pf-american-express md-18"></md-icon>
-	        					<md-tooltip><span translate="payment.type.carrier.AMEX"></span></md-tooltip>
-	        				</span>
-	        				<span ng-switch-when="BIT_COIN" class="layout-margin no-margin-left">
-	        					<md-icon class="pf pf-bitcoin md-18"></md-icon>
-	        					<md-tooltip><span translate="payment.type.carrier.BIT_COIN"></span></md-tooltip>
-	        				</span>
-	        				<span ng-switch-when="CARTA_SI" class="layout-margin no-margin-left">
-	        					<md-icon class="pf pf-carta-si md-18"></md-icon>
-	        					<md-tooltip><span translate="payment.type.carrier.CARTA_SI"></span></md-tooltip>
-	        				</span>
-	        				<span ng-switch-when="DINERS_CLUB" class="layout-margin no-margin-left">
-	        					<md-icon class="pf pf-diners md-18"></md-icon>
-	        					<md-tooltip><span translate="payment.type.carrier.DINERS_CLUB"></span></md-tooltip>
-	        				</span>
-	        				<span ng-switch-when="DISCOVER" class="layout-margin no-margin-left">
-	        					<md-icon class="pf pf-discover md-18"></md-icon>
-	        					<md-tooltip><span translate="payment.type.carrier.DISCOVER"></span></md-tooltip>
-	        				</span>
-	        				<span ng-switch-when="JCB" class="layout-margin no-margin-left">
-	        					<md-icon class="pf pf-jcb md-18"></md-icon>
-	        					<md-tooltip><span translate="payment.type.carrier.JCB"></span></md-tooltip>
-	        				</span>
-	        				<span ng-switch-when="UNION_PAY" class="layout-margin no-margin-left">
-	        					<md-icon class="pf pf-unionpay md-18"></md-icon>
-	        					<md-tooltip><span translate="payment.type.carrier.UNION_PAY"></span></md-tooltip>
-	        				</span>
-	        			</span>
-	       			</span>
-	       			<span ng-if="$ctrl.paymentSettings.otherCards.length" class="no-margin">
-	       				<span ng-repeat="type in $ctrl.paymentSettings.otherCards track by $index" ng-switch="type.circuit">
-	        				<span ng-switch-when="VISA_ELECTRON" class="layout-margin no-margin-left">
-	        					<md-icon class="pf pf-visa-electron md-18"></md-icon>
-	        					<md-tooltip><span translate="payment.type.carrier.VISA_ELECTRON"></span></md-tooltip>
-	        				</span>
-	        				<span ng-switch-when="V_PAY" class="layout-margin no-margin-left">
-	        					<md-icon class="pf pf-visa md-18"></md-icon>
-	        					<md-tooltip><span translate="payment.type.carrier.V_PAY"></span></md-tooltip>
-	        				</span>
-	        				<span ng-switch-when="MAESTRO" class="layout-margin no-margin-left">
-	        					<md-icon class="pf pf-maestro md-18"></md-icon>
-	        					<md-tooltip><span translate="payment.type.carrier.MAESTRO"></span></md-tooltip>
-	        				</span>
-	        				<span ng-switch-when="CIRRUS" class="layout-margin no-margin-left">
-	        					<md-icon class="pf pf-cirrus md-18"></md-icon>
-	        					<md-tooltip><span translate="payment.type.carrier.CIRRUS"></span></md-tooltip>
-	        				</span>
-	        				<span ng-switch-when="POSTEPAY" class="layout-margin no-margin-left">
-	        					<md-icon class="pf pf-postepay md-18"></md-icon>
-	        					<md-tooltip><span translate="payment.type.carrier.POSTEPAY"></span></md-tooltip>
-	        				</span>
-	        				<span ng-switch-when="APPLE_PAY" class="layout-margin no-margin-left">
-	        					<md-icon class="pf pf-apple-pay md-18"></md-icon>
-	        					<md-tooltip><span translate="payment.type.carrier.APPLE_PAY"></span></md-tooltip>
-	        				</span>
-	        				<span ng-switch-when="PAGSEGURO" class="layout-margin no-margin-left">
-	        					<md-icon class="pf pf-pagseguro md-18"></md-icon>
-	        					<md-tooltip><span translate="payment.type.carrier.PAGSEGURO"></span></md-tooltip>
-	        				</span>
-	        				<span ng-switch-when="BANCONTACT" class="layout-margin no-margin-left">
-	        					<md-icon class="pf pf-bancontact-mister-cash md-18"></md-icon>
-	        					<md-tooltip><span translate="payment.type.carrier.BANCONTACT"></span></md-tooltip>
-	        				</span>
-	        				<span ng-switch-when="BANCOMAT" class="layout-margin no-margin-left">
-	        					<md-icon class="pf pf-card md-18"></md-icon>
-	        					<md-tooltip><span translate="payment.type.carrier.BANCOMAT"></span></md-tooltip>
-	        				</span>
-	        			</span>
-	       			</span>
-	       		</span>
-   			</div>
-   		</div>
-   	
-   		<div class="no-padding">
-   		
-   			<!-- PAYMENT INFO -->
-      		<div class="md-margin no-margin-top no-margin-left no-margin-right">
-      			<ch-payment-policy-info
-      				rate-type="$ctrl.rate.type"
-   					cancellation-policy="$ctrl.rate.cancellationPolicy"
-   					city="$ctrl.chRoomCtrl.city"></ch-payment-policy-info>
-      		</div>
-   		
-			<!-- POLICY -->
-			<div class="md-margin no-margin-top no-margin-left no-margin-right">
-      			<ch-cancellation-policy-info
-      				rate-type="$ctrl.rate.type"
-   					cancellation-policy="$ctrl.rate.cancellationPolicy"
-   					city="{{$ctrl.chRoomCtrl.city}}"
-   					title="{{$ctrl.rate.cancellationPolicy.cancellation.deposit ? ('reservation.deposit.conditions'|translate) : null}}"></ch-cancellation-policy-info>
-   					
-   				<!-- mostro solo se la policy di cancellazione non prevede deposito (se c'è, è tutto specificato nelle condizioni di cancellazione) -->	
-				<ch-no-show-policy-info ng-if="$ctrl.rate.cancellationPolicy && !$ctrl.rate.cancellationPolicy.cancellation.deposit"
-   					no-show-policy="$ctrl.rate.noShowPolicy"></ch-no-show-policy-info>
-      		</div>
-       	</div>
-       	
-       	<md-button class="text-gray-light auto-height row-mini" ng-click="$ctrl.$toggleInfo(false)" aria-label="Hide info">
-       		<md-icon class="mdi mdi-chevron-up text-gray-light md-18"></md-icon>
-       		<small translate="common.hide"></small>
-       	</md-button>
-   	</div>
-   	
-	<md-divider ng-if="!$last"></md-divider>
 </div>

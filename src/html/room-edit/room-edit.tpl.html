@@ -83,19 +83,12 @@
 				</div>
 			</div>
 				
-			<div ng-if="$ctrl.room.totalRate.$$bestHotelRate" class="layout-row layout-wrap layout-align-start-center layout-padding border-radius border-success text-success only-border md-body-2 margin-auto-20">
+			<div ng-if="$ctrl.room.totalRate.$$bestHotelRate" class="layout-row layout-wrap layout-align-start-center layout-padding border-radius-6 bg-success-light text-success md-body-2 margin-auto-20">
 				<span class="no-padding">
 					<md-icon class="mdi mdi-thumb-up-outline md-24 text-success"></md-icon>&nbsp;
 					<span translate="room.best.hotel.rate"></span>
 				</span>
 			</div>
-			
-<!-- 			<div ng-if="!$ctrl.showConfig" class="layout-row layout-wrap layout-align-start-center layout-padding border-radius border-success text-success only-border md-body-2 margin-auto-20"> -->
-<!-- 				<span class="no-padding"> -->
-<!-- 					<md-icon class="mdi mdi-thumb-up-outline md-24 text-success"></md-icon>&nbsp; -->
-<!-- 					<span translate="room.last.hotel.rate.selected"></span> -->
-<!-- 				</span> -->
-<!-- 			</div> -->
 			
 			<div ng-if="!$ctrl.room.totalRate.$$bestHotelRate" class="layout-row layout-wrap layout-align-start-center layout-padding border-radius border-blue-sea text-blue-sea only-border md-body-2 margin-auto-20">
 				<span class="no-padding">
@@ -115,7 +108,7 @@
 			
 			<md-button class="bg-blue-sea text-wrap button-small" ng-click="$ctrl.$toggleRoomConfig(true)" aria-label="Config room">
 				<span><span translate="room.config.now"></span>!</span>
-				<md-icon class="mdi mdi-chevron-down md-24 text-white animated infinite bounce"></md-icon>
+				<md-icon class="mdi mdi-chevron-down md-24 text-white"></md-icon>
 			</md-button>
 		</div>
 	</div>

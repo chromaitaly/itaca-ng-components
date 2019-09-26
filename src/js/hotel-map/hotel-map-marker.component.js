@@ -47,7 +47,7 @@
 		
 		this.$onInit = function() {
 			ctrl.markerType = _.includes(["pointer", "price", "name"], _.toLower(ctrl.markerType)) ? _.toLower(ctrl.markerType) : "pointer";
-			ctrl.$$markerIcon = "/resources/public/img/map-marker.01.png";
+			ctrl.$$markerIcon = "/resources/public/img/common/map-marker.01.png";
 			ctrl.$getMarkerPosition();
 		};
 		

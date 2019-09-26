@@ -24,9 +24,10 @@
 	    		"</div>" + 
 	    		"<div ng-if=\"$ctrl.hotels\" ng-repeat=\"hotel in $ctrl.hotels\">" +
 	    			"<ch-hotel-map-marker hotel=\"hotel\" marker-type=\"{{$ctrl.markerType}}\"></ch-hotel-map-marker>" +
-	    		"</div>" + 
-	    		"<ch-hotel-map-info-window hotel=\"$ctrl.$$currHotel\" marker-type=\"{{$ctrl.markerType}}\" " +
-	    			"show-gallery=\"$ctrl.showGallery\" storage-url=\"{{$ctrl.storageUrl}}\" on-hotel-click=\"$ctrl.onHotelClick\"></ch-hotel-map-info-window>" +
+	    		"</div>" +
+	    		"<info-window id=\"hotel-iw\">" + 
+	    			"<ch-hotel-map-info-window hotel=\"$ctrl.$$currHotel\" marker-type=\"{{$ctrl.markerType}}\" show-gallery=\"$ctrl.showGallery\" storage-url=\"{{$ctrl.storageUrl}}\" on-hotel-click=\"$ctrl.$hotelClick(hotel)\"></ch-hotel-map-info-window>" +
+	    		"</info-window>" +
 			"</ng-map>"
 	});
 	
@@ -90,7 +91,7 @@
 					ctrl.$updateCenter(map);
 					
 				 } else {
-					$$geocoder.geocode({'address': ctrl.address}, function(results, status) {
+					ctrl.$$geocoder.geocode({'address': ctrl.address}, function(results, status) {
 			  	  		if (status == google.maps.GeocoderStatus.OK) {
 			  	  			ctrl.$$centerObj = results[0].geometry.location;
 			
@@ -170,5 +171,9 @@
 				 ctrl.$getCenter(ctrl.$$map);
 			 }
 		 });
+		 
+		 this.$hotelClick = function(hotel) {
+			ctrl.onHotelClick && ctrl.onHotelClick({hotel: hotel});
+		};
 	 }
 })();
