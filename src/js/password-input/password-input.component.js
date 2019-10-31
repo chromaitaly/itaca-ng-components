@@ -1,5 +1,5 @@
 /**
- * People Input
+ * Password Input
  */
 (function() {
 	'use strict';
@@ -22,7 +22,9 @@
         	ngReadonly: "<?",
         	ngChange: "&",
         	mdNoAsterisk: "<?",
-        	autocomplete: "@?"
+        	autocomplete: "@?",
+        	ngPattern: "<?",
+        	ngMatch: "<?"
         },
         controller: PasswordInputCtrl,
         templateUrl: "/tpls/password-input/password-input.tpl"
@@ -39,6 +41,16 @@
 			ctrl.showIconClass = _.isNil(ctrl.showIconClass) || StringUtils.isBoolean(ctrl.showIconClass) && StringUtils.toBoolean(ctrl.showIconClass) ? "mdi mdi-eye md-24" : _.isNil(StringUtils.toBoolean(ctrl.showIconClass)) ? ctrl.showIconClass : StringUtils.toBoolean(ctrl.showIconClass);
 			ctrl.hideIconClass = _.isNil(ctrl.hideIconClass) || StringUtils.isBoolean(ctrl.hideIconClass) && StringUtils.toBoolean(ctrl.hideIconClass) ? "mdi mdi-eye-off md-24" : _.isNil(StringUtils.toBoolean(ctrl.hideIconClass)) ? ctrl.hideIconClass : StringUtils.toBoolean(ctrl.hideIconClass);
 			ctrl.mdNoAsterisk = _.isBoolean(ctrl.mdNoAsterisk) ? ctrl.mdNoAsterisk : false;
+			
+			ctrl.$initWatch();
+		};
+		
+		this.$initWatch =  function(){
+			$scope.$watch(function(){return ctrl.ngModel;}, function(newVal, oldVal){
+				if(newVal && ctrl.ngMatch){
+					$scope.chPasswordInputForm[ctrl.inputName].$setValidity('match', ctrl.ngMatch === newVal);
+				}
+			});
 		};
 	}
 })();

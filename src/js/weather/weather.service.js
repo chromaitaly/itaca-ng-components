@@ -4,21 +4,14 @@
 	angular.module("itaca.components").provider('Weather', WeatherProvider);
 	
 	function WeatherProvider() {
-		var $$appId = "";
-
-		this.setAppId = function(appId) {
-			$$appId = appId;
-		};
-
 		this.$get = /* @ngInject */ function($resource, $q) {
-			return new Weather($resource, $q, $$appId);
+			return new Weather($resource, $q);
 		};
 	}
 	
-	function Weather($resource, $q, appId) {
+	function Weather($resource, $q, WEATHER_ID) {
 		var $$service = this;
 		
-		this.$$appId = appId;
 		this.API = $resource("https://api.openweathermap.org/data/2.5/weather");
 			
 		this.get = function(city, country) {
@@ -30,7 +23,7 @@
 			}
 			
 			var params = {
-				appId : $$service.$$appId,
+				appId : WEATHER_ID,
 				q : city + ',' + country,
 				mode : 'json',
 				units : 'metric'

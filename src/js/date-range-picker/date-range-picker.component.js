@@ -5,6 +5,7 @@
         bindings: {
         	buttonClass: "@",
         	wrapperClass: "@",
+        	panelClass: "@",
         	placeholder: "@",
         	label: "@",
         	labelClass: "@",
@@ -61,6 +62,8 @@
 			ctrl.showDiff = _.isBoolean(ctrl.showDiff) ? ctrl.showDiff : true;
 			ctrl.showDiffInCalendar = _.isBoolean(ctrl.showDiffInCalendar) ? ctrl.showDiffInCalendar : true;
 			
+			ctrl.panelClass =  ctrl.panelClass || "bg-white md-whiteframe-15dp";
+			
 			// imposto la possibilità di scegliere solo il mese o anche il giorno
 			ctrl.mdMode = ctrl.mdMode && _.includes(['month', 'day'],ctrl.mdMode) ? ctrl.mdMode : null;
 			
@@ -83,7 +86,7 @@
 			    disableParentScroll: ctrl.disableParentScroll,
 			    hasBackdrop: !$mdMedia('gt-xs') || ctrl.hasBackdrop,
 			    fullscreen: !$mdMedia('gt-xs'),
-			    panelClass: "bg-white md-whiteframe-15dp",
+			    panelClass: ctrl.panelClass,
 			    trapFocus: true,
 			    onCloseSuccess: function(panelRef, closeReason) {
 			    	// touch degli input
