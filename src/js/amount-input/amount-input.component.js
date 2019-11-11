@@ -19,6 +19,7 @@
 			ngRequired: "<?",
 			ngDisabled: "<?",
 			ngReadonly: "<?",
+			hideIcon: "<?",
 			allowNegative: "<?",
 			errorMessages: "<?",
 			ngDisabled: "<?"
@@ -34,17 +35,26 @@
 	   this.REGEXP = REGEXP;
 	   
 	   this.$onInit = function() {
-		   ctrl.ngModel = _.isPlainObject(ctrl.ngModel) ? ctrl.ngModel : {};
+//		   ctrl.ngModel = _.isPlainObject(ctrl.ngModel) ? ctrl.ngModel : {};
 		   ctrl.inputName = ctrl.inputName || 'amount';
 		   ctrl.allowNegative = _.isBoolean(ctrl.allowNegative) ? ctrl.allowNegative : false;
 		   ctrl.ngMin = ctrl.ngMin < 0 && !ctrl.allowNegative ? 0 : ctrl.ngMin;
 		   ctrl.ngStep = _.isFinite(ctrl.ngStep) ? ctrl.ngStep : 0.01; 
 		   
 		   ctrl.ngDisabled = _.isBoolean(ctrl.ngDisabled) ? ctrl.ngDisabled : false;
+		   
+		   if (ctrl.amountType || ctrl.amountCurrency) {
+			   var amount = ctrl.ngModel ? angular.copy(ctrl.ngModel) : {};
+			  
+			   ctrl.amountType && (amount.type = ctrl.amountType);
+			   ctrl.amountCurrency && (amount.currency = ctrl.amountCurrency);
+			   
+			   ctrl.ngModelCtrl.$setViewValue(amount);
+		   }
 	   };
 	   
-	   this.$update = function() {
-			ctrl.ngModelCtrl.$setViewValue(ctrl.ngModel);
-		};	   
+//	   this.$update = function() {
+//			ctrl.ngModelCtrl.$setViewValue(ctrl.ngModel);
+//		};	   
 	}
 })();

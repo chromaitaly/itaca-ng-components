@@ -30,7 +30,6 @@
     	},
 		controller: CounterCtrl,
 		templateUrl: "/tpls/counter/counter.tpl"
-			
 	});
        
 	/* @ngInject */

@@ -51,21 +51,26 @@
 			ctrl.$getMarkerPosition();
 		};
 		
-		this.$getMarkerPosition = function() {
-    		if (!ctrl.hotel) {
+		scope.getMarkerPosition = function() {
+    		if (!ctrl.hotel || !ctrl.hotel.addressInfo) {
     			return;
     		}
     		
-	  	  	var fullAddress = ctrl.hotel.addressInfo.address +', '+ ctrl.hotel.addressInfo.city +', '+ ctrl.hotel.addressInfo.zipcode;
+    		if (ctrl.hotel.addressInfo.geo && !_.isEmpty(ctrl.hotel.addressInfo.geo.coordinates)) {
+    			ctrl.$$position = new google.maps.LatLng({lat: ctrl.hotel.addressInfo.geo.coordinates[1], lng: ctrl.hotel.addressInfo.geo.coordinates[0]});
+    			
+    		} else {	    		
+    	  	  	var fullAddress = ctrl.hotel.addressInfo.address +', '+ ctrl.hotel.addressInfo.city +', '+ ctrl.hotel.addressInfo.zipcode;
 
-	  	  	ctrl.chHotelMapCtrl.$$geocoder.geocode({'address': fullAddress}, function(results, status) {
-	  	  		if (status == google.maps.GeocoderStatus.OK) {
-	  	  			ctrl.$$position = results[0].geometry.location;
+    	  	  	geocoder.geocode({'address': fullAddress}, function(results, status) {
+    	  	  		if (status == google.maps.GeocoderStatus.OK) {
+    	  	  		ctrl.$$position = results[0].geometry.location;
 
-	  	  		} else {
-			    	console.error("Error geocoding hotel '" + ctrl.hotel.name + "' (address: " + fullAddress + "): " + status);
-			    }
-			});
+    	  	  		} else {
+				    	console.error("Error geocoding hotel '" + ctrl.hotel.name + "' (address: " + fullAddress + "): " + status);
+				    }
+				});
+    		}
     	};
     	
     	this.$setSelected = function(ev, hotel, selected) {

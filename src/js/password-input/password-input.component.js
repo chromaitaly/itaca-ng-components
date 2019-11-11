@@ -22,7 +22,8 @@
         	ngReadonly: "<?",
         	ngChange: "&",
         	mdNoAsterisk: "<?",
-        	autocomplete: "@?"
+        	autocomplete: "@?",
+        	ngPattern: "<?"
         },
         controller: PasswordInputCtrl,
         templateUrl: "/tpls/password-input/password-input.tpl"

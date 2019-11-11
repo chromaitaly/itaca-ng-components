@@ -6,10 +6,11 @@
     		rateType: "<",
     		cancellationPolicy: "<",
     		city: "@",
-			offset: "@",
+			timeZoneId: "@",
 			title: "@",
     		titleClass: "@",
-    		room: "<?"
+    		room: "<?",
+    		paymentMethod: "@"
     	},
 		controller: PaymentPolicyCtrl,
 		templateUrl: "/tpls/payment-policy-info/payment-policy-info.tpl"

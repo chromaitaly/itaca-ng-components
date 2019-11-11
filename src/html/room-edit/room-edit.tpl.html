@@ -132,11 +132,11 @@
 			<div>
 				<div class="md-subhead md-margin text-blue-sea">
 					<md-icon class="mdi mdi-account-multiple md-32 text-blue-sea no-margin"></md-icon>&nbsp;
-					<span flex>
-						<span>{{$ctrl.$$guestsCount.total}}</span>&nbsp;
+					<span flex class="text-lowercase">
+						<span ng-bind="$ctrl.$$guestsCount.total"></span>&nbsp;
 						<span ng-if="$ctrl.$$guestsCount.total != 1" translate="people.people"></span>
 						<span ng-if="$ctrl.$$guestsCount.total == 1" translate="people.person"></span>
-						<span class="text-lowercase">
+						<span>
 							&nbsp;
 							<span ng-if="$ctrl.$$guestsCount.standard == 1" translate="bed.will.sleep.here.room"></span>
 							<span ng-if="$ctrl.$$guestsCount.standard > 1" translate="bed.will.sleep.here.room.plur"></span>
