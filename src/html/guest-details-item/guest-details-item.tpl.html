@@ -1,0 +1,224 @@
+<div ng-if="!$ctrl.document.$$show" layout layout-wrap layout-align="center center" class="no-padding">
+	<div ng-switch="$ctrl.document.guestType">
+		<md-icon ng-switch-when="GROUP_LEADER" class="mdi mdi-google-circles md-18 circle-icon bg-success text-white"></md-icon>
+		<md-icon ng-switch-when="HOUSEHOLDER" class="mdi mdi-account-multiple md-18 circle-icon bg-success text-white"></md-icon>
+		<md-icon ng-switch-default class="mdi md-18 circle-icon bg-gray-lighter text-gray-light" ng-class="$ctrl.document.name && $ctrl.document.surname ? 'mdi-account': 'mdi-help'"></md-icon>
+	</div>
+	<div flex flex-xs="100" flex-sm="100" ng-class="{'text-center': !$ctrl.$mdMedia('gt-sm')}">&nbsp;
+		<span ng-if="$ctrl.document.name && $ctrl.document.surname">
+			<span class="text-capitalize" ng-bind="$ctrl.document.name+ ' ' +$ctrl.document.surname"></span>&nbsp;
+			<span ng-if="$ctrl.document.guestType" ng-class=" $ctrl.document.guestType == 'GROUP_LEADER' || $ctrl.document.guestType == 'HOUSEHOLDER'? 'label label-xs bg-success' : 'label label-xs bg-gray-light'">
+				<span ng-if="$ctrl.document.guestType == 'GROUP_LEADER'" translate="common.GROUP_LEADER"></span>
+				<span ng-if="$ctrl.document.guestType == 'HOUSEHOLDER'" translate="common.HOUSEHOLDER"></span>
+				<span ng-if="$ctrl.document.guestType == 'SINGLE_GUEST'" translate="common.SINGLE_GUEST"></span>
+				<span ng-if="$ctrl.document.guestType == 'GROUP_MEMBER'" translate="common.GROUP_MEMBER"></span>
+				<span ng-if="$ctrl.document.guestType == 'FAMILY_MEMBER'" translate="common.FAMILY_MEMBER"></span>
+			</span>
+		</span>
+		<span ng-if="!$ctrl.document.name || !$ctrl.document.surname" class="text-gray-light">
+			<span translate="reservation.text.identityDocuments.no.guest"></span>,&nbsp;
+			<span translate="reservation.text.identityDocuments.add.question"></span>
+		</span>
+	</div>
+	<div layout ng-if="$ctrl.document.name && $ctrl.document.surname">
+		<md-button class="row-mini auto-height only-border border-blue-sea text-blue-sea" ng-click="$ctrl.$edit()" aria-label="edit guest document" ng-disabled="$ctrl.action.inEdit">
+			<md-icon class="mdi mdi-pencil md-18 text-blue-sea"></md-icon>
+			<small translate="common.edit"></small>
+		</md-button>
+		<md-button class="row-mini auto-height only-border border-danger text-danger" ng-click="$ctrl.$remove()" aria-label="cancel document" ng-disabled="$ctrl.action.inEdit">
+			<md-icon class="mdi mdi-delete-outline md-18 text-danger"></md-icon>
+			<small translate="common.remove"></small>
+		</md-button>
+	</div>
+	<div ng-if="!$ctrl.document.name || !$ctrl.document.surname" ng-class="{'flex-100 layout-column': !$ctrl.$mdMedia('gt-sm')}">
+		<md-button class="row-mini auto-height only-border border-success text-success" ng-click="$ctrl.$edit(true)" aria-label="add guest document" ng-disabled="$ctrl.action.inEdit">
+			<md-icon class="mdi mdi-plus md-18 text-success"></md-icon>
+			<small translate="common.add"></small>
+		</md-button>
+	</div>
+</div>
+
+<ng-form name="guestDetailsItemForm" class="display-block">
+	<div ng-if="$ctrl.document.$$show" layout="column" flex="100" class="only-border border-radius-6 bg-gray-lighter">
+		<div layout layout-wrap layout-margin layout-align="center center" class="no-margin-bottom text-gray-light">
+			<div ng-if="!$ctrl.action.anAdult && (!$ctrl.document.guestType || $ctrl.document.guestType == 'GROUP_LEADER' || $ctrl.document.guestType == 'HOUSEHOLDER' || $ctrl.document.guestType == 'SINGLE_GUEST')" flex-xs="100" flex-sm="100">
+				<span>
+					<strong translate="reservation.text.identityDocuments.legalAge"></strong>
+				</span>
+			</div>
+			<div flex ng-class="!$ctrl.$mdMedia('gt-sm') ? 'text-center' : 'text-right'" class="no-margin">
+				<div ng-if="$ctrl.document.guestType != 'GROUP_MEMBER' && $ctrl.document.guestType != 'FAMILY_MEMBER'">
+					<md-button ng-class="{'bg-success': $ctrl.document.guestType == 'GROUP_LEADER'}" ng-click="$ctrl.$setGuestType('GROUP_LEADER')" aria-label="set as group leader">
+						<md-icon class="mdi mdi-google-circles md-18"  ng-class="$ctrl.document.guestType == 'GROUP_LEADER' ? 'text-white' : 'text-success'"></md-icon>
+						<small translate="common.GROUP_LEADER" ng-class="$ctrl.document.guestType == 'GROUP_LEADER' ? 'text-white' : 'text-success'"></small>
+					</md-button>
+					<md-button ng-class="{'bg-success': $ctrl.document.guestType == 'HOUSEHOLDER'}" ng-click="$ctrl.$setGuestType('HOUSEHOLDER')" aria-label="set as householder">
+						<md-icon class="mdi mdi-account-multiple md-18" ng-class="$ctrl.document.guestType == 'HOUSEHOLDER' ? 'text-white' : 'text-success'"></md-icon>
+						<small translate="common.HOUSEHOLDER" ng-class="$ctrl.document.guestType == 'HOUSEHOLDER' ? 'text-white' : 'text-success'"></small>
+					</md-button>
+					<md-button ng-disabled="$ctrl.document.guestType == 'GROUP_MEMBER' || $ctrl.document.guestType == 'FAMILY_MEMBER'" ng-class="{'bg-success': $ctrl.document.guestType == 'SINGLE_GUEST'}" ng-click="$ctrl.$setGuestType('SINGLE_GUEST')" aria-label="set as single guest">
+						<md-icon class="mdi mdi-account md-18" ng-class="$ctrl.document.guestType == 'SINGLE_GUEST' ? 'text-white' : $ctrl.document.guestType == 'GROUP_MEMBER' || $ctrl.document.guestType == 'FAMILY_MEMBER' ? 'text-gray-light' : 'text-success'"></md-icon>
+						<small translate="common.SINGLE_GUEST" ng-class="$ctrl.document.guestType == 'SINGLE_GUEST' ? 'text-white' : $ctrl.document.guestType == 'GROUP_MEMBER' || $ctrl.document.guestType == 'FAMILY_MEMBER' ? 'text-gray-light' : 'text-success'"></small>
+					</md-button>
+				</div>
+				<div ng-if="$ctrl.document.guestType == 'FAMILY_MEMBER'" class="bg-success text-white md-button">
+					<md-icon class="mdi mdi-account md-18 text-white"></md-icon>
+					<small translate="common.FAMILY_MEMBER"></small>
+				</div>
+				<div ng-if="$ctrl.document.guestType == 'GROUP_MEMBER'" class="bg-success text-white md-button">
+					<md-icon class="mdi mdi-account md-18 text-white"></md-icon>
+					<small translate="common.GROUP_MEMBER"></small>
+				</div>
+			</div>
+		</div>
+		
+		<div layout layout-wrap>
+			<div layout="column" flex="100">
+				<div layout layout-wrap>
+					<div layout="column" layout-padding flex="100" flex-gt-sm="50" flex-gt-md="20">
+						<md-input-container class="md-blocks no-padding" ng-class="{'no-margin-bottom' : !$ctrl.$mdMedia('gt-sm')}">
+				       		<label translate="common.name"></label>
+				       		<input type="text" ng-model="$ctrl.document.name" name="name" required>
+					    	<div ng-messages="guestDetailsItemForm.name.$error">
+				          		<div ng-message="required"><span translate="error.required"></span></div>
+					        </div>
+					    </md-input-container>
+				    </div>
+				    <div layout="column" layout-padding flex="100" flex-gt-sm="50" flex-gt-md="20">
+						<md-input-container class="md-blocks no-padding" ng-class="{'no-margin-bottom' : !$ctrl.$mdMedia('gt-sm')}">
+				       		<label translate="common.surname"></label>
+				       		<input type="text" ng-model="$ctrl.document.surname" name="surname" required>
+					    	<div ng-messages="guestDetailsItemForm.surname.$error">
+				          		<div ng-message="required"><span translate="error.required"></span></div>
+					        </div>
+					    </md-input-container>
+				    </div>
+				    <div layout="column" layout-padding flex="100" flex-gt-sm="33" flex-gt-md="20">
+						<md-input-container class="md-blocks no-padding">
+				       		<label translate="common.gender"></label>
+				       		<md-select ng-model="$ctrl.document.gender" aria-label="gender" name="gender" required>
+					        	<md-option value="MALE"><span translate="common.gender.male"></span></md-option>
+								<md-option value="FEMALE"><span translate="common.gender.female"></span></md-option>
+					        </md-select>
+					        <div ng-messages="guestDetailsItemForm.gender.$error">
+				          		<div ng-message="required"><span translate="error.required"></span></div>
+					        </div>
+					    </md-input-container>
+				    </div>
+				    
+				    <div layout="column" layout-padding flex="100" flex-gt-sm="33" flex-gt-md="20">
+						<md-input-container class="md-blocks no-padding-x-sides no-padding-top">
+				       		<label translate="common.birthdate"></label>
+				       		<md-datepicker name="birthdate" ng-model="$ctrl.document.birthDate" utc-date md-datepicker-on-click md-open-on-focus md-hide-icons="calendar" md-max-date="$ctrl.document.maxDate" required></md-datepicker>
+							<div ng-messages="guestDetailsItemForm.birthdate.$error">
+				          		<div ng-message="maxdate"><span translate="error.date.invalid"></span></div>
+				          		<div ng-message="required"><span translate="error.required"></span></div>
+					        </div>
+					    </md-input-container>
+				    </div>
+				    <div layout="column" layout-padding flex="100" flex-gt-sm="33" flex-gt-md="20" ng-class="{'no-padding' : !$ctrl.$mdMedia('gt-sm')}">
+						<guest-details-autocomplete 
+							ng-model="$ctrl.document.birthPlace" 
+							label="{{'common.birthplace'|translate}}" 
+							list="$ctrl.appOptions.$$places"
+							 min-length="2" 
+							is-required="true"
+							hint="{{('publicAdministration.accommodationCards.hint'|translate)}}"
+							style="margin-top: -10px;">
+						</guest-details-autocomplete>
+				    	<div><span></span></div>
+				    </div>
+				</div>
+				<div layout layout-wrap style="margin-top: -24px;">
+					<div layout="column" layout-padding flex="100" flex-gt-sm="50" flex-gt-md="20" class="no-padding">
+						<guest-details-autocomplete ng-model="$ctrl.document.nationality" label="{{'common.nationality'|translate}}" list="$ctrl.appOptions.$$countries"  min-length="2"  is-required="true"></guest-details-autocomplete>
+				    </div>
+					<div layout="column" layout-padding flex="100" flex-gt-sm="50" flex-gt-md="20" class="no-padding">
+						<guest-details-autocomplete ng-model="$ctrl.document.citizenship" label="{{'common.citizenship'|translate}}" list="$ctrl.appOptions.$$countries"  min-length="2"   is-required="true"></guest-details-autocomplete>
+				    </div>
+				    <div layout="column" layout-padding flex="100" flex-gt-sm="33" flex-gt-md="20" class="no-padding" ng-show="$ctrl.document.guestType != 'GROUP_MEMBER' && $ctrl.document.guestType != 'FAMILY_MEMBER'">
+						<guest-details-autocomplete ng-model="$ctrl.document.type" label="{{'common.document'|translate}}" list="$ctrl.appOptions.$$documents"  min-length="2"  is-required="!$ctrl.document.guestType == 'GROUP_MEMBER' && !$ctrl.document.guestType == 'FAMILY_MEMBER'" is-disabled="$ctrl.document.guestType == 'GROUP_MEMBER' || $ctrl.document.guestType == 'FAMILY_MEMBER'"></guest-details-autocomplete>
+				    </div>
+				    <div layout="column" layout-padding flex="100" flex-gt-sm="33" flex-gt-md="20" class="no-padding" ng-show="$ctrl.document.guestType != 'GROUP_MEMBER' && $ctrl.document.guestType != 'FAMILY_MEMBER'">
+						<guest-details-autocomplete 
+							ng-model="$ctrl.document.issuer" 
+							label="{{'common.place.issuer'|translate}}" 
+							list="$ctrl.appOptions.$$places"
+							min-length="2"
+							is-disabled="$ctrl.document.guestType == 'GROUP_MEMBER' || $ctrl.document.guestType == 'FAMILY_MEMBER'"
+							is-required="$ctrl.document.guestType != 'GROUP_MEMBER' && $ctrl.document.guestType != 'FAMILY_MEMBER'"
+							hint="{{('publicAdministration.accommodationCards.hint'|translate)}}">
+						</guest-details-autocomplete>
+				    </div>
+				    <div layout="column" layout-padding flex="100" flex-gt-sm="33" flex-gt-md="20" style="margin-top:10px;" ng-class="{'no-padding' : $ctrl.$mdMedia('gt-sm')}" ng-show="$ctrl.document.guestType != 'GROUP_MEMBER' && $ctrl.document.guestType != 'FAMILY_MEMBER'">
+						<md-input-container class="md-blocks no-padding">
+				       		<label translate="common.document.number"></label>
+				       		<input type="text" ng-model="$ctrl.document.number" name="number" ng-required="$ctrl.document.guestType != 'GROUP_MEMBER' && $ctrl.document.guestType != 'FAMILY_MEMBER'" ng-disabled="$ctrl.document.guestType == 'GROUP_MEMBER' || $ctrl.document.guestType == 'FAMILY_MEMBER'">
+				       		<div ng-messages="guestDetailsItemForm.number.$error">
+				          		<div ng-message="required"><span translate="error.required"></span></div>
+					        </div>
+					    </md-input-container>
+				    </div>
+<!-- 				    <div layout="column" layout-padding flex="100" flex-gt-sm="20"> -->
+<!-- 						<md-input-container class="md-blocks no-padding"> -->
+<!-- 				       		<label translate="common.document.expirationDate"></label> -->
+<!-- 				       		<md-datepicker name="expirationDate" ng-model="$ctrl.document.expirationDate" utc-date  -->
+<!-- 				       			md-datepicker-on-click md-open-on-focus md-hide-icons="calendar" md-min-date="$ctrl.action.today" ></md-datepicker> -->
+<!-- 			       			<div ng-messages="guestDetailsItemForm.expirationDate.$error"> -->
+<!-- 				          		<div ng-message="min"><span translate="error.date.before.today"></span></div> -->
+<!-- 					        </div> -->
+<!-- 					    </md-input-container> -->
+<!-- 				    </div> -->
+				    
+				 </div>
+				 <div layout layout-wrap layout-align="center start" style="margin-top: -24px;">
+				 	<div layout="column" layout-padding flex="100">
+				 		<strong class="bg-gray-medium border-radius-6 text-center">
+				 			<span translate="publicAdministration.accommodationCards.exemption.title"></span>
+				 		</strong>
+				 	</div>
+				 	<div layout="column" layout-padding flex="100" flex-gt-sm="50">
+				 		<md-input-container class="md-blocks no-padding">
+				       		<label translate="publicAdministration.accommodationCards.resident"></label>
+				       		<md-select ng-model="$ctrl.document.resident" aria-label="resident" name="resident" ng-disabled="$ctrl.document.exemption">
+				       			<md-option ng-value="false" ng-selected="!$ctrl.document.resident"><span translate="common.no"></span></md-option>
+				       			<md-option ng-value="true"><span translate="common.yes"></span></md-option>
+					        </md-select>
+					        <div ng-if="$ctrl.document.resident || $ctrl.document.exemption" layout-padding class="no-padding-x-sides">
+					        	<md-icon class="mdi mdi-checkbox-marked-circle-outline text-success md-18 no-padding"></md-icon>
+					        	<span class="text-success no-padding-x-sides" translate="publicAdministration.accommodationCards.resident.hint"></span>
+					        </div>
+					    </md-input-container>
+				 	</div>
+				 	<div layout="column" layout-padding flex="100" flex-gt-sm="50">
+						<md-input-container class="md-blocks no-padding">
+				       		<label translate="publicAdministration.accommodationCards.exemption"></label>
+				       		<md-select ng-model="$ctrl.document.exemption" aria-label="exemption" name="exemption" ng-disabled="$ctrl.document.resident">
+				       			<md-option ng-value="null" ng-selected="!$ctrl.document.exemption"><span translate="common.none.female"></span></md-option>
+					            <md-option ng-value="'MINOR'"><span translate="publicAdministration.accommodationCards.MINOR"></span></md-option>
+								<md-option ng-value="'HOSPITAL_PATIENTS'"><span translate="publicAdministration.accommodationCards.HOSPITAL_PATIENTS"></span></md-option>
+								<md-option ng-value="'ASSISTANT_PATIENTS'"><span translate="publicAdministration.accommodationCards.ASSISTANT_PATIENTS"></span></md-option>
+								<md-option ng-value="'BUS_DRIVERS'"><span translate="publicAdministration.accommodationCards.BUS_DRIVERS"></span></md-option>
+								<md-option ng-value="'ARMED_FORCES'"><span translate="publicAdministration.accommodationCards.ARMED_FORCES"></span></md-option>
+								<md-option ng-value="'EXTRA_NIGHTS'"><span translate="publicAdministration.accommodationCards.EXTRA_NIGHTS"></span></md-option>
+					            <md-option ng-value="'SCHEDULED_NIGHTS'"><span translate="publicAdministration.accommodationCards.SCHEDULED_NIGHTS"></span></md-option>
+					        </md-select>
+					    </md-input-container>
+				    </div>
+				 </div>
+			</div>
+		</div>
+	  		
+		<div layout flex="100" layout-align="center center">
+	    	<md-button ng-click="$ctrl.$cancel()" aria-label="Cancel document">
+				<md-icon class="mdi mdi-close md-24"></md-icon>
+				<span translate="common.cancel"></span>
+			</md-button>
+	    
+			<md-button class="bg-success text-white" ng-click="$ctrl.$confirm()" aria-label="Confirm document">
+				<md-icon class="mdi mdi-check md-24 text-white"></md-icon>
+				<span translate="common.confirm"></span>
+			</md-button>
+		</div>
+	</div>
+</ng-form>

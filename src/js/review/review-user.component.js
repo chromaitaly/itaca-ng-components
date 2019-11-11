@@ -51,7 +51,7 @@
 					    			"<span ng-if=\"$ctrl.review.reviewSettings.anonymous || !$ctrl.$$user\" translate=\"common.anonymous\"></span>" +
 					    		"</strong>" +
 					    		"<span ng-if=\"$ctrl.review.createdDate && !$ctrl.hideDate\" class=\"font-10 text-gray-light\">" +
-					    			"<span>&nbsp;-&nbsp;{{$ctrl.review.createdDate|utcDate:$ctrl.dateFormat}}</span>" +
+					    			"<span>&nbsp;-&nbsp;{{$ctrl.review.createdDate|date:$ctrl.dateFormat}}</span>" +
 					    		"</span>" +
 				    		"</div>" +
 			    			"<small class=\"font-10 text-gray-light row-1 text-lowercase\" ng-if=\"!$ctrl.review.reviewSettings.anonymous && $ctrl.$$user.reviewsCount\">" +
@@ -90,6 +90,8 @@
     		}
     		
     		ctrl.review = ctrl.chReviewCtrl.review;
+    		
+    		ctrl.$$user = ctrl.review.reservation.guest ? ctrl.review.reservation.guest : ctrl.review.createdBy;
 		};
 		
 		this.$userClick = function(ev) {

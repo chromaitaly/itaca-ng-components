@@ -83,19 +83,12 @@
 				</div>
 			</div>
 				
-			<div ng-if="$ctrl.room.totalRate.$$bestHotelRate" class="layout-row layout-wrap layout-align-start-center layout-padding border-radius border-success text-success only-border md-body-2 margin-auto-20">
+			<div ng-if="$ctrl.room.totalRate.$$bestHotelRate" class="layout-row layout-wrap layout-align-start-center layout-padding border-radius-6 bg-success-light text-success md-body-2 margin-auto-20">
 				<span class="no-padding">
 					<md-icon class="mdi mdi-thumb-up-outline md-24 text-success"></md-icon>&nbsp;
 					<span translate="room.best.hotel.rate"></span>
 				</span>
 			</div>
-			
-<!-- 			<div ng-if="!$ctrl.showConfig" class="layout-row layout-wrap layout-align-start-center layout-padding border-radius border-success text-success only-border md-body-2 margin-auto-20"> -->
-<!-- 				<span class="no-padding"> -->
-<!-- 					<md-icon class="mdi mdi-thumb-up-outline md-24 text-success"></md-icon>&nbsp; -->
-<!-- 					<span translate="room.last.hotel.rate.selected"></span> -->
-<!-- 				</span> -->
-<!-- 			</div> -->
 			
 			<div ng-if="!$ctrl.room.totalRate.$$bestHotelRate" class="layout-row layout-wrap layout-align-start-center layout-padding border-radius border-blue-sea text-blue-sea only-border md-body-2 margin-auto-20">
 				<span class="no-padding">
@@ -115,7 +108,7 @@
 			
 			<md-button class="bg-blue-sea text-wrap button-small" ng-click="$ctrl.$toggleRoomConfig(true)" aria-label="Config room">
 				<span><span translate="room.config.now"></span>!</span>
-				<md-icon class="mdi mdi-chevron-down md-24 text-white animated infinite bounce"></md-icon>
+				<md-icon class="mdi mdi-chevron-down md-24 text-white"></md-icon>
 			</md-button>
 		</div>
 	</div>
@@ -332,6 +325,57 @@
 			</div>	
 		</div>
 		
+		<div ng-if="$ctrl.$$includedPaidServices.length" layout="column" class="margin-20-no-x-sides no-margin-top">
+			<div>
+				<div class="md-subhead md-margin text-blue-sea">
+					<md-icon class="mdi mdi-coin md-32 text-blue-sea no-margin"></md-icon>&nbsp;
+					<span translate="common.service.included.paid"></span>
+				</div>
+				
+				<md-divider></md-divider>
+				
+				<div class="md-padding no-padding-top no-padding-bottom text-gray-light text-italic">
+					<md-icon class="mdi mdi-information-outline md-14"></md-icon>&nbsp;
+					<small >
+						<span translate="common.service.included.paid.description"></span>
+					</small>
+				</div>
+				
+			</div>
+			
+			<div class="layout-column flex-100  md-padding no-padding-top">
+				<div layout layout-wrap layout-padding-sm>
+					<div ng-repeat="service in $ctrl.$$includedPaidServices track by $index" class="flex-100 flex-gt-sm-50">
+						<md-icon ng-if="$ctrl.$$servicesIcons[service.type.nameKey]" class="{{$ctrl.$$servicesIcons[service.type.nameKey]}} text-success material-icons"></md-icon>
+						<md-icon ng-if="!$ctrl.$$servicesIcons[service.type.nameKey]" class="mdi mdi-check text-success material-icons"></md-icon>&nbsp;
+						<span translate="{{service.type.nameKey}}"></span>&nbsp;
+						<span ng-switch="service.paymentType" class="text-lowercase text-gray-light">
+							<small ng-switch-when="FREE">
+								<span><span translate="common.free"></span></span>
+							</small>
+							<small ng-switch-when="SINGLE">
+								<span ng-bind="(service.paymentOptions[0].amount.finalAmount|chCurrency)"></span>&nbsp;
+								<span ng-if="service.frequency == 'DAILY'" class="text-lowercase"><span translate="date.frequency.daily"></span></span>
+	   							<span ng-if="service.frequency == 'MONTHLY'" class="text-lowercase"><span translate="date.frequency.monthly"></span></span>
+	   							<span ng-if="service.frequency == 'YEARLY'" class="text-lowercase"><span translate="date.frequency.yearly"></span></span>
+	   							<span ng-if="service.frequency == 'LUMP_SUM'" class="text-lowercase"><span translate="common.entire.stay"></span></span>
+							</small>
+							<small ng-switch-when="PER_PERSON">
+								<span>
+									<span translate="reservation.starting.from"></span>:&nbsp;
+									<span ng-bind="(service.startingFrom|chCurrency)"></span>&nbsp;
+									<span ng-if="service.frequency == 'DAILY'" class="text-lowercase"><span translate="date.frequency.daily"></span></span>
+	   								<span ng-if="service.frequency == 'MONTHLY'" class="text-lowercase"><span translate="date.frequency.monthly"></span></span>
+	   								<span ng-if="service.frequency == 'YEARLY'" class="text-lowercase"><span translate="date.frequency.yearly"></span></span>
+	   								<span ng-if="service.frequency == 'LUMP_SUM'" class="text-lowercase"><span translate="common.entire.stay"></span></span>
+								</span>
+							</small>
+						</span>						
+					</div>
+				</div>
+			</div>	
+		</div>
+		
 		<div ng-if="$ctrl.$$freeServices.length" layout="column" class="margin-20-no-x-sides no-margin-top">
 			<div>
 				<div class="md-subhead md-margin text-blue-sea">
@@ -417,15 +461,7 @@
 			</div>
 			
 			<div ng-if="$ctrl.$$showIdentityDocuments" id="ch-room-edit-{{$ctrl.$$index}}-config-documents">
-				<ch-room-edit-identity-documents
-					identity-documents="$ctrl.room.identityDocuments"
-					total-count="$ctrl.$$guestsCount.total"
-					guest-type="$ctrl.identityDocumentGuestType"
-					on-add="$ctrl.$onIdentityDocumentAdd($document)"
-					on-remove="$ctrl.$onIdentityDocumentRemove($document)"
-					on-change="$ctrl.$onIdentityDocumentChange($document)">
-				</ch-room-edit-identity-documents>
-<!-- 						<div th:replace="public/partials/hotel/content/book/rooms/guests/guests-details"></div> -->
+				<ch-room-edit-identity-documents room="$ctrl.room" legal-age="$ctrl.legalAge" reservation="$ctrl.reservation"></ch-room-edit-identity-documents>
 			</div>
 		</div>
 		

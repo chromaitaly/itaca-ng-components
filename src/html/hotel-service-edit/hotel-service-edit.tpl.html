@@ -6,8 +6,8 @@
 					<md-icon class="mdi mdi-checkbox-marked-circle-outline text-white md-24 no-padding-y-sides no-padding-right" ng-if="$ctrl.isChecked"></md-icon>
 				</div>
 				<div class="layout-column row-mini text-ellipsis text-wrap text-left">
-					<span translate="{{$ctrl.type.nameKey}}"></span>
-					<small class="text-initial" ng-if="$ctrl.isChecked && $ctrl.service.$$description">{{$ctrl.service.$$description}}</small>
+					<span class="searchText" translate="{{$ctrl.type.nameKey}}"></span>
+					<small class="text-initial" ng-if="$ctrl.isChecked && $ctrl.service.$$description" ng-bind="$ctrl.service.$$description"></small>
 				</div>
 			</div>
 		</md-button>
@@ -22,7 +22,7 @@
 		</md-button>
 	</div>
 </div>
-<ng-form name="$ctrl.serviceForm">
+<ng-form name="serviceForm">
 	<div ng-if="$ctrl.service.inEdit" class="border-radius-6 md-margin ng-scope only-border fadeInUp">
 		<div class="bg-gray-lighter layout-align-start-center layout-padding layout-row no-padding">
 			<span class="flex md-subhead" translate="{{$ctrl.service.type.nameKey}}"></span>
@@ -43,7 +43,7 @@
 				          <md-option value="HOTEL"><span translate-once="service.type.in.hotel"></span></md-option>
 				          <md-option value="EXTERNAL" ng-if="$ctrl.advanced"><span translate-once="service.type.external"></span></md-option>
 				        </md-select>
-						<div ng-messages="$ctrl.serviceForm.category.$error">
+						<div ng-messages="serviceForm.category.$error">
 				        	<div ng-message="required"><span translate-once="error.required"></span></div>
 					    </div>
 					</md-input-container>
@@ -57,13 +57,13 @@
 				          </md-option>
 				          <md-option value="BOOKABLE"><span translate-once="service.type.bookable.alt"></span></md-option>
 				        </md-select>
-						<div ng-messages="$ctrl.serviceForm.bookability.$error">
+						<div ng-messages="serviceForm.bookability.$error">
 				        	<div ng-message="required"><span translate-once="error.required"></span></div>
 					    </div>
 					</md-input-container>
 				</div>
 			</div>
-			<div class="layout-row layout-wrap" ng-if="$ctrl.service.bookability != 'INCLUDED'">
+			<div class="layout-row layout-wrap" ng-if="$ctrl.service.bookability != 'INCLUDED' || ($ctrl.service.bookability == 'INCLUDED' && $ctrl.service.category == 'ROOM')">
 				<div class="layout-column flex-100 flex-gt-sm-50 layout-padding">
 					<md-input-container class="md-block no-padding">
 						<label translate-once="service.type.payment.type.question.alt">payment type</label>
@@ -71,15 +71,15 @@
 					          <md-option value="FREE" ng-selected="$ctrl.service.paymentType == 'FREE' || !$ctrl.service.paymentType">
 					          		<span translate-once="service.type.payment.free"></span>
 					          </md-option>
-					          <md-option value="SINGLE" ng-if="$ctrl.service.bookability == 'BOOKABLE'">
+					          <md-option value="SINGLE" ng-if="($ctrl.service.category == 'ROOM'  && $ctrl.service.bookability == 'INCLUDED') || $ctrl.service.bookability == 'BOOKABLE'">
 					          		<span translate-once="service.type.payment.single.alt"></span>
 					          </md-option>
-					          <md-option value="PER_PERSON" ng-if="$ctrl.service.bookability == 'BOOKABLE'">
+					          <md-option value="PER_PERSON" ng-if="($ctrl.service.category == 'ROOM'  && $ctrl.service.bookability == 'INCLUDED') || $ctrl.service.bookability == 'BOOKABLE'">
 					          		<span translate-once="service.type.payment.person"></span>
 					          		
 					          </md-option>
 				        </md-select>
-						<div ng-messages="$ctrl.serviceForm.paymentType.$error">
+						<div ng-messages="serviceForm.paymentType.$error">
 				        	<div ng-message="required"><span translate-once="error.required"></span></div>
 					    </div>
 					</md-input-container>
@@ -93,14 +93,14 @@
 							 <md-option value="MONTHLY"><span translate-once="service.type.payment.MONTHLY"></span></md-option>
 							 <md-option value="YEARLY"><span translate-once="service.type.payment.YEARLY"></span></md-option>
 				        </md-select>
-						<div ng-messages="$ctrl.serviceForm.frequency.$error">
+						<div ng-messages="serviceForm.frequency.$error">
 				        	<div ng-message="required"><span translate-once="error.required"></span></div>
 					    </div>
 					</md-input-container>
 				</div>
 			</div>
 
-			<div class="layout-row layout-wrap no-padding" ng-if="$ctrl.service.bookability != 'INCLUDED' &&  $ctrl.service.paymentType && $ctrl.service.paymentType != 'FREE'">
+			<div class="layout-row layout-wrap no-padding" ng-if="$ctrl.service.bookability != 'INCLUDED' || ($ctrl.service.bookability == 'INCLUDED' && $ctrl.service.category == 'ROOM') &&  $ctrl.service.paymentType && $ctrl.service.paymentType != 'FREE'">
 				<div class="layout-column flex-100">
 					<!-- SINGLE -->
 					<div class="layout-row layout-padding layout-align-end-center" ng-if="$ctrl.service.paymentType == 'SINGLE'">
@@ -109,7 +109,7 @@
 							<label translate-once="common.price">Price</label>
 							<input type="number" name="payment.SINGLE.price" required ng-model="$ctrl.service.pay['SINGLE'].price" placeholder="{{::('service.type.payment.free'|translate)}}" min="0" step="0.5" ng-pattern="REGEXP.price">
 							
-							<div ng-messages="$ctrl.serviceForm.payment.SINGLE.price.$error">
+							<div ng-messages="serviceForm.payment.SINGLE.price.$error">
 								<div ng-message="required"><span translate-once="error.required"></span></div>
 				        		<div ng-message="min"><span translate-once="error.field.min" translate-values="{num: 0}"></span></div>
 				        		<div ng-message="pattern"><span translate-once="error.field.generic.invalid"></span></div>
@@ -119,7 +119,7 @@
 							<label><span translate-once="billing.vat.tax">VAT</span> (%)</label>
 							<input type="number" name="payment.SINGLE.vat" ng-model="$ctrl.service.pay['SINGLE'].vat" placeholder="%" min="0" step="1" max="100" ng-pattern="REGEXP.price">
 							
-							<div ng-messages="$ctrl.serviceForm.payment.SINGLE.vat.$error">
+							<div ng-messages="serviceForm.payment.SINGLE.vat.$error">
 				        		<div ng-message="min"><span translate-once="error.field.min" translate-values="{num: 0}"></span></div>
 				        		<div ng-message="max"><span translate-once="error.field.max" translate-values="{num: 100"}></span></div>
 				        		<div ng-message="pattern"><span translate-once="error.field.generic.invalid"></span></div>
@@ -133,7 +133,7 @@
 							<label translate-once="common.price">Price</label>
 							<input type="number" name="payment.PER_ADULT.price" required ng-model="$ctrl.service.pay['PER_ADULT'].price" placeholder="{{::('service.type.payment.free'|translate)}}"  min="0" step="0.5" ng-pattern="REGEXP.price">
 							
-							<div ng-messages="$ctrl.serviceForm.payment.PER_ADULT.price.$error">
+							<div ng-messages="serviceForm.payment.PER_ADULT.price.$error">
 								<div ng-message="required"><span translate-once="error.required"></span></div>
 				        		<div ng-message="min"><span translate-once="error.field.min" translate-values="{num: 0}"></span></div>
 				        		<div ng-message="pattern"><span translate-once="error.field.generic.invalid"></span></div>
@@ -143,7 +143,7 @@
 							<label><span translate-once="billing.vat.tax">VAT</span> (%)</label>
 							<input type="number" name="payment.PER_ADULT.vat" ng-model="$ctrl.service.pay['PER_ADULT'].vat" placeholder="%" min="0" step="1" max="100" ng-pattern="REGEXP.price">
 							
-							<div ng-messages="$ctrl.serviceForm.payment.PER_ADULT.vat.$error">
+							<div ng-messages="serviceForm.payment.PER_ADULT.vat.$error">
 				        		<div ng-message="min"><span translate-once="error.field.min" translate-values="{num: 0}"></span></div>
 				        		<div ng-message="max"><span translate-once="error.field.max" translate-values="{num: 100"}></span></div>
 				        		<div ng-message="pattern"><span translate-once="error.field.generic.invalid"></span></div>
@@ -157,7 +157,7 @@
 							<label translate-once="common.price">Price</label>
 							<input type="number" name="payment.PER_BOY.price" ng-model="$ctrl.service.pay['PER_BOY'].price" placeholder="{{::('service.type.payment.free'|translate)}}"  min="0" step="0.5" ng-pattern="REGEXP.price">
 							
-							<div ng-messages="$ctrl.serviceForm.payment.PER_BOY.price.$error">
+							<div ng-messages="serviceForm.payment.PER_BOY.price.$error">
 				        		<div ng-message="min"><span translate-once="error.field.min" translate-values="{num: 0}"></span></div>
 				        		<div ng-message="pattern"><span translate-once="error.field.generic.invalid"></span></div>
 					      	</div>
@@ -166,7 +166,7 @@
 							<label><span translate-once="billing.vat.tax">VAT</span> (%)</label>
 							<input type="number" name="payment.PER_BOY.vat" ng-model="$ctrl.service.pay['PER_BOY'].vat" placeholder="%"  min="0" step="1" max="100" ng-pattern="REGEXP.price">
 							
-							<div ng-messages="$ctrl.serviceForm.payment.PER_BOY.vat.$error">
+							<div ng-messages="serviceForm.payment.PER_BOY.vat.$error">
 				        		<div ng-message="min"><span translate-once="error.field.min" translate-values="{num: 0}"></span></div>
 				        		<div ng-message="max"><span translate-once="error.field.max" translate-values="{num: 100"}></span></div>
 				        		<div ng-message="pattern"><span translate-once="error.field.generic.invalid"></span></div>
@@ -180,7 +180,7 @@
 							<label translate-once="common.price">Price</label>
 							<input type="number" name="payment.PER_CHILD.price" ng-model="$ctrl.service.pay['PER_CHILD'].price" placeholder="{{::('service.type.payment.free'|translate)}}"  min="0" step="0.5" ng-pattern="REGEXP.price">
 							
-							<div ng-messages="$ctrl.serviceForm.payment.PER_CHILD.price.$error">
+							<div ng-messages="serviceForm.payment.PER_CHILD.price.$error">
 				        		<div ng-message="min"><span translate-once="error.field.min" translate-values="{num: 0}"></span></div>
 				        		<div ng-message="pattern"><span translate-once="error.field.generic.invalid"></span></div>
 					      	</div>
@@ -189,7 +189,7 @@
 							<label><span translate-once="billing.vat.tax">VAT</span> (%)</label>
 							<input type="number" name="payment.PER_CHILD.vat" ng-model="$ctrl.service.pay['PER_CHILD'].vat" placeholder="%" min="0" step="1" max="100" ng-pattern="REGEXP.price">
 							
-							<div ng-messages="$ctrl.serviceForm.payment.PER_CHILD.vat.$error">
+							<div ng-messages="serviceForm.payment.PER_CHILD.vat.$error">
 				        		<div ng-message="min"><span translate-once="error.field.min" translate-values="{num: 0}"></span></div>
 				        		<div ng-message="max"><span translate-once="error.field.max" translate-values="{num: 100"}></span></div>
 				        		<div ng-message="pattern"><span translate-once="error.field.generic.invalid"></span></div>
@@ -203,7 +203,7 @@
 							<label translate-once="common.price">Price</label>
 							<input type="number" name="payment.PER_KID.price" ng-model="$ctrl.service.pay['PER_KID'].price" placeholder="{{::('service.type.payment.free'|translate)}}"  min="0" step="0.5" ng-pattern="REGEXP.price">
 							
-							<div ng-messages="$ctrl.serviceForm.payment.PER_KID.price.$error">
+							<div ng-messages="serviceForm.payment.PER_KID.price.$error">
 				        		<div ng-message="min"><span translate-once="error.field.min" translate-values="{num: 0}"></span></div>
 				        		<div ng-message="pattern"><span translate-once="error.field.generic.invalid"></span></div>
 					      	</div>
@@ -212,7 +212,7 @@
 							<label><span translate-once="billing.vat.tax">VAT</span> (%)</label>
 							<input type="number" name="payment.PER_KID.vat" ng-model="$ctrl.service.pay['PER_KID'].vat" placeholder="%" min="0" step="1" max="100" ng-pattern="REGEXP.price">
 							
-							<div ng-messages="$ctrl.serviceForm.payment.PER_KID.vat.$error">
+							<div ng-messages="serviceForm.payment.PER_KID.vat.$error">
 				        		<div ng-message="min"><span translate-once="error.field.min" translate-values="{num: 0}"></span></div>
 				        		<div ng-message="max"><span translate-once="error.field.max" translate-values="{num: 100"}></span></div>
 				        		<div ng-message="pattern"><span translate-once="error.field.generic.invalid"></span></div>
@@ -229,10 +229,10 @@
 						<md-select name="descLang" ng-model="$ctrl.descLang" ng-required="$ctrl.service.description" aria-label="lang">
 			          		<md-option ng-repeat="locale in $ctrl.locales track by $index" ng-value="locale" ng-selected="$first">
 			          			<span class="flag-icon flag-icon-{{locale.flag}}"></span>
-			          			<span>{{locale.label}}</span>
+			          			<span ng-bind="locale.label"></span>
 			          		</md-option>
 				        </md-select>
-				        <div ng-messages="$ctrl.serviceForm.descLang.$error">
+				        <div ng-messages="serviceForm.descLang.$error">
 			          		<div ng-message="required"><span translate-once="error.required"></span></div>
 				        </div>
 	          		</md-input-container>
@@ -244,6 +244,7 @@
 						ng-model="$ctrl.service.description[$ctrl.descLang.iso]"
 						ng-required="false"
 						max-length="500"
+						min-height="60"
 						toolbar="$ctrl.richEditorToolbar"
 						class="layout-padding no-padding-top no-padding-bottom">
 					</ch-rich-editor>
@@ -256,9 +257,6 @@
 			
 		</div>
 		<div class="text-center layout-column flex-100">
-<!-- 			<md-button ng-click="$ctrl.$cancel()" aria-label="Cancel"> -->
-<!-- 				<span translate="common.cancel"></span> -->
-<!-- 			</md-button> -->
 			<md-button class="bg-success text-white" ng-click="$ctrl.$save()" aria-label="Save">
 				<span translate="common.save"></span>
 			</md-button>

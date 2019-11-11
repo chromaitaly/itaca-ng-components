@@ -1,0 +1,382 @@
+{"content":[
+  {
+    "code": "ACMIL",
+    "description": "TESS. APP.TO AG.CUSTODIA"
+  },
+  {
+    "code": "ACSOT",
+    "description": "TESS. SOTT.LI AG.CUSTODIA"
+  },
+  {
+    "code": "ACUFF",
+    "description": "TESS. UFF.LI AG.CUSTODIA"
+  },
+  {
+    "code": "AMMIL",
+    "description": "TESS. MILITARE TRUPPA A.M"
+  },
+  {
+    "code": "AMSOT",
+    "description": "TESS. SOTTUFFICIALI A.M."
+  },
+  {
+    "code": "AMUFF",
+    "description": "TESS. UFFICIALI A.M."
+  },
+  {
+    "code": "CCMIL",
+    "description": "TESS. APP.TO CARABINIERI"
+  },
+  {
+    "code": "CCSOT",
+    "description": "TESS. SOTTUFFICIALI CC"
+  },
+  {
+    "code": "CCUFF",
+    "description": "TESS. UFFICIALE"
+  },
+  {
+    "code": "CERID",
+    "description": "CERTIFICATO D'IDENTITA'"
+  },
+  {
+    "code": "CFMIL",
+    "description": "TESS. AG. E AG.SC. C.F.S."
+  },
+  {
+    "code": "CFSOT",
+    "description": "TESS. SOTTUFICIALI C.F.S."
+  },
+  {
+    "code": "CFUFF",
+    "description": "TESS. UFFICIALI C.F.S."
+  },
+  {
+    "code": "CIDIP",
+    "description": "CARTA ID. DIPLOMATICA"
+  },
+  {
+    "code": "DESIS",
+    "description": "TESS. S.I.S.D.E."
+  },
+  {
+    "code": "EIMIL",
+    "description": "TESS. MILITARE E.I."
+  },
+  {
+    "code": "EISOT",
+    "description": "TESS. SOTTUFFICIALI E.I."
+  },
+  {
+    "code": "EIUFF",
+    "description": "TESS. UFFICIALI E.I."
+  },
+  {
+    "code": "GFMIL",
+    "description": "TESS. APP.TO FINANZIERE"
+  },
+  {
+    "code": "GFSOT",
+    "description": "TESS. SOTT.LI G.D.F."
+  },
+  {
+    "code": "GFTRI",
+    "description": "TESS. POL. TRIB. G.D.F."
+  },
+  {
+    "code": "GFUFF",
+    "description": "TESS. UFFICIALI G.D.F."
+  },
+  {
+    "code": "IDELE",
+    "description": "CARTA IDENTITA' ELETTRONICA"
+  },
+  {
+    "code": "IDENT",
+    "description": "CARTA DI IDENTITA'"
+  },
+  {
+    "code": "MAGIS",
+    "description": "TESS. PERS. MAGISTRATI"
+  },
+  {
+    "code": "MMMIL",
+    "description": "TESS. MILIT. M.M."
+  },
+  {
+    "code": "MMSOT",
+    "description": "TESS. SOTTUFICIALI M.M."
+  },
+  {
+    "code": "MMUFF",
+    "description": "TESS. UFFICIALI M.M."
+  },
+  {
+    "code": "PARLA",
+    "description": "TESS. PARLAMENTARI"
+  },
+  {
+    "code": "PASDI",
+    "description": "PASSAPORTO DIPLOMATICO"
+  },
+  {
+    "code": "PASOR",
+    "description": "PASSAPORTO ORDINARIO"
+  },
+  {
+    "code": "PASSE",
+    "description": "PASSAPORTO DI SERVIZIO"
+  },
+  {
+    "code": "PATEN",
+    "description": "PATENTE DI GUIDA"
+  },
+  {
+    "code": "PATNA",
+    "description": "PATENTE NAUTICA"
+  },
+  {
+    "code": "PORM1",
+    "description": "PORTO FUCILE USO CACCIA"
+  },
+  {
+    "code": "PORM2",
+    "description": "PORTO FUCILE DIF. PERSON."
+  },
+  {
+    "code": "PORM3",
+    "description": "PORTO D'ARMI USO SPORTIVO"
+  },
+  {
+    "code": "PORM4",
+    "description": "PORTO PISTOLA DIF. PERSON"
+  },
+  {
+    "code": "PORM5",
+    "description": "PORTO D'ARMI GUARDIE GIUR"
+  },
+  {
+    "code": "PPAGE",
+    "description": "TESS. AGENTI/ASS.TI P.P."
+  },
+  {
+    "code": "PPISP",
+    "description": "TESS. ISPETTORI P.P."
+  },
+  {
+    "code": "PPSOV",
+    "description": "TESS. SOVRINTENDENTI P.P."
+  },
+  {
+    "code": "PPUFF",
+    "description": "TESS. UFFICIALI P.P."
+  },
+  {
+    "code": "PSAPP",
+    "description": "TESS. AGENTI/ASS.TI P.S."
+  },
+  {
+    "code": "PSFEM",
+    "description": "TESS. POLIZIA FEMMINILE"
+  },
+  {
+    "code": "PSFUN",
+    "description": "TESS. FUNZIONARI P.S."
+  },
+  {
+    "code": "PSISP",
+    "description": "TESS. ISPETTORI P.S."
+  },
+  {
+    "code": "PSSOT",
+    "description": "TESS. SOVRINTENDENTI P.S."
+  },
+  {
+    "code": "PSUFF",
+    "description": "TESS. UFFICIALI P.S."
+  },
+  {
+    "code": "RIFUG",
+    "description": "TITOLO VIAGGIO RIF.POLIT."
+  },
+  {
+    "code": "SDMIL",
+    "description": "TESS. MILIT. TRUPPA SISMI"
+  },
+  {
+    "code": "SDSOT",
+    "description": "TESS. SOTTUFFICIALI SISMI"
+  },
+  {
+    "code": "SDUFF",
+    "description": "TESS. UFFICIALI SISMI"
+  },
+  {
+    "code": "TEAMC",
+    "description": "TESS. ISCR. ALBO MED/CHI."
+  },
+  {
+    "code": "TEAOD",
+    "description": "TESS. ISCRIZ. ALBO ODONT."
+  },
+  {
+    "code": "TECAM",
+    "description": "TES. UNICO PER LA CAMERA"
+  },
+  {
+    "code": "TECOC",
+    "description": "TESS. CORTE DEI CONTI"
+  },
+  {
+    "code": "TEDOG",
+    "description": "TES.DOGANALE RIL.MIN.FIN."
+  },
+  {
+    "code": "TEFSE",
+    "description": "TESS. FERROV. SENATO"
+  },
+  {
+    "code": "TEMPI",
+    "description": "TESS. MIN.PUBB.ISTRUZIONE"
+  },
+  {
+    "code": "TENAT",
+    "description": "TESS. MILITARE NATO"
+  },
+  {
+    "code": "TENAV",
+    "description": "TES. ENTE NAZ. ASSIS.VOLO"
+  },
+  {
+    "code": "TEPOL",
+    "description": "TESS.MIN.POLIT.AGRIC.FOR."
+  },
+  {
+    "code": "TESAE",
+    "description": "TESS. MIN. AFFARI ESTERI"
+  },
+  {
+    "code": "TESAR",
+    "description": "TESS.ISCR.ALBO ARCHITETTI"
+  },
+  {
+    "code": "TESAV",
+    "description": "TESSERA ISCR. ALBO AVVOC."
+  },
+  {
+    "code": "TESCA",
+    "description": "TESS. CORTE D'APPELLO"
+  },
+  {
+    "code": "TESCS",
+    "description": "TESS. CONSIGLIO DI STATO"
+  },
+  {
+    "code": "TESDI",
+    "description": "TESSERA RICONOSC. D.I.A."
+  },
+  {
+    "code": "TESEA",
+    "description": "TESS. MEMBRO EQUIP. AEREO"
+  },
+  {
+    "code": "TESIN",
+    "description": "TESS.ISCR. ALBO INGEGNERI"
+  },
+  {
+    "code": "TESLP",
+    "description": "TESS. MINISTERO LAVORI PU"
+  },
+  {
+    "code": "TESMB",
+    "description": "TESS. MIN.BEN.E ATT.CULT."
+  },
+  {
+    "code": "TESMD",
+    "description": "TESS. MINISTERO DIFESA"
+  },
+  {
+    "code": "TESMF",
+    "description": "TESS. MINISTERO FINANZE"
+  },
+  {
+    "code": "TESMG",
+    "description": "TESS. MINISTERO GIUSTIZIA"
+  },
+  {
+    "code": "TESMI",
+    "description": "TESS. MINISTERO INTERNO"
+  },
+  {
+    "code": "TESMN",
+    "description": "TESS. MINIST. TRASP/NAVIG"
+  },
+  {
+    "code": "TESMS",
+    "description": "TESS. MINISTERO SANITA'"
+  },
+  {
+    "code": "TESMT",
+    "description": "TESS. MINISTERO TESORO"
+  },
+  {
+    "code": "TESNO",
+    "description": "TESSERA DELL'ORDINE NOTAI"
+  },
+  {
+    "code": "TESOG",
+    "description": "TESS. ORDINE GIORNALISTI"
+  },
+  {
+    "code": "TESPC",
+    "description": "TESS. PRES.ZA CONS. MIN."
+  },
+  {
+    "code": "TESPI",
+    "description": "TESS. PUBBLICA ISTRUZIONE"
+  },
+  {
+    "code": "TESPT",
+    "description": "TES. POSTE E TELECOMUNIC."
+  },
+  {
+    "code": "TESUN",
+    "description": "TESSERA U.N.U.C.I."
+  },
+  {
+    "code": "TETEL",
+    "description": "TESS. IDENTIF.TELECOM IT."
+  },
+  {
+    "code": "TFERD",
+    "description": "TES. FERROVIARIA DEPUTATI"
+  },
+  {
+    "code": "TFEXD",
+    "description": "TES. FERROV. EX DEPUTATI"
+  },
+  {
+    "code": "VIMIL",
+    "description": "TESS. APP.TO/VIG. URBANO"
+  },
+  {
+    "code": "VISOT",
+    "description": "TESS. SOTT.LI VIG. URBANI"
+  },
+  {
+    "code": "VIUFF",
+    "description": "TESS. UFF.LI VIG.URBANI"
+  },
+  {
+    "code": "VVMIL",
+    "description": "TESS. APP.TO/VIG. VV.FF."
+  },
+  {
+    "code": "VVSOT",
+    "description": "TESS. SOTTUFF.LI VV.FF."
+  },
+  {
+    "code": "VVUFF",
+    "description": "TESS. UFFICIALI VV.FF."
+  }
+]}

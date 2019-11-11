@@ -11,6 +11,7 @@
         	limitDate: "<?",
         	feeAmount: "<?",
         	offsetSeconds: "<?",
+        	timeZoneId: "@",
         	startLabel: "@",
         	endLabel: "@",
         	penaltyCancelLabel: "@",
@@ -72,6 +73,13 @@
 			
 			if (!ctrl.checkinDate) {
 				throw new Error("chCancellationBar: checkinDate cannot be null");
+			}
+			
+			//se passo il timezone sovrascrivo l'offset
+			if(ctrl.timeZoneId){
+				var zone = moment.tz.zone(ctrl.timeZoneId);
+				var _offset = zone.parse(ctrl.creationDate);
+				ctrl.offsetSeconds = (_offset / 60) <= 24 ? _offset : (_offset / 60);
 			}
 			
 			ctrl.$$startDate = moment(ctrl.creationDate).toDate();

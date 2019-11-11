@@ -5,6 +5,7 @@
 		bindings: {
 			buttonClass: "@",
         	wrapperClass: "@",
+        	panelClass: "@",
         	iconClass: "@",
 			iconFontSet: "@",
         	label: "@",
@@ -45,7 +46,7 @@
 	    	ctrl.wrapperClass = ctrl.wrapperClass || "md-padding";
         	ctrl.labelClass = ctrl.labelClass || "text-gray-light";
         	
-	    	ctrl.$$panelClass = "bg-white md-whiteframe-15dp";
+	    	ctrl.panelClass =  ctrl.panelClass || "bg-white md-whiteframe-15dp";
 	    	
 	    	var position = $mdPanel.newPanelPosition()
 		        .relativeTo($element)
@@ -61,7 +62,7 @@
 			    disableParentScroll: ctrl.disableParentScroll,
 			    hasBackdrop: ctrl.hasBackdrop,
 			    fullscreen: _.isBoolean(ctrl.fullscreen) ? ctrl.fullscreen : false,
-			    panelClass: ctrl.$$panelClass,
+			    panelClass: ctrl.panelClass,
 			    locals: {data: ctrl.$$workingData, maxCount: ctrl.maxCount, hasConfirm: ctrl.hasConfirm, hasClose: ctrl.hasClose},
 			    onCloseSuccess: function(panelRef, closeReason) {
 			    	var tbc = _.isBoolean(ctrl.hasConfirm) ? ctrl.hasConfirm : false;

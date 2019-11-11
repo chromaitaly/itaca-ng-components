@@ -66,6 +66,22 @@
 		    	is-disabled="$ctrl.isDisabled">
 		    </ch-country-autocomplete>
 		</div>
+		
+		 <div class="flex-100 flex-xs-100 layout-column">
+			<div class="layout-row layout-wrap layout-align-start-start">
+		    	<md-checkbox ng-model="$ctrl.user.consents['MARKETING'].value" aria-label="Data preocessing Marketing" class="md-primary">
+					<span><span translate="login.data.processing" translate-values="{point: 5.4}"></span> <a ng-href="{{$ctrl.appOptions.about.uiUrl + '/privacy'}}" target="_blank" class="text-underlined"><strong translate="login.privacy"></strong></a></span>
+				</md-checkbox>
+			</div>
+		</div>
+		
+		<div class="flex-100 flex-xs-100 layout-column">
+			<div class="layout-row layout-wrap layout-align-start-start">
+				<md-checkbox ng-model="$ctrl.user.consents['PROFILING'].value" aria-label="Data processing profiling" class="md-primary">
+					<span><span translate="login.data.processing" translate-values="{point: 5.5}"></span> <a ng-href="{{$ctrl.appOptions.about.uiUrl + '/privacy'}}" target="_blank" class="text-underlined"><strong translate="login.privacy"></strong></a></span>
+				</md-checkbox>
+			</div>
+		</div>
       	
 	</div>
 	<div ng-if="$ctrl.isDisabled"  class="layout-row layout-wrap layout-padding">
