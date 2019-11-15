@@ -6,11 +6,11 @@
 			<div ng-messages="$ctrl.hotelForm.name.$error">
           		<div ng-message="required"><span translate="error.required"></span></div>
 	        </div>
-	        <div ng-if="$ctrl.showInfo">
+	        <div ng-if="!$ctrl.nameRequired">
 	        	<small class="text-gray-light" translate="join.quote.hotel.name.text"></small>
 	        </div>	        
 		</md-input-container>
-		<div ng-if="$ctrl.showInfo" class="bg-info border-radius-6 layout-padding text-white" th:if="${#strings.equals(@mainProps.joinType,'QUOTE')}">
+		<div ng-if="!$ctrl.nameRequired" class="bg-info border-radius-6 layout-padding text-white">
 			<md-icon class="mdi mdi-information-outline text-white no-padding"></md-icon>
 			<span translate="join.quote.hotel.name.quote.text" translate-values="{company: $ctrl.appOptions.about.name}"></span>
 		</div>
@@ -73,14 +73,15 @@
 	    			<span ng-if="$ctrl.type == 'BUILDING'">&nbsp;(<span translate="common.optional"></span>)</span>
 	    		</label>
 				<md-select name="hotelRooms" ng-model="$ctrl.hotel.roomsNumber" ng-required="$ctrl.type != 'BUILDING'" aria-label="Hotel rooms"  ng-disabled="$ctrl.isDisabled">
-	          		<md-option ng-repeat="n in [1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20]" value="{{::n}}">
-	          			<span>{{::n}}&nbsp;</span>
-	          			<span ng-if="n == 1" translate="room.room"></span>
-	          			<span ng-if="n != 1" translate="room.rooms"></span>
+	          		<md-option ng-repeat="n in [1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20]" ng-value="n">
+	          			<span>
+		          			<span ng-bind="n"></span>&nbsp;
+		          			<span ng-if="n == 1" translate="room.room"></span>
+		          			<span ng-if="n != 1" translate="room.rooms"></span>
+		          		</span>
 	          		</md-option>
 	          		<md-option  value="21">
-	          			<span>20+&nbsp;</span>
-	          			<span translate="room.rooms"></span>
+	          			<span>20+&nbsp;<span translate="room.rooms"></span></span>
 	          		</md-option>
 		        </md-select>
 		        <div ng-messages="$ctrl.hotelForm.hotelRooms.$error">
@@ -96,10 +97,12 @@
 	    			<span ng-if="$ctrl.type == 'BUILDING'">&nbsp;(<span translate="common.optional"></span>)</span>
 	    		</label>
 				<md-select name="hotelStars" ng-model="$ctrl.hotel.stars" ng-required="$ctrl.type != 'BUILDING'" aria-label="Hotel stars" ng-disabled="$ctrl.isDisabled">
-	          		<md-option ng-repeat="n in [1,2,3,4,5]" value="{{::n}}">
-	          			<span>{{::n}}&nbsp;</span>
-	          			<span ng-if="n == 1" translate="common.star"></span>
-	          			<span ng-if="n != 1" translate="common.stars"></span>
+	          		<md-option ng-repeat="n in [1,2,3,4,5]" ng-value="n">
+	          			<span>
+		          			<span ng-bind="n"></span>&nbsp;
+		          			<span ng-if="n == 1" translate="common.star"></span>
+		          			<span ng-if="n != 1" translate="common.stars"></span>
+		          		</span>
 	          		</md-option>
 		        </md-select>
 		        <div ng-messages="$ctrl.hotelForm.hotelStars.$error">

@@ -143,8 +143,10 @@
 	    				
 	    				}).finally(function() {
 	    					//go to state
-	    					ctrl.stateParams = angular.merge({}, ctrl.steppers[ctrl.action.currentStep].params, ctrl.stateParams);
-	    					$state.go(ctrl.steppers[ctrl.action.currentStep].view, ctrl.stateParams);
+	    					if((!currentStep.error && ctrl.action.currentStep == 1) || ctrl.action.currentStep > 1 ){
+		    					ctrl.stateParams = angular.merge({}, ctrl.steppers[ctrl.action.currentStep].params, ctrl.stateParams);
+		    					$state.go(ctrl.steppers[ctrl.action.currentStep].view, ctrl.stateParams);
+	    					}
 	    				});
 	    			}
 	    			

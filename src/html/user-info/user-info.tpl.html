@@ -14,7 +14,7 @@
 		<div class="flex-100" ng-if="$ctrl.$$isNewUser">
   			<md-input-container class="md-block">
 				<label translate="common.email">Email</label>
-				<input type="text" name="email" ng-model="$ctrl.user.email" ng-required="true" ng-disabled="$ctrl.isDisabled">
+				<input type="text" name="email" ng-model="$ctrl.user.email" ng-required="true" ng-disabled="$ctrl.isDisabled" ng-readonly="!$ctrl.isNewUser">
 				<div ng-messages="userForm.email.$error">
 	          		<div ng-message="required"><span translate="error.required"></span></div>
 		        </div>						        

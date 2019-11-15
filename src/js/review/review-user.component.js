@@ -29,7 +29,7 @@
 								"<img alt=\"User profile image\" class=\"full-width\" ng-src=\"{{$ctrl.userAvatar}}\" lazy-image />" +
 							"</span>" +
 							"<span ng-if=\"(!$ctrl.review.reviewSettings.showAvatar || !$ctrl.userAvatar) && !$ctrl.review.reviewSettings.anonymous\"" +
-								"class=\"bg-blue-sea {{$ctrl.avatarClass}} layout-row layout-align-center-center\">" +
+								"class=\"bg-accent {{$ctrl.avatarClass}} layout-row layout-align-center-center\">" +
 								"<span class=\"md-headline text-uppercase\">{{!$ctrl.review.reviewSettings.showRealName && $ctrl.$$user.nickname ? $ctrl.$$user.nickname.charAt(0) : $ctrl.$$user.name.charAt(0)}}</span>" +
 							"</span>" +
 							"<md-icon ng-if=\"$ctrl.review.reviewSettings.anonymous\" class=\"mdi mdi-account-circle md-38\"></md-icon>" +
