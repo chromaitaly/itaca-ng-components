@@ -15,7 +15,7 @@
 		<div>
 			<span translate="reservation.noshow.room.conditions"></span>
 			<span ng-if="$ctrl.noShowPolicy.cancellation.chargeNights != $ctrl.noShowPolicy.cancellation.stayNights">
-				{{::$ctrl.noShowPolicy.cancellation.percentage}}
+				<span ng-bind="$ctrl.noShowPolicy.cancellation.percentage"></span>
 				<span ng-if="$ctrl.noShowPolicy.cancellation.chargeNights == 1">
 					<span translate="reservation.percentage.firstNight"></span>
 				 	<span translate="common.night" class="text-lowercase"></span>
@@ -23,24 +23,24 @@
 				<span ng-if="$ctrl.noShowPolicy.cancellation.chargeNights > 1">
 					<span ng-if="$ctrl.noShowPolicy.cancellation.chargeNights < reservation.nights">
 						<span translate="reservation.percentage.nights"></span>
-					 	{{::$ctrl.noShowPolicy.cancellation.chargeNights}}&nbsp;
+					 	<span ng-bind="$ctrl.noShowPolicy.cancellation.chargeNights"></span>&nbsp;
 					 	<span translate="common.nights" class="text-lowercase"></span>
 					</span>
 					<span ng-if="$ctrl.noShowPolicy.cancellation.chargeNights >= reservation.nights">
 						<span translate="reservation.percentage.total.stay"></span>
 					</span>
 				</span>
-				<span ng-if="$ctrl.noShowPolicy.cancellation.chargeNights < 0">
+				<span ng-if="!$ctrl.noShowPolicy.cancellation.chargeNights">
 					<span translate="reservation.percentage.total.stay"></span>
 				</span>
 			</span>
 			<span ng-if="$ctrl.noShowPolicy.cancellation.chargeNights == $ctrl.noShowPolicy.cancellation.stayNights">
-				{{::$ctrl.noShowPolicy.cancellation.percentage}}
+				<span ng-bind="$ctrl.noShowPolicy.cancellation.percentage"></span>
 				<span translate="reservation.percentage.total.stay"></span>
 			</span>
 			
 			<span translate="reservation.total.night"></span>
-			<strong>{{$ctrl.noShowPolicy.amount.finalAmount|chCurrency}}</strong>.
+			<strong><span ng-bind="$ctrl.noShowPolicy.amount.finalAmount|chCurrency"></span></strong>.
 		</div>
 	</div>
 </div>

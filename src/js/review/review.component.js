@@ -15,7 +15,7 @@
 		template: "<div ng-transclude></div>" 
 	});
 	
-	 /* @ngInject */
+	/* @ngInject */
 	function ReviewCtrl($scope, ReviewsUtils, AppOptions) {
 		var ctrl = this;
     	
@@ -40,20 +40,24 @@
     		// genero il titolo in base allo score
     		ctrl.review.label = ReviewsUtils.generateScoreLabel(Math.floor(ctrl.review.score));
     		
+    		ctrl.$initUser();
+    	};
+    	
+    	this.$initUser = function() {
+    		ctrl.$$user = _.get(ctrl.review, "reservation.guest") || ctrl.review.manager;
     		ctrl.$getUserAvatar();
     	};
     	
-    	this.$getUserAvatar = function(){
-    		
-    		if(ctrl.review.createdBy && ctrl.review.createdBy.avatarType){
-    			switch(ctrl.review.createdBy.avatarType){
+    	this.$getUserAvatar = function() {
+    		if(ctrl.$$user && ctrl.$$user.avatarType){
+    			switch(ctrl.$$user.avatarType){
     				case 'PORTAL' 	:
-    					ctrl.userAvatar = ctrl.review.createdBy.avatar ? ctrl.imgBaseUrl + ctrl.review.createdBy.avatar : null; 
+    					ctrl.userAvatar = ctrl.$$user.avatar ? ctrl.imgBaseUrl + ctrl.$$user.avatar : null; 
     					break;
-    				case 'FACEBOOK' : ctrl.userAvatar = ctrl.review.createdBy.facebookImage; break;
-    				case 'GOOGLE' 	: ctrl.userAvatar = ctrl.review.createdBy.googleImage; break;
+    				case 'FACEBOOK' : ctrl.userAvatar = ctrl.$$user.facebookImage; break;
+    				case 'GOOGLE' 	: ctrl.userAvatar = ctrl.$$user.googleImage; break;
     				default		  	: 
-    					ctrl.userAvatar = ctrl.review.createdBy.avatar ? ctrl.imgBaseUrl + ctrl.review.createdBy.avatar : null; 
+    					ctrl.userAvatar = ctrl.$$user.avatar ? ctrl.imgBaseUrl + ctrl.$$user.avatar : null; 
     					break;
     			}
     		}

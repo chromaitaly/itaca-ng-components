@@ -1,8 +1,13 @@
 <div>
-	<md-list ng-show="!$ctrl.$$showDetails">
+	<md-list ng-if="!$ctrl.$$showDetails">
 		<md-list-item ng-if="$ctrl.maxCount > 1" class="layout-row layout-wrap layout-padding layout-align-center-center no-padding-top no-padding-bottom no-padding-right">
-			<div flex>
-				<span translate="people.people.edit.question"></span>
+			<div flex class="no-padding-left" layout-padding-sm>
+				<div class="text-bold">
+					<ch-people-summary people="$ctrl.people"></ch-people-summary>
+				</div>
+				<div>
+					<em translate="people.people.edit.question"></em>
+				</div>
 			</div>
 			<div class="no-padding-right">
 				<md-button class="button-small no-margin text-blue-sea" ng-click="$ctrl.$toggleDetails(true)" aria-label="Edit guests">
@@ -20,7 +25,7 @@
 			</div>
 		</md-list-item>
 	</md-list>
-
+	
 	<div class="layout-column" ng-class="{'layout-align-center-center': !$mdMedia('gt-sm')}" ng-show="$ctrl.$$showDetails">
 		<div>
 			<ch-people-counters
