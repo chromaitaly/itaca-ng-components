@@ -2,9 +2,8 @@
 	ng-class="{'clickable': !$ctrl.ngDisabled && ($ctrl.url || $ctrl.state || $ctrl.onClick), 'cursor-disabled': $ctrl.ngDisabled}">
 	<div class="relative">
 		<div ng-if="$ctrl.ngDisabled" class="disabled-box {{$ctrl.disabledClass}}">
-			<span ng-if="$ctrl.disabledLabel" class="disabled-box-bar {{$ctrl.disabledBarClass}}">{{$ctrl.disabledLabel}}</span>
+			<span ng-if="$ctrl.disabledLabel" class="disabled-box-bar {{$ctrl.disabledBarClass}}" ng-bind-html="$ctrl.disabledLabel"></span>
 		</div>
-		
 		
 		<div ng-if="$ctrl.isCompleted || $ctrl.isRequired || $ctrl.isSuggested" class="absolute full-width ng-scope text-right">
 			<div ng-if="$ctrl.isCompleted" class="bg-success label label-inline-block md-margin">
@@ -23,10 +22,9 @@
 			</div>
 		</div>
 		
-		
-		<div class="layout-padding no-padding-right absolute position-right position-top" style="z-index:2">
+		<div class="layout-padding no-padding-right absolute position-right position-top" style="z-index: 2" ng-if="$ctrl.menuItems.length || $ctrl.disabledMenuItems.length">
 			<md-menu class="md-secondary" ng-if="$ctrl.menuItems && !$ctrl.ngDisabled">
-     				<md-button aria-label="Open user interactions menu" class="md-icon-button {{$ctrl.menuClass}}" ng-click="$mdMenu.open($event)">
+   				<md-button aria-label="Open user interactions menu" class="md-icon-button {{$ctrl.menuClass}}" ng-click="$mdMenu.open($event)">
      					<md-icon class="mdi mdi-dots-vertical text-white"></md-icon>
         		</md-button>
 		      	<md-menu-content width="4">
@@ -40,6 +38,7 @@
 		   	 		</div>
 				</md-menu-content>
 			</md-menu>
+			
 			<md-menu class="md-secondary" ng-if="$ctrl.disabledMenuItems && $ctrl.ngDisabled">
      				<md-button aria-label="Open user interactions menu" class="md-icon-button {{$ctrl.menuClass}}" ng-click="$mdMenu.open($event)">
      					<md-icon class="mdi mdi-dots-vertical text-white"></md-icon>
@@ -56,39 +55,42 @@
 				</md-menu-content>
 			</md-menu>
 		</div>
-		<div class="flex layout-column layout-align-center-center text-center overflow-hidden card-image" ng-class="{'md-hover-icon': !$ctrl.noHover}" ng-style="$ctrl.$$bgStyle">
+		<div class="flex layout-column layout-align-center-center text-center overflow-hidden card-image" ng-class="{'md-hover-icon': !$ctrl.noHover}" ng-style="$ctrl.$$bgStyle"
+			ng-if="$ctrl.showAvatar || $ctrl.imgUrl || $ctrl.bgUrl || $ctrl.iconClass || $ctrl.iconSecondaryClass">
 			<div ng-if="$ctrl.imgUrl" class="{{$ctrl.imgContClass}}">
 				<img ng-if="$ctrl.imgUrl" ng-src="{{$ctrl.imgUrl}}" class="{{$ctrl.imgClass}}" lazy-image loaded-class="animated fadeIn">
 			</div>	
 			<div ng-if="!$ctrl.imgUrl && ($ctrl.iconClass || $ctrl.iconSecondaryClass)">
 				<div class="layout-column layout-padding-sm layout-align-center-center">
-					<div ng-if="$ctrl.iconLabel && $ctrl.iconLabelPosition == 'top'" class="{{$ctrl.iconLabelClass}}">{{$ctrl.iconLabel}}</div>
-					<div ng-if="$ctrl.iconSecondaryLabel && $ctrl.iconSecondaryLabelPosition == 'top'" class="{{$ctrl.iconSecondaryLabelClass}}">{{$ctrl.iconSecondaryLabel}}</div>
+					<div ng-if="$ctrl.iconLabel && $ctrl.iconLabelPosition == 'top'" class="{{$ctrl.iconLabelClass}}" ng-bind-html="$ctrl.iconLabel"></div>
+					<div ng-if="$ctrl.iconSecondaryLabel && $ctrl.iconSecondaryLabelPosition == 'top'" class="{{$ctrl.iconSecondaryLabelClass}}" ng-bind-html="$ctrl.iconSecondaryLabel"></div>
 					<div>
-						<span ng-if="$ctrl.iconLabel && $ctrl.iconLabelPosition == 'left'" class="{{$ctrl.iconLabelClass}}">{{$ctrl.iconLabel}}</span>
-						<span ng-if="$ctrl.iconSecondaryLabel && $ctrl.iconSecondaryLabelPosition == 'left'" class="{{$ctrl.iconSecondaryLabelClass}}">{{$ctrl.iconSecondaryLabel}}</span>
+						<span ng-if="$ctrl.iconLabel && $ctrl.iconLabelPosition == 'left'" class="{{$ctrl.iconLabelClass}}" ng-bind-html="$ctrl.iconLabel"></span>
+						<span ng-if="$ctrl.iconSecondaryLabel && $ctrl.iconSecondaryLabelPosition == 'left'" class="{{$ctrl.iconSecondaryLabelClass}}" ng-bind-html="$ctrl.iconSecondaryLabel"></span>
 						<md-icon md-font-set="{{$ctrl.iconFontSet}}" class="{{$ctrl.iconClass}}" ng-class="{'material-icons': !$ctrl.iconFontSet}"></md-icon>
 						<md-icon ng-if="$ctrl.otherIconClass" md-font-set="{{$ctrl.otherIconFontSet}}" class="{{$ctrl.otherIconClass}}" ng-class="{'material-icons': !$ctrl.otherIconFontSet}"></md-icon>
-						<span ng-if="$ctrl.iconLabel && $ctrl.iconLabelPosition == 'right'" class="{{$ctrl.iconLabelClass}}">{{$ctrl.iconLabel}}</span>
-						<span ng-if="$ctrl.iconSecondaryLabel && $ctrl.iconSecondaryLabelPosition == 'right'" class="{{$ctrl.iconSecondaryLabelClass}}">{{$ctrl.iconSecondaryLabel}}</span>
+						<span ng-if="$ctrl.iconLabel && $ctrl.iconLabelPosition == 'right'" class="{{$ctrl.iconLabelClass}}" ng-bind-html="$ctrl.iconLabel"></span>
+						<span ng-if="$ctrl.iconSecondaryLabel && $ctrl.iconSecondaryLabelPosition == 'right'" class="{{$ctrl.iconSecondaryLabelClass}}" ng-bind-html="$ctrl.iconSecondaryLabel"></span>
 					</div>
-					<div ng-if="$ctrl.iconLabel && $ctrl.iconLabelPosition == 'bottom'" class="{{$ctrl.iconLabelClass}}">{{$ctrl.iconLabel}}</div>
-					<div ng-if="$ctrl.iconSecondaryLabel && $ctrl.iconSecondaryLabelPosition == 'bottom'" class="{{$ctrl.iconSecondaryLabelClass}}">{{$ctrl.iconSecondaryLabel}}</div>
-				</div>							
+					<div ng-if="$ctrl.iconLabel && $ctrl.iconLabelPosition == 'bottom'" class="{{$ctrl.iconLabelClass}}" ng-bind-html="$ctrl.iconLabel"></div>
+					<div ng-if="$ctrl.iconSecondaryLabel && $ctrl.iconSecondaryLabelPosition == 'bottom'" class="{{$ctrl.iconSecondaryLabelClass}}" ng-bind-html="$ctrl.iconSecondaryLabel"></div>
+				</div>
 			</div>
-			<div ng-if="$ctrl.showAvatar && !$ctrl.imgUrl && !$ctrl.iconClass && !i$ctrl.conSecondaryClass && ($ctrl.title || $ctrl.description)" class="layout-row layout-align-center-center {{$ctrl.imgContClass}}">
+			<div ng-if="$ctrl.showAvatar && !$ctrl.imgUrl && !$ctrl.iconClass && !$ctrl.iconSecondaryClass && ($ctrl.title || $ctrl.description)" class="layout-row layout-align-center-center {{$ctrl.imgContClass}}">
 				<span class="md-display-3 text-uppercase">
-					<span ng-if="$ctrl.title">{{$ctrl.title.charAt(0)}}</span>
-					<span ng-if="!$ctrl.title">{{$ctrl.description.charAt(0)}}</span>
+					<span ng-if="$ctrl.title" ng-bind="$ctrl.title.charAt(0)"></span>
+					<span ng-if="!$ctrl.title" ng-bind="$ctrl.description.charAt(0)"></span>
 				</span>
 			</div>
 		</div>
 	</div>
-	<md-divider></md-divider>
+	
+	<md-divider ng-if="$ctrl.showAvatar || $ctrl.imgUrl || $ctrl.iconClass || $ctrl.iconSecondaryClass"></md-divider>
+	
 	<div class="md-padding layout-column layout-padding-sm flex {{$ctrl.colorClass}}">
-		<div class="layout-column layout-padding-sm layout-align-center-center">
-			<div class="{{$ctrl.titleClass}} row-mini text-center"><span>{{$ctrl.title}}</span></div>
-			<small class="text-center" ng-if="$ctrl.subtitle">{{$ctrl.subtitle}}</small>
+		<div class="layout-column layout-padding-sm layout-align-center-center" ng-if="$ctrl.title || $ctrl.subtitle">
+			<div class="{{$ctrl.titleClass}} row-mini text-center" ng-if="$ctrl.title" ng-bind-html="$ctrl.title"></div>
+			<small class="text-center" ng-if="$ctrl.subtitle" ng-bind-html="$ctrl.subtitle"></small>
 		</div>
 		<div ng-transclude class="flex layout-column layout-align-center-center card-footer"></div>
 	</div>

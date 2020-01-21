@@ -22,7 +22,8 @@
 			hideIcon: "<?",
 			allowNegative: "<?",
 			errorMessages: "<?",
-			ngDisabled: "<?"
+			ngDisabled: "<?",
+			ngChange: "&"
 	    },
 	    controller: AmountInputCtrl,
 	    templateUrl: "/tpls/amount-input/amount-input.tpl"
@@ -39,7 +40,7 @@
 		   ctrl.inputName = ctrl.inputName || 'amount';
 		   ctrl.allowNegative = _.isBoolean(ctrl.allowNegative) ? ctrl.allowNegative : false;
 		   ctrl.ngMin = ctrl.ngMin < 0 && !ctrl.allowNegative ? 0 : ctrl.ngMin;
-		   ctrl.ngStep = _.isFinite(ctrl.ngStep) ? ctrl.ngStep : 0.01; 
+		   ctrl.ngStep = _.isFinite(ctrl.ngStep) ? ctrl.ngStep : ctrl.amountType && ctrl.amountType == 'PERCENTAGE' ? 1 : 0.01;
 		   
 		   ctrl.ngDisabled = _.isBoolean(ctrl.ngDisabled) ? ctrl.ngDisabled : false;
 		   
@@ -53,8 +54,8 @@
 		   }
 	   };
 	   
-//	   this.$update = function() {
-//			ctrl.ngModelCtrl.$setViewValue(ctrl.ngModel);
-//		};	   
+	   this.$update = function() {
+			ctrl.ngModelCtrl.$setViewValue(ctrl.ngModel);
+		};	   
 	}
 })();

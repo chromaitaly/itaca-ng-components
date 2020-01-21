@@ -1,0 +1,88 @@
+<div ng-switch="$ctrl.$$type" ng-class="$ctrl.mainClass ? $ctrl.mainClass : 'text-center'">
+	<div ng-class="$ctrl.size == 'sm' ? 'layout-padding-sm': 'layout-padding'" class="no-padding" ng-switch-when="FREE">
+		<div ng-class="$ctrl.titleClass ? $ctrl.titleClass : 'md-subhead'" ng-if="!$ctrl.hideTitle">
+			<strong translate-once="reservation.cancellation.free"></strong>
+		</div>
+		
+		<div ng-class="{'layout-padding': $ctrl.size != 'sm'}" class="no-padding-bottom no-padding-x-sides {{$ctrl.contClass}}">
+			<div>
+				<md-icon class="mdi mdi-check md-18"></md-icon>
+				<span translate-once="reservation.cancellation.free.description.manager"></span>
+			</div>
+			
+			<div>
+				<md-icon class="mdi mdi-check md-18"></md-icon>
+				<span translate-once="reservation.no.advance.payment"></span>
+			</div>
+		</div>
+	</div>
+	
+	<div ng-class="$ctrl.size == 'sm' ? 'layout-padding-sm': 'layout-padding'" class="no-padding" ng-switch-when="NOT_REFUNDABLE">
+		<div ng-class="$ctrl.titleClass ? $ctrl.titleClass : 'md-subhead'" ng-if="!$ctrl.hideTitle">
+			<strong translate-once="policies.policy.cancellation.not.refundable"></strong>
+		</div>
+		
+		<div ng-class="{'layout-padding': $ctrl.size != 'sm'}" class="no-padding-bottom no-padding-x-sides {{$ctrl.contClass}}">
+			<div>
+				<md-icon class="mdi mdi-check md-18"></md-icon>
+				<span translate-once="reservation.policy.cancellation.notRefundable"></span>
+			</div>
+			
+			<div>
+				<md-icon class="mdi mdi-check md-18"></md-icon>
+				<span translate-once="reservation.policy.payment.prepayment.full"></span>
+			</div>
+		</div>
+	</div>
+	
+	<div ng-class="$ctrl.size == 'sm' ? 'layout-padding-sm': 'layout-padding'" class="no-padding" ng-switch-default>
+		<div ng-if="!$ctrl.hideTitle">
+			<div  ng-class="$ctrl.titleClass ? $ctrl.titleClass : 'md-subhead'">
+				<strong ng-if="$ctrl.$$gracePeriod">
+					<span ng-if="!$ctrl.policy.deadline.count" translate-once="reservation.cancellation.free"></span>
+					<span ng-if="$ctrl.policy.deadline.count" translate="policies.policy.cancellation.free.within" translate-values="{count: $ctrl.policy.deadline.count, unit: ($ctrl.$$deadlineKey|translate|lowercase)}"></span>											
+				</strong>
+				<strong ng-if="!$ctrl.$$gracePeriod">
+					<span ng-if="!$ctrl.policy.deadline.count" translate-once="policies.policy.cancellation.not.refundable"></span>
+					<span ng-if="$ctrl.policy.deadline.count" translate-once="policies.policy.cancellation.partially.refundable"></span>
+				</strong>
+			</div>
+			
+			<div class="text-gray-light {{$ctrl.contClass}}" ng-if="!$ctrl.$$gracePeriod && $ctrl.policy.deadline.count">
+				<strong translate-once="{{$ctrl.policy.reservationPenalty.firstNight ? 'policies.policy.cancellation.penalty.firstNight.within.description.small' : 'policies.policy.cancellation.penalty.stay.within.description.small'}}" 
+					translate-values="{percentage: $ctrl.policy.reservationPenalty.percentage, count: $ctrl.policy.deadline.count, unit: ($ctrl.$$deadlineKey|translate|lowercase)}"></strong>
+			</div>
+		</div>
+
+		<div ng-class="{'layout-padding': $ctrl.size != 'sm'}" class="no-padding-bottom no-padding-x-sides {{$ctrl.contClass}}">
+			<div>
+				<md-icon class="mdi mdi-check md-18"></md-icon>
+				<span ng-if="$ctrl.$$gracePeriod">
+					<span ng-if="!$ctrl.policy.deadline.count" translate-once="reservation.cancellation.free.description.manager"></span>
+					<span ng-if="$ctrl.policy.deadline.count" translate="policies.policy.cancellation.free.within.description" translate-values="{count: $ctrl.policy.deadline.count, unit: ($ctrl.$$deadlineKey|translate|lowercase)}"></span>
+				</span>
+				<span ng-if="!$ctrl.$$gracePeriod">
+					<span ng-if="!$ctrl.policy.deadline.count" translate-once="reservation.policy.cancellation.notRefundable"></span>
+					<span ng-if="$ctrl.policy.deadline.count && $ctrl.policy.reservationPenalty.percentage">
+						<span translate="{{$ctrl.policy.reservationPenalty.firstNight ? 'policies.policy.cancellation.penalty.firstNight.within.description' : 'policies.policy.cancellation.penalty.stay.within.description'}}" 
+							translate-values="{percentage: $ctrl.policy.reservationPenalty.percentage, count: $ctrl.policy.deadline.count, unit: ($ctrl.$$deadlineKey|translate|lowercase)}"></span>
+					</span>
+				</span>
+			</div>
+			
+			<div>
+				<md-icon class="mdi mdi-check md-18"></md-icon>
+				<span ng-if="$ctrl.$$gracePeriod">
+					<span ng-if="!$ctrl.policy.deadline.count" translate-once="reservation.no.advance.payment"></span>
+				</span>
+				<span ng-if="!$ctrl.$$gracePeriod">
+					<span ng-if="!$ctrl.policy.deadline.count" translate-once="reservation.policy.payment.prepayment.full"></span>
+				</span>										
+				<span ng-if="$ctrl.policy.deadline.count && $ctrl.policy.checkinPenalty.percentage">
+					<span translate="{{$ctrl.policy.checkinPenalty.firstNight ? 'policies.policy.cancellation.penalty.firstNight.during.description' : 'policies.policy.cancellation.penalty.stay.during.description'}}" 
+						translate-values="{percentage: $ctrl.policy.checkinPenalty.percentage, count: $ctrl.policy.deadline.count, unit: ($ctrl.$$deadlineKey|translate|lowercase)}"></span>
+				</span>
+			</div>
+		</div>
+	</div>
+</div>

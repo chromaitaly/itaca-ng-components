@@ -16,7 +16,7 @@
 			
 	});
 	
-	angular.module("itaca-ai").controller('helpBarDialogCtrl', HelpBarDialogCtrl); 
+	angular.module("itaca.components").controller('helpBarDialogCtrl', HelpBarDialogCtrl); 
 	
 	 /* @ngInject */
 	function HelpBarCtrl($scope, $element, $mdMedia, AppOptions, Navigator, $mdDialog) {

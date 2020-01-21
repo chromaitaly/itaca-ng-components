@@ -1,7 +1,7 @@
 (function() {
 	'use strict';
 
-	angular.module("itaca-ai").component("chPlanningOverbookings", {
+	angular.module("itaca.components").component("chPlanningOverbookings", {
 		require : {
 			chPlanningCtrl : "^^chPlanning"
 		},
