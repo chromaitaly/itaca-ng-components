@@ -30,7 +30,7 @@
     		
     		ctrl.showInfo = _.isBoolean(ctrl.showInfo) ? ctrl.showInfo : true;
     		
-    		ctrl.nameRequired = _.isBoolean(ctrl.isDisabled) ? ctrl.isDisabled : false;
+    		ctrl.nameRequired = _.isBoolean(ctrl.nameRequired) ? ctrl.nameRequired : false;
     		
     		ctrl.mapMarker = ctrl.mapMarker || '../resources/public/img/map-marker.01.png';
     		

@@ -63,6 +63,7 @@
     		ctrl.noCache = ctrl.noCache || false;
     		
     		ctrl.currentLang = ctrl.currentLang || AppOptions.currentLang;
+    		ctrl.currentLang = ctrl.currentLang && _.size(ctrl.currentLang) > 2 ? ctrl.currentLang.split("-")[0].toLowerCase() : ctrl.currentLang;
     		
     		ctrl.clearButton =  _.isBoolean(ctrl.clearButton) ? ctrl.clearButton : false;
     		
@@ -93,6 +94,7 @@
         				
         				if(country){
         					ctrl.searchText = country.translations[ctrl.currentLang] ? country.translations[ctrl.currentLang] : country.name;
+        					ctrl.selectedItem  = angular.copy(country);
         				}
     	    		});
     			} else if(ctrl.ngModel.length == 2){
@@ -106,10 +108,12 @@
     					
         				if(country){
         					ctrl.searchText = country.translations[ctrl.currentLang] ? country.translations[ctrl.currentLang] : country.name;
+        					ctrl.selectedItem  = angular.copy(country);
         				}
     	    		});
     			} else {
     				ctrl.searchText = angular.copy(ctrl.ngModel);
+    				ctrl.selectedItem  =  angular.copy(ctrl.ngModel);
     			}
     		} 
     	};
