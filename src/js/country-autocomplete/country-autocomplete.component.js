@@ -63,7 +63,7 @@
     		ctrl.noCache = ctrl.noCache || false;
     		
     		ctrl.currentLang = ctrl.currentLang || AppOptions.currentLang;
-    		ctrl.currentLang = ctrl.currentLang && _.size(ctrl.currentLang) > 2 ? ctrl.currentLang.split("-")[0].toLowerCase() : ctrl.currentLang;
+    		ctrl.currentLang = ctrl.currentLang && _.size(ctrl.currentLang) > 2 ? (ctrl.currentLang + "").split("-")[0].toLowerCase() : ctrl.currentLang;
     		
     		ctrl.clearButton =  _.isBoolean(ctrl.clearButton) ? ctrl.clearButton : false;
     		

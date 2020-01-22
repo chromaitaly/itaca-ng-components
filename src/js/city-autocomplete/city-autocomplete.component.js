@@ -161,11 +161,7 @@
 	    		addressInfo.geo.coordinates.push(data.geometry.location.lng());
 	    		addressInfo.geo.coordinates.push(data.geometry.location.lat());
 	    		
-	    		//deprecato
-//				    	addressInfo.lat = data.geometry.location.lat();
-//				    	addressInfo.lng = data.geometry.location.lng();
-	    		
-		    	addressInfo.offset = data.utc_offset ? parseInt(data.utc_offset)*60 : data.utc_offset;
+	    		addressInfo.offset = parseInt(data.utc_offset_minutes);
 		    	addressInfo.addressComplete = ctrl.selectedItem;
 		    	
 		    	ctrl.ngModelCtrl.$setViewValue(addressInfo);

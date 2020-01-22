@@ -70,12 +70,19 @@
 							</div>
 							
 							<div class="text-center layout-column flex-50">
-								<div ng-switch="$ctrl.room.totalRate.type">
-		     						<span ng-switch-when="STANDARD">
-		     							<span ng-if="$ctrl.room.totalRate.cancellationPolicy.flexible" class="label bg-warn" translate="reservation.rate.flexible"></span>
-		     							<span ng-if="!$ctrl.room.totalRate.cancellationPolicy.flexible" class="label bg-success" translate="reservation.cancellation.free"></span>
-		     						</span>
-		     						<span ng-switch-when="NOT_REFUNDABLE" class="label" translate="ratesheet.rate.type.notRefundable.abbr"></span>
+								<div ng-switch="$ctrl.room.totalRate.$$type">
+<!-- 		     						<span ng-switch-when="STANDARD"> -->
+<!-- 		     							<span ng-if="$ctrl.room.totalRate.cancellationPolicy.flexible" class="label bg-warn" translate="reservation.rate.flexible"></span> -->
+<!-- 		     							<span ng-if="!$ctrl.room.totalRate.cancellationPolicy.flexible" class="label bg-success" translate="reservation.cancellation.free"></span> -->
+<!-- 		     						</span> -->
+<!-- 		     						<span ng-switch-when="NOT_REFUNDABLE" class="label" translate="ratesheet.rate.type.notRefundable.abbr"></span> -->
+
+									<span ng-if="!room.totalRate.$$type" class="bg-danger">MANCA $$TYPE</span>
+									<span ng-switch-when="FREE" class="row-mini text-lowercase" translate="reservation.cancellation.free"></span>
+									<!-- TODO cambiare con custom -- Parsialmente rimborsabile -->
+									<span ng-switch-when="CUSTOM" class="row-mini text-lowercase" translate="reservation.rate.flexible"></span>
+									<span ng-switch-when="NOT_REFUNDABLE" class="row-mini text-lowercase" translate="ratesheet.rate.type.notRefundable.abbr"></span>
+
 		     					</div>
 							</div>
 						</div>
