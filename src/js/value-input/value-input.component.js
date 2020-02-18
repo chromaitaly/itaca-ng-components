@@ -1,9 +1,9 @@
 (function() {
-	'use strict';
+	"use strict";
 	
-	angular.module("itaca.components").component('chValueInput', {
+	angular.module("itaca.components").component("chValueInput", {
 		require: {
-			ngModelCtrl: 'ngModel'
+			ngModelCtrl: "ngModel"
 		},
 		bindings: {
 			ngModel: "<",
@@ -112,7 +112,7 @@
 			if (!isManual) {
 				// prima di passare alla select, verifico che il valore attuale
 				// sia incluso nelle opzioni valide ed eventualmente lo setto
-				// alla prima valida (se non ce ne sono, resto sull'input)
+				// alla prima valida (se non ce ne sono, resto sull"input)
 				var current = ctrl.ngModel ? ctrl.ngModel.count : null;
 				
 				if (!_.some(ctrl.$$counts, {"value": current, disabled: false})) {				

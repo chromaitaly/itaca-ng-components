@@ -1,5 +1,5 @@
 <ng-form name="chAmountInputForm">	
-	<div layout layout-padding layout-align="start top" class="no-padding">
+	<div layout layout-align="start top" class="no-padding" ng-class="{'layout-padding-xs': !$ctrl.amountType}">
 		<div>
 			<md-input-container md-no-float="$ctrl.labelNoFloat" class="{{$ctrl.inputContainerClass}}" 
 				ng-class="{'no-padding-left': $ctrl.hideIcon || !$ctrl.amountType}">
@@ -7,8 +7,8 @@
 					<span ng-bind="$ctrl.label"></span>
 				</label>
 				
-				<input type="number" name="{{$ctrl.inputName}}" placeholder="{{$ctrl.label}}" ng-model="$ctrl.ngModel.finalAmount" 
-					ng-required="$ctrl.ngRequired" ng-readonly="$ctrl.readonly" ng-change="$ctrl.$update()" ng-disabled="$ctrl.ngDisabled"
+				<input type="number" name="{{$ctrl.inputName}}" placeholder="{{$ctrl.label}}" ng-model="$ctrl.ngModel.finalAmount" ng-model-options="{updateOn: $ctrl.updateOn}" 
+					ng-required="$ctrl.ngRequired" ng-readonly="$ctrl.readonly" ng-change="$ctrl.$onChange()" ng-disabled="$ctrl.ngDisabled"
 					ng-min="($ctrl.ngModel.type == 'PERCENTAGE' && !$ctrl.ngMin ? ($ctrl.allowNegative ? -100 : 0) : $ctrl.ngMin)" 
 					min="{{($ctrl.ngModel.type == 'PERCENTAGE' && !$ctrl.ngMin ? ($ctrl.allowNegative ? -100 : 0) : $ctrl.ngMin)}}" 
 					ng-step="$ctrl.ngStep" step="{{$ctrl.ngStep}}"  
@@ -17,8 +17,8 @@
 					ng-pattern="($ctrl.allowNegative ? $ctrl.$$REGEXP.priceNoStrict : $ctrl.$$REGEXP.price)" aria-label="Amount">
 					
 				<md-icon ng-if="!$ctrl.hideIcon && $ctrl.amountType == 'PRICE'" class="mdi md-18" ng-class="{
-					'mdi-currency-eur': !$ctrl.amountCurrency || $ctrl.amountCurrency == 'EUR', 
-					'mdi-currency-usd': $ctrl.amountCurrency == 'USD'}"></md-icon>
+					'mdi-currency-eur': !$ctrl.ngModelCurrency || $ctrl.ngModelCurrency == 'EUR', 
+					'mdi-currency-usd': $ctrl.ngModelCurrency == 'USD'}"></md-icon>
 		        <md-icon ng-if="!$ctrl.hideIcon && $ctrl.amountType == 'PERCENTAGE'" class="mdi mdi-percent md-18"></md-icon>
 		        
 		        <div ng-if="$ctrl.errorMessages" ng-messages="chAmountInputForm[$ctrl.inputName].$error">
@@ -34,11 +34,11 @@
 		<div ng-if="!$ctrl.amountType">
 			<md-input-container md-no-float class="{{$ctrl.inputContainerClass}}">
 				<md-select name="amountType" placeholder="{{::('common.amount.type'|translate)}}" ng-model="$ctrl.ngModel.type"
-					ng-required="$ctrl.ngRequired" ng-readonly="$ctrl.readonly" ng-change="$ctrl.$update()" aria-label="Amount type" ng-disabled="$ctrl.ngDisabled">
+					ng-required="$ctrl.ngRequired" ng-readonly="$ctrl.readonly" ng-change="$ctrl.$onChange()" aria-label="Amount type" ng-disabled="$ctrl.ngDisabled">
 	         		<md-option value="PRICE" ng-selected="!$ctrl.ngModel.type || $ctrl.ngModel.type == 'PRICE'">
 	         			<md-icon class="mdi md-14" ng-class="{
-	         				'mdi-currency-eur': !$ctrl.amountCurrency || $ctrl.amountCurrency == 'EUR', 
-	         				'mdi-currency-usd': $ctrl.amountCurrency == 'USD'}"></md-icon>
+	         				'mdi-currency-eur': !$ctrl.ngModelCurrency || $ctrl.ngModelCurrency == 'EUR', 
+	         				'mdi-currency-usd': $ctrl.ngModelCurrency == 'USD'}"></md-icon>
 	         		</md-option>
 	         		<md-option value="PERCENTAGE" ng-selected="$ctrl.ngModel.type == 'PERCENTAGE'">
 	         			<md-icon class="mdi mdi-percent md-14"></md-icon>

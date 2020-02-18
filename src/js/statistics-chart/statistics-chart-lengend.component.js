@@ -1,7 +1,7 @@
 (function() {
-	'use strict';
+	"use strict";
 	
-	angular.module("itaca.components").component('chStatisticsChartLegend', {
+	angular.module("itaca.components").component("chStatisticsChartLegend", {
 		bindings: {
 			datasets: "<",
 			colors: "<?",

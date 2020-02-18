@@ -1,5 +1,5 @@
 (function() {
-	'use strict';
+	"use strict";
 	
 	angular.module("itaca.components").component("chReview", {
 		transclude: true,
@@ -35,7 +35,7 @@
     			return;
     		}
     		
-    		ctrl.review.isNew = moment().isBefore(moment(ctrl.review.createdDate).add(ctrl.newLimit, 'days'));
+    		ctrl.review.isNew = moment().isBefore(moment(ctrl.review.createdDate).add(ctrl.newLimit, "days"));
     		
     		// genero il titolo in base allo score
     		ctrl.review.label = ReviewsUtils.generateScoreLabel(Math.floor(ctrl.review.score));
@@ -51,11 +51,11 @@
     	this.$getUserAvatar = function() {
     		if(ctrl.$$user && ctrl.$$user.avatarType){
     			switch(ctrl.$$user.avatarType){
-    				case 'PORTAL' 	:
+    				case "PORTAL" 	:
     					ctrl.userAvatar = ctrl.$$user.avatar ? ctrl.imgBaseUrl + ctrl.$$user.avatar : null; 
     					break;
-    				case 'FACEBOOK' : ctrl.userAvatar = ctrl.$$user.facebookImage; break;
-    				case 'GOOGLE' 	: ctrl.userAvatar = ctrl.$$user.googleImage; break;
+    				case "FACEBOOK" : ctrl.userAvatar = ctrl.$$user.facebookImage; break;
+    				case "GOOGLE" 	: ctrl.userAvatar = ctrl.$$user.googleImage; break;
     				default		  	: 
     					ctrl.userAvatar = ctrl.$$user.avatar ? ctrl.imgBaseUrl + ctrl.$$user.avatar : null; 
     					break;

@@ -1,10 +1,10 @@
 (function() {
-	'use strict';
+	"use strict";
 	
 	angular.module("itaca.components").component("chReviewHotelInfo", {
 		transclude: true,
 		require: {
-			chReviewCtrl: '^chReview'
+			chReviewCtrl: "^chReview"
 		},
 		bindings: {
 			hideImage: "<?",

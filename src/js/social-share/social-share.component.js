@@ -1,7 +1,7 @@
 (function() {
-	'use strict';
+	"use strict";
 	
-	angular.module("itaca.components").component('chSocialShare', {
+	angular.module("itaca.components").component("chSocialShare", {
 		bindings: {
 			iconSize: "<?",
 			title: "@",
@@ -197,7 +197,7 @@
 		this.$mdMedia = $mdMedia;
 		
 		this.$$config = {
-			showMore: $mdMedia('gt-sm')
+			showMore: $mdMedia("gt-sm")
 		};
 		
 		this.$onInit = function() {
@@ -205,7 +205,7 @@
 				return;
 			}
 			
-			ctrl.iconSize = ctrl.iconSize || 'md-38';
+			ctrl.iconSize = ctrl.iconSize || "md-38";
 			ctrl.mediaUrl = ctrl.mediaUrl || "/resources/img/common/favicon-96x96.png";
 			
 			ctrl.$$mediaUrl = UrlUtils.parseUrl(ctrl.mediaUrl).href;

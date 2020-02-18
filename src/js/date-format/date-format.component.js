@@ -2,7 +2,7 @@
  * Date format 
  */
 (function() {
-	'use strict';
+	"use strict";
 	
 	angular.module("itaca.component").component("chDateFormat", {
 		bindings: {
@@ -20,7 +20,7 @@
 		var ctrl = this;
 		
 		this.$onInit = function() {
-			ctrl.format = ctrl.format || 'medium';
+			ctrl.format = ctrl.format || "medium";
 			
 			ctrl.$calculate();
 		};
@@ -45,7 +45,7 @@
 	    		} else if(ctrl.offset){
 					// se è una stringa ed è UTC il valore è 0 altrimenti è la stringa passata senza ulteriori controlli
 					if(isNaN(ctrl.offset)){
-						_offset = ctrl.offset.toLowerCase() == 'UTC' ? 0 : ctrl.offset;
+						_offset = ctrl.offset.toLowerCase() == "UTC" ? 0 : ctrl.offset;
 						
 					} else {
 						// Se è un numero controllo se sia in minuti oppure se è in secondi lo converto in minuti
@@ -55,7 +55,7 @@
 					_date = _offset ? _date.utcOffset(_offset, true).local() : _date;
 				}
     			
-    			ctrl.$$date = $filter('date')(_date.toDate(), ctrl.format);
+    			ctrl.$$date = $filter("date")(_date.toDate(), ctrl.format);
     			
     		}
     	};

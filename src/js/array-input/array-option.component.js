@@ -1,10 +1,10 @@
 (function() {
-    'use strict';
+    "use strict";
     
     angular.module("itaca.components").component("chArrayOption", {
     	transclude: true,
     	require: {
-			chArrayInputCtrl: '^chArrayInput'
+			chArrayInputCtrl: "^chArrayInput"
 		},
     	bindings: {
     		ngValue: "<",

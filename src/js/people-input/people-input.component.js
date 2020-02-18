@@ -2,9 +2,9 @@
  * People Input
  */
 (function() {
-	'use strict';
+	"use strict";
 	
-	angular.module("itaca.components").component('chPeopleInput', {
+	angular.module("itaca.components").component("chPeopleInput", {
         bindings: {
         	containerClass: "@",
         	inputLabel: "@",

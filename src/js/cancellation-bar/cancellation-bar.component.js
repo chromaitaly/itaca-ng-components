@@ -2,9 +2,9 @@
  * Cancellation Bar
  */
 (function() {
-	'use strict';
+	"use strict";
 	
-	angular.module("itaca.components").component('chCancellationBar', {
+	angular.module("itaca.components").component("chCancellationBar", {
         bindings: {
         	creationDate: "<",
         	checkinDate: "<",
@@ -75,7 +75,7 @@
 				throw new Error("chCancellationBar: checkinDate cannot be null");
 			}
 			
-			//se passo il timezone sovrascrivo l'offset
+			//se passo il timezone sovrascrivo l"offset
 			if(ctrl.timeZoneId){
 				var zone = moment.tz.zone(ctrl.timeZoneId);
 				var _offset = zone.parse(ctrl.creationDate);
@@ -127,12 +127,12 @@
 			// porto end alle 23:59 per disegnare correttamente la barra
 			endMoment.endOf("day");
 			
-			var totalDays  = endMoment.diff(startMoment, 'days') || 1;
+			var totalDays  = endMoment.diff(startMoment, "days") || 1;
 			var daysToCheckin = moment.duration(endMoment.diff($$nowMoment)).asDays();
 			ctrl.$$todayPosition = NumberUtils.fixedDecimals(100 - (daysToCheckin / totalDays * 100));
 			ctrl.$$todayPosition = ctrl.$$todayPosition > 100 ? 100 : ctrl.$$todayPosition < 0 ? 0 : ctrl.$$todayPosition;
 			
-			// se non c'è la limitDate
+			// se non c"è la limitDate
 			if(!ctrl.limitDate){
 				// la cancellazione è a pagamento se è stata specificata un penale, altrimenti è gratuita
 				ctrl.$$inPenalty = !_.isNil(ctrl.feeAmount) && ctrl.feeAmount > 0;
@@ -157,15 +157,15 @@
 			}
 			
 			//per evitare che sbordino le date
-			var limitLabelEl = angular.element($element[0].querySelector('.limit-label'));
+			var limitLabelEl = angular.element($element[0].querySelector(".limit-label"));
 			
 			if(ctrl.$$limitRate == 100){        		
-				limitLabelEl.addClass('limit-label-full');
-				limitLabelEl.removeClass('limit-label-empty');
+				limitLabelEl.addClass("limit-label-full");
+				limitLabelEl.removeClass("limit-label-empty");
 				
 			} else if(ctrl.$$limitRate == 0){
-				limitLabelEl.addClass('limit-label-empty');
-				limitLabelEl.removeClass('limit-label-full');
+				limitLabelEl.addClass("limit-label-empty");
+				limitLabelEl.removeClass("limit-label-full");
 			}
 		};
 	}

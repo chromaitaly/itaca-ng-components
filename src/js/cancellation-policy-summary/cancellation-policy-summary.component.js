@@ -54,7 +54,7 @@
 		};
 		
 		this.$checkType = function() {
-			if (ctrl.policy && ctrl.policy.id) {
+			if (ctrl.policy) {
 				ctrl.$$type = ReservationUtils.isFreeCancellationPolicy(ctrl.policy) ? "FREE" : 
 					ReservationUtils.isNotRefundablePolicy(ctrl.policy) ? "NOT_REFUNDABLE" : "CUSTOM";
 			}
@@ -65,7 +65,7 @@
 		};
 		
 		this.$createDeadlineMessageKey = function() {
-			ctrl.$$deadlineKey = ctrl.policy && ctrl.policy.deadline ? (ctrl.policy.deadline.unit == 'DAYS' ? 'date.day' : ctrl.policy.deadline.unit == 'HOURS' ? 'date.hour' : 'date.month') + (ctrl.policy.deadline.count > 1 ? 's' : '') : null;
+			ctrl.$$deadlineKey = ctrl.policy && ctrl.policy.deadline ? (ctrl.policy.deadline.unit == "DAYS" ? "date.day" : ctrl.policy.deadline.unit == "HOURS" ? "date.hour" : "date.month") + (ctrl.policy.deadline.count > 1 ? "s" : "") : null;
 		};
 	}
 })();

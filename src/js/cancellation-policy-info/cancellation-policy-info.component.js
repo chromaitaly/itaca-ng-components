@@ -1,9 +1,8 @@
 (function() {
-    'use strict';
+    "use strict";
     
     angular.module("itaca.components").component("chCancellationPolicyInfo", {
     	bindings: {
-    		rateType: "<",
     		cancellationPolicy: "<",
     		city: "@",
 			timeZoneId: "@",

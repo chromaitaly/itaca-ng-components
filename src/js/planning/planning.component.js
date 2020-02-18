@@ -1,5 +1,5 @@
 (function() {
-    'use strict';
+    "use strict";
     
     angular.module("itaca.components").component("chPlanning", {
     	transclude: true,
@@ -147,7 +147,7 @@
 			
 			var viewDates = [];
 			
-			Array.from(range.by('days'), function(m) {
+			Array.from(range.by("days"), function(m) {
 				var d = m.toDate();
 				this.push({
 					uid: d.getTime(), 

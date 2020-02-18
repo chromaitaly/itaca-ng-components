@@ -1,5 +1,5 @@
 (function() {
-	'use strict';
+	"use strict";
 	
 	angular.module("itaca.components").component("chPriceRangePicker", {
         bindings: {
@@ -57,8 +57,8 @@
 			    position: position,
 			    clickOutsideToClose: true,
 			    disableParentScroll: ctrl.disableParentScroll,
-			    hasBackdrop: !$mdMedia('gt-sm') || ctrl.hasBackdrop,
-			    fullscreen: !$mdMedia('gt-sm'),
+			    hasBackdrop: !$mdMedia("gt-sm") || ctrl.hasBackdrop,
+			    fullscreen: !$mdMedia("gt-sm"),
 			    panelClass: "panel-medium bg-white md-whiteframe-15dp",
 			    trapFocus: true,
 			    onCloseSuccess: function(panelRef, closeReason) {
@@ -95,8 +95,8 @@
 			 };
 	 		  	    		 
 			 ctrl.$$config.openFrom = ev;
-			 ctrl.$$config.hasBackdrop = !$mdMedia('gt-sm') || ctrl.hasBackdrop;
-			 ctrl.$$config.fullscreen = !$mdMedia('gt-sm');
+			 ctrl.$$config.hasBackdrop = !$mdMedia("gt-sm") || ctrl.hasBackdrop;
+			 ctrl.$$config.fullscreen = !$mdMedia("gt-sm");
 			 ctrl.$$config.locals = locals;
 			 
 			 // apro il pannello 

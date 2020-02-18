@@ -1,7 +1,7 @@
 (function() {
-	'use strict';
+	"use strict";
 	
-	angular.module("itaca.components").component('chDownloadButton', {
+	angular.module("itaca.components").component("chDownloadButton", {
 		bindings: {
 			url: "<",
 			btnClass: "@",
@@ -74,8 +74,8 @@
 						
 					} else {
 						var linkEl = ctrl.$getLinkEl();
-						linkEl.href = 'data:' + (response.data.contentType || "application/octet-stream") + ';base64,' + encodeURI(response.data.file);
-						linkEl.setAttribute('download', response.data.filename);
+						linkEl.href = "data:" + (response.data.contentType || "application/octet-stream") + ";base64," + encodeURI(response.data.file);
+						linkEl.setAttribute("download", response.data.filename);
 //							linkEl.click();
 						
 						if(document.createEvent) {
@@ -88,7 +88,7 @@
 							linkEl.dispatchEvent(eventObj);
 						
 						} else {
-							linkEl.fireEvent('click');
+							linkEl.fireEvent("click");
 						}
 					}
 					
@@ -119,8 +119,8 @@
 			
 			if (linkEl == null) {
 				// se non esiste, viene creato
-				linkEl = document.createElement('a');
-				linkEl.setAttribute('target', '_blank');
+				linkEl = document.createElement("a");
+				linkEl.setAttribute("target", "_blank");
 				linkEl.className = "ch-download-button-link";
 			
 				element[0].appendChild(linkEl);

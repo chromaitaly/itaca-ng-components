@@ -1,5 +1,5 @@
 (function() {
-    'use strict';
+    "use strict";
     
     angular.module("itaca.components").component("chSlidingGallery", {
     	bindings: {
@@ -101,7 +101,7 @@
 				lazyLoadingInPrevNext: ctrl.lazyLoading, 
 				autoplayDisableOnInteraction: false,
 				pagination: false,
-				watchSlidesVisibility: ctrl.lazyLoading && (ctrl.slidesPerView == 'auto' || ctrl.slidesPerView > 1)
+				watchSlidesVisibility: ctrl.lazyLoading && (ctrl.slidesPerView == "auto" || ctrl.slidesPerView > 1)
     		};
     		
     		ctrl.$overrideConfig();

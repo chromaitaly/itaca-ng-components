@@ -2,9 +2,9 @@
  * Password Input
  */
 (function() {
-	'use strict';
+	"use strict";
 	
-	angular.module("itaca.components").component('chPasswordInput', {
+	angular.module("itaca.components").component("chPasswordInput", {
         require: {
         	ngModelCtrl: "ngModel"
         },
@@ -48,7 +48,7 @@
 		this.$initWatch =  function(){
 			$scope.$watch(function(){return ctrl.ngModel;}, function(newVal, oldVal){
 				if(newVal && ctrl.ngMatch){
-					$scope.chPasswordInputForm[ctrl.inputName].$setValidity('match', ctrl.ngMatch === newVal);
+					$scope.chPasswordInputForm[ctrl.inputName].$setValidity("match", ctrl.ngMatch === newVal);
 				}
 			});
 		};

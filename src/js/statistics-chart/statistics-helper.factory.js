@@ -1,7 +1,7 @@
 (function() {
-    'use strict';
+    "use strict";
     
-    angular.module("itaca.components").factory('StatisticsHelper', StatisticsHelper);
+    angular.module("itaca.components").factory("StatisticsHelper", StatisticsHelper);
     
     /* @ngInject */
     function StatisticsHelper($translate, $mdMedia, AppOptions, ColorsUtils, chValueFilter, NumberUtils) {			
@@ -12,30 +12,30 @@
     		extra = extra || {};
     		
     		if(extra.xType){
-    			extra.format = extra.xType == 'DAYS' ? {small: 'DD/MM/YY', big: 'DD MMM YYYY', tooltips: 'DD MMMM YYYY'} :  extra.xType == 'MONTHS' ? {small: 'MMM', big: 'MMMM', tooltips: 'MMMM YYYY'} : {small: 'YYYY', big: 'YYYY', tooltips: 'YYYY'};
+    			extra.format = extra.xType == "DAYS" ? {small: "DD/MM/YY", big: "DD MMM YYYY", tooltips: "DD MMMM YYYY"} :  extra.xType == "MONTHS" ? {small: "MMM", big: "MMMM", tooltips: "MMMM YYYY"} : {small: "YYYY", big: "YYYY", tooltips: "YYYY"};
 			} else {
-				extra.format = {small: 'DD/MM/YY', big: 'DD MMM YYYY', tooltips: 'DD MMMM YYYY'};
+				extra.format = {small: "DD/MM/YY", big: "DD MMM YYYY", tooltips: "DD MMMM YYYY"};
 			}
     		
     		var chartData = $$service.$createDefaultChartData(datasets, tooltips, extra, onHoverEv, onClickEv);
     		
     		switch(type) {
     		case "RESERVATIONS_AMOUNT_TREND":
-    			chartData.type = 'bar';
+    			chartData.type = "bar";
     			
     			// 1 dataset primary 
     			chartData.data.datasets[0].backgroundColor = ColorsUtils.hex2rgba("#42a5f5", 80);
     			chartData.data.datasets[0].borderColor = ColorsUtils.hex2rgba("#42a5f5");
     			chartData.data.datasets[0].fill = true;
-    			chartData.data.datasets[0].label = $translate.instant('reservations.reservations'); 
+    			chartData.data.datasets[0].label = $translate.instant("reservations.reservations"); 
     			
     			// 2 dataset primary light 
     			if(chartData.data.datasets[1]){
-    				chartData.data.datasets[0].label = $translate.instant('statistics.statistics.trend.basic'); 
+    				chartData.data.datasets[0].label = $translate.instant("statistics.statistics.trend.basic"); 
 	    			chartData.data.datasets[1].backgroundColor = ColorsUtils.hex2rgba("#1976d2", 80);
 	    			chartData.data.datasets[1].borderColor = ColorsUtils.hex2rgba("#1976d2");
 	    			chartData.data.datasets[1].fill = true;
-	    			chartData.data.datasets[1].label = $translate.instant('common.comparison'); 
+	    			chartData.data.datasets[1].label = $translate.instant("common.comparison"); 
     			}
     			
     			
@@ -45,23 +45,23 @@
 				};
 				chartData.options.scales.yAxes[0].scaleLabel = {
 					display: true,
-		        	labelString: extra.yType == 'CURRENCY' ? 'Euro €' : extra.yType == 'PERCENTAGE' ? $translate.instant('common.percentage') + ' %' : '',
+		        	labelString: extra.yType == "CURRENCY" ? "Euro €" : extra.yType == "PERCENTAGE" ? $translate.instant("common.percentage") + " %" : "",
 				};
     			
     			// X
     			chartData.options.scales.xAxes[0].ticks.callback = function(value, index, values) {
     				if(value){
-    					return moment.unix(value).format((extra.isSmall || !$mdMedia('gt-sm')) ? extra.format.small : extra.format.big );
+    					return moment.unix(value).format((extra.isSmall || !$mdMedia("gt-sm")) ? extra.format.small : extra.format.big );
     				}
 				};
 				chartData.options.scales.xAxes[0].scaleLabel = {
 						display: true,
-			        	labelString: '', //TODO mettere un range di anni (o di mesi nel caso di vista giornaliera)
+			        	labelString: "", //TODO mettere un range di anni (o di mesi nel caso di vista giornaliera)
 					};
 				
     			
 				chartData.options.tooltips.callbacks.label = function(tooltipItem, data) {
-					return $translate.instant('reservations.reservations'); 
+					return $translate.instant("reservations.reservations"); 
 				};
 				
     			chartData.options.legend.display = false;
@@ -69,16 +69,16 @@
     			// Tooltips in caso di più di un dataset
     			if(chartData.data.datasets.length > 1){
 					chartData.options.tooltips = {
-							backgroundColor: '#FFF',
-	    					borderColor: 'rgba(0,0,0, .7)',
-	    					titleFontColor: '#000',
-	    					bodyFontColor: '#000',
-	    					footerFontColor: '#000',
-	    					mode: 'index',
+							backgroundColor: "#FFF",
+	    					borderColor: "rgba(0,0,0, .7)",
+	    					titleFontColor: "#000",
+	    					bodyFontColor: "#000",
+	    					footerFontColor: "#000",
+	    					mode: "index",
 	    		            intersect: false,
 	    					callbacks: {
 	    						label: function(tooltipItem, data) {
-	    							var label = '';
+	    							var label = "";
 	    							
 	    							if(extra.tooltipTitle){
 	    								label = $translate.instant(extra.tooltipTitle);
@@ -86,13 +86,13 @@
 	    							
 	    							if(tooltipItem.datasetIndex > 0 && extra.comparationTitle){
 	    								if(_.isFinite(extra.comparationTitle)){
-	    									label = label + ' (' + extra.comparationTitle + ') ';
+	    									label = label + " (" + extra.comparationTitle + ") ";
 	    								} else {
-	    									label = label + ' (' + (extra.comparationTitle == 'PORTAL' ? AppOptions.about.uiName : $translate.instant('channel.source.' + extra.comparationTitle.toLowerCase())) + ') ';
+	    									label = label + " (" + (extra.comparationTitle == "PORTAL" ? AppOptions.about.uiName : $translate.instant("channel.source." + extra.comparationTitle.toLowerCase())) + ") ";
 	    								}
 	    							}
 	    							
-	    							label = label + ': ' + chValueFilter({count: tooltipItem.yLabel, unit: extra.yType });
+	    							label = label + ": " + chValueFilter({count: tooltipItem.yLabel, unit: extra.yType });
 	    							return label;
 	    						}
 	    					}
@@ -104,7 +104,7 @@
     			break;
     			
     		case "RESERVATIONS_SOURCE_TREND":
-    			chartData.type = 'doughnut';
+    			chartData.type = "doughnut";
     			
     			_.forEach(chartData.data.datasets, function(ds){
     				ds.backgroundColor = ColorsUtils.hex2rgba("#92278f");
@@ -117,10 +117,10 @@
     			var tp = chartData.options.tooltips;
     			tp.callbacks = {
 					title: function(tp, data) {
-						return data.labels[tp[0].index] == 'PORTAL' ? AppOptions.about.name : $translate.instant('channel.source.' + data.labels[tp[0].index].toLowerCase());
+						return data.labels[tp[0].index] == "PORTAL" ? AppOptions.about.name : $translate.instant("channel.source." + data.labels[tp[0].index].toLowerCase());
 					},
 					label: function(tooltipItem, data) {
-						return ' '; //label vuota ma con il quadratino colorato
+						return " "; //label vuota ma con il quadratino colorato
 					},
 					footer: function(tp, data) {
 						var label = [];
@@ -173,7 +173,7 @@
     			break;
     			
     		case "REVIEWS_COUNT_TREND":
-    			chartData.type = 'line';
+    			chartData.type = "line";
     			
     			//mostro la linea di divisione
     			if(extra && (extra.benchmarkValue || extra.currentValue) && (extra.tooltipTitle == "statistics.reviews.avg" ||  extra.tooltipTitle == "statistics.reviews.avg.monthly" || extra.tooltipTitle == "statistics.reviews.avg.daily" || extra.tooltipTitle == "statistics.reviews.avg.yearly")){
@@ -192,12 +192,12 @@
     					chartData.options.horizontalLine.push({
 					      "y": extra.currentValue,
 					      "style": "#444",
-					      "text": extra.currentValue + ' ' + $translate.instant("statistics.reviews.score.current"),
+					      "text": extra.currentValue + " " + $translate.instant("statistics.reviews.score.current"),
 					      "textPosition" : 5,
 					    });
     					
     					// posiziono il testo distanziandolo in caso di vicinanza di 1 punto base
-    					// applico la distanza all' elemento che si trova più in alto
+    					// applico la distanza all" elemento che si trova più in alto
     					if((extra.currentValue - extra.benchmarkValue) < 1 || (extra.currentValue - extra.benchmarkValue) > -1){
     						chartData.options.horizontalLine[extra.currentValue > extra.benchmarkValue ? 1 : 0].textPosition = -20;
     						chartData.options.horizontalLine[0].style = "#888";
@@ -215,7 +215,7 @@
     			
     			// 2 dataset primary light 
     			if(chartData.data.datasets[1]){
-    				chartData.data.datasets[0].label = $translate.instant('statistics.statistics.trend.basic'); 
+    				chartData.data.datasets[0].label = $translate.instant("statistics.statistics.trend.basic"); 
 	    			chartData.data.datasets[1].backgroundColor = ColorsUtils.hex2rgba("#1976d2", 80);
 	    			chartData.data.datasets[1].borderColor = ColorsUtils.hex2rgba("#1976d2");
 	    			chartData.data.datasets[1].fill = true;
@@ -226,31 +226,31 @@
     		
     			chartData.options.scales.xAxes[0].ticks.callback = function(value, index, values) {
     				if(value){
-    					return moment.unix(value).format((extra.isSmall || !$mdMedia('gt-sm')) ? extra.format.small : extra.format.big );
+    					return moment.unix(value).format((extra.isSmall || !$mdMedia("gt-sm")) ? extra.format.small : extra.format.big );
     				}
  				};
 
  				chartData.options.legend.display = false;
  				
- 				if(extra.isSmall || _.includes(['statistics.reviews.avg','statistics.reviews.avg.daily','statistics.reviews.avg.monthly','statistics.reviews.avg.yearly'], extra.tooltipTitle)){
+ 				if(extra.isSmall || _.includes(["statistics.reviews.avg","statistics.reviews.avg.daily","statistics.reviews.avg.monthly","statistics.reviews.avg.yearly"], extra.tooltipTitle)){
 	 				chartData.options.scales.yAxes[0].ticks.min = 4;
 	 				chartData.options.scales.yAxes[0].ticks.max = 12;
  				}
  				
  				chartData.options.tooltips.callbacks.label = function(tooltipItem, data) {
-					return $translate.instant('reviews.reviews');
+					return $translate.instant("reviews.reviews");
 				};
 				
-				if(_.includes(['statistics.reviews.avg','statistics.reviews.avg.daily','statistics.reviews.avg.monthly','statistics.reviews.avg.yearly'], extra.tooltipTitle)){
+				if(_.includes(["statistics.reviews.avg","statistics.reviews.avg.daily","statistics.reviews.avg.monthly","statistics.reviews.avg.yearly"], extra.tooltipTitle)){
 					chartData.options.scales.yAxes[0].scaleLabel = {
 						display: true,
-			        	labelString: $translate.instant('common.opinion'),
+			        	labelString: $translate.instant("common.opinion"),
 					};
 				}
 				
 				if(chartData.data.datasets[1]){
-					chartData.data.datasets[0].label = $translate.instant('statistics.statistics.trend.basic'); 
-					chartData.data.datasets[1].label = $translate.instant('common.comparison'); 
+					chartData.data.datasets[0].label = $translate.instant("statistics.statistics.trend.basic"); 
+					chartData.data.datasets[1].label = $translate.instant("common.comparison"); 
 				}
 				
 				chartData.gradient = [
@@ -261,16 +261,16 @@
 				// Tooltips in caso di più di un dataset
     			if(chartData.data.datasets.length > 1){
 					chartData.options.tooltips = {
-	    					backgroundColor: '#FFF',
-	    					borderColor: 'rgba(0,0,0, .7)',
-	    					titleFontColor: '#000',
-	    					bodyFontColor: '#000',
-	    					footerFontColor: '#000',
-	    					mode: 'index',
+	    					backgroundColor: "#FFF",
+	    					borderColor: "rgba(0,0,0, .7)",
+	    					titleFontColor: "#000",
+	    					bodyFontColor: "#000",
+	    					footerFontColor: "#000",
+	    					mode: "index",
 	    		            intersect: false,
 	    					callbacks: {
 	    						label: function(tooltipItem, data) {
-	    							var label = '';
+	    							var label = "";
 	    							
 	    							if(extra.tooltipTitle){
 	    								label = $translate.instant(extra.tooltipTitle);
@@ -278,11 +278,11 @@
 	    							
 	    							if(tooltipItem.datasetIndex > 0 && extra.comparationTitle){
 	    								if(_.isFinite(extra.comparationTitle)){
-	    									label = label + ' (' + extra.comparationTitle + ') ';
+	    									label = label + " (" + extra.comparationTitle + ") ";
 	    								}
 	    							}
 	    							
-	    							label = label + ': ' + chValueFilter({count: tooltipItem.yLabel, unit: extra.yType });
+	    							label = label + ": " + chValueFilter({count: tooltipItem.yLabel, unit: extra.yType });
 	    							return label;
 	    						}
 	    					}
@@ -293,7 +293,7 @@
     			break;
     			
     		case "TRANSFERS_TREND":
-    			chartData.type = 'bar';
+    			chartData.type = "bar";
     			
  				// Y
     			chartData.options.scales.yAxes[0].ticks.callback = function(value, index, values) {
@@ -301,20 +301,20 @@
 				};
 				chartData.options.scales.yAxes[0].scaleLabel = {
 					display: true,
-		        	labelString: extra.yType == 'CURRENCY' ? 'Euro €' : extra.yType == 'PERCENTAGE' ? $translate.instant('common.percentage') + ' %' : '',
+		        	labelString: extra.yType == "CURRENCY" ? "Euro €" : extra.yType == "PERCENTAGE" ? $translate.instant("common.percentage") + " %" : "",
 				};
     			
     			// X
     			chartData.options.scales.xAxes[0].ticks.callback = function(value, index, values) {
     				if(value){
-    					return moment.unix(value).format((extra.isSmall || !$mdMedia('gt-sm')) ? extra.format.small : extra.format.big );
+    					return moment.unix(value).format((extra.isSmall || !$mdMedia("gt-sm")) ? extra.format.small : extra.format.big );
     				}
 				};
 
  				chartData.options.legend.display = false;
  				
  				chartData.options.tooltips.callbacks.label = function(tooltipItem, data) {
-					return $translate.instant('service.transfer');
+					return $translate.instant("service.transfer");
 				};
 				
 				
@@ -322,15 +322,15 @@
     			chartData.data.datasets[0].backgroundColor = ColorsUtils.hex2rgba("#42a5f5", 80);
     			chartData.data.datasets[0].borderColor = ColorsUtils.hex2rgba("#42a5f5");
     			chartData.data.datasets[0].fill = true;
-    			chartData.data.datasets[0].label = $translate.instant('reservations.reservations'); 
+    			chartData.data.datasets[0].label = $translate.instant("reservations.reservations"); 
     			
     			// 2 dataset primary light 
     			if(chartData.data.datasets[1]){
-    				chartData.data.datasets[0].label = $translate.instant('statistics.statistics.trend.basic'); 
+    				chartData.data.datasets[0].label = $translate.instant("statistics.statistics.trend.basic"); 
 	    			chartData.data.datasets[1].backgroundColor = ColorsUtils.hex2rgba("#1976d2", 80);
 	    			chartData.data.datasets[1].borderColor = ColorsUtils.hex2rgba("#1976d2");
 	    			chartData.data.datasets[1].fill = true;
-	    			chartData.data.datasets[1].label = $translate.instant('common.comparison'); 
+	    			chartData.data.datasets[1].label = $translate.instant("common.comparison"); 
     			}
 				
     			
@@ -364,7 +364,7 @@
 								display: true,
 							},
 							ticks: {
-								 beginAtZero: true, //imposto l'asse x a partire da 0
+								 beginAtZero: true, //imposto l"asse x a partire da 0
 				    			 max: max,
 							},
 							gridLines: {
@@ -378,7 +378,7 @@
 								display: true,
 							},
 							ticks: {
-								 beginAtZero: true //imposto l'asse x a partire da 0
+								 beginAtZero: true //imposto l"asse x a partire da 0
 							},
 							gridLines: {
 							   tickMarkLength: 10
@@ -387,7 +387,7 @@
 					},
 					legend: {},
 					hover: {
-						mode: 'index',
+						mode: "index",
 						intersect: true
 					},
 					animation: {
@@ -395,11 +395,11 @@
     					animateRotate: true
     				},
     				tooltips: {
-    					backgroundColor: '#FFF',
-    					borderColor: 'rgba(0,0,0, .7)',
-    					titleFontColor: '#000',
-    					bodyFontColor: '#000',
-    					footerFontColor: '#000',
+    					backgroundColor: "#FFF",
+    					borderColor: "rgba(0,0,0, .7)",
+    					titleFontColor: "#000",
+    					bodyFontColor: "#000",
+    					footerFontColor: "#000",
     				}
 				}
     		};
@@ -407,14 +407,14 @@
     		//mostro altre informazioni nei tooltip
     		if(_.isArray(tooltips) && !_.isEmpty(tooltips)){
     			chartData.options.tooltips = {
-    				mode: 'index',
+    				mode: "index",
 					callbacks: {
 						title: function(tp, data) {
 							return _.capitalize(moment.unix(data.labels[tp[0].index]).format(extra.format.tooltips));
 						},
 						
 						label: function(tooltipItem, data) {
-							return ''; //label vuota ma con il quadratino colorato
+							return ""; //label vuota ma con il quadratino colorato
 						},
 						
 						footer: function(tp, data) {
@@ -433,12 +433,12 @@
 							return label;
 						},
 					},
-					backgroundColor: '#FFF',
-					borderColor: '#666',
+					backgroundColor: "#FFF",
+					borderColor: "#666",
 					borderWidth: 1,
-					titleFontColor: '#000',
-					bodyFontColor: '#222',
-					footerFontColor: '#444',
+					titleFontColor: "#000",
+					bodyFontColor: "#222",
+					footerFontColor: "#444",
 				}
     		}
     		

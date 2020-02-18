@@ -1,5 +1,5 @@
 (function() {
-	'use strict';
+	"use strict";
 	
 	angular.module("itaca.components").component("chParallax", {
 		bindings: {
@@ -24,17 +24,17 @@
 		var ctrl = this;
 		
 		this.$onInit = function(){
-			ctrl.$$bgStyle = {'background-image': 'url('+ ctrl.imageUrl + ')'};
+			ctrl.$$bgStyle = {"background-image": "url("+ ctrl.imageUrl + ")"};
 			ctrl.hasBackdrop = _.isBoolean(ctrl.hasBackdrop) ? ctrl.hasBackdrop : false;
 			
 			if(ctrl.height){
-				var el = $element[0].querySelector('.ch-parallax');
-				var height = (ctrl.height == 'SCREEN') ? document.body.clientHeight  + "px" : ctrl.height + "px";
+				var el = $element[0].querySelector(".ch-parallax");
+				var height = (ctrl.height == "SCREEN") ? document.body.clientHeight  + "px" : ctrl.height + "px";
 				if(!el){
 					return;
 				}
 				
-				if($mdMedia('gt-sm')){
+				if($mdMedia("gt-sm")){
 					el.style.height = height;
 					el.style.minHeight = "";
 					

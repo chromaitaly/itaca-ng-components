@@ -1,14 +1,14 @@
 (function() {
-	'use strict';
+	"use strict";
 	
 	angular.module("itaca.components").component("chReviewActions", {
 		transclude: true,
 		require: {
-			chReviewCtrl: '^chReview'
+			chReviewCtrl: "^chReview"
 		},
 		bindings: {
 			/**
-    		 *  actions: array = [{label: 'string', icon: 'string', onClick: function, btnClass: 'string', hide: true|false, disabled: true|false}...];
+    		 *  actions: array = [{label: "string", icon: "string", onClick: function, btnClass: "string", hide: true|false, disabled: true|false}...];
     		 */
     		actions: "<?",
 		},

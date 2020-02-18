@@ -1,9 +1,9 @@
 (function() {
-	'use strict';
+	"use strict";
 	
-	angular.module("itaca.components").component('chColorPickerInline', {
+	angular.module("itaca.components").component("chColorPickerInline", {
 		require: {
-			ngModelCtrl: 'ngModel',
+			ngModelCtrl: "ngModel",
 		},
 		bindings: {
 			ngModel: "<",

@@ -1,10 +1,10 @@
 (function() {
-    'use strict';
+    "use strict";
     
     angular.module("itaca.components").component("chRoomGallery", {
     	require: {
-    		chRoomCtrl: '^chRoom',
-    		chRoomHeaderCtrl: '^chRoomHeader'
+    		chRoomCtrl: "^chRoom",
+    		chRoomHeaderCtrl: "^chRoomHeader"
 		},
     	bindings: {
     		cols: "@",
@@ -14,7 +14,8 @@
     	},
 		controller: RoomGalleryCtrl,
 		template: 
-			"<ch-gallery gallery=\"$ctrl.chRoomCtrl.room.gallery\" gallery-title=\"{{$ctrl.title}}\" storage-url=\"$ctrl.chRoomCtrl.storageUrl\" cols=\"{{$ctrl.cols}}\" rowspan=\"{{$ctrl.rowspan}}\" ratio=\"{{$ctrl.ratio}}\" max-items=\"$ctrl.maxItems\"></ch-gallery>"
+			"<ch-gallery gallery=\"$ctrl.chRoomCtrl.room.gallery\" gallery-title=\"{{$ctrl.title}}\" storage-url=\"$ctrl.chRoomCtrl.storageUrl\" " +
+				"cols=\"{{$ctrl.cols}}\" rowspan=\"{{$ctrl.rowspan}}\" ratio=\"{{$ctrl.ratio}}\" max-items=\"$ctrl.maxItems\"></ch-gallery>"
     });
     
     /* @ngInject */

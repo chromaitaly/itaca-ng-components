@@ -1,9 +1,9 @@
 (function() {
-    'use strict';
+    "use strict";
     
     angular.module("itaca.components").component("chRoomTitle", {
     	require: {
-    		chRoomCtrl: '^chRoom',
+    		chRoomCtrl: "^chRoom",
 		},
     	bindings: {},
 		controller: RoomTitleCtrl,
@@ -40,9 +40,9 @@
     		ctrl.chRoomCtrl.showRoomRates = !ctrl.chRoomCtrl.showRoomRates;
     		ctrl.chRoomCtrl.showRoomInfo = false;
     		if(!ctrl.chRoomCtrl.showRoomRates){
-    			Navigator.scrollToAnchor('av-'+ctrl.chRoomCtrl.$$index);
+    			Navigator.scrollToAnchor("av-"+ctrl.chRoomCtrl.$$index);
     		}else{
-    			Navigator.scrollToAnchor('av-'+ctrl.chRoomCtrl.$$index+'-rates');
+    			Navigator.scrollToAnchor("av-"+ctrl.chRoomCtrl.$$index+"-rates");
     		}
     	};
     	

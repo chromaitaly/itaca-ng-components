@@ -1,5 +1,5 @@
 (function() {
-	'use strict';
+	"use strict";
 	
 	angular.module("itaca.components").component("chEasingBg", {
 		transclude: true,
@@ -84,11 +84,11 @@
     	};
     	
     	this.$doEase = function() {			
-			//fix per tutti gli elementi che applicano al body un top falsando l'offset
+			//fix per tutti gli elementi che applicano al body un top falsando l"offset
 			var windowsOffset = $window.pageYOffset;
 			if(document.body){
 				var style = window.getComputedStyle(document.body);
-				var top = style.getPropertyValue('top');
+				var top = style.getPropertyValue("top");
 				
 				windowsOffset += top ? Math.abs(parseInt(top)) : 0;
 			} 
@@ -97,8 +97,8 @@
 			var alpha = offset >= 1 ? 1 : offset;
     		
 			/* fix per backdrop di angular material */
-//			var backdrop = angular.element(document.querySelectorAll('.md-select-backdrop, .md-menu-backdrop'));
-//			var backdrop = angular.element($element[0].querySelectorAll('md-select[aria-expanded="true"], .md-menu.md-open'));
+//			var backdrop = angular.element(document.querySelectorAll(".md-select-backdrop, .md-menu-backdrop"));
+//			var backdrop = angular.element($element[0].querySelectorAll("md-select[aria-expanded="true"], .md-menu.md-open"));
 //			if(backdrop.length > 0){
 //				alpha = 1;
 //			}

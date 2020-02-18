@@ -1,5 +1,5 @@
 (function() {
-	'use strict';
+	"use strict";
 	
 	angular.module("itaca.components").component("chBookingForm", {
 		bindings: {
@@ -57,7 +57,7 @@
 		};
 		
 		this.$calculateNights = function() {
-			ctrl.reservation.nights = DateUtils.absoluteMoment(ctrl.reservation.checkout).diff(DateUtils.absoluteMoment(ctrl.reservation.checkin), 'days');
+			ctrl.reservation.nights = DateUtils.absoluteMoment(ctrl.reservation.checkout).diff(DateUtils.absoluteMoment(ctrl.reservation.checkin), "days");
 		};
 		
 		this.$search = function() {

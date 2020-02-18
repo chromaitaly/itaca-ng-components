@@ -49,7 +49,7 @@
 			</div>
 			
 			<div class="text-gray-light {{$ctrl.contClass}}" ng-if="!$ctrl.$$gracePeriod && $ctrl.policy.deadline.count">
-				<strong translate-once="{{$ctrl.policy.reservationPenalty.firstNight ? 'policies.policy.cancellation.penalty.firstNight.within.description.small' : 'policies.policy.cancellation.penalty.stay.within.description.small'}}" 
+				<strong translate="{{$ctrl.policy.reservationPenalty.firstNight ? 'policies.policy.cancellation.penalty.firstNight.within.description.small' : 'policies.policy.cancellation.penalty.stay.within.description.small'}}" 
 					translate-values="{percentage: $ctrl.policy.reservationPenalty.percentage, count: $ctrl.policy.deadline.count, unit: ($ctrl.$$deadlineKey|translate|lowercase)}"></strong>
 			</div>
 		</div>

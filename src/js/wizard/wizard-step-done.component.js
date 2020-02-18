@@ -1,10 +1,10 @@
 (function() {
-    'use strict';
+    "use strict";
     
     angular.module("itaca.components").component("chWizardStepDone", {
     	transclude: true,
     	require: {
-			chWizardStepsDoneContentCtrl: '^chWizardStepsDoneContent'
+			chWizardStepsDoneContentCtrl: "^chWizardStepsDoneContent"
 		},
     	bindings: {
 	  		label: "@",

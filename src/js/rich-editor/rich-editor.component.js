@@ -2,7 +2,7 @@
  * REQUIRE NG-QUILL && QUILL
  */
 (function() {
-	'use strict';
+	"use strict";
 	angular.module("itaca.component").component("chRichEditor", {
 		require: {
 			ngModelCtrl: "ngModel"
@@ -37,15 +37,15 @@
 			}
 			
 			var defaultToolbar =[
-			  ['bold', 'italic', 'underline', 'strike'],  
-			  ['blockquote', 'code-block'],
-			  [{ 'list': 'ordered'}, { 'list': 'bullet' }],
-			  [{ 'script': 'sub'}, { 'script': 'super' }], 
-			  [{ 'indent': '-1'}, { 'indent': '+1' }],    
-			  [{ 'size': ['small', false, 'large', 'huge'] }], 
-			  [{ 'header': [1, 2, 3, 4, 5, 6, false] }],
-			  [{ 'color': [] }],
-			  [{ 'align': [] }],
+			  ["bold", "italic", "underline", "strike"],  
+			  ["blockquote", "code-block"],
+			  [{ "list": "ordered"}, { "list": "bullet" }],
+			  [{ "script": "sub"}, { "script": "super" }], 
+			  [{ "indent": "-1"}, { "indent": "+1" }],    
+			  [{ "size": ["small", false, "large", "huge"] }], 
+			  [{ "header": [1, 2, 3, 4, 5, 6, false] }],
+			  [{ "color": [] }],
+			  [{ "align": [] }],
 			];
 			
 			ctrl.counter = {words : 0,chars: 0};
@@ -68,8 +68,8 @@
 			
 			//applico il min-height se presente
 			if(ctrl.minHeight){
-				angular.element($element[0].querySelector('.ql-container')).css("cssText", 'min-height: '+ ctrl.minHeight + 'px !important');
-				angular.element($element[0].querySelector('.ql-editor')).css("cssText", 'min-height: '+  ctrl.minHeight + 'px !important');
+				angular.element($element[0].querySelector(".ql-container")).css("cssText", "min-height: "+ ctrl.minHeight + "px !important");
+				angular.element($element[0].querySelector(".ql-editor")).css("cssText", "min-height: "+  ctrl.minHeight + "px !important");
 			}
 			
 			//se viene eseguita anche una funzione esterna

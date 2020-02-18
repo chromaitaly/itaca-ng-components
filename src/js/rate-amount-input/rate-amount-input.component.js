@@ -1,9 +1,9 @@
 (function() {
-	'use strict';
+	"use strict";
 	
-	angular.module("itaca.components").component('chRateAmountInput', {
+	angular.module("itaca.components").component("chRateAmountInput", {
 		require: {
-			ngModelCtrl: 'ngModel',
+			ngModelCtrl: "ngModel",
 		},
 		bindings: {
 			ngModel: "=",
@@ -48,7 +48,7 @@
 		   
 			// Label
 		   if(!ctrl.originalValueLabel){
-			   	$translate('common.amount.original').then(function(translate){
+			   	$translate("common.amount.original").then(function(translate){
 			   		ctrl.originalValueLabel =  translate;
 			   	}, _.stubFalse());
 		   }
@@ -73,7 +73,7 @@
 				
 				if(ctrl.promotion && ctrl.promotion.discount && ctrl.promotion.discount.finalAmount){
 					var discountPrice = 0;
-					if(ctrl.promotion.discount.type== 'PERCENTAGE'){
+					if(ctrl.promotion.discount.type== "PERCENTAGE"){
 						discountPrice = NumberUtils.calculateDiscount(ctrl.ngModel.initialAmount, ctrl.promotion.discount.finalAmount, "PERCENTAGE");
 						
 					} else {
@@ -98,10 +98,10 @@
 	   
 	   this.$adeguateAmount = function(){
 		   if(ctrl.ngModel.$originalValue && ctrl.ngModel.finalAmount != ctrl.ngModel.$originalValue.finalAmount){
-				// adeguo l'inizial in base alla promozione
+				// adeguo l"inizial in base alla promozione
 				if(!_.isNil(ctrl.promotion) && ctrl.promotion.discount && ctrl.promotion.discount.finalAmount){
 					var discountPrice = 0;
-					if(ctrl.promotion.discount.type== 'PERCENTAGE'){
+					if(ctrl.promotion.discount.type== "PERCENTAGE"){
 						discountPrice = (100 * ctrl.ngModel.finalAmount) / (100 - ctrl.promotion.discount.finalAmount);
 						
 					} else {
@@ -111,7 +111,7 @@
 					ctrl.ngModel.initialAmount = discountPrice;
 						 
 				} else if(ctrl.ngModel.initialAmount < ctrl.ngModel.finalAmount){
-					// se il final è più alto dell'initial adeguo l'initial
+					// se il final è più alto dell"initial adeguo l"initial
 					ctrl.ngModel.initialAmount = ctrl.ngModel.finalAmount;
 				}
 				

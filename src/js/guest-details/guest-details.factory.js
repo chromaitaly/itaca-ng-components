@@ -1,7 +1,7 @@
 (function() {
-	'use strict';
+	"use strict";
 	
-	angular.module("itaca.components").factory('GuestDetailsAPI', GuestDetailsApi); 
+	angular.module("itaca.components").factory("GuestDetailsAPI", GuestDetailsApi); 
     
     /* @ngInject */
     function GuestDetailsApi($resource, $q) {	
@@ -12,7 +12,7 @@
 		$$service.url = "/resources/public/js/data/json";
 		
 		var methods = {
-			municipalities: {method:'GET', url: $$service.url+"/municipalities.json"},
+			municipalities: {method:"GET", url: $$service.url+"/municipalities.json"},
 			countries: {method: "GET", url: $$service.url + "/countries.json"},
 			documents: {method: "GET", url: $$service.url + "/documents.json"},
 		};

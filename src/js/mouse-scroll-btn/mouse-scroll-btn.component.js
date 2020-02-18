@@ -1,5 +1,5 @@
 (function() {
-	'use strict';
+	"use strict";
 	
 	angular.module("itaca.components").component("chMouseScollBtn", {
 		bindings: {
@@ -23,7 +23,7 @@
 		this.$onInit = function(){
 			ctrl.navigator = Navigator;
 			
-			ctrl.anchor = ctrl.anchor || 'body';
+			ctrl.anchor = ctrl.anchor || "body";
 		};
 	}
 })();

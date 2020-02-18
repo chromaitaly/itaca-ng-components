@@ -1,5 +1,5 @@
 (function() {
-	'use strict';
+	"use strict";
 	
 	angular.module("itaca.components").component("guestDetailsItem", {
 		bindings: {
@@ -51,7 +51,7 @@
 			
 			// se esiste un leader e non si è impostato un tipo preseleziono il gruppo di appartenenza
 			if(!ctrl.document.guestType && leader){
-				ctrl.document.guestType = leader.guestType == 'GROUP_LEADER'? 'GROUP_MEMBER' : 'FAMILY_MEMBER';
+				ctrl.document.guestType = leader.guestType == "GROUP_LEADER"? "GROUP_MEMBER" : "FAMILY_MEMBER";
 			}
 			
 			ctrl.$checkLeastAnAdult();
@@ -72,20 +72,20 @@
 			
 			//controllo se è stato inserito almeno 1 adulto
 			if(!ctrl.action.anAdult && !moment(ctrl.document.birthDate).isBefore(ctrl.legalDate)){
-				$translate('error.room.guest.not.selected').then(function(translate){
+				$translate("error.room.guest.not.selected").then(function(translate){
 					Notification.error(translate);
 					FormUtils.focusFirstInput(form);
 				});
 				return;
 			}
 			
-			ctrl.document.$$status = form.$valid ? 'COMPLETE' : 'PARTIAL';
+			ctrl.document.$$status = form.$valid ? "COMPLETE" : "PARTIAL";
 			
 			if (form.$valid) {
 				
 				//imposto la provincia
 				if(ctrl.document.birthPlace && AppOptions.$$places){
-					var _place = _.find(AppOptions.$$places, ['code', ctrl.document.birthPlace]);
+					var _place = _.find(AppOptions.$$places, ["code", ctrl.document.birthPlace]);
 					if(_place){
 						ctrl.document.province = _place.province;
 					}
@@ -93,7 +93,7 @@
 				
 				//imposto come ospite singolo se non si inserisce nulla
 				if(!ctrl.document.guestType){
-					ctrl.document.guestType = 'SINGLE_GUEST';
+					ctrl.document.guestType = "SINGLE_GUEST";
 				}
 				
 				ctrl.$checkLeastAnAdult();
@@ -126,12 +126,12 @@
 		};
 		
 		this.$setGuestType = function(type){
-			type = type || 'SINGLE_GUEST';
+			type = type || "SINGLE_GUEST";
 			
 			switch(type){
-				case 'GROUP_LEADER'	: ctrl.document.guestType = 'GROUP_LEADER'; break;
-				case 'HOUSEHOLDER'	: ctrl.document.guestType = 'HOUSEHOLDER'; break;
-				default				: ctrl.document.guestType = 'SINGLE_GUEST'; break;
+				case "GROUP_LEADER"	: ctrl.document.guestType = "GROUP_LEADER"; break;
+				case "HOUSEHOLDER"	: ctrl.document.guestType = "HOUSEHOLDER"; break;
+				default				: ctrl.document.guestType = "SINGLE_GUEST"; break;
 			}
 		};
 	}

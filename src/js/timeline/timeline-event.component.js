@@ -1,19 +1,19 @@
 (function(){
-	'use strict';
+	"use strict";
 	
 	angular.module("itaca.components").component("chTimelineEvent", {
 			require: {
-			chTimelineCtrl: '^chTimeline'
+			chTimelineCtrl: "^chTimeline"
 		},
 		transclude: true,
 		bindings: {
-			date: '<',
-			eventTitle: '@',
-			titleQuote: '<?',
-			iconBg: '@',
-			iconClass: '@',
-			dateFormat: '@',
-			isNew: '<?',
+			date: "<",
+			eventTitle: "@",
+			titleQuote: "<?",
+			iconBg: "@",
+			iconClass: "@",
+			dateFormat: "@",
+			isNew: "<?",
 			ngDisabled: "<?"
     	},
 		controller: EventCtrl,
@@ -66,7 +66,7 @@
 			ctrl.titleQuote = _.isBoolean(ctrl.titleQuote) ? ctrl.titleQuote : true;
 			
 			$element.addClass("ch-timeline-event flex-xs-100 relative layout-column");
-			$element.addClass(ctrl.event.align == 'CENTER' ? 'flex-50' : 'flex-100');
+			$element.addClass(ctrl.event.align == "CENTER" ? "flex-50" : "flex-100");
 		};
 		
 		this.$onChanges = function(changesObj) {

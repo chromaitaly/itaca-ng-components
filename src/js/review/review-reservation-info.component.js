@@ -1,10 +1,10 @@
 (function() {
-	'use strict';
+	"use strict";
 	
 	angular.module("itaca.components").component("chReviewReservationInfo", {
 		transclude: true,
 		require: {
-			chReviewCtrl: '^chReview'
+			chReviewCtrl: "^chReview"
 		},
 		bindings: {
 			title: "@"
@@ -56,11 +56,11 @@
 			var checkin = DateUtils.absoluteMoment(ctrl.review.reservation.checkin);
 			var checkout = DateUtils.absoluteMoment(ctrl.review.reservation.checkout);
 			
-			if(checkin.get('month') == checkout.get('month')){
-				ctrl.$$period = checkin.format('MMMM YYYY');
+			if(checkin.get("month") == checkout.get("month")){
+				ctrl.$$period = checkin.format("MMMM YYYY");
 				
 			} else {
-				ctrl.$$period = checkin.format('MMMM YYYY') + '/'+ checkout.format('MMMM YYYY');
+				ctrl.$$period = checkin.format("MMMM YYYY") + "/"+ checkout.format("MMMM YYYY");
 			}
 		};
 	}

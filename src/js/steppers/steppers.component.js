@@ -1,5 +1,5 @@
 (function() {
-	'use strict';
+	"use strict";
 	
 	angular.module("itaca.components").component("chSteppers", {
 		transclude: true,
@@ -30,7 +30,9 @@
 					"</div>" +
 					"<div flex hide show-gt-sm></div>" +
 					"<div layout=\"column\" flex-xs flex-sm>" +
-						"<md-button ng-if=\"$ctrl.action.hasNext || (!$ctrl.action.hasNext && $ctrl.action.hasConfirm)\" ng-class=\"!$ctrl.action.hasNext && $ctrl.action.hasConfirm ? 'bg-success text-white layout-padding' : 'md-primary md-raised'\" ng-click=\"$ctrl.$next()\" aria-label=\"go to next\" ng-disabled=\"!$ctrl.action.canContinue\">" +
+						"<md-button ng-if=\"$ctrl.action.hasNext || (!$ctrl.action.hasNext && $ctrl.action.hasConfirm)\" " +
+							"ng-class=\"!$ctrl.action.hasNext && $ctrl.action.hasConfirm ? 'bg-success text-white layout-padding' : 'md-primary md-raised'\" " +
+							"ng-click=\"$ctrl.$next()\" aria-label=\"go to next\" ng-disabled=\"!$ctrl.action.canContinue\">" +
 							"<span ng-if=\"$ctrl.action.hasNext\">" +
 								"<span translate=\"common.next.step\"></span>" +
 								"<md-icon class=\"mdi material-icons mdi-chevron-right\"></md-icon>" +

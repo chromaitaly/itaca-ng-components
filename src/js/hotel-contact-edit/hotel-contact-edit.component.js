@@ -1,5 +1,5 @@
 (function() {
-	'use strict';
+	"use strict";
 	
 	angular.module("itaca.components").component("chHotelContactEdit", {
 		bindings: {
@@ -26,7 +26,7 @@
     		
     		ctrl.list = [];
     		if(ctrl.type && ctrl.type.value){
-    			ctrl.list = _.filter(ctrl.hotel.contactInfos,['type',ctrl.type.value]);
+    			ctrl.list = _.filter(ctrl.hotel.contactInfos,["type",ctrl.type.value]);
     		}
     	};
     	

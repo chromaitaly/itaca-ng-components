@@ -1,9 +1,9 @@
 (function() {
-	'use strict';
+	"use strict";
 	
 	angular.module("itaca.components").component("chReviewsSummaryDetails", {
 		require: {
-			chReviewsSummaryCtrl: '^chReviewsSummary'
+			chReviewsSummaryCtrl: "^chReviewsSummary"
 		},
 		bindings: {
     		progressClass: "@?",

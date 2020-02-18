@@ -1,5 +1,5 @@
 (function() {
-	'use strict';
+	"use strict";
 	
 	angular.module("itaca.components").component("chHotelBedEdit", {
 		bindings: {
@@ -30,12 +30,12 @@
     		ctrl.list = ctrl.list || [];
     		
     		// tipologia di letti
-    		ctrl.bedTypes = ['SINGLE', 'TWIN', 'DOUBLE', 'FRENCH', 'QUEEN', 'KING', 'POUF', 
-    		                   'ARMCHAIR', 'COT', 'MURPHY', 'CRADLE', 'POSTER',
-    			               'HALF_SQUARE', 'OVERSIZE', 'DIVAN', 'FUTON', 'BUNK', 'WATERBED'];
+    		ctrl.bedTypes = ["SINGLE", "TWIN", "DOUBLE", "FRENCH", "QUEEN", "KING", "POUF", 
+    		                   "ARMCHAIR", "COT", "MURPHY", "CRADLE", "POSTER",
+    			               "HALF_SQUARE", "OVERSIZE", "DIVAN", "FUTON", "BUNK", "WATERBED"];
     		
     		
-    		// creo il letto e assegno l'uid
+    		// creo il letto e assegno l"uid
     		ctrl.bed = ctrl.bed || {people:{adults:1}, maxPerson:1, count: 1};
     		ctrl.bed.uid = NumberUtils.uniqueNumber();
     		
@@ -51,7 +51,7 @@
     		}
     		
     		ctrl.$$bedTypes = _.filter(ctrl.bedTypes, function(b){
-    			return !_.some(ctrl.list, ['type', b]);
+    			return !_.some(ctrl.list, ["type", b]);
     		});
     		ctrl.$$bedTypes = ctrl.$$bedTypes || [];
     		if(ctrl.bed.type){
@@ -111,7 +111,7 @@
     	};
     	
     	this.$cancel = function(){
-    		// se non c'è oriBed vuol dire che è stato appena creato
+    		// se non c"è oriBed vuol dire che è stato appena creato
     		if(!ctrl.oriBed){
     			ctrl.$remove();
     			return;

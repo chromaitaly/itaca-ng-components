@@ -1,9 +1,9 @@
 (function() {
-	'use strict';
+	"use strict";
 	
-	angular.module("itaca.component").component('chCountryIso', {
+	angular.module("itaca.component").component("chCountryIso", {
 		bindings: {
-			iso: '<',
+			iso: "<",
 			currentLang: "<?",
 		},
 		controller: CountryCtrl,

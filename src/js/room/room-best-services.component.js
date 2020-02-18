@@ -1,9 +1,9 @@
 (function() {
-    'use strict';
+    "use strict";
     
     angular.module("itaca.components").component("chRoomBestServices", {
     	require: {
-    		chRoomCtrl: '^chRoom',
+    		chRoomCtrl: "^chRoom",
 		},
     	bindings: {
     		services: "<?"
@@ -14,7 +14,10 @@
 				"<span ng-repeat=\"service in $ctrl.services track by $index\">"+
 					"<span>" +
 						"<md-icon class=\"{{service.icon}} layout-padding no-padding-top\" ng-class=\"{'text-white': $ctrl.chRoomCtrl.room.gallery.length}\"></md-icon>"+
-						"<md-tooltip ng-if=\"service.label || service.labelKey\"><span ng-if=\"service.label\" ng-bind=\"service.label\"></span><span ng-if=\"!service.label\" translate=\"{{service.labelKey}}\"></span></md-tooltip>"+
+						"<md-tooltip ng-if=\"service.label || service.labelKey\">" +
+							"<span ng-if=\"service.label\" ng-bind=\"service.label\"></span>" +
+							"<span ng-if=\"!service.label\" translate=\"{{service.labelKey}}\"></span>" +
+						"</md-tooltip>"+
 					"</span>" +
 				"</span>"+
 			"</div>",

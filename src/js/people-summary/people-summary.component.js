@@ -2,9 +2,9 @@
  * People Summary
  */
 (function() {
-	'use strict';
+	"use strict";
 	
-	angular.module("itaca.components").component('chPeopleSummary', {
+	angular.module("itaca.components").component("chPeopleSummary", {
         bindings: {
         	people: "<",
         	extraPeople: "<?",
@@ -35,13 +35,13 @@
 				var guestsCount = ReservationUtils.guestsCount(ctrl.people, ctrl.extraPeople);
 				
 				if(!guestsCount && guestsCount.total <= 0) {
-					$translate('people.none').then(function(message){
+					$translate("people.none").then(function(message){
 						ctrl.$$peopleSummary.text = message;
 					});
 
 				} else {					
-					$translate('people.pax').then(function(message){
-						ctrl.$$peopleSummary.text = _.toLower(guestsCount.total  +' '+ message);
+					$translate("people.pax").then(function(message){
+						ctrl.$$peopleSummary.text = _.toLower(guestsCount.total  +" "+ message);
 					});
 				}
 				

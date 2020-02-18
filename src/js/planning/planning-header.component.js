@@ -1,5 +1,5 @@
 (function() {
-	'use strict';
+	"use strict";
 
 	angular.module("itaca.components").component("chPlanningHeader", {
 		require : {
@@ -35,7 +35,7 @@
 			ctrl.imgBaseUrl = ctrl.imgBaseUrl || ctrl.DEFAULT_IMG_BASE_URL;
 			// rimuovo eventuale / iniziale
 			_.startsWith(ctrl.imgBaseUrl, "/") ? ctrl.imgBaseUrl.substr(1) : ctrl.imgBaseUrl;
-			// aggiungo / finale se non c'è
+			// aggiungo / finale se non c"è
 			_.endsWith(ctrl.imgBaseUrl, "/") ? ctrl.imgBaseUrl : ctrl.imgBaseUrl + "/";
 		};
 		

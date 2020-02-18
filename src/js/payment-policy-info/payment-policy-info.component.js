@@ -1,9 +1,8 @@
 (function() {
-    'use strict';
+    "use strict";
     
     angular.module("itaca.components").component("chPaymentPolicyInfo", {
     	bindings: {
-    		rateType: "<",
     		cancellationPolicy: "<",
     		city: "@",
 			timeZoneId: "@",
@@ -42,7 +41,7 @@
     		});
     		
     		_.forEach(room.services, function(service){
-    			if(service.bookability == 'BOOKABLE'){
+    			if(service.bookability == "BOOKABLE"){
 	    			payed += service.chargedAmount ? service.chargedAmount.finalAmount : 0;
 	    			total += service.amount ? service.amount.finalAmount : 0;
     			}

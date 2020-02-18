@@ -1,7 +1,7 @@
 (function() {
-	'use strict';
+	"use strict";
 	
-	angular.module("itaca.components").component('chChart', {
+	angular.module("itaca.components").component("chChart", {
 		bindings: {
 			type: "<",
 			data: "<",
@@ -19,7 +19,7 @@
 		this.$onInit = function(){
 			ctrl.type = _.includes(["line", "bar", "horizontal-bar", "radar", "pie", "polar-area", "doughnut", "bubble"], ctrl.type) ? ctrl.type : "bar";
 			ctrl.data = ctrl.data || {};
-			ctrl.ctx = $element.find('canvas')[0].getContext('2d');
+			ctrl.ctx = $element.find("canvas")[0].getContext("2d");
 			
 			ctrl.ctx.height = $element[0].offsetHeight > 250 ? $element[0].offsetHeight : 250;
 			
@@ -36,7 +36,7 @@
 				ctrl.$$chart.data = ctrl.data;
 				ctrl.$$chart.update({
 				    duration: 800,
-				    easing: 'easeOutBounce'
+				    easing: "easeOutBounce"
 				});
 			}
 			
@@ -69,7 +69,7 @@
 		 * linear-gradient deve essere una array di dataset contenente una mappa di colori
 		 * <position:colore> position: (posizione del gradiente), colore: hex o rgba
 		 * 
-		 * es: [{0:'#000', 1:'#fff'}, {0:'#000', 1:'#fff'}]
+		 * es: [{0:"#000", 1:"#fff"}, {0:"#000", 1:"#fff"}]
 		 */
 		this.$generateGradient = function(){
 			if(_.isNil(ctrl.linearGradient) || _.isEmpty(ctrl.linearGradient)){

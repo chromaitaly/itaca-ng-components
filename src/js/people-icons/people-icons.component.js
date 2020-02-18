@@ -2,9 +2,9 @@
  * People icons
  */
 (function() {
-	'use strict';
+	"use strict";
 	
-	angular.module("itaca.components").component('chPeopleIcons', {
+	angular.module("itaca.components").component("chPeopleIcons", {
         bindings: {
         	people: "<",
         	max: "<?",

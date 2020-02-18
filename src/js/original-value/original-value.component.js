@@ -1,9 +1,9 @@
 (function() {
-	'use strict';
+	"use strict";
 	
-	angular.module("itaca.components").component('chOriginalValue', {
+	angular.module("itaca.components").component("chOriginalValue", {
 		require: {
-			ngModelCtrl: 'ngModel',
+			ngModelCtrl: "ngModel",
 		},
 		bindings: {
 			ngModel: "=",

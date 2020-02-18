@@ -2,11 +2,11 @@
  * Time picker button
  */
 (function() {
-	'use strict';
+	"use strict";
 	
-	angular.module("itaca.components").component('chTimePicker', {
+	angular.module("itaca.components").component("chTimePicker", {
         require: {
-        	ngModelCtrl: 'ngModel' 
+        	ngModelCtrl: "ngModel" 
         },
         bindings: {
         	buttonClass: "@",

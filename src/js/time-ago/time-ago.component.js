@@ -2,7 +2,7 @@
  * Time ago from now
  */
 (function() {
-	'use strict';
+	"use strict";
 	
 	angular.module("itaca.component").component("chTimeAgo", {
 		bindings: {
@@ -33,7 +33,7 @@
 			if(ctrl.offset){
 				// se è una stringa ed è UTC il valore è 0 altrimenti è la stringa passata senza ulteriori controlli
 				if(isNaN(ctrl.offset)){
-					_offset = ctrl.offset.toLowerCase() == 'UTC' ? 0 : ctrl.offset;
+					_offset = ctrl.offset.toLowerCase() == "UTC" ? 0 : ctrl.offset;
 					
 				} else {
 					// Se è un numero controllo se sia in minuti oppure se è in secondi lo converto in minuti

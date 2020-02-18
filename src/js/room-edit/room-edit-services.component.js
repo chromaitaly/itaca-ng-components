@@ -1,5 +1,5 @@
 (function() {
-    'use strict';
+    "use strict";
     
     angular.module("itaca.components").component("chRoomEditServices", {
     	bindings: {
@@ -80,14 +80,14 @@
 		
 		this.$manageServices = function() {
 			_.forEach(ctrl.totalServices, function(service) {
-				service.$$editable = service.maxCount > 1 || service.paymentType == 'PER_PERSON';
+				service.$$editable = service.maxCount > 1 || service.paymentType == "PER_PERSON";
 				service.$$editing = false;
 				
 				service.$$serviceSold = _.find(ctrl.services, function(serviceSold) {
 					return serviceSold.service.type.nameKey == service.type.nameKey
 				});
 				
-				if (service.paymentType == 'PER_PERSON') {
+				if (service.paymentType == "PER_PERSON") {
 					var bestOpt = _.minBy(service.paymentOptions, "amount.finalAmount")
 					if (bestOpt) {
 						service.$$bestPrice = bestOpt.amount.finalAmount;
@@ -102,7 +102,7 @@
     			return false;
     		}
     		
-    		if(service.paymentType != 'PER_PERSON' && service.maxCount <= 1){
+    		if(service.paymentType != "PER_PERSON" && service.maxCount <= 1){
     			ctrl.$doAddService(ctrl.$createServiceSold(service));
     			
     		} else {
@@ -199,7 +199,7 @@
 		};
 		
 		this.$showServiceInfo = function(ev, service){
-			// se contiene 'service' è un serviceSold
+			// se contiene "service" è un serviceSold
 			var s = (service.service || service);
 			var title = s.type.nameKey;
 			var desc =  s.type.descriptionKey;

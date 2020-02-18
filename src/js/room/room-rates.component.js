@@ -1,10 +1,10 @@
 (function() {
-    'use strict';
+    "use strict";
     
     angular.module("itaca.components").component("chRoomRates", {
     	transclude: true,
     	require: {
-    		chRoomCtrl: '^chRoom'
+    		chRoomCtrl: "^chRoom"
 		},
 		bindings: {
     		counter: "<",

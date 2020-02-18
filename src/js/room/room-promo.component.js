@@ -1,9 +1,9 @@
 (function() {
-    'use strict';
+    "use strict";
     
     angular.module("itaca.components").component("chRoomPromo", {
     	require: {
-    		chRoomCtrl: '^chRoom',
+    		chRoomCtrl: "^chRoom",
 		},
     	bindings: {},
 		controller: RoomPromoCtrl,

@@ -1,10 +1,10 @@
 (function() {
-	'use strict';
+	"use strict";
 	
 	angular.module("itaca.components").component("chReviewGallery", {
 		transclude: true,
 		require: {
-			chReviewCtrl: '^chReview'
+			chReviewCtrl: "^chReview"
 		},
 		bindings: {
 			imgBaseUrl: "@?",
@@ -38,7 +38,7 @@
     			ctrl.imgBaseUrl = StringUtils.toBoolean(ctrl.imgBaseUrl) && AppOptions.config && AppOptions.config.amz ? AppOptions.config.amz.baseUrl+"/"+AppOptions.config.amz.bucketName+"/" : "";
     		}
     		
-    		ctrl.defaultImgUrl = ctrl.defaultImgUrl || '/resources/public/img/no-gallery-image.png';
+    		ctrl.defaultImgUrl = ctrl.defaultImgUrl || "/resources/public/img/no-gallery-image.png";
 			
 			ctrl.$initReview();
 		};
@@ -53,7 +53,7 @@
 		
 		this.$openGallery = function(ev, idx){
 			$translate(ctrl.review.label).then(function(message){
-				var title = ctrl.review.score + ':&nbsp;';
+				var title = ctrl.review.score + ":&nbsp;";
 				title += ctrl.review.title ? ctrl.review.title : message;
 					
 				Dialog.showGallery(ev, title, ctrl.review.gallery, {storageUrl: ctrl.imgBaseUrl, initialSlide: idx || 0});

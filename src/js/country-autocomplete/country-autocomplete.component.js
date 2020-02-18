@@ -1,12 +1,12 @@
 (function() {
-	'use strict';
+	"use strict";
 	
 	angular.module("itaca.components").component("chCountryAutocomplete", {
 		require: {
-        	ngModelCtrl: 'ngModel' 
+        	ngModelCtrl: "ngModel" 
         },
 		bindings: {
-			ngModel: '<',
+			ngModel: "<",
 			isDisabled: "<?",
 			isRequired: "<?",
 			noCache: "<?",
@@ -70,7 +70,7 @@
     		ctrl.minLength = ctrl.minLength && Number.isFinite(ctrl.minLength) ? parseInt(ctrl.minLength) : 3;
     		
     		if(!ctrl.placeholder){
-    			$translate('').then(function(translate){
+    			$translate("").then(function(translate){
     				ctrl.placeholder = translate;
     			});
     		}
@@ -139,7 +139,7 @@
 	    };
 	    
 	    this.$setError = function(bool){
-	    	$scope.autocompleteForm.country.$setValidity('connection', !bool);
+	    	$scope.autocompleteForm.country.$setValidity("connection", !bool);
 	    	ctrl.$$error = bool;
 	    	
 	    	if(bool){

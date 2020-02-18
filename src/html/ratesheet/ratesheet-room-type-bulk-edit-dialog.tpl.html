@@ -1,0 +1,247 @@
+<md-dialog flex="70" flex-lg="50" flex-gt-lg="40" aria-label="Calendar bulk edit dialog">
+	<md-toolbar>
+      	<div class="md-toolbar-tools">
+	        <h2 translate-once="rateplan.rateplan.edit.bulk"></h2>
+	        
+	        <span flex></span>
+	        
+	        <md-button class="md-icon-button" ng-click="$ctrl.$close()" aria-label="Close dialog">
+	       		<md-icon class="mdi mdi-close md-24"></md-icon>
+	        </md-button>
+      	</div>
+    </md-toolbar>
+	
+	<md-dialog-content flex>
+		<form name="calendarBulkEditForm" novalidate>
+			<div flex layout="column" layout-padding>
+				<h3 class="md-subhead no-margin-top">
+					<strong>
+						<span translate-once="{{$ctrl.roomType.nameKey}}"></span>&nbsp;
+					</strong>
+					<small class="label label-sm text-uppercase"><span translate-once="room.category.{{$ctrl.roomType.category}}"></span></small>
+					<br>
+					<span class="text-gray-light" translate-once="rateplan.rateplan.edit.bulk.period.hint"></span>
+				</h3>
+				
+				<div layout layout-padding-sm>
+					<div flex-xs="50" flex="40" layout="column" layout-align="center start">
+	          			<span translate-once="rateplan.rateplan"></span>
+	          		</div>
+	          		
+					<div>
+						<strong ng-bind="$ctrl.ratePlan.name"></strong>
+					</div>
+				</div>
+				
+				<div layout layout-padding-sm>
+					<div flex-xs="50" flex="40" layout="column" layout-align="center start">
+	          			<span translate-once="date.period"></span>
+	          		</div>
+	          		
+	          		<div>
+						<ch-date-range-picker
+		                    class="flex text-center"
+		                    button-class="only-border no-margin-left"
+		                    placeholder="{{'date.period'|translate}}"
+							start-label="{{'date.from.abbr'|translate}}"
+							start-hint-label="{{'date.from.abbr'|translate}}"
+							start="$ctrl.$$form.startDate"
+							start-min-date="$ctrl.$$config.minDate"
+							start-max-date="$ctrl.$$config.maxDate"
+							end-label="{{'date.to.abbr'|translate}}"
+							end-hint-label="{{'date.to.abbr'|translate}}"
+							end="$ctrl.$$form.endDate"
+							end-max-date="$ctrl.$$config.maxDate"
+							end-error-messages="[
+								{error: 'required', messageKey: 'error.required'}, 
+								{error: 'mindate', messageKey: 'error.date.end.before.start'}]"
+							ng-required="true"
+							show-diff="false" show-diff-in-calendar="false">
+						</ch-date-range-picker>
+				    </div>
+			   </div>
+			   
+			   <div layout layout-padding-sm>
+					<div flex-xs="50" flex="40" layout="column" layout-align="center start">
+	          			<span translate-once="date.weekdays"></span>
+	          			<small class="text-gray-light" translate-once="date.select.day.none.info"></small>
+	          		</div>
+	          		
+	          		<div>
+<!-- 					<div flex layout="column" layout-align="center center"> -->
+						<ch-array-input ng-model="$ctrl.$$form.weekdays" hide-selected-icon="true">
+							<ch-array-option
+								ng-repeat="weekday in $ctrl.$$config.weekdays track by weekday.isoWeekday"
+								ng-value="weekday.isoWeekday" 
+								button-class="only-border minimal-button row-mini text-small text-initial"
+								label="{{weekday.label}}"
+								selected-class="border-primary md-primary">
+							</ch-array-option>
+						</ch-array-input>
+					</div>
+				</div>
+				
+				<div layout layout-padding-sm>
+					<div flex-xs="50" flex="40" layout="column" layout-align="center start">
+	          			<span translate-once="ratesheet.rate"></span>
+	          		</div>
+	          		
+	          		<div flex layout>
+						<div flex>
+							<ch-amount-input
+								name="amount"
+								input-container-class="md-block no-margin minimal-input no-padding-left"
+								ng-model="$ctrl.$$form.targetRate.amount"
+								label="{{'common.price'|translate}}"
+								label-no-float="true"
+								amount-type="PRICE"
+								ng-min="($ctrl.minAmount || 0.01)"
+								ng-max="$ctrl.maxAmount" 
+								ng-step="0.01"
+								error-messages="[
+									{error: 'required', messageKey: 'error.required'},
+									{error: 'min', messageKey: 'error.field.min.abbr', messageKeyParams: {num: (($ctrl.minAmount || 0.01)|chCurrency)}},
+									{error: 'max', messageKey: 'error.field.max.abbr', messageKeyParams: {num: ($ctrl.maxAmount|chCurrency)}}]">
+							</ch-amount-input>
+						</div>
+						
+						<div flex>
+							<md-button md-no-ink ng-click="$ctrl.$$form.targetRate.amount = null" 
+								class="only-border row-1 no-margin-y-sides text-small" 
+								ng-class="{'md-primary border-primary': $ctrl.$$form.targetRate.amount == null}"
+								tabindex="-1" aria-label="Keep current value of amount">
+								<md-icon ng-if="$ctrl.$$form.targetRate.amount == null" class="mdi mdi-checkbox-marked-circle-outline md-18"></md-icon>&nbsp;
+								<span translate-once="common.edit.dont"></span>
+							</md-button>
+						</div>
+					</div>
+				</div>
+				
+				<div layout layout-padding-sm>
+					<div flex-xs="50" flex="40" layout="column" layout-align="center start">
+	          			<span translate-once="rateplan.rateplan.los.min"></span>
+	          		</div>
+	          		
+	          		<div flex layout>
+						<div flex>
+							<md-input-container md-no-float class="md-block no-margin minimal-input no-padding-left">
+								<input id="minLos" type="number" name="minLos" placeholder="{{'common.nights.minimum'|translate}}" 
+									ng-model="$ctrl.$$form.targetRate.minLOS" min="1" ng-min="1" ng-step="1" 
+									max="{{$ctrl.$$form.targetRate.maxLOS}}" ng-max="$ctrl.$$form.targetRate.maxLOS">
+						           	
+						      	<div ng-messages="calendarBulkEditForm.minLos.$error">
+						       		<div ng-message="min"><span translate="error.field.min.abbr" translate-values="{num: 1}"></span></div>
+						       		<div ng-message="max"><span translate="error.field.max.abbr" translate-values="{num: $ctrl.$$form.targetRate.maxLOS}"></span></div>
+						        </div>
+						  	</md-input-container>
+						</div>
+						
+						<div flex>
+							<md-button md-no-ink ng-click="$ctrl.$$form.targetRate.minLOS = null" 
+								class="only-border row-1 no-margin-y-sides text-small" 
+								ng-class="{'md-primary border-primary': $ctrl.$$form.targetRate.minLOS == null}"
+								tabindex="-1" aria-label="Keep current value of Min LOS">
+								<md-icon ng-if="$ctrl.$$form.targetRate.minLOS == null" class="mdi mdi-checkbox-marked-circle-outline md-18"></md-icon>&nbsp;
+								<span translate-once="common.edit.dont"></span>
+							</md-button>
+						</div>
+					</div>
+				</div>
+			
+				<div layout layout-padding-sm>
+					<div flex-xs="50" flex="40" layout="column" layout-align="center start">
+	          			<span translate-once="rateplan.rateplan.los.max"></span>
+	          		</div>
+					
+					<div flex layout>
+						<div flex>
+							<md-input-container md-no-float class="md-block no-margin minimal-input no-padding-left">
+								<input id="maxLos" type="number" name="maxLos" placeholder="{{'common.nights.maximum'|translate}}" 
+									ng-model="$ctrl.$$form.targetRate.maxLOS"
+						           	min="{{$ctrl.$$form.targetRate.minLOS || 3}}" ng-min="$ctrl.targetRate.$$form.minLOS || 3" ng-step="1">
+						           	
+						      	<div ng-messages="calendarBulkEditForm.maxLos.$error">
+						       		<div ng-message="min"><span translate="error.field.min.abbr" translate-values="{num: $ctrl.$$form.targetRate.minLOS || 3}"></span></div>
+						        </div>
+						  	</md-input-container>
+						</div>
+						
+						<div flex>
+							<md-button md-no-ink ng-click="$ctrl.$$form.targetRate.maxLOS = null" 
+								class="only-border row-1 no-margin-y-sides text-small" 
+								ng-class="{'md-primary border-primary': $ctrl.$$form.targetRate.maxLOS == null}"
+								tabindex="-1" aria-label="Keep current value of Max LOS">
+								<md-icon ng-if="$ctrl.$$form.targetRate.maxLOS == null" class="mdi mdi-checkbox-marked-circle-outline md-18"></md-icon>&nbsp;
+								<span translate-once="common.edit.dont"></span>
+							</md-button>
+						</div>
+					</div>
+				</div>
+				
+				<div layout layout-padding-sm>
+					<div flex-xs="50" flex="40" layout="column" layout-align="center start">
+	          			<span translate-once="rateplan.rateplan.closure.arrival"></span>
+	          		</div>
+					
+					<div flex>
+						<md-button md-no-ink ng-click="$ctrl.$$form.targetRate.closedToArrival = !$ctrl.$$form.targetRate.closedToArrival" 
+							class="md-square-button only-border no-margin-y-sides"
+							tabindex="-1" aria-label="Toggle closed to arrival">
+							<md-icon ng-if="$ctrl.$$form.targetRate.closedToArrival != null" class="mdi mdi-checkbox-marked-circle-outline md-18"></md-icon>&nbsp;
+							<span ng-show="$ctrl.$$form.targetRate.closedToArrival" translate-once="common.yes"></span>
+							<span ng-show="$ctrl.$$form.targetRate.closedToArrival == false" translate-once="common.no"></span>
+						</md-button>
+						
+						<md-button md-no-ink ng-click="$ctrl.$$form.targetRate.closedToArrival = null" 
+							class="only-border row-1 no-margin-y-sides text-small" 
+							ng-class="{'md-primary border-primary': $ctrl.$$form.targetRate.closedToArrival == null}"
+							tabindex="-1" aria-label="Keep current value of closed to arrival">
+							<md-icon ng-if="$ctrl.$$form.targetRate.closedToArrival == null" class="mdi mdi-checkbox-marked-circle-outline md-18"></md-icon>&nbsp;
+							<span translate-once="common.edit.dont"></span>
+						</md-button>
+					</div>
+				</div>
+				
+				<div layout layout-padding-sm>
+					<div flex-xs="50" flex="40" layout="column" layout-align="center start">
+	          			<span translate-once="rateplan.rateplan.closure.departure"></span>
+	          		</div>
+					
+					<div flex>
+						<md-button md-no-ink ng-click="$ctrl.$$form.targetRate.closedToDeparture = !$ctrl.$$form.targetRate.closedToDeparture" 
+							class="md-square-button only-border no-margin-y-sides"
+							tabindex="-1" aria-label="Toggle closed to departure">
+							<md-icon ng-if="$ctrl.$$form.targetRate.closedToDeparture != null" class="mdi mdi-checkbox-marked-circle-outline md-18"></md-icon>&nbsp;
+							<span ng-show="$ctrl.$$form.targetRate.closedToDeparture" translate-once="common.yes"></span>
+							<span ng-show="$ctrl.$$form.targetRate.closedToDeparture == false" translate-once="common.no"></span>
+						</md-button>
+						
+						<md-button md-no-ink ng-click="$ctrl.$$form.targetRate.closedToDeparture = null" 
+							class="only-border row-1 no-margin-y-sides text-small" 
+							ng-class="{'md-primary border-primary': $ctrl.$$form.targetRate.closedToDeparture == null}"
+							tabindex="-1" aria-label="Keep current value of closed to departure">
+							<md-icon ng-if="$ctrl.$$form.targetRate.closedToDeparture == null" class="mdi mdi-checkbox-marked-circle-outline md-18"></md-icon>&nbsp;
+							<span translate-once="common.edit.dont"></span>
+						</md-button>
+					</div>
+				</div>
+			</div>
+		</form>
+	</md-dialog-content>
+	
+	<md-dialog-actions layout>
+  		<span flex></span>
+  		
+    	<md-button ng-click="$ctrl.$close()" aria-label="Close">
+        	<span translate-once="common.close"></span>
+      	</md-button>
+      	
+      	<md-button class="md-primary" ng-click="$ctrl.$confirm()" aria-label="Confirm">
+        	<span translate-once="common.confirm"></span>
+      	</md-button>
+      	
+      	<span flex></span>
+	</md-dialog-actions>
+	
+</md-dialog>
+		

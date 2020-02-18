@@ -1,5 +1,5 @@
 (function() {
-	'use strict';
+	"use strict";
 	
 	angular.module("itaca.components").component("chHotelServiceEdit", {
 		bindings: {
@@ -29,18 +29,18 @@
     		ctrl.advanced = _.isBoolean(ctrl.advanced) ? ctrl.advanced : false;
     		if(ctrl.advanced){
     			ctrl.richEditorToolbar = [
-  				  ['bold', 'italic', 'underline', 'strike'],  
-  				  [{ 'list': 'ordered'}, { 'list': 'bullet' }],
-  				  [{ 'header': [1, 2, 3, 4, 5, 6, false] }],
-  				  [{ 'color': [] }],
-  				  [{ 'align': [] }],
+  				  ["bold", "italic", "underline", "strike"],  
+  				  [{ "list": "ordered"}, { "list": "bullet" }],
+  				  [{ "header": [1, 2, 3, 4, 5, 6, false] }],
+  				  [{ "color": [] }],
+  				  [{ "align": [] }],
   				];
     		}
     		
     		
     		ctrl.counter = ctrl.counter || {actual:0};
     		
-    		ctrl.baseService = {'category':'HOTEL', 'bookability': 'INCLUDED', 'paymentType': 'FREE', 'frequency': 'LUMP_SUM'};
+    		ctrl.baseService = {"category":"HOTEL", "bookability": "INCLUDED", "paymentType": "FREE", "frequency": "LUMP_SUM"};
     		
     		ctrl.$$check();
     		
@@ -54,43 +54,43 @@
 	  	
 	  	this.$$descriptionGenerator = function(service){
 
-	  		$translate(['service.type.default', 'service.type.default.room', 'service.type.bookable.alt', 'service.type.included',
-				'service.type.room', 'service.type.hotel', 'service.type.external', 'service.type.payment.free', 'service.type.room.for.fee',
-				'service.type.payment.single.alt', 'service.type.payment.person',
-				'service.type.payment.at.DAILY', 'service.type.payment.at.MONTHLY', 'service.type.payment.at.YEARLY']).then(function(translations){
+	  		$translate(["service.type.default", "service.type.default.room", "service.type.bookable.alt", "service.type.included",
+				"service.type.room", "service.type.hotel", "service.type.external", "service.type.payment.free", "service.type.room.for.fee",
+				"service.type.payment.single.alt", "service.type.payment.person",
+				"service.type.payment.at.DAILY", "service.type.payment.at.MONTHLY", "service.type.payment.at.YEARLY"]).then(function(translations){
 				
-				var desc = translations['service.type.default'];
-				if(service.bookability == 'BOOKABLE' || (service.bookability == 'INCLUDED' && service.category == 'ROOM' && service.paymentType && service.paymentType != 'FREE')){
+				var desc = translations["service.type.default"];
+				if(service.bookability == "BOOKABLE" || (service.bookability == "INCLUDED" && service.category == "ROOM" && service.paymentType && service.paymentType != "FREE")){
 					
-					if(service.bookability == 'INCLUDED' && service.category == 'ROOM' && service.paymentType && service.paymentType != 'FREE'){
-						desc = translations['service.type.room.for.fee'].toLowerCase() + ' ';
+					if(service.bookability == "INCLUDED" && service.category == "ROOM" && service.paymentType && service.paymentType != "FREE"){
+						desc = translations["service.type.room.for.fee"].toLowerCase() + " ";
 					} else {
-						desc = translations['service.type.' + service.category.toLowerCase()] + ' '+ translations['service.type.bookable.alt'].toLowerCase() + ' ';
+						desc = translations["service.type." + service.category.toLowerCase()] + " "+ translations["service.type.bookable.alt"].toLowerCase() + " ";
 					}
 					
-					if(service.paymentType == 'FREE'){
-						desc += '('+translations['service.type.payment.free']+')';
+					if(service.paymentType == "FREE"){
+						desc += "("+translations["service.type.payment.free"]+")";
 						
 					}else{
 						
-						desc +=  '('+ ((service.paymentOptions[0].amount.finalAmount == 0)?  translations['service.type.payment.free'].toUpperCase() : service.paymentOptions[0].amount.finalAmount +'€');
+						desc +=  "("+ ((service.paymentOptions[0].amount.finalAmount == 0)?  translations["service.type.payment.free"].toUpperCase() : service.paymentOptions[0].amount.finalAmount +"€");
 						
-						if(service.paymentType != 'SINGLE'){
-							desc +=  ' ' + translations['service.type.payment.person'].toLowerCase();
+						if(service.paymentType != "SINGLE"){
+							desc +=  " " + translations["service.type.payment.person"].toLowerCase();
 							if(service.frequency != "LUMP_SUM"){
-								desc += ' /';
+								desc += " /";
 							}
 						}
 						
 						if(service.frequency != "LUMP_SUM"){
-							desc += ' ' + translations['service.type.payment.at.'+ service.frequency].toLowerCase();
+							desc += " " + translations["service.type.payment.at."+ service.frequency].toLowerCase();
 						}
 						
-						desc += ')';
+						desc += ")";
 					}
 				}
-				if(service.bookability == 'INCLUDED' && service.category == 'ROOM' && (service.paymentType == 'FREE' || !service.paymentType)){
-					desc = translations['service.type.default.room'];
+				if(service.bookability == "INCLUDED" && service.category == "ROOM" && (service.paymentType == "FREE" || !service.paymentType)){
+					desc = translations["service.type.default.room"];
 				}
 				service.$$description =  desc;
 			});
@@ -162,7 +162,7 @@
 				for(var i=0; i <  ctrl.service.paymentOptions.length; i++){
 					var size = ctrl.service.paymentOptions[i].size;
 					var amount = ctrl.service.paymentOptions[i].amount;
-					ctrl.service.pay[size] =  {'price' : amount.finalAmount, 'vat' : amount.vatRate};
+					ctrl.service.pay[size] =  {"price" : amount.finalAmount, "vat" : amount.vatRate};
 				}
 			}
 	  	};
@@ -179,9 +179,9 @@
 	  		if (form.$valid) {
 				
 				// check if service its free and included
-	  			if(ctrl.service.bookability == 'INCLUDED' && ctrl.service.category != 'ROOM'){
+	  			if(ctrl.service.bookability == "INCLUDED" && ctrl.service.category != "ROOM"){
 					var service = angular.copy(ctrl.baseService);
-					service.paymentType = 'FREE';
+					service.paymentType = "FREE";
 		    		service.type = ctrl.service.type;
 		    		service.id = ctrl.service.id;
 		    		service.category = ctrl.service.category;
@@ -192,8 +192,8 @@
 				// add paymentOption
 				ctrl.service.paymentOptions = [];
 				for (var k in ctrl.service.pay) {
-					if(ctrl.service.paymentType == k || ctrl.service.paymentType == 'PER_PERSON'){
-						ctrl.service.paymentOptions.push({'size': k, 'amount':{'finalAmount': ctrl.service.pay[k].price , 'initialAmount': ctrl.service.pay[k].price , 'vatRate': ctrl.service.pay[k].vat}} );
+					if(ctrl.service.paymentType == k || ctrl.service.paymentType == "PER_PERSON"){
+						ctrl.service.paymentOptions.push({"size": k, "amount":{"finalAmount": ctrl.service.pay[k].price , "initialAmount": ctrl.service.pay[k].price , "vatRate": ctrl.service.pay[k].vat}} );
 					}
 			    }
 				
@@ -210,7 +210,7 @@
 					});
 				}
 			} else {
-				$translate('error.validation.fields.text').then(function(message) {
+				$translate("error.validation.fields.text").then(function(message) {
 					Notification.error(message);
 					FormUtils.focusFirstInvalid(form.$name);
 				});

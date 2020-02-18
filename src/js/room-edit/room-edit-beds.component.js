@@ -1,5 +1,5 @@
 (function() {
-    'use strict';
+    "use strict";
     
     angular.module("itaca.components").component("chRoomEditBeds", {
     	bindings: {
@@ -79,7 +79,7 @@
 		
 		this.$manageBeds = function() {
     		ctrl.$$availableBeds = ReservationUtils.bedsAvailability(ctrl.totalBeds, ctrl.beds, ctrl.maxCount, !ctrl.configBed);
-    		ctrl.$$preselectedBeds = _.filter(ctrl.$$availableBeds, ['$$available', false]);
+    		ctrl.$$preselectedBeds = _.filter(ctrl.$$availableBeds, ["$$available", false]);
     		ctrl.$checkLimits();
     	};
     	
@@ -181,10 +181,10 @@
 		};
 		
 		this.$showBedInfo = function(ev, bed){
-			// se contiene 'bed' è un bedSold
+			// se contiene "bed" è un bedSold
 			var type = (bed.bed || bed).type;
-			var title = 'bed.'+ type;
-			var desc =  'bed.'+ type +'.description';
+			var title = "bed."+ type;
+			var desc =  "bed."+ type +".description";
 			
 			$translate([title, desc]).then(function(messages) {
 				Dialog.showAlert(ev, messages[title],  messages[desc]);

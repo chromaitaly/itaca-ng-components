@@ -5,7 +5,7 @@
  * @returns
  */
 (function() {
-	'use strict';
+	"use strict";
 	
 	angular.module("itaca.components").component("creditCardEdit", {
 		bindings: {
@@ -28,14 +28,14 @@
 		
 		//circuiti accettati da angular-credit-cards
 		this.$$types = {
-			'Visa'				:'VISA',
-			'MasterCard'		:'MASTERCARD',
-			'Maestro'			:'MAESTRO',
-			'American Express'	:'AMEX',
-			'Diners Club'		:'DINERS_CLUB',
-			'Discover'			:'DISCOVER',
-			'JCB'				:'JCB',
-			'UnionPay'			:'UNION_PAY'
+			"Visa"				:"VISA",
+			"MasterCard"		:"MASTERCARD",
+			"Maestro"			:"MAESTRO",
+			"American Express"	:"AMEX",
+			"Diners Club"		:"DINERS_CLUB",
+			"Discover"			:"DISCOVER",
+			"JCB"				:"JCB",
+			"UnionPay"			:"UNION_PAY"
 		};
 		
 		this.$onInit = function(){
@@ -79,7 +79,7 @@
 				return;
 			}
 			
-			var _cc = _.find(ctrl.circuits, ['circuit', ccType]);
+			var _cc = _.find(ctrl.circuits, ["circuit", ccType]);
 			if(_cc){
 				ctrl.paymentType = _cc.type;
 				ctrl.paymentMethod.type = _cc.type;

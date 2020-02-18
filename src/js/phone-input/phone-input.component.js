@@ -1,9 +1,9 @@
 (function() {
-	'use strict';
+	"use strict";
 	
-	angular.module("itaca.components").component('chPhoneInput', {
+	angular.module("itaca.components").component("chPhoneInput", {
 		require: {
-			ngModelCtrl: 'ngModel',
+			ngModelCtrl: "ngModel",
 		},
 		bindings: {
 			ngModel: "=",
@@ -22,7 +22,7 @@
 		},
 		controller: PhoneInputCtrl,
 		template: 
-	    	"<ng-form name=\"chPhoneInputForm\" ng-class=\"{\'text-gray-light cursor-disabled\': $ctrl.ngDisabled}\" layout>" +
+	    	"<ng-form name=\"chPhoneInputForm\" ng-class=\"{\"text-gray-light cursor-disabled\": $ctrl.ngDisabled}\" layout>" +
 		    	"<div>"+
 		    		"<md-input-container class=\"md-block\">"+
 				 		"<label ng-show=\"$ctrl.prefixLabel\">{{$ctrl.prefixLabel}}</label>"+
@@ -111,7 +111,7 @@
 		};
 		
 		this.$clearSearchTerm = function() {
-	    	ctrl.$$searchTerm.value = '';
+	    	ctrl.$$searchTerm.value = "";
 	    };
 		
 	    this.$updateModel = function() {

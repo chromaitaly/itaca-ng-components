@@ -1,9 +1,9 @@
 (function() {
-	'use strict';
+	"use strict";
 	
-	angular.module("itaca.components").component('chColorPickerButton', {
+	angular.module("itaca.components").component("chColorPickerButton", {
 		require: {
-			ngModelCtrl: 'ngModel',
+			ngModelCtrl: "ngModel",
 		},
 		bindings: {
 			ngModel: "<",
@@ -44,8 +44,8 @@
 			    templateUrl: "/tpls/color-picker/color-picker-panel.tpl",
 			    position: position,
 			    clickOutsideToClose: true,
-			    disableParentScroll: !$mdMedia('gt-xs') || ctrl.disableParentScroll,
-			    hasBackdrop: !$mdMedia('gt-xs') || ctrl.hasBackdrop,
+			    disableParentScroll: !$mdMedia("gt-xs") || ctrl.disableParentScroll,
+			    hasBackdrop: !$mdMedia("gt-xs") || ctrl.hasBackdrop,
 			    panelClass: "md-whiteframe-15dp bg-gray-lighter",
 			    trapFocus: true,
 			    onCloseSuccess: function(panelRef, closeReason) {
@@ -100,8 +100,8 @@
 			};
 
 			ctrl.$$config.openFrom = ev;
-			ctrl.$$config.disableParentScroll = !$mdMedia('gt-xs') || ctrl.disableParentScroll;
-			ctrl.$$config.hasBackdrop = !$mdMedia('gt-xs') || ctrl.hasBackdrop;
+			ctrl.$$config.disableParentScroll = !$mdMedia("gt-xs") || ctrl.disableParentScroll;
+			ctrl.$$config.hasBackdrop = !$mdMedia("gt-xs") || ctrl.hasBackdrop;
 			ctrl.$$config.locals = locals;
 
 			// apro il pannello

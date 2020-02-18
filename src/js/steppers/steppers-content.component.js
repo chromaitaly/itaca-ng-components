@@ -1,9 +1,9 @@
 (function() {
-	'use strict';
+	"use strict";
 	
 	angular.module("itaca.components").component("chSteppersContent", {
 		require: {
-			steppersCtrl: '^chSteppers'
+			steppersCtrl: "^chSteppers"
 		},
 		transclude: true,
 		bindings: {

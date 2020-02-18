@@ -1,16 +1,17 @@
 (function() {
-    'use strict';
+    "use strict";
     
     angular.module("itaca.components").component("chRoomImage", {
     	require: {
-    		chRoomCtrl: '^chRoom',
-    		chRoomHeaderCtrl: '^chRoomHeader',
+    		chRoomCtrl: "^chRoom",
+    		chRoomHeaderCtrl: "^chRoomHeader",
 		},
     	bindings: {},
 		controller: RoomImageCtrl,
 		template:
 			"<div class=\"flex layout-column layout-align-center-center responsive-content\">"+
-   				"<img ng-src=\"{{$ctrl.roomImage}}\" class=\"full-width responsive-item\" ng-class=\"{'clickable': $ctrl.chRoomCtrl.room.gallery.length}\" ng-click=\"$ctrl.openGallery($event)\" alt=\"Room cover image\" lazy-image default-img-url=\"'/resources/public/img/no-gallery-image.png'\">"+
+   				"<img ng-src=\"{{$ctrl.roomImage}}\" class=\"full-width responsive-item\" ng-class=\"{'clickable': $ctrl.chRoomCtrl.room.gallery.length}\" " +
+   					"ng-click=\"$ctrl.openGallery($event)\" alt=\"Room cover image\" lazy-image default-img-url=\"'/resources/public/img/no-gallery-image.png'\">"+
    				"<md-tooltip ng-if=\"$ctrl.chRoomCtrl.room.gallery.length\"><span translate=\"photo.photos.view.all\"></span></md-tooltip>"+
    			"</div>",
     });
@@ -45,7 +46,7 @@
     	};
     	
     	this.$findRoomCover = function(){
-    		var roomImage = '/resources/public/img/no-gallery-image.png';
+    		var roomImage = "/resources/public/img/no-gallery-image.png";
     		_.forEach(ctrl.chRoomCtrl.room.gallery, function(gallery, index, collection) {
     			if (index == 0) {
     				roomImage = ctrl.chRoomCtrl.storageUrl + gallery.path;

@@ -2,7 +2,7 @@
  * date counter left
  */
 (function() {
-	'use strict';
+	"use strict";
 	
 	angular.module("itaca.components").component("chTimeLeft", {
 		bindings: {

@@ -1,9 +1,9 @@
 (function() {
-	'use strict';
+	"use strict";
 	
 	angular.module("itaca.components").component("chIconSelect", {
 		require: {
-			ngModelCtrl: 'ngModel'
+			ngModelCtrl: "ngModel"
 		},
 		bindings: {
 			ngModel: "<",
@@ -87,7 +87,7 @@
 		this.$initLoader = function(icons) {
 			ctrl.$$loader = new InfinitePaging(icons, {
 				size: 30,
-				sort: [ 'cssClass' ]
+				sort: [ "cssClass" ]
 			});
 			
 			// carico prima pagina

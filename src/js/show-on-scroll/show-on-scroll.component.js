@@ -1,5 +1,5 @@
 (function() {
-	'use strict';
+	"use strict";
 	
 	angular.module("itaca.components").component("chShowOnScroll", {
 		transclude: true,
@@ -31,7 +31,7 @@
     			ctrl.hideClass = StringUtils.toBoolean(ctrl.hideClass) ? "zoomOut" : "";
     		}
     		
-    		angular.element($element.children()).addClass('hide');
+    		angular.element($element.children()).addClass("hide");
     	};
     	
     	this.$postLink = function() {
@@ -94,13 +94,13 @@
 			transEl && transEl.addClass("animated");
 			
 			/**
-			 * se l'elemento è presente e non è visibile oppure
-			 * se l'elemento non è presente e si supera l'offset dato mostro il pulsante
+			 * se l"elemento è presente e non è visibile oppure
+			 * se l"elemento non è presente e si supera l"offset dato mostro il pulsante
 			 */
 			var windowsOffset = $window.pageYOffset;
 			if(document.body){
 				var style = window.getComputedStyle(document.body);
-				var top = style.getPropertyValue('top');
+				var top = style.getPropertyValue("top");
 				
 				windowsOffset += top ? Math.abs(parseInt(top)) : 0;
 			} 
@@ -109,7 +109,7 @@
     	   		if (transEl) {
     	   			transEl.addClass("visible " + ctrl.showClass);
     	   			transEl.removeClass(ctrl.hideClass);
-    	   			angular.element($element.children()).removeClass('hide');
+    	   			angular.element($element.children()).removeClass("hide");
     	   		}
     		   
     	   	} else {

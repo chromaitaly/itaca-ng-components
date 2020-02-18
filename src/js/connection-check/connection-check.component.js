@@ -1,7 +1,7 @@
 (function() {
-	'use strict';
+	"use strict";
 	
-	angular.module("itaca.components").component('chConnectionCheck', {
+	angular.module("itaca.components").component("chConnectionCheck", {
 		bindings: {},
 		controller: ConnectionCheckCtrl,
 		template: "<span></span>"

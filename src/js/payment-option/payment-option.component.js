@@ -1,5 +1,5 @@
 (function() {
-    'use strict';
+    "use strict";
     
     angular.module("itaca.components").component("chPaymentOption", {
     	bindings: {
@@ -29,7 +29,7 @@
     	
     	this.$applyDiscount = function(){
     		if(ctrl.discount && ctrl.discount.finalAmount){
-    			var discount = ctrl.discount.type != 'PRICE' ? ctrl.$$initialAmount - ((ctrl.$$initialAmount / 100) * parseFloat(ctrl.discount.finalAmount)) : 0;
+    			var discount = ctrl.discount.type != "PRICE" ? ctrl.$$initialAmount - ((ctrl.$$initialAmount / 100) * parseFloat(ctrl.discount.finalAmount)) : 0;
     			ctrl.$$finalAmount = ctrl.$$finalAmount - discount;
     		}
     	};

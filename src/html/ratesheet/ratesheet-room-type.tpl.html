@@ -1,0 +1,252 @@
+<ng-form name="roomTypeRatesheetForm">
+	<div>
+		<div layout-gt-xs="row" layout-xs="column">
+			<div flex-order="-1" flex-xs="100" flex-gt-xs="20" layout layout-padding-sm>
+				<div>
+					<md-button class="md-icon-button no-margin" ng-click="$ctrl.$toggleRoomTypeView()" ng-disabled="$ctrl.roomTypeRatesheet.disabled" aria-label="Show/Hide room type data">
+						<md-icon class="mdi md-24" ng-class="{'mdi-chevron-down': !$ctrl.roomTypeRatesheet.$$show, 'mdi-chevron-up': $ctrl.roomTypeRatesheet.$$show}"></md-icon>
+					</md-button>
+				</div>
+				<div flex layout="column" layout-align="center center">
+					<strong class="text-primary text-center no-padding-bottom" style="word-break: break-word;">
+						<span translate-once="{{$ctrl.roomTypeRatesheet.roomType.nameKey}}"></span>
+					</strong>
+					<small class="label label-xs text-uppercase"><span translate-once="room.category.{{$ctrl.roomTypeRatesheet.roomType.category}}"></span></small>
+				</div>
+			</div>
+			
+			<div hide-gt-xs ng-include="'/tpls/ratesheet/ratesheet-room-type-rooms.tpl'"></div>
+			
+			<div flex-order="1" flex-order-xs="2" flex layout="column" class="relative">
+				<!-- STATUS -->
+				<div ng-if="!$ctrl.roomTypeRatesheet.disabled" layout layout-padding-sm layout-fill layout-align="center center">
+					<div flex class="border-right-white no-padding" layout="column"
+						ng-repeat="status in $ctrl.roomTypeRatesheet.availabilities track by status.id">
+						<ch-ratesheet-room-type-status
+							status="status"
+							on-toggle-closing="$ctrl.onRoomTypeClosingToggle({$roomTypeId: $ctrl.roomTypeRatesheet.roomType.id, $status: $status})">
+						</ch-ratesheet-room-type-status>
+					</div>
+				</div>
+				
+				<span ng-if="$ctrl.roomTypeRatesheet.disabled" class="locked-string bg-warn opaque text-uppercase"><span translate-once="common.disabled.female"></span></span>
+			</div>
+		</div>
+		
+		<div hide show-gt-xs ng-include="'/tpls/ratesheet/ratesheet-room-type-rooms.tpl'"></div>
+	</div>
+	
+	<!--  && $ctrl.$$created -->
+	<div ng-if="!$ctrl.roomTypeRatesheet.disabled" ng-show="!$ctrl.roomTypeRatesheet.disabled && $ctrl.roomTypeRatesheet.$$show" layout-padding-xs class="no-padding-x-sides">
+   		<!-- AVAILABILITIES -->
+      	<div layout-gt-xs="row" layout-xs="column">
+          	<div flex-xs="100" flex-gt-xs="20" layout layout-padding-sm>
+          		<div>
+          			&nbsp;       			
+          		</div>
+          		<div flex layout="column" layout-align="center start">
+          			<strong translate-once="ratesheet.availability.actual"></strong>
+          		</div>
+          	</div>
+          	<div flex layout>					            		
+				<div flex class="border-right-white no-padding" layout="column"
+					ng-repeat="availability in $ctrl.roomTypeRatesheet.availabilities track by availability.id">
+					<div flex>
+						<ch-ratesheet-room-type-availability
+							availability="availability"
+							on-click="$ctrl.onAvailabilityClick({$event: $event, $roomTypeId: $ctrl.roomTypeRatesheet.roomType.id, $availability: $availability})">
+						</ch-ratesheet-room-type-availability>
+					</div>										
+				</div>	
+			</div>
+		</div>
+		
+		<md-divider></md-divider>
+		
+		<!-- RATES -->
+		<div layout-padding-xs class="no-padding-x-sides">
+			<div ng-repeat="ratePlanRow in $ctrl.roomTypeRatesheet.ratePlans track by ratePlanRow.ratePlan.id" layout-padding-xs class="no-padding-x-sides">
+	          	<div layout-gt-xs="row" layout-xs="column">
+		          	<div flex-xs="100" flex-gt-xs="20" layout layout-padding-sm>
+		          		<div>
+							<md-button ng-if="ratePlanRow.ratePlan.parentRatePlanDerivation" class="md-icon-button no-margin" ng-click="$ctrl.$showRatePlanDerivation(ratePlanRow.ratePlan)" 
+								aria-label="Show/Hide rateplan derivation">
+								<md-icon class="mdi mdi-link-plus md-24"></md-icon>
+								
+								<md-tooltip><span translate-once="rateplan.rateplan.derived.details"></span></md-tooltip>
+							</md-button>
+							
+							<md-button ng-if="!ratePlanRow.ratePlan.parentRatePlanDerivation" class="md-icon-button no-margin" ng-click="$ctrl.$bulkEdit($event, ratePlanRow)" 
+								aria-label="Rate plan bulk edit">
+								<md-icon class="mdi mdi-table-edit md-24 text-blue-sea"></md-icon>
+								
+								<md-tooltip><span translate-once="rateplan.rateplan.edit.bulk"></span></md-tooltip>
+							</md-button>
+						</div>		
+		          		<div flex layout="column" layout-align="center start" style="word-break: break-word;">
+		          			<strong ng-bind="ratePlanRow.ratePlan.name"></strong>
+		          			<span ng-if="ratePlanRow.ratePlan.parentRatePlanDerivation" class="label label-sm"><span translate-once="rateplan.rateplan.derived"></span></span>
+		          		</div>
+		          	</div>
+		          	
+		          	<div flex layout>
+		            	<div flex class="border-right-white no-padding" layout="column"
+		           			ng-repeat="rate in ratePlanRow.content track by rate.id">
+		           			<ch-ratesheet-room-type-rate-status
+		            			rate="rate"
+		            			on-toggle-closing="$ctrl.onRateClosingToggle({$roomTypeId: $ctrl.roomTypeRatesheet.roomType.id, $ratePlanId: ratePlanRow.ratePlan.id, $rate: $rate})">
+		            		</ch-ratesheet-room-type-rate-status>
+		           		</div>
+		           	</div>
+				</div>
+		        
+	           	<div layout-gt-xs="row" layout-xs="column">
+	           		<div flex-xs="100" flex-gt-xs="20" layout layout-padding-xs>
+		          		<div>
+		          			&nbsp;
+						</div>          		
+		          		<div flex layout="column" layout-align="center start">
+		          			<em translate-once="ratesheet.rate"></em>
+		          		</div>
+			        </div>
+			        
+			        <div flex layout>
+		            	<div flex class="border-right-white no-padding overflow-hidden" layout="column"
+		            		ng-repeat="rate in ratePlanRow.content track by rate.id">
+							<ch-amount-input
+								id="amount_{{ratePlanRow.ratePlan.id}}_{{rate.id}}"
+								name="ratePlanAmount"
+								input-container-class="md-block no-margin minimal-input no-padding-left text-center {{rate.$$saving ? 'saving' : ''}}"
+								hide-icon="true"
+								ng-model="rate.amount"
+								update-on="blur"
+								label-no-float="true"
+								label="{{'common.price'|translate}}"
+								amount-type="PRICE"
+								ng-min="($ctrl.minAmount || 0.01)"
+								ng-max="$ctrl.maxAmount" 
+								ng-step="0.01"
+								ng-required="true"
+								ng-disabled="rate.$$saving || ratePlanRow.ratePlan.parentRatePlanDerivation != null || rate.roomClosed || rate.hotelClosed"
+								on-change="$ctrl.$onAmountChange(ratePlanRow.ratePlan.id, rate)"
+								error-messages="[
+									{error: 'required', messageKey: 'error.required'},
+									{error: 'min', messageKey: 'error.field.min.abbr', messageKeyParams: {num: (($ctrl.minAmount || 0.01)|chCurrency)}},
+									{error: 'max', messageKey: 'error.field.max.abbr', messageKeyParams: {num: ($ctrl.maxAmount|chCurrency)}}]">
+							</ch-amount-input>
+						</div>
+					</div>
+				</div>
+				
+				<div layout-gt-xs="row" layout-xs="column">
+					<div flex-xs="100" flex-gt-xs="20" layout layout-padding-xs>
+		          		<div>
+		          			&nbsp;
+						</div>          		
+		          		<div flex layout="column" layout-align="center start">
+		          			<em translate-once="rateplan.rateplan.los.min"></em>
+		          		</div>
+					</div>
+					
+					<div flex layout>
+		            	<div flex class="border-right-white no-padding overflow-hidden" layout="column"
+		            		ng-repeat="rate in ratePlanRow.content track by rate.id">
+							<md-input-container md-no-float class="md-block no-margin minimal-input no-padding-left text-center" ng-class="{'saving': rate.$$saving}">
+								<input id="minLos_{{ratePlanRow.ratePlan.id}}_{{rate.id}}"type="number" name="minLos" placeholder="{{'common.nights.minimum'|translate}}" ng-model="rate.minLOS" ng-model-options="{updateOn: 'blur'}"
+						           	ng-disabled="rate.$$saving || ratePlanRow.ratePlan.parentRatePlanDerivation != null || rate.roomClosed || rate.hotelClosed" 
+						           	min="1" ng-min="1" ng-step="1" max="{{rate.maxLOS}}" ng-max="rate.maxLOS"	ng-change="$ctrl.$onMinLosChange(ratePlanRow.ratePlan.id, rate)">
+						           	
+						      	<div ng-messages="roomTypeRatesheetForm['minLos_'+ratePlanRow.ratePlan.id+'_'+rate.id].$error">
+						       		<div ng-message="min"><span translate="error.field.min.abbr" translate-values="{num: 1}"></span></div>
+						       		<div ng-message="max"><span translate="error.field.max.abbr" translate-values="{num: rate.maxLOS}"></span></div>
+						        </div>
+						  	</md-input-container>
+		           		</div>
+		           	</div>
+				</div>
+				
+				<div layout-gt-xs="row" layout-xs="column">
+					<div flex-xs="100" flex-gt-xs="20" layout layout-padding-xs>
+		          		<div>
+		          			&nbsp;
+						</div>          		
+		          		<div flex layout="column" layout-align="center start">
+		          			<em translate-once="rateplan.rateplan.los.max"></em>
+		          		</div>
+					</div>
+					
+					<div flex layout>
+	            		<div flex class="border-right-white no-padding overflow-hidden" layout="column"
+	            			ng-repeat="rate in ratePlanRow.content track by rate.id">
+							<md-input-container md-no-float class="md-block no-margin minimal-input no-padding-left text-center" ng-class="{'saving': rate.$$saving}">
+								<input id="maxLos_{{ratePlanRow.ratePlan.id}}_{{rate.id}}" type="number" name="maxLos" placeholder="{{'common.nights.maximum'|translate}}" ng-model="rate.maxLOS" ng-model-options="{updateOn: 'blur'}"
+						           	ng-disabled="rate.$$saving || ratePlanRow.ratePlan.parentRatePlanDerivation != null || rate.roomClosed || rate.hotelClosed"
+						           	min="{{rate.minLOS || 3}}" ng-min="rate.minLOS || 3" ng-step="1" ng-change="$ctrl.$onMaxLosChange(ratePlanRow.ratePlan.id, rate)">
+						           	
+						      	<div ng-messages="roomTypeRatesheetForm['maxLos_'+ratePlanRow.ratePlan.id+'_'+rate.id].$error">
+						       		<div ng-message="min"><span translate="error.field.min.abbr" translate-values="{num: rate.minLOS || 3}"></span></div>
+						        </div>
+						  	</md-input-container>
+	            		</div>
+	            	</div>
+	           	</div>
+				
+				<div layout-gt-xs="row" layout-xs="column">
+					<div flex-xs="100" flex-gt-xs="20" layout layout-padding-xs>
+		          		<div>
+		          			&nbsp;
+						</div>          		
+		          		<div flex layout="column" layout-align="center start">
+		          			<em translate-once="rateplan.rateplan.closure.arrival"></em>
+		          		</div>
+					</div>
+					
+					<div flex layout>
+	            		<div flex class="border-right-white no-padding" layout="column"
+	            			ng-repeat="rate in ratePlanRow.content track by rate.id">
+							<md-button md-no-ink ng-disabled="rate.$$saving || ratePlanRow.ratePlan.parentRatePlanDerivation || rate.pastDate || rate.roomClosed || rate.hotelClosed" 
+								ng-click="$ctrl.$toggleClosedToArrival(ratePlanRow.ratePlan.id, rate)" class="md-square-button minimal-button no-margin button-label forced only-border"
+								ng-class="{'saving': rate.$$saving}" tabindex="-1" aria-label="Toggle closed to arrival">
+								<md-icon class="mdi md-24" ng-class="{'mdi-close': rate.closedToArrival}"></md-icon>
+								<md-tooltip ng-if="!rate.pastDate && !rate.roomClosed && !rate.hotelClosed">
+									<span ng-if="rate.closedToArrival" translate="common.open"></span>
+									<span ng-if="!rate.closedToArrival" translate="common.close"></span>
+								</md-tooltip>
+							</md-button>
+	            		</div>
+	           		</div>
+	           	</div>	
+			          	
+			    <div layout-gt-xs="row" layout-xs="column">
+					<div flex-xs="100" flex-gt-xs="20" layout layout-padding-xs>      	
+		          		<div>
+		          			&nbsp;
+						</div>          		
+		          		<div flex layout="column" layout-align="center start">
+		          			<em translate-once="rateplan.rateplan.closure.departure"></em>
+		          		</div>
+		         	</div>
+					
+					<div flex layout>
+	            		<div flex class="border-right-white no-padding" layout="column"
+	            			ng-repeat="rate in ratePlanRow.content track by rate.id"> 	
+							<md-button md-no-ink ng-disabled="rate.$$saving || ratePlanRow.ratePlan.parentRatePlanDerivation || rate.pastDate || rate.roomClosed || rate.hotelClosed" 
+								ng-click="$ctrl.$toggleClosedToDeparture(ratePlanRow.ratePlan.id, rate)" class="md-square-button minimal-button no-margin button-label forced only-border" 
+								ng-class="{'saving': rate.$$saving}" tabindex="-1" aria-label="Toggle closed to departure">
+								<md-icon class="mdi md-24" ng-class="{'mdi-close': rate.closedToDeparture}"></md-icon>
+								<md-tooltip ng-if="!rate.pastDate && !rate.roomClosed && !rate.hotelClosed">
+									<span ng-if="rate.closedToDeparture" translate="common.open"></span>
+									<span ng-if="!rate.closedToDeparture" translate="common.close"></span>
+								</md-tooltip>
+							</md-button>
+			          	</div>
+	           		</div>
+           		</div>
+			          	
+				<md-divider ng-if="!$last"></md-divider>
+			</div>
+		</div>
+		
+		<md-divider></md-divider>
+	</div>
+</ng-form>

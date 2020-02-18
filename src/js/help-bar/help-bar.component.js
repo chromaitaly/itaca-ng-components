@@ -1,5 +1,5 @@
 (function() {
-	'use strict';
+	"use strict";
 	
 	angular.module("itaca.components").component("chHelpBar", {
 		bindings: {
@@ -16,7 +16,7 @@
 			
 	});
 	
-	angular.module("itaca.components").controller('helpBarDialogCtrl', HelpBarDialogCtrl); 
+	angular.module("itaca.components").controller("helpBarDialogCtrl", HelpBarDialogCtrl); 
 	
 	 /* @ngInject */
 	function HelpBarCtrl($scope, $element, $mdMedia, AppOptions, Navigator, $mdDialog) {
@@ -29,7 +29,7 @@
     		
     		//Aggiungo una classe al container
     		if(ctrl.containerId){
-    			angular.element(document.querySelector("#"+ ctrl.containerId)).addClass('ch-margin-helper-container');
+    			angular.element(document.querySelector("#"+ ctrl.containerId)).addClass("ch-margin-helper-container");
     		}
     		
     		ctrl.bgClass = ctrl.bgClass || "bg-gray-lighter text-gray-5";
@@ -38,13 +38,13 @@
     		
     		ctrl.showHelpBtn = _.isBoolean(ctrl.showHelpBtn) ? ctrl.showHelpBtn : true;
     		
-    		ctrl.faqUrl = ctrl.faqUrl || '/faq';
+    		ctrl.faqUrl = ctrl.faqUrl || "/faq";
     	};
     	
     	this.$recallDialog = function(ev){
     		var opts = {
 				templateUrl: "/tpls/help-bar/help-bar-dialog.tpl",
-				controller:  'helpBarDialogCtrl',
+				controller:  "helpBarDialogCtrl",
 				controllerAs: "$ctrl",
 				locals: {data:{confirmFn : ctrl.onContactMeClick}}, 
 				targetEvent: ev, 
@@ -67,7 +67,7 @@
 		 this.data = data;
 		 this.appOptions = AppOptions;
 		 
-		 this.message = {type: 'PHONE', hours: '10-11'};
+		 this.message = {type: "PHONE", hours: "10-11"};
 		 
 		 this.$hourArray = ["10-11", "11-12", "12-13", "13-14", "14-15", "15-16", "16-17", "17-18"];
 		 
@@ -84,7 +84,7 @@
 				return;
 			 }
 			 
-			 ctrl.message.sender = ctrl.message.type == 'PHONE' ? ctrl.message.phone : ctrl.message.email;
+			 ctrl.message.sender = ctrl.message.type == "PHONE" ? ctrl.message.phone : ctrl.message.email;
 			 
 			 if(angular.isFunction(data.confirmFn)){
 				 Loading.start();

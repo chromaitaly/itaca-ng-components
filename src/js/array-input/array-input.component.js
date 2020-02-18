@@ -1,10 +1,10 @@
 (function() {
-    'use strict';
+    "use strict";
     
     angular.module("itaca.components").component("chArrayInput", {
     	transclude: true,
     	require: {
-			ngModelCtrl: 'ngModel'
+			ngModelCtrl: "ngModel"
 		},
     	bindings: {
     		ngModel: "=",
@@ -48,7 +48,7 @@
 					
 				}, function(newValue, oldValue) {
 					if (ctrl.ngRequired) {
-						ctrl.ngModelCtrl.$setValidity('required', !_.isEmpty(ctrl.ngModel));
+						ctrl.ngModelCtrl.$setValidity("required", !_.isEmpty(ctrl.ngModel));
 					}
 				});
 			}

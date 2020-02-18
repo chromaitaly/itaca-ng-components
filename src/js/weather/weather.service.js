@@ -1,7 +1,7 @@
 (function() {
-	'use strict';
+	"use strict";
 	
-	angular.module("itaca.components").provider('Weather', WeatherProvider);
+	angular.module("itaca.components").provider("Weather", WeatherProvider);
 	
 	function WeatherProvider() {
 		this.$get = /* @ngInject */ function($resource, $q) {
@@ -24,9 +24,9 @@
 			
 			var params = {
 				appId : WEATHER_ID,
-				q : city + ',' + country,
-				mode : 'json',
-				units : 'metric'
+				q : city + "," + country,
+				mode : "json",
+				units : "metric"
 			};
 
 			$$service.API.get(params, function(response) {

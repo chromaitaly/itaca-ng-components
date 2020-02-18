@@ -1,11 +1,11 @@
 (function() {
-    'use strict';
+    "use strict";
     
     angular.module("itaca.components").component("chRoomRate", {
     	transclude: true,
     	require: {
-    		chRoomCtrl: '^chRoom',
-    		chRoomRatesCtrl: '^chRoomRates'
+    		chRoomCtrl: "^chRoom",
+    		chRoomRatesCtrl: "^chRoomRates"
 		},
     	bindings: {
     		rate: "<",
@@ -68,7 +68,7 @@
     	this.$toggleInfo = function(show) {
     		ctrl.$$showInfo = !_.isNil(show) && _.isBoolean(show) ? show : !ctrl.$$showInfo;
     		
-    		ctrl.$$showInfo && Navigator.goToAnchor('ch-room-'+ctrl.chRoomCtrl.$$index+'-rates-'+ ctrl.$$index);
+    		ctrl.$$showInfo && Navigator.goToAnchor("ch-room-"+ctrl.chRoomCtrl.$$index+"-rates-"+ ctrl.$$index);
     	};
     	
     	this.$selectRate = function() {

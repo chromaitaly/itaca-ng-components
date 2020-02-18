@@ -1,12 +1,12 @@
 (function() {
-	'use strict';
+	"use strict";
 	
 	angular.module("itaca.components").component("chCityAutocomplete", {
 		require: {
-        	ngModelCtrl: 'ngModel' 
+        	ngModelCtrl: "ngModel" 
         },
 		bindings: {
-			ngModel: '<',
+			ngModel: "<",
 			isDisabled: "<?",
 			isRequired: "<?",
 			noCache: "<?",
@@ -64,7 +64,7 @@
     		ctrl.minLength = ctrl.minLength && Number.isFinite(ctrl.minLength) ? parseInt(ctrl.minLength) : 3;
     		
     		if(!ctrl.placeholder){
-    			$translate('').then(function(translate){
+    			$translate("").then(function(translate){
     				ctrl.placeholder = translate;
     			});
     		}
@@ -76,9 +76,9 @@
     	
     	this.precopileSearchText = function(){
     		if(ctrl.ngModel && ctrl.ngModel.address){
-    			var address = ctrl.ngModel.city ? ctrl.ngModel.city  + ", " : '';
-	    			address += ctrl.ngModel.province ? ctrl.ngModel.province  + ", " : '';
-	    			address += ctrl.ngModel.country ? ctrl.ngModel.country : '';
+    			var address = ctrl.ngModel.city ? ctrl.ngModel.city  + ", " : "";
+	    			address += ctrl.ngModel.province ? ctrl.ngModel.province  + ", " : "";
+	    			address += ctrl.ngModel.country ? ctrl.ngModel.country : "";
     			
     			ctrl.searchText = address;
     		} else if(ctrl.ngModel && ctrl.ngModel.addressComplete){
@@ -112,42 +112,42 @@
 	    			 var address = data.address_components[i];
 	    			 var type = address.types[0];
 	    			 
-		    		if(type == 'route'){
+		    		if(type == "route"){
 		    			addressInfo.street = address.long_name;
 		    			continue;
 		    		}
 		    		
-		    		if(type == 'street_number'){
+		    		if(type == "street_number"){
 		    			addressInfo.number = address.long_name;
 		    			continue;
 		    		}
 		    		
-		    		if(type == 'postal_code'){
+		    		if(type == "postal_code"){
 		    			addressInfo.zipcode = address.long_name;
 		    			continue;
 		    		}
 		    		
-		    		if(type == 'country'){
+		    		if(type == "country"){
 		    			addressInfo.country = address.long_name;
 		    			continue;
 		    		}
 		    		
-		    		if(type == 'locality'){
+		    		if(type == "locality"){
 		    			addressInfo.city = address.long_name;
 		    			continue;
 		    		}
 		    		
-		    		if(type == 'administrative_area_level_1'){
+		    		if(type == "administrative_area_level_1"){
 		    			addressInfo.region = address.short_name;
 		    			continue;
 		    		}
 		    		
-		    		if(type == 'administrative_area_level_2'){
+		    		if(type == "administrative_area_level_2"){
 		    			addressInfo.province = address.short_name;
 		    			continue;
 		    		}
 		    		
-		    		if(type == 'neighborhood'){
+		    		if(type == "neighborhood"){
 		    			addressInfo.district = address.long_name;
 		    			continue;
 		    		}
@@ -175,7 +175,7 @@
 	    };
 	    
 	    this.$setError = function(bool){
-	    	$scope.cityAutocompleteForm.city.$setValidity('connection', !bool);
+	    	$scope.cityAutocompleteForm.city.$setValidity("connection", !bool);
 	    	ctrl.$$error = bool;
 	    	
 	    	if(bool){

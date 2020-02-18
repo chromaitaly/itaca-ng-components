@@ -1,5 +1,5 @@
 (function() {
-    'use strict';
+    "use strict";
     
     angular.module("itaca.components").component("chRoomEdit", {
     	bindings: {
@@ -60,7 +60,7 @@
     	};
     	
     	this.$getCover = function(){
-    		var roomImage = '/resources/public/img/no-gallery-image.png';
+    		var roomImage = "/resources/public/img/no-gallery-image.png";
     		
     		_.forEach(ctrl.room.type.gallery, function(photo, index, collection) {
     			if (index == 0) {
@@ -101,18 +101,18 @@
 		};
 		
 		this.$getIncludedServices = function() {
-			ctrl.$$includedServices = _.filter(ctrl.room.type.services, ['bookability', 'INCLUDED']);
+			ctrl.$$includedServices = _.filter(ctrl.room.type.services, ["bookability", "INCLUDED"]);
 		};
 		
 		this.$getFreeServices = function() {
 			ctrl.$$freeServices = _.filter(ctrl.room.type.services, function(service){
-				return service.bookability == 'BOOKABLE' && service.paymentType == 'FREE';
+				return service.bookability == "BOOKABLE" && service.paymentType == "FREE";
 			});
 		};
 		
 		this.$getPaymentServices = function() {
 			ctrl.$$paymentServices = _.filter(ctrl.room.type.services, function(service){
-				return service.bookability == 'BOOKABLE' && service.paymentType != 'FREE';
+				return service.bookability == "BOOKABLE" && service.paymentType != "FREE";
 			});
 		};
 		
@@ -157,7 +157,7 @@
 			ctrl.showConfig = !_.isNil(show) && _.isBoolean(show) ? show : !ctrl.showConfig;
     		
     		if (ctrl.showConfig) {
-    			Navigator.scrollToAnchor('ch-room-edit-'+ctrl.$$index+'-config');
+    			Navigator.scrollToAnchor("ch-room-edit-"+ctrl.$$index+"-config");
     		}
     		
     		ctrl.onToggleConfig && ctrl.onToggleConfig({$room: ctrl.room, $open: ctrl.showConfig});
@@ -235,7 +235,7 @@
 		this.$toggleExtraBeds = function(show) {
 			ctrl.$$showExtraBeds = !_.isNil(show) && _.isBoolean(show) ? show : !ctrl.$$showExtraBeds;
     		
-    		ctrl.$$showExtraBeds &&	Navigator.scrollToAnchor('ch-room-edit-'+ctrl.$$index+'-config-extra-beds');
+    		ctrl.$$showExtraBeds &&	Navigator.scrollToAnchor("ch-room-edit-"+ctrl.$$index+"-config-extra-beds");
 		};
 		
 		this.$onToggleExtraBedsConfig = function(open) {
@@ -247,7 +247,7 @@
 		this.$toggleIdentityDocuments = function(show) {
 			ctrl.$$showIdentityDocuments = !_.isNil(show) && _.isBoolean(show) ? show : !ctrl.$$showIdentityDocuments;
     		
-    		ctrl.$$showIdentityDocuments &&	Navigator.scrollToAnchor('ch-room-edit-'+ctrl.$$index+'-config-documents');
+    		ctrl.$$showIdentityDocuments &&	Navigator.scrollToAnchor("ch-room-edit-"+ctrl.$$index+"-config-documents");
 		};
     }
 })();

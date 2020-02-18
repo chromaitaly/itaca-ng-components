@@ -1,5 +1,5 @@
 (function() {
-    'use strict';
+    "use strict";
     
     angular.module("itaca.components").component("chGallery", {
     	require: {
@@ -63,10 +63,10 @@
     		ctrl.maxCols = ctrl.gallery.length;
     		
     		if(ctrl.cols){
-    			// creo l'array di colonne e ne calcolo il totale
+    			// creo l"array di colonne e ne calcolo il totale
     			ctrl.colsArray = [];
     			ctrl.totalCols = 0;
-    			_.forEach(ctrl.cols.split(':'), function(col){
+    			_.forEach(ctrl.cols.split(":"), function(col){
     				var parsed = Math.abs(parseInt(col));
     				ctrl.totalCols += parsed;
     				ctrl.colsArray.push(parsed);
@@ -100,7 +100,7 @@
 			
 			if(ctrl.rowspan){
 				ctrl.rowspanArray = [];
-				_.forEach(ctrl.rowspan.split(':'), function(row){
+				_.forEach(ctrl.rowspan.split(":"), function(row){
     				ctrl.rowspanArray.push(Math.abs(parseInt(row)));
     			});
 			}

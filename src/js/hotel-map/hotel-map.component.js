@@ -1,5 +1,5 @@
 (function() {
-	'use strict';
+	"use strict";
 	
 	angular.module("itaca.components").component("chHotelMap", {
 		bindings: {
@@ -75,7 +75,7 @@
     		// init watches
     		ctrl.$initWatchers();
     		
-	    	google.maps.event.trigger(map, 'resize');
+	    	google.maps.event.trigger(map, "resize");
 		 };
 		 
 		 this.$getCenter = function(map) {
@@ -91,7 +91,7 @@
 					ctrl.$updateCenter(map);
 					
 				 } else {
-					ctrl.$$geocoder.geocode({'address': ctrl.address}, function(results, status) {
+					ctrl.$$geocoder.geocode({"address": ctrl.address}, function(results, status) {
 			  	  		if (status == google.maps.GeocoderStatus.OK) {
 			  	  			ctrl.$$centerObj = results[0].geometry.location;
 			
@@ -135,7 +135,7 @@
 	    			
 				 _.assign(ctrl.$$center, ctrl.$$centerObj.toJSON());
 	    			
-				 google.maps.event.trigger(map, 'resize');
+				 google.maps.event.trigger(map, "resize");
 			 }, 1000);
 		 };
 		 
@@ -164,10 +164,10 @@
 			 return parent.offsetHeight - paddingTop - paddingBottom; 
 		 
 		 }, function(newVal, oldVal) {
-			 ctrl.$$mapStyle = {height: newVal + 'px', width: "100%"};
+			 ctrl.$$mapStyle = {height: newVal + "px", width: "100%"};
      		
 			 if (ctrl.$$map) {
-				 google.maps.event.trigger(ctrl.$$map, 'resize');
+				 google.maps.event.trigger(ctrl.$$map, "resize");
 				 ctrl.$getCenter(ctrl.$$map);
 			 }
 		 });

@@ -1,5 +1,5 @@
 (function() {
-	'use strict';
+	"use strict";
 
 	angular.module("itaca.components").component("chPlanningOverbookings", {
 		require : {
@@ -90,7 +90,7 @@
 			$planning.reservation.$style = $planning.reservation.$oriStyle;
 			
 			if (ctrl.onDragStart) {
-				ctrl.onDragStart({'$event': ev, '$planning': $planning});
+				ctrl.onDragStart({"$event": ev, "$planning": $planning});
 				ctrl.$close();
 			}
 		};

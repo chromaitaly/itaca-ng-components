@@ -2,15 +2,15 @@
  * date counter left
  */
 (function() {
-	'use strict';
+	"use strict";
 	
-	angular.module("itaca.components").component('chDateLeft', {
+	angular.module("itaca.components").component("chDateLeft", {
         bindings: {
         	start: "<?",
         	end: "<?"
         },
         controller: DateCounterCtrl,
-        template: '<span>{{$ctrl.$$dateLeft}}</span>',
+        template: "<span>{{$ctrl.$$dateLeft}}</span>",
 	 });
 
 	/* @ngInject */

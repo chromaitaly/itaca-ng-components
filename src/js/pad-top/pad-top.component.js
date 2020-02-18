@@ -1,7 +1,7 @@
 (function() {
-	'use strict';
+	"use strict";
 	
-	angular.module("itaca.components").component('chPadTop', {
+	angular.module("itaca.components").component("chPadTop", {
        transclude: true,
        bindings: {
     	   targetEl: "@",
@@ -41,7 +41,7 @@
     		
     		top = isFinite(top) ? top : ctrl.$getTargetElHeight();
     		
-    		ctrl.$$innerEl.css({"padding-top": ctrl.chDisabled ? 0 : top + 'px'});
+    		ctrl.$$innerEl.css({"padding-top": ctrl.chDisabled ? 0 : top + "px"});
     	};
        	
        	this.$getTargetElHeight = function() { 

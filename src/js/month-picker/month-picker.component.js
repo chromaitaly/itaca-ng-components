@@ -2,11 +2,11 @@
  * Date picker button
  */
 (function() {
-	'use strict';
+	"use strict";
 	
-	angular.module("itaca.components").component('chMonthPicker', {
+	angular.module("itaca.components").component("chMonthPicker", {
         require: {
-        	ngModelCtrl: 'ngModel' 
+        	ngModelCtrl: "ngModel" 
         },
         bindings: {
         	buttonClass: "@",
@@ -63,12 +63,12 @@
 			    position: position,
 			    clickOutsideToClose: true,
 			    disableParentScroll: ctrl.disableParentScroll,
-			    hasBackdrop: !$mdMedia('gt-xs') || ctrl.hasBackdrop,
+			    hasBackdrop: !$mdMedia("gt-xs") || ctrl.hasBackdrop,
 			    fullscreen: false,
 			    panelClass: "bg-white md-whiteframe-15dp",
 			    trapFocus: true,
 			    onCloseSuccess: function(panelRef, closeReason) {
-			    	// touch dell'input
+			    	// touch dell"input
 					$scope.chMonthPickerTriggerForm.date.$setTouched();
 					
 			    	if (_.isBoolean(closeReason) && closeReason) {
@@ -137,8 +137,8 @@
 			};
 
 			ctrl.$$config.openFrom = ev;
-			ctrl.$$config.hasBackdrop = !$mdMedia('gt-xs') || ctrl.hasBackdrop;
-			ctrl.$$config.fullscreen = !$mdMedia('gt-xs');
+			ctrl.$$config.hasBackdrop = !$mdMedia("gt-xs") || ctrl.hasBackdrop;
+			ctrl.$$config.fullscreen = !$mdMedia("gt-xs");
 			ctrl.$$config.locals = locals;
 
 			// apro il pannello
@@ -150,7 +150,7 @@
 				 return;
 			 }
 			 
-			// dirty dell'input
+			// dirty dell"input
 			 $scope.chMonthPickerTriggerForm.date.$setDirty();
 			 
 //			 ctrl.ngModel = ctrl.$getDate(ctrl.$$data.current);
@@ -194,7 +194,7 @@
 		
 		this.init = function() {
 			_self.timezone = _.isBoolean(_self.useUtc) && _self.useUtc ? "UTC" : "";
-			_self.modelOptions = _.isBoolean(_self.useUtc) && _self.useUtc ? {timezone: 'UTC'} : {};
+			_self.modelOptions = _.isBoolean(_self.useUtc) && _self.useUtc ? {timezone: "UTC"} : {};
 		};
 		
 		$scope.$on("md-calendar-change", function(event, date) {
@@ -213,7 +213,7 @@
 		};
 		
 		/**
-		 * Workaround per il timezone dell'ng-model-option non gestito negli md-calendar
+		 * Workaround per il timezone dell"ng-model-option non gestito negli md-calendar
 		 * 
 		 */
 		$scope.$watch(function() { return _self.data.current;}, function(newValue, oldValue) {

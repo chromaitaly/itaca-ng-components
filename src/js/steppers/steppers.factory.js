@@ -1,7 +1,7 @@
 (function() {
-    'use strict';
+    "use strict";
     
-    angular.module("itaca.components").factory('ChSteppers', ChSteppersFactory);
+    angular.module("itaca.components").factory("ChSteppers", ChSteppersFactory);
     
     /* @ngInject */
     function ChSteppersFactory($mdComponentRegistry) {			

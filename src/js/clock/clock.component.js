@@ -1,7 +1,7 @@
 (function() {
-	'use strict';
+	"use strict";
 	
-	angular.module("itaca.components").component('chClock', {
+	angular.module("itaca.components").component("chClock", {
 		bindings: {
 			offsetSeconds: "<",
 			showDate: "<",

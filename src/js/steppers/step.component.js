@@ -1,9 +1,9 @@
 (function() {
-	'use strict';
+	"use strict";
 	
 	angular.module("itaca.components").component("chStepper", {
 		require: {
-			steppersCtrl: '^chSteppers'
+			steppersCtrl: "^chSteppers"
 		},
 		bindings: {
 			title: "@",
@@ -68,7 +68,7 @@
     		
     		ctrl.steppersCtrl.$initStep(ctrl.step);
     		
-    		$element.addClass('flex layout-column ' + (ctrl.step.$index == 1 ? 'layout-align-center-start' : 'layout-align-center-center'));
+    		$element.addClass("flex layout-column " + (ctrl.step.$index == 1 ? "layout-align-center-start" : "layout-align-center-center"));
     	};
     	
     	this.$onChanges = function(changesObj){

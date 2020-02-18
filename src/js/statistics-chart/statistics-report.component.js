@@ -1,7 +1,7 @@
 (function() {
-	'use strict';
+	"use strict";
 	
-	angular.module("itaca.components").component('chStatisticsReport', {
+	angular.module("itaca.components").component("chStatisticsReport", {
 		bindings: {
 			dataset: "<",
 			compareDataset: "<?",
@@ -25,7 +25,8 @@
 				"</div>" +
 				
 				"<div ng-if=\"!$ctrl.noData && !$ctrl.hideChart && $ctrl.$$chart\">" +
-					"<ch-chart class=\"display-block flex\" type=\"$ctrl.$$chart.type\" data=\"$ctrl.$$chart.data\" options=\"$ctrl.$$chart.options\" linear-gradient=\"$ctrl.$$chart.gradient\"></ch-chart>" +
+					"<ch-chart class=\"display-block flex\" type=\"$ctrl.$$chart.type\" data=\"$ctrl.$$chart.data\" options=\"$ctrl.$$chart.options\" " +
+						"linear-gradient=\"$ctrl.$$chart.gradient\"></ch-chart>" +
 				"</div>" +
 				
 				"<md-content style=\"max-height:340px;\" class=\"bg-white no-border-left no-border-right only-border\">" +
@@ -116,7 +117,7 @@
 		
 		this.$onInit = function(){
 			
-			ctrl.$$format = ctrl.xtype == 'YEARS' ? 'yyyy' : ctrl.xtype == 'MONTHS' ? 'MMMM yyyy' : 'mediumDate';
+			ctrl.$$format = ctrl.xtype == "YEARS" ? "yyyy" : ctrl.xtype == "MONTHS" ? "MMMM yyyy" : "mediumDate";
 			
 			ctrl.noData =  ctrl.noData && _.isBoolean(ctrl.noData) ? ctrl.noData : false;
 			
@@ -135,7 +136,7 @@
 			}
 			
 			if (changesObj.xtype && !changesObj.xtype.isFirstChange()) {
-				ctrl.$$format = ctrl.xtype == 'YEARS' ? 'yyyy' : ctrl.xtype == 'MONTHS' ? 'MMMM yyyy' : 'mediumDate';
+				ctrl.$$format = ctrl.xtype == "YEARS" ? "yyyy" : ctrl.xtype == "MONTHS" ? "MMMM yyyy" : "mediumDate";
 			}
 			
 			if (changesObj.comparatorType) {
@@ -147,7 +148,7 @@
 					} else if(ctrl.comparatorType && _.isBoolean(ctrl.comparatorType)) {
 //						ctrl.$$comparatorType = ctrl.comparatorType;
 					} else {
-						ctrl.$$comparatorType = ctrl.comparatorType == 'PORTAL' ? AppOptions.about.uiName : $translate.instant('channel.source.' + ctrl.comparatorType.toLowerCase());
+						ctrl.$$comparatorType = ctrl.comparatorType == "PORTAL" ? AppOptions.about.uiName : $translate.instant("channel.source." + ctrl.comparatorType.toLowerCase());
 					}
 				}
 			}
@@ -169,28 +170,28 @@
 				_totalDivider += 1;
 				_total += value;
 				
-				var _key = ctrl.xtype == 'YEARS' || ctrl.xtype == 'MONTHS' || ctrl.xtype == 'DAYS'  ? key * 1000 : key;
+				var _key = ctrl.xtype == "YEARS" || ctrl.xtype == "MONTHS" || ctrl.xtype == "DAYS"  ? key * 1000 : key;
 				
-				ctrl.$$dataset.push({'key': _key, 'value': {'unit': ctrl.ytype, 'count': NumberUtils.fixedDecimals(value)}});
+				ctrl.$$dataset.push({"key": _key, "value": {"unit": ctrl.ytype, "count": NumberUtils.fixedDecimals(value)}});
 			});
 			
 			ctrl.$$total = {
-				'unit': ctrl.ytype, 
-				'count': NumberUtils.fixedDecimals(_total),
+				"unit": ctrl.ytype, 
+				"count": NumberUtils.fixedDecimals(_total),
 			}
 			
-			if(ctrl.datasetType == 'statistics.reservation.avg.rate'){
+			if(ctrl.datasetType == "statistics.reservation.avg.rate"){
 				ctrl.$$total.count = NumberUtils.fixedDecimals(_total / (_partialDivider > 0 ? _partialDivider : 1));
 				
-			} else if(ctrl.datasetType == 'statistics.reservation.occupation.rate'){
+			} else if(ctrl.datasetType == "statistics.reservation.occupation.rate"){
 				ctrl.$$total.count = NumberUtils.fixedDecimals(_total / (_totalDivider > 0 ? _totalDivider : 1));
 				
-			} else if(ctrl.datasetType == 'statistics.reviews.total.count'){
+			} else if(ctrl.datasetType == "statistics.reviews.total.count"){
 				ctrl.$$total.count = ctrl.$$dataset[ctrl.$$dataset.length -1].value.count;
 			}
 			
 			//mostro il totale solo se è un totale
-			ctrl.$$showTotal = !_.includes(['statistics.reviews.avg.daily', 'statistics.reviews.avg.monthly', 'statistics.reviews.avg.yearly', 'statistics.reviews.total.count', 'statistics.reviews.avg'], ctrl.datasetType);
+			ctrl.$$showTotal = !_.includes(["statistics.reviews.avg.daily", "statistics.reviews.avg.monthly", "statistics.reviews.avg.yearly", "statistics.reviews.total.count", "statistics.reviews.avg"], ctrl.datasetType);
 			
 			ctrl.$$totalComparated = null;
 			ctrl.$$totalPercentage = null;
@@ -212,7 +213,7 @@
 					var obj = ctrl.$$dataset[_i];
 					
 					if(obj){
-						obj.compare = {'unit': ctrl.ytype, 'count': NumberUtils.fixedDecimals(value)};
+						obj.compare = {"unit": ctrl.ytype, "count": NumberUtils.fixedDecimals(value)};
 						obj.percentage = obj.compare.count != 0 ? (((obj.value.count - obj.compare.count) / obj.compare.count) * 100) : (obj.value.count - obj.compare.count) == 0 ? 0 : 100;
 						obj.percentage = obj.percentage > 0 || obj.percentage < 0 ? NumberUtils.fixedDecimals(obj.percentage) : 0;
 					}
@@ -222,17 +223,17 @@
 				});
 				
 				ctrl.$$totalComparated = {
-					'unit': ctrl.ytype, 
-					'count': NumberUtils.fixedDecimals(_total),
+					"unit": ctrl.ytype, 
+					"count": NumberUtils.fixedDecimals(_total),
 				}
 				
-				if(ctrl.datasetType == 'statistics.reservation.avg.rate'){
+				if(ctrl.datasetType == "statistics.reservation.avg.rate"){
 					ctrl.$$total.count = NumberUtils.fixedDecimals(_total / (_partialDivider > 0 ? _partialDivider : 1));
 					
-				} else if(ctrl.datasetType == 'statistics.reservation.occupation.rate'){
+				} else if(ctrl.datasetType == "statistics.reservation.occupation.rate"){
 					ctrl.$$total.count = NumberUtils.fixedDecimals(_total / (_totalDivider > 0 ? _totalDivider : 1));
 					
-				} else if(ctrl.datasetType == 'statistics.reviews.total.count'){
+				} else if(ctrl.datasetType == "statistics.reviews.total.count"){
 					ctrl.$$totalComparated.count = ctrl.$$dataset[ctrl.$$dataset.length -1].compare.count;
 				}
 				
@@ -249,7 +250,7 @@
 			
 			_.forEach(ctrl.dataset, function(v){
 				_data.push(v);
-				_labels.push('');
+				_labels.push("");
 			});
 			
 			if(!_.isNil(ctrl.compareDataset) && !_.isEmpty(ctrl.compareDataset)){
@@ -257,7 +258,7 @@
 			}
 			
 			ctrl.$$chart = {
-				type: 'line',
+				type: "line",
 				data: {
 					labels: _labels,
 					datasets: [
@@ -342,8 +343,8 @@
 		};
 		
 		this.$showInfo = function(ev){
-			$translate([ctrl.datasetType + '.report', ctrl.datasetType +'.description']).then(function(translate){
-				Dialog.showAlert(ev, translate[ctrl.datasetType + '.report'], translate[ctrl.datasetType +'.description']);
+			$translate([ctrl.datasetType + ".report", ctrl.datasetType +".description"]).then(function(translate){
+				Dialog.showAlert(ev, translate[ctrl.datasetType + ".report"], translate[ctrl.datasetType +".description"]);
 			});
 		};
 	}

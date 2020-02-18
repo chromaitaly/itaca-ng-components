@@ -1,0 +1,45 @@
+<div flex layout="column" layout-fill>
+
+	<md-subheader class="no-padding bg-gray-lighter text-gray-light">
+  		<div layout flex>
+			<div hide show-gt-xs flex="20" layout layout-padding layout-align="center center" class="text-center border-right-white">
+				<strong class="text-uppercase text-gray-light">
+					<span translate-once="room.type"></span>
+				</strong>
+			</div>
+			<div flex layout="column">
+				<div hide layout class="md-margin no-padding-bottom text-gray-light">
+					<span flex></span>
+					<span class="text-capitalize" ng-bind="$ctrl.$$monthLabel"></span>
+					<span flex></span>
+				</div>
+				<div layout layout-padding-sm class="no-padding-right no-padding-left">
+					<div flex layout="column" class="no-padding-x-sides border-right-white"
+						ng-repeat="date in $ctrl.$$dates track by date.id">
+						
+						<md-button md-no-ink tabindex="-1" ng-click="$ctrl.$toggleDateClosing(date)"
+							ng-disabled="date.pastDate || date.hotelClosed"
+							class="md-square-button minimal-button no-margin row-mini" 
+							ng-class="{'minimal-button': !$ctrl.$mdMedia('gt-xs'),
+								'text-gray-light': !date.roomsClosed,
+								'bg-danger text-white': date.roomsClosed}"
+								aria-label="Toggle date closing">
+							<div layout="column">
+								<small class="text-capitalize" ng-bind="date.date|date:'EEE'"></small>
+								<div><strong ng-bind="date.date|date:'d'"></strong></div>
+								<small hide show-gt-xs class="text-capitalize" ng-bind="date.date|date:'MMM'"></small>
+							</div>
+							
+							<md-tooltip>
+								<span ng-show="date.roomsClosed" translate-once="hotel.availability.open.day"></span>	
+								<span ng-show="!date.roomsClosed" translate-once="hotel.availability.close.day"></span>														
+							</md-tooltip>
+						</md-button>
+					</div>			
+				</div>
+			</div>
+		</div>
+	</md-subheader>
+
+	<div class="ratesheet-content" ng-transclude></div>
+</div>

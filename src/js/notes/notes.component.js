@@ -1,5 +1,5 @@
 (function() {
-	'use strict';
+	"use strict";
 	
 	angular.module("itaca.component").component("chNotes", {
 		bindings: {
@@ -26,13 +26,13 @@
 		this.$onInit = function() {
 			ctrl.notes = ctrl.notes || [];
 			ctrl.today = moment().toDate();
-			ctrl.label = ctrl.label || $translate.instant('common.notes.internal');
+			ctrl.label = ctrl.label || $translate.instant("common.notes.internal");
 			ctrl.$$temp = null;
 		};
 		
 		//add
 		this.$add = function(){
-			ctrl.notes.push({createdNow: true, edit: true, text: '', createdDate: ctrl.today, createdBy: AppOptions.user});
+			ctrl.notes.push({createdNow: true, edit: true, text: "", createdDate: ctrl.today, createdBy: AppOptions.user});
 		};
 		
 		//edit

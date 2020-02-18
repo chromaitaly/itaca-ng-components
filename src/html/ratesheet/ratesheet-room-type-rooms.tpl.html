@@ -1,0 +1,28 @@
+<div flex-order="2" flex-order-xs="1" class="md-margin no-margin-top no-margin-x-sides">
+	<div layout-gt-xs="row" layout-xs="column" layout-padding-sm class="text-gray-light bg-gray-lighter">
+		<div flex-xs="100" flex-gt-xs="20" layout="column" 
+			layout-align="center center" class="text-small">
+			<span>
+				<md-icon class="mdi mdi-subdirectory-arrow-right md-12"></md-icon>&nbsp;
+				<span translate-once="room.rooms.related"></span>:
+			</span>
+		</div>
+		<div flex layout="column" ng-class="{'layout-align-center-center': $ctrl.$mdMedia('xs')}">
+			<div>
+				<span ng-repeat="room in $ctrl.roomTypeRatesheet.rooms track by room.id" ng-class="{'text-striked text-warn': !room.enabled}">
+					<span class="text-small">
+						<span ng-bind="room.name"></span>
+						<span ng-if="!$last">,&nbsp;</span>
+					</span>
+					<md-tooltip ng-if="!room.enabled">
+						<span translate-once="common.disabled.female"></span>
+					</md-tooltip>
+				</span>
+				<span ng-if="!$ctrl.roomTypeRatesheet.rooms.length" class="text-small">
+					<em translate-once="room.rooms.left.none"></em>
+				</span>
+			</div>
+		</div>
+	</div>
+	<md-divider></md-divider>
+</div>

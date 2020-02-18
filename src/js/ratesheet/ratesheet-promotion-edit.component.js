@@ -1,7 +1,7 @@
 (function() {
-    'use strict';
+    "use strict";
     
-    angular.module('itaca.components').component('chRatesheetPromotionEdit', {
+    angular.module("itaca.components").component("chRatesheetPromotionEdit", {
     	bindings: {
     		promotion: "<",
     		type: "@",

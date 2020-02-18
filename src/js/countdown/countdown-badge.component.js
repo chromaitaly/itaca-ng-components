@@ -1,5 +1,5 @@
 (function() {
-	'use strict';
+	"use strict";
 	
 	angular.module("itaca.components").component("countDownBadge", {
 		bindings: {
@@ -56,18 +56,18 @@
 				interval: 	1000,
 				progress: 	100,
 				unit: {
-					value: '!',
+					value: "!",
 				},
 			};
 			
-			ctrl.$$countdown.duration = moment.duration((ctrl.$$countdown.end - ctrl.$getOffsetMoment().valueOf()), 'milliseconds');
+			ctrl.$$countdown.duration = moment.duration((ctrl.$$countdown.end - ctrl.$getOffsetMoment().valueOf()), "milliseconds");
 			
 			ctrl.$intervalFn();
 			
 			ctrl.$$interval = $interval(ctrl.$intervalFn, ctrl.$$countdown.interval);
 		};
 		
-		// applica se previsto l'offset
+		// applica se previsto l"offset
 		this.$getOffsetMoment = function(date){
 			return ctrl.$$offset ? moment(date).utcOffset(ctrl.$$offset, true) : moment(date);
 		};
@@ -78,7 +78,7 @@
 				return;
 			}
 			
-			ctrl.$$countdown.duration = moment.duration(ctrl.$$countdown.duration - ctrl.$$countdown.interval, 'milliseconds');
+			ctrl.$$countdown.duration = moment.duration(ctrl.$$countdown.duration - ctrl.$$countdown.interval, "milliseconds");
 			
 			if(ctrl.$$countdown.duration.asMilliseconds() <= 0){
             	ctrl.$finish();
@@ -97,19 +97,19 @@
 			
 			if(d > 0){
 				ctrl.$$countdown.unit.value = d;
-				ctrl.$$countdown.unit.format = d == 1 ? 'date.day' : 'date.days';
+				ctrl.$$countdown.unit.format = d == 1 ? "date.day" : "date.days";
 				
 			} else if(h > 0){
 				ctrl.$$countdown.unit.value = h;
-				ctrl.$$countdown.unit.format = h == 1 ? 'date.hour' : 'date.hours';
+				ctrl.$$countdown.unit.format = h == 1 ? "date.hour" : "date.hours";
 				
 			} else if(m > 0){
 				ctrl.$$countdown.unit.value = m;
-				ctrl.$$countdown.unit.format = m == 1 ? 'date.minute' : 'date.minutes';
+				ctrl.$$countdown.unit.format = m == 1 ? "date.minute" : "date.minutes";
 				
 			} else {
 				ctrl.$$countdown.unit.value = s;
-				ctrl.$$countdown.unit.format = s == 1 ? 'date.second' : 'date.seconds';
+				ctrl.$$countdown.unit.format = s == 1 ? "date.second" : "date.seconds";
 			}
 			
 		};
@@ -121,7 +121,7 @@
 		this.$finish = function(){
 			$interval.cancel(ctrl.$$interval);
 			ctrl.$$isFinish = true;
-			ctrl.$$countdown.unit = {value: '!'};
+			ctrl.$$countdown.unit = {value: "!"};
 			ctrl.$$countdown.progress = 100;
 			
 			ctrl.onFinish && ctrl.onFinish();

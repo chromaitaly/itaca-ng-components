@@ -1,7 +1,7 @@
 (function() {
-	'use strict';
+	"use strict";
 	
-	angular.module("itaca.components").component('chValue', {
+	angular.module("itaca.components").component("chValue", {
 		bindings: {
 			value: "<"
 		},

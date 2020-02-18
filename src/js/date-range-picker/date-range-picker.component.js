@@ -1,7 +1,7 @@
 (function() {
-	'use strict';
+	"use strict";
 	
-	angular.module("itaca.components").component('chDateRangePicker', {
+	angular.module("itaca.components").component("chDateRangePicker", {
         bindings: {
         	buttonClass: "@",
         	wrapperClass: "@",
@@ -65,7 +65,7 @@
 			ctrl.panelClass =  ctrl.panelClass || "bg-white md-whiteframe-15dp";
 			
 			// imposto la possibilità di scegliere solo il mese o anche il giorno
-			ctrl.mdMode = ctrl.mdMode && _.includes(['month', 'day'],ctrl.mdMode) ? ctrl.mdMode : null;
+			ctrl.mdMode = ctrl.mdMode && _.includes(["month", "day"],ctrl.mdMode) ? ctrl.mdMode : null;
 			
 			//mostro un layout piu grande
 			ctrl.largeTemplate = ctrl.largeTemplate || false;
@@ -84,8 +84,8 @@
 			    position: position,
 			    clickOutsideToClose: true,
 			    disableParentScroll: ctrl.disableParentScroll,
-			    hasBackdrop: !$mdMedia('gt-xs') || ctrl.hasBackdrop,
-			    fullscreen: !$mdMedia('gt-xs'),
+			    hasBackdrop: !$mdMedia("gt-xs") || ctrl.hasBackdrop,
+			    fullscreen: !$mdMedia("gt-xs"),
 			    panelClass: ctrl.panelClass,
 			    trapFocus: true,
 			    onCloseSuccess: function(panelRef, closeReason) {
@@ -156,8 +156,8 @@
 			 };
 	 		  	    		 
 			 ctrl.$$config.openFrom = ev;
-			 ctrl.$$config.hasBackdrop = !$mdMedia('gt-xs') || ctrl.hasBackdrop;
-			 ctrl.$$config.fullscreen = !$mdMedia('gt-xs');
+			 ctrl.$$config.hasBackdrop = !$mdMedia("gt-xs") || ctrl.hasBackdrop;
+			 ctrl.$$config.fullscreen = !$mdMedia("gt-xs");
 			 ctrl.$$config.locals = locals;
 			 
 			 // apro il pannello 
@@ -202,7 +202,7 @@
 		 
 		 this.calculateDiff = function() {
 			 if ((_.isBoolean(ctrl.showDiff) ? ctrl.showDiff : true) && ctrl.end && ctrl.start) {
-				 ctrl.$$diff = ctrl.$getMoment(ctrl.end).diff(ctrl.$getMoment(ctrl.start), 'days');
+				 ctrl.$$diff = ctrl.$getMoment(ctrl.end).diff(ctrl.$getMoment(ctrl.start), "days");
 			} else {
 				ctrl.$$diff = null;
 			}
@@ -218,7 +218,7 @@
 		
 		this.init = function() {
 			_self.timezone = _.isBoolean(_self.useUtc) && _self.useUtc ? "UTC" : "";
-			_self.modelOptions = _.isBoolean(_self.useUtc) && _self.useUtc ? {timezone: 'UTC'} : {};
+			_self.modelOptions = _.isBoolean(_self.useUtc) && _self.useUtc ? {timezone: "UTC"} : {};
 			_self.showDiff = _.isBoolean(_self.shshowDiffowDiff) ? _self.showDiff : true;
 			
 			if (_self.showDiff) {
@@ -252,7 +252,7 @@
 			
 			var start = _self.$$getMoment(_self.data.start);
 			var end = _self.$$getMoment(_self.data.end);
-			var minEnd = (_self.data.mdMode && _self.data.mdMode == 'month') ? _self.$$getMoment(start).add(1, "month") : _self.$$getMoment(start).add(1, "days");
+			var minEnd = (_self.data.mdMode && _self.data.mdMode == "month") ? _self.$$getMoment(start).add(1, "month") : _self.$$getMoment(start).add(1, "days");
 			
 			var maxEnd = null;
 			if (_self.data.maxRange) {	        		
@@ -272,9 +272,9 @@
 		this.updateEnd = function(date, minDate, maxDate) {
 			_self.data.end = date ? _self.$$getMoment(date).toDate() : null;
 			
-			//se la vista è mensile (mdMode = 'month') allora l'end è la fine del mese
-			if(_self.data.mdMode && _self.data.mdMode == 'month'){
-				_self.data.end = _self.$$getMoment(_self.data.end).endOf('month').set({hours:0,minutes:0}).toDate();
+			//se la vista è mensile (mdMode = "month") allora l"end è la fine del mese
+			if(_self.data.mdMode && _self.data.mdMode == "month"){
+				_self.data.end = _self.$$getMoment(_self.data.end).endOf("month").set({hours:0,minutes:0}).toDate();
 			}
 			
 			if (minDate) {
@@ -288,7 +288,7 @@
 		
 		this.calculateDiff = function() {
 			if (_self.showDiff && _self.data.end && _self.data.start) {
-				_self.data.diff = _self.$$getMoment(_self.data.end).diff(_self.$$getMoment(_self.data.start), 'days');
+				_self.data.diff = _self.$$getMoment(_self.data.end).diff(_self.$$getMoment(_self.data.start), "days");
 			} else {
 				_self.data.diff = null;
 			}
@@ -309,7 +309,7 @@
 		});
 		
 		/**
-		 * Workaround per il timezone dell'ng-model-option non gestito negli md-calendar
+		 * Workaround per il timezone dell"ng-model-option non gestito negli md-calendar
 		 * 
 		 */
 		$scope.$watchGroup([function() { return _self.data.start;}, function() { return _self.data.end;}], function(newValues, oldValues) {

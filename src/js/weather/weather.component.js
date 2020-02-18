@@ -1,7 +1,7 @@
 (function() {
-	'use strict';
+	"use strict";
 	
-	angular.module("itaca.components").component('chWeather', {
+	angular.module("itaca.components").component("chWeather", {
 		bindings: {
 			city: "@",
 			country: "@",

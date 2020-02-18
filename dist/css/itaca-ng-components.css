@@ -571,6 +571,27 @@ md-progress-circular.ch-progress-white svg path {
 md-progress-circular.ch-progress-white svg path {
   stroke: #fff !important;
 }
+.saving {
+  -webkit-animation: blinking 0.8s infinite;
+  /* Safari 4+ */
+  -moz-animation: blinking 0.8s infinite;
+  /* Fx 5+ */
+  -o-animation: blinking 0.8s infinite;
+  /* Opera 12+ */
+  animation: blinking 0.8s infinite;
+  /* IE 10+, Fx 29+ */
+}
+@-webkit-keyframes blinking {
+  0%,
+  49% {
+    background-color: #00a65a;
+    opacity: 0.4;
+  }
+  50%,
+  100% {
+    background-color: none;
+  }
+}
 ch-review,
 ch-review-hotel-info,
 ch-review-report-info,

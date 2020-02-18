@@ -1,9 +1,9 @@
 (function() {
-	'use strict';
+	"use strict";
 	
 	angular.module("itaca.components").component("guestDetailsAutocomplete", {
 		require: {
-        	ngModelCtrl: 'ngModel' 
+        	ngModelCtrl: "ngModel" 
         },
 		bindings: {
 			ngModel:  "<",
@@ -97,7 +97,7 @@
     		}
     		
     		if(!ctrl.list){
-    			deferred.reject('error');
+    			deferred.reject("error");
     		}
     		
 			deferred.resolve(query ? ctrl.list.filter(ctrl.$createFilterFor(query)) : ctrl.list);
@@ -115,14 +115,14 @@
 	    
 	    this.$selectedItemChange = function(item){
 	    	if(!item){
-    			ctrl.ngModelCtrl.$setViewValue('');
+    			ctrl.ngModelCtrl.$setViewValue("");
 	    		return;
 	    	}
 	    	ctrl.ngModelCtrl.$setViewValue(item.code);
 	    };
 	    
 	    this.$setError = function(bool){
-	    	$scope.autocompleteForm.jsonItem.$setValidity('connection', !bool);
+	    	$scope.autocompleteForm.jsonItem.$setValidity("connection", !bool);
 	    	ctrl.$$error = bool;
 	    	
 	    	if(bool){

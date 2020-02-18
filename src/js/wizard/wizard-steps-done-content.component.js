@@ -1,10 +1,10 @@
 (function() {
-    'use strict';
+    "use strict";
     
     angular.module("itaca.components").component("chWizardStepsDoneContent", {
     	transclude: true,
     	require: {
-			chWizardCtrl: '^chWizard',
+			chWizardCtrl: "^chWizard",
 		},
 		controller: WizardStepsDoneContentCtrl,
 		templateUrl: "/tpls/wizard/wizard-steps-done-content.tpl"

@@ -1,9 +1,9 @@
 (function() {
-	'use strict';
+	"use strict";
 	
 	angular.module("itaca.components").component("chReviewsSummaryProgress", {
 		require: {
-			chReviewsSummaryCtrl: '^chReviewsSummary'
+			chReviewsSummaryCtrl: "^chReviewsSummary"
 		},
 		bindings: {
 			value: "<",
@@ -27,7 +27,7 @@
 				"</small>" +
 				"<div class=\"layout-row layout-align-start-center\">" +
 					"<div flex><md-progress-linear md-mode=\"determinate\" value=\"{{$ctrl.$$percentage}}\" class=\"{{$ctrl.$$sizeClass}}\" ng-class=\"$ctrl.count > 0 ? $ctrl.progressClass : 'md-accent'\"></md-progress-linear></div>" +
-					"<div class=\"text-right\" style=\"width: 55px\"><small>&nbsp;{{$ctrl.$$percentage + '%'}}&nbsp;({{$ctrl.count}})</small></div>" +
+					"<div class=\"text-right\" style=\"width: 55px\"><small>&nbsp;{{$ctrl.$$percentage + "%"}}&nbsp;({{$ctrl.count}})</small></div>" +
 				"</div>" +
 			"</div>"
 	});

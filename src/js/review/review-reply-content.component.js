@@ -1,10 +1,10 @@
 (function() {
-	'use strict';
+	"use strict";
 	
 	angular.module("itaca.components").component("chReviewReplyContent", {
 		transclude: true,
 		require: {
-			chReviewReplyCtrl: '^chReviewReply'
+			chReviewReplyCtrl: "^chReviewReply"
 		},
 		controller: ReviewReplyContentCtrl,
 		template: "<div ng-transclude></div>"

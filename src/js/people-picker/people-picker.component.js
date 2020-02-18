@@ -1,7 +1,7 @@
 (function() {
-	'use strict';
+	"use strict";
 	
-	angular.module("itaca.components").component('chPeoplePicker', {
+	angular.module("itaca.components").component("chPeoplePicker", {
 		bindings: {
 			buttonClass: "@",
         	wrapperClass: "@",
@@ -55,8 +55,8 @@
 	    	ctrl.$$panelConfig = {
 				attachTo: angular.element(document.body),
 			    controller: PeoplePickerCtrl,
-			    controllerAs: '$ctrl',
-			    templateUrl: '/tpls/people-picker/people-picker.tpl',
+			    controllerAs: "$ctrl",
+			    templateUrl: "/tpls/people-picker/people-picker.tpl",
 			    position: position,
 			    clickOutsideToClose: ctrl.clickOutsideToClose,
 			    disableParentScroll: ctrl.disableParentScroll,
