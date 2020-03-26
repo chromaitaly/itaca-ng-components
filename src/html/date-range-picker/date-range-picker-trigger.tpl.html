@@ -16,8 +16,8 @@
 					<span><span translate="date.to.abbr"></span>&nbsp;<span class="md-subhead"><strong>{{$ctrl.end|date:"shortDate":$ctrl.$$timezone}}</strong></span></span>
 					<span ng-if="$ctrl.showDiff && $ctrl.$$diff" class="{{$ctrl.labelClass}} text-small no-padding no-margin text-lowercase"> 
 					&nbsp;(<span ng-bind="$ctrl.$$diff"></span>&nbsp;
-			       		<span ng-show="$ctrl.$$diff == 1"><span ng-if="!$ctrl.$$diffLabelSingular" translate="date.day"></span><span ng-if="$ctrl.$$diffLabelSingular" ng-bind="$ctrl.$$diffLabelSingular"></span>)</span> 
-			       		<span ng-show="$ctrl.$$diff > 1"><span ng-if="!$ctrl.$$diffLabelPlural" translate="date.days"></span><span ng-if="$ctrl.$$diffLabelPlural" ng-bind="$ctrl.$$diffLabelPlural"></span>)</span> 
+			       		<span ng-show="$ctrl.$$diff == 1"><span ng-if="!$ctrl.diffLabelSingular" translate="date.day"></span><span ng-if="$ctrl.diffLabelSingular" ng-bind="$ctrl.diffLabelSingular"></span>)</span> 
+			       		<span ng-show="$ctrl.$$diff > 1"><span ng-if="!$ctrl.diffLabelPlural" translate="date.days"></span><span ng-if="$ctrl.diffLabelPlural" ng-bind="$ctrl.diffLabelPlural"></span>)</span> 
 			       	</span>
 				</div>
 			</div>
@@ -50,9 +50,9 @@
 				
 				<div ng-if="$ctrl.showDiff && $ctrl.$$diff" class="layout-column flex-100 row-1">
 					<span class="{{$ctrl.labelClass}} text-small no-padding no-margin text-lowercase"> 
-			       		&nbsp;(<span ng-bind="$ctrl.$$diff">&nbsp;</span> 
-			       		<span ng-show="$ctrl.$$diff == 1"><span ng-if="!$ctrl.$$diffLabelSingular" translate="date.day"></span><span ng-if="$ctrl.$$diffLabelSingular" ng-bind="$ctrl.$$diffLabelSingular"></span>)</span> 
-			       		<span ng-show="$ctrl.$$diff > 1"><span ng-if="!$ctrl.$$diffLabelPlural" translate="date.days"></span><span ng-if="$ctrl.$$diffLabelPlural" ng-bind="$ctrl.$$diffLabelPlural"></span>)</span>
+			       		&nbsp;(<span ng-bind="$ctrl.$$diff">&nbsp;</span>
+			       		<span ng-show="$ctrl.$$diff == 1"><span ng-if="!$ctrl.diffLabelSingular" translate="date.day"></span><span ng-if="$ctrl.diffLabelSingular" ng-bind="$ctrl.diffLabelSingular"></span>)</span> 
+			       		<span ng-show="$ctrl.$$diff > 1"><span ng-if="!$ctrl.diffLabelPlural" translate="date.days"></span><span ng-if="$ctrl.diffLabelPlural" ng-bind="$ctrl.diffLabelPlural"></span>)</span>
 			       	</span>
 		       	</div>
 			</div>

@@ -45,13 +45,13 @@
 		<div flex layout="column">
 			<div layout="column" layout-padding class="text-center"> 
 	  			<div class="text-gray-light text-small no-padding-bottom"> 
-					<span>{{'reservation.when.question'|translate}}</span> 
+					<span translate="reservation.when.question"></span> 
 				</div>
 				<div class="layout layout-wrap layout-align-center-center row-mini text-lowercase no-padding-bottom"> 
-					<span><span translate="date.from.abbr"></span>&nbsp;<span class="md-subhead"><strong>{{$ctrl.reservation.checkin|date:"shortDate"}}</strong></span>&nbsp;</span> 
-					<span><span translate="date.to.abbr"></span>&nbsp;<span class="md-subhead"><strong>{{$ctrl.reservation.checkout|date:"shortDate"}}</strong></span></span> 
+					<span><span translate="date.from.abbr"></span>&nbsp;<span class="md-subhead"><strong ng-bind="$ctrl.reservation.checkin|date:'shortDate'"></strong></span>&nbsp;</span> 
+					<span><span translate="date.to.abbr"></span>&nbsp;<span class="md-subhead"><strong ng-bind="$ctrl.reservation.checkout|date:'shortDate'"></strong></span></span> 
 					<span ng-if="$ctrl.reservation.nights" class="text-gray-light text-small no-padding no-margin text-lowercase">  
-			       		&nbsp;(<span>{{$ctrl.reservation.nights}}&nbsp;</span>
+			       		&nbsp;(<span ng-bind="$ctrl.reservation.nights">&nbsp;</span>
 			       		<span ng-show="$ctrl.reservation.nights == 1" translate="common.night"></span> 
 			       		<span ng-show="$ctrl.reservation.nights > 1" translate="common.nights"></span>)
 			       	</span> 
@@ -91,16 +91,20 @@
 					<div class="layout-row layout-padding-sm layout-align-start-center">
 						<small class="flex no-padding-y-sides">
 							<strong>1&nbsp;<span translate="{{room.type.roomType.nameKey}}"></span>&nbsp;<small class="text-uppercase" translate="room.category.{{room.type.category}}"></small></strong>
-							<span ng-if="$ctrl.reservation.nights > 1" class="text-lowercase">
-								<span>&nbsp;(x&nbsp;{{$ctrl.reservation.nights}}&nbsp;<span translate="common.nights"></span>)</span>
+							<span class="text-lowercase" ng-switch="room.totalRate.$$type">
+								&nbsp;(<em>
+					        		<span ng-switch-when="FREE" translate="reservation.cancellation.free"></span>
+									<span ng-switch-when="NOT_REFUNDABLE" translate="policies.policy.cancellation.not.refundable"></span>
+									<span ng-switch-when="PARTIALLY_REFUNDABLE" translate="policies.policy.cancellation.partially.refundable"></span>
+					        	</em>)
 							</span>
 						</small>
 						<div class="text-right no-padding-y-sides">
 							<div class="text-gray-light text-small text-striked" ng-if="room.totalRate.amount.initialAmount != room.totalRate.amount.finalAmount">
-								<em>{{room.totalRate.amount.initialAmount|chCurrency}}</em>
+								<em ng-bind="room.totalRate.amount.initialAmount|chCurrency"></em>
 							</div>
 							<div>
-								<span>{{room.totalRate.amount.finalAmount|chCurrency}}</span>
+								<span ng-bind="room.totalRate.amount.finalAmount|chCurrency"></span>
 							</div>
 						</div>
 					</div>
@@ -108,7 +112,7 @@
 						<li ng-if="!serviceSold.included || (serviceSold.included && serviceSold.service.paymentType != 'FREE') " ng-repeat="serviceSold in room.services" class="layout-row layout-padding-sm layout-align-start-center" ng-class="{'text-danger': serviceSold.toRemove}">
 							<small class="flex no-padding-y-sides">
 								<span>
-									<span ng-if="!serviceSold.included && serviceSold.count > 1">{{serviceSold.count}}</span>
+									<span ng-if="!serviceSold.included && serviceSold.count > 1" ng-bind="serviceSold.count"></span>
 									<span ng-if="!serviceSold.included && serviceSold.count <= 1">1</span>
 									<span>&nbsp;<span translate="{{serviceSold.service.type.nameKey}}"></span></span>
 								</span>
@@ -116,11 +120,11 @@
 									&nbsp;x&nbsp;<ch-people-summary people="serviceSold.people" no-details="true"></ch-people-summary>
 								</span>
 								<span ng-if="$ctrl.reservation.nights > 1 && serviceSold.service.frequency == 'DAILY'" class="text-lowercase">
-									<span>&nbsp;(x&nbsp;{{$ctrl.reservation.nights}}<span translate="date.days.abbr"></span>)</span>
+									<span>&nbsp;(x&nbsp;<span ng-bind="$ctrl.reservation.nights"></span><span translate="date.days.abbr"></span>)</span>
 								</span>
 							</small>
 							<span class="text-right no-padding-y-sides">
-								<span ng-if="serviceSold.amount.finalAmount > 0">{{serviceSold.amount.finalAmount|chCurrency}}</span>													
+								<span ng-if="serviceSold.amount.finalAmount > 0" ng-bind="serviceSold.amount.finalAmount|chCurrency"></span>													
 								<i ng-if="serviceSold.amount.finalAmount <= 0" translate="common.free"></i>
 							</span>
 						</li>
@@ -133,11 +137,11 @@
 									&nbsp;x&nbsp;<ch-people-summary people="bedSold.people" no-details="true"></ch-people-summary>
 								</span>
 								<span ng-if="$ctrl.reservation.nights > 1" class="text-lowercase">
-									<span>&nbsp;(x&nbsp;{{$ctrl.reservation.nights}}&nbsp;<span translate="common.nights"></span>)</span>
+									<span>&nbsp;(x&nbsp;<span ng-bind="$ctrl.reservation.nights"></span>&nbsp;<span translate="common.nights"></span>)</span>
 								</span>
 							</small>
 							<span class="text-right no-padding-y-sides">
-								<span>{{bedSold.amount.finalAmount|chCurrency}}</span>													
+								<span ng-bind="bedSold.amount.finalAmount|chCurrency"></span>													
 							</span>
 						</li>
 					</ul>
@@ -157,7 +161,7 @@
 				</div>
 			</div>
 			<div class="text-right no-padding md-headline">
-				<span>{{$ctrl.reservation.totalAmount.finalAmount|chCurrency}}</span>
+				<span ng-bind="$ctrl.reservation.totalAmount.finalAmount|chCurrency"></span>
 				<span ng-if="$ctrl.currentCurrency != $ctrl.hotelCurrency">*</span>
 			</div>
 		</div>
@@ -172,7 +176,7 @@
 				</div>
 			</div>
 			<div class="md-subhead text-right no-padding">
-				<span>{{$ctrl.reservation.totalAmount.finalAmount | chCurrency:$ctrl.hotelCurrency }}</span>
+				<span ng-bind="$ctrl.reservation.totalAmount.finalAmount|chCurrency:$ctrl.hotelCurrency"></span>
 			</div>
 		</div>
 		
@@ -180,7 +184,7 @@
 			<small class="layout-column layout-margin no-margin">
 				<span class="no-margin">
 					<span translate="currency.info.payment" translate-values="{name: $ctrl.reservation.hotel.name}"></span>
-					<span>:&nbsp;{{ 1 | chCurrency:$ctrl.hotelCurrency}} = {{ 1 | chCurrency}}</span>
+					<span>:&nbsp;<span ng-bind="1|chCurrency:$ctrl.hotelCurrency"></span>&nbp;=&nbsp;<span ng-bind="1|chCurrency"></span></span>
 				</span>
 				<span class="no-margin-left no-margin-bottom no-margin-right"><span translate="currency.info.payment2"></span></span>	
 			</small>		
@@ -226,7 +230,7 @@
 					</div>
 					<small ng-if="$ctrl.reservation.guest.email" class="ng-binding ng-scope no-padding text-initial text-wrap">
 						<span><span translate="reservation.email.confirm.to"></span>:&nbsp;</span>
-						<span>{{$ctrl.reservation.guest.email}}</span>
+						<span ng-bind="$ctrl.reservation.guest.email"></span>
 					</small>
 				</div>
   			</md-button>
@@ -246,30 +250,30 @@
 			<span ng-if="$ctrl.reservation.nights > 1" translate="reservation.rates.info.nights" translate-value-count="{{$ctrl.reservation.nights}}"></span>
 		</small>
 		<small ng-if="$ctrl.roomVatRate">
-			<strong><span translate="common.included"></span>:</strong>&nbsp;{{::$ctrl.roomVatRate}}%&nbsp;<span translate="billing.vat.tax"></span>
+			<strong><span translate="common.included"></span>:</strong>&nbsp;<span ng-bind="$ctrl.roomVatRate"></span>%&nbsp;<span translate="billing.vat.tax"></span>
 		</small>
 		<small ng-if="$ctrl.reservation.cityTaxAmount.finalAmount || $ctrl.reservation.depositAmount.finalAmount || $ctrl.reservation.checkinDetails || $ctrl.reservation.hotel.cityTax.finalAmount || $ctrl.reservation.hotel.deposit.finalAmount">
 			<strong><span translate="common.included.not"></span>:</strong><br>
 			
 			<!-- CITY TAX -->
        		<span ng-if="$ctrl.reservation.cityTaxAmount.finalAmount && $ctrl.step > 1">
-          		-&nbsp;<span translate="billing.cityTax"></span>:&nbsp;<strong>{{$ctrl.reservation.cityTaxAmount.finalAmount|chCurrency:$ctrl.hotelCurrency}}</strong><br>
+          		-&nbsp;<span translate="billing.cityTax"></span>:&nbsp;<strong ng-bind="$ctrl.reservation.cityTaxAmount.finalAmount|chCurrency:$ctrl.hotelCurrency"></strong><br>
           	</span>
           	<span ng-if="$ctrl.reservation.hotel.cityTax.finalAmount && $ctrl.step < 2">
-   				-&nbsp;{{$ctrl.reservation.hotel.cityTax.finalAmount|chCurrency:$ctrl.hotelCurrency}}&nbsp;<span translate="reservation.cityTax.description"></span><br>
+   				-&nbsp;<span ng-bind="$ctrl.reservation.hotel.cityTax.finalAmount|chCurrency:$ctrl.hotelCurrency"></span>&nbsp;<span translate="reservation.cityTax.description"></span><br>
    			</span>
       			
           	<!-- DEPOSIT -->
           	<span ng-if="$ctrl.reservation.depositAmount.finalAmount && $ctrl.step > 1">
-          		-&nbsp;<span translate="hotel.deposit.label"></span>:&nbsp;<strong>{{$ctrl.reservation.depositAmount.finalAmount|chCurrency}}</strong><br>
+          		-&nbsp;<span translate="hotel.deposit.label"></span>:&nbsp;<strong ng-bind="$ctrl.reservation.depositAmount.finalAmount|chCurrency"></strong><br>
           	</span>
           	<span ng-if="$ctrl.reservation.hotel.deposit.finalAmount && $ctrl.step < 2">
-   				-&nbsp;{{$ctrl.reservation.hotel.deposit.finalAmount}}%&nbsp;<span translate="reservation.deposit.description"></span><br>
+   				-&nbsp;<sapn ng-bind="$ctrl.reservation.hotel.deposit.finalAmount">%&nbsp;<span translate="reservation.deposit.description"></span><br>
    			</span>
 			
 			<!-- CHECKIN EXTRA -->
 			<span ng-if="$ctrl.reservation.checkinDetails && $ctrl.reservation.checkinDetails.amount.finalAmount">
-				-&nbsp;<span translate="reservation.checkinDetails.description"></span>:&nbsp;<strong>{{::($ctrl.reservation.checkinDetails.amount.finalAmount|chCurrency:$ctrl.hotelCurrency)}}</strong>
+				-&nbsp;<span translate="reservation.checkinDetails.description"></span>:&nbsp;<strong ng-bind="$ctrl.reservation.checkinDetails.amount.finalAmount|chCurrency:$ctrl.hotelCurrency"></strong>
 			</span>
 		</small>
 	</div>

@@ -21,13 +21,13 @@
 		</div>
 		
 		<div flex>
-			<div layout layout-wrap>
+			<div layout layout-padding-sm layout-wrap>
 				<div flex>
 					<h3 class="no-margin md-title" translate="{{$ctrl.room.type.roomType.nameKey}}"></h3>
 				
 					<div class="row-mini text-gray-light">
 		     			<small flex>
-			            	<span ng-if="$ctrl.room.type.description[$ctrl.localeIso]">{{$ctrl.room.type.description[$ctrl.localeIso]}}</span>
+			            	<span ng-if="$ctrl.room.type.description[$ctrl.localeIso]" ng-bind="$ctrl.room.type.description[$ctrl.localeIso]"></span>
 		           			<span ng-if="!$ctrl.room.type.description[$ctrl.localeIso]"><span translate="{{$ctrl.room.type.roomType.descriptionKey}}"></span></span>
 		           		</small>
 		     		</div>
@@ -41,7 +41,7 @@
 							
 					<div>
 						<span class="md-caption text-lowercase">
-							<span>{{$ctrl.$$guestsCount.total}}</span>&nbsp;
+							<span ng-bind="$ctrl.$$guestsCount.total"></span>&nbsp;
 							<span ng-if="$ctrl.$$guestsCount.total != 1" translate="people.people"></span>
 							<span ng-if="$ctrl.$$guestsCount.total == 1" translate="people.person"></span>
 						</span>
@@ -50,15 +50,32 @@
 	    		
 			    <div>
 					<div class="layout-row layout-wrap layout-align-gt-sm-end-center flex-xs-100 flex-sm-100" ng-class="{'layout-align-center-start': $ctrl.$$promotion, 'layout-align-center-center': !$ctrl.$$promotion}">
-					
 						<div class="layout-column" ng-class="{'text-center': !$ctrl.$mdMedia('gt-sm'), 'text-right': $ctrl.$mdMedia('gt-sm')}">
 							<div ng-if="$ctrl.$$promotion" ng-switch="$ctrl.$$promotion.promotionType">
-								<span ng-switch-when="STANDARD" class="label label-xs bg-info"><ch-truncate text="{{$ctrl.$$promotion.name[$ctrl.localeIso]}}" max-length="20" suffix="..."></ch-truncate>&nbsp;<span ng-if="$ctrl.$$promotion.discount.type=='PERCENTAGE'">-{{$ctrl.$$promotion.discount.finalAmount}}%</span><span ng-if="$ctrl.$$promotion.discount.type=='PRICE'">-{{$ctrl.$$promotion.discount.finalAmount|chCurrency}}</span></span>
-					      		<span ng-switch-when="MINIMUM_STAY" class="label label-xs bg-primary-light"><span translate="promotions.promotion.label.minstay.nights" translate-value-count="{{$ctrl.$$promotion.minStay}}"></span>&nbsp;<span ng-if="$ctrl.$$promotion.discount.type=='PERCENTAGE'">-{{$ctrl.$$promotion.discount.finalAmount}}%</span><span ng-if="$ctrl.$$promotion.discount.type=='PRICE'">-{{$ctrl.$$promotion.discount.finalAmount|chCurrency}}</span></span>
-					      		<span ng-switch-when="BOOK_TODAY" class="label label-xs bg-primary"><span translate="promotions.promotion.label.only.today"></span>!&nbsp;<span ng-if="$ctrl.$$promotion.discount.type=='PERCENTAGE'">-{{$ctrl.$$promotion.discount.finalAmount}}%</span><span ng-if="$ctrl.$$promotion.discount.type=='PRICE'">-{{$ctrl.$$promotion.discount.finalAmount|chCurrency}}</span></span>
-					      		<span ng-switch-when="EARLY_BOOKING" class="label label-xs bg-success"><span translate="promotions.early"></span>&nbsp;<span ng-if="$ctrl.$$promotion.discount.type=='PERCENTAGE'">-{{$ctrl.$$promotion.discount.finalAmount}}%</span><span ng-if="$ctrl.$$promotion.discount.type=='PRICE'">-{{$ctrl.$$promotion.discount.finalAmount|chCurrency}}</span></span>
-					      		<span ng-switch-when="LAST_MINUTE" class="label label-xs bg-blue-sea"><span translate="promotions.last.minute"></span>&nbsp;<span ng-if="$ctrl.$$promotion.discount.type=='PERCENTAGE'">-{{$ctrl.$$promotion.discount.finalAmount}}%</span><span ng-if="$ctrl.$$promotion.discount.type=='PRICE'">-{{$ctrl.$$promotion.discount.finalAmount|chCurrency}}</span></span>
-					      		<span ng-switch-when="LAST_SECOND" class="label label-xs bg-warn"><span translate="promotions.last.second"></span>&nbsp;<span ng-if="$ctrl.$$promotion.discount.type=='PERCENTAGE'">-{{$ctrl.$$promotion.discount.finalAmount}}%</span><span ng-if="$ctrl.$$promotion.discount.type=='PRICE'">-{{$ctrl.$$promotion.discount.finalAmount|chCurrency}}</span></span>
+								<span ng-switch-when="STANDARD" class="label label-xs bg-info">
+									<ch-truncate text="{{$ctrl.$$promotion.name[$ctrl.localeIso]}}" max-length="20" suffix="..."></ch-truncate>&nbsp;
+					      			<span ng-bind-html="'-' + ($ctrl.$$promotion.discount|chAmount)"></span>
+								</span>
+					      		<span ng-switch-when="MINIMUM_STAY" class="label label-xs bg-primary-light">
+					      			<span translate="promotions.promotion.label.minstay.nights" translate-value-count="{{$ctrl.$$promotion.minStay}}"></span>&nbsp;
+					      			<span ng-bind-html="'-' + ($ctrl.$$promotion.discount|chAmount)"></span>
+					      		</span>
+					      		<span ng-switch-when="BOOK_TODAY" class="label label-xs bg-primary">
+					      			<span translate="promotions.promotion.label.only.today"></span>!&nbsp;
+					      			<span ng-bind-html="'-' + ($ctrl.$$promotion.discount|chAmount)"></span>
+					      		</span>
+					      		<span ng-switch-when="EARLY_BOOKING" class="label label-xs bg-success">
+					      			<span translate="promotions.early"></span>&nbsp;
+					      			<span ng-bind-html="'-' + ($ctrl.$$promotion.discount|chAmount)"></span>
+					      		</span>
+					      		<span ng-switch-when="LAST_MINUTE" class="label label-xs bg-blue-sea">
+					      			<span translate="promotions.last.minute"></span>&nbsp;
+					      			<span ng-bind-html="'-' + ($ctrl.$$promotion.discount|chAmount)"></span>
+					      		</span>
+					      		<span ng-switch-when="LAST_SECOND" class="label label-xs bg-warn">
+					      			<span translate="promotions.last.second"></span>&nbsp;
+					      			<span ng-bind-html="'-' + ($ctrl.$$promotion.discount|chAmount)"></span>
+					      		</span>
 							</div>
 							
 							<div layout="column" layout-align="center end" ng-class="{'md-padding': !$ctrl.$mdMedia('gt-sm')}">						
@@ -70,12 +87,12 @@
 							</div>
 							
 							<div class="text-center layout-column flex-50">
-								<div ng-switch="$ctrl.room.totalRate.type">
-		     						<span ng-switch-when="STANDARD">
-		     							<span ng-if="$ctrl.room.totalRate.cancellationPolicy.flexible" class="label bg-warn" translate="reservation.rate.flexible"></span>
-		     							<span ng-if="!$ctrl.room.totalRate.cancellationPolicy.flexible" class="label bg-success" translate="reservation.cancellation.free"></span>
-		     						</span>
-		     						<span ng-switch-when="NOT_REFUNDABLE" class="label" translate="ratesheet.rate.type.notRefundable.abbr"></span>
+								<div ng-switch="$ctrl.room.totalRate.$$type">
+									<small><em>
+						        		<span ng-switch-when="FREE" translate="reservation.cancellation.free"></span>
+										<span ng-switch-when="NOT_REFUNDABLE" translate="policies.policy.cancellation.not.refundable"></span>
+										<span ng-switch-when="PARTIALLY_REFUNDABLE" translate="policies.policy.cancellation.partially.refundable"></span>
+									</em></small>
 		     					</div>
 							</div>
 						</div>

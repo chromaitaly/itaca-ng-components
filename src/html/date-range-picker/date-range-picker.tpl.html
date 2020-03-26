@@ -54,9 +54,9 @@
            		</md-tooltip>
 			</md-button>
 			<div ng-if="$ctrl.showDiff  && $ctrl.data.diff > 0 && $ctrl.$$startDate && $ctrl.$$endDate" class="text-gray-light text-small no-padding no-margin text-lowercase"> 
-           		&nbsp;(<span>{{$ctrl.data.diff}}&nbsp;</span>
-           		<span ng-show="$ctrl.data.diff == 1"><span ng-if="!$ctrl.diffLabelSingular" translate="date.day"></span><span ng-if="$ctrl.diffLabelSingular">{{$ctrl.diffLabelSingular}}</span>)</span> 
-           		<span ng-show="$ctrl.data.diff > 1"><span ng-if="!$ctrl.diffLabelPlural" translate="date.days"></span><span ng-if="$ctrl.diffLabelPlural">{{$ctrl.diffLabelPlural}}</span>)</span> 
+           		&nbsp;(<span ng-bind="$ctrl.data.diff">&nbsp;</span>
+           		<span ng-show="$ctrl.data.diff == 1"><span ng-if="!$ctrl.diffLabelSingular" translate="date.day"></span><span ng-if="$ctrl.diffLabelSingular" ng-bind="$ctrl.diffLabelSingular"></span>)</span> 
+	       		<span ng-show="$ctrl.data.diff > 1"><span ng-if="!$ctrl.diffLabelPlural" translate="date.days"></span><span ng-if="$ctrl.diffLabelPlural" ng-bind="$ctrl.diffLabelPlural"></span>)</span> 
            	</div>
 		</div>
 	</div>

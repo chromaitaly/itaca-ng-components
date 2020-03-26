@@ -1,53 +1,77 @@
 (function() {
-    "use strict";
+    'use strict';
     
     angular.module("itaca.components").component("chRoomTitle", {
     	require: {
-    		chRoomCtrl: "^chRoom",
+    		chRoomCtrl: '^chRoom'
 		},
-    	bindings: {},
 		controller: RoomTitleCtrl,
 		template: 
-			"<div class=\"img-title-bar layout-column layout-padding no-padding\">"+
-				"<div class=\"layout-row layout-align-start-center\">"+
-					"<div class=\"flex layout-column clickable\" ng-click=\"$ctrl.toggleRates()\" aria-label=\"show rate\">"+
-						"<div class=\"md-title\">"+
-							"<span translate=\"{{$ctrl.chRoomCtrl.room.roomType.nameKey}}\"></span>"+
-						"</div>"+
-						"<div>"+
-							"<small class=\"text-uppercase\" translate=\"room.category.{{$ctrl.chRoomCtrl.room.category}}\"></small>"+
-						"</div>"+
-					"</div>"+
-				 	"<div class=\"layout-column no-padding\">"+
-				 		"<div class=\"layout-row layout-wrap layout-align-end-center\">"+
-					 		"<ch-people-icons " +
-						 		"people=\"$ctrl.chRoomCtrl.room.people\" " +
-						 		"max=\"$ctrl.chRoomCtrl.room.guestsCount.standard\" " +
-						 		"extra-people=\"$ctrl.chRoomCtrl.room.extraPeople\" " +
-						 		"extra-max=\"$ctrl.chRoomCtrl.room.guestsCount.extra\">"+
-					 		"</ch-people-icons>"+
-				 		"</div>"+
-					"</div>"+
-				"</div>"+
-			"</div>",
+			'<div layout="column" layout-padding class="no-padding-y-sides clickable bg-opaque-7" ng-click="$ctrl.$showInfo($event)" aria-label="Room info">' +
+				'<div layout layout-wrap layout-align="center center" layout-align-gt-sm="start center" layout-padding-sm ng-class="{\'no-padding\': $ctrl.$mdMedia(\'gt-sm\'), \'text-center\': !$ctrl.$mdMedia(\'gt-sm\')}">' +
+					'<div layout="column" flex class="row-1">' +
+						'<div class="md-headline">' +
+							'<strong translate="{{$ctrl.$$room.roomType.nameKey}}"></strong>&nbsp;' +
+							'<md-icon class="material-icons md-14 mdi mdi-information-outline no-margin text-white"></md-icon>' +
+						'</div>' +
+						'<div><span translate="room.category.{{$ctrl.$$room.category}}"></span></div>' +
+					'</div>' +
+				'</div>' +
+			'</div>',
     });
     
     /* @ngInject */
-    function RoomTitleCtrl($scope, Navigator){
+    function RoomTitleCtrl($scope, $mdMedia, $window, $location, $mdDialog){
     	var ctrl = this;
     	
-    	this.toggleRates = function(){
-    		ctrl.chRoomCtrl.showRoomRates = !ctrl.chRoomCtrl.showRoomRates;
-    		ctrl.chRoomCtrl.showRoomInfo = false;
-    		if(!ctrl.chRoomCtrl.showRoomRates){
-    			Navigator.scrollToAnchor("av-"+ctrl.chRoomCtrl.$$index);
-    		}else{
-    			Navigator.scrollToAnchor("av-"+ctrl.chRoomCtrl.$$index+"-rates");
-    		}
+    	this.$mdMedia = $mdMedia;
+    	
+    	this.$onInit = function() {
+    		ctrl.$initRoom();
     	};
     	
-    	this.$onInit = function(){
+    	this.$initRoom = function() {
+    		ctrl.$$room = ctrl.chRoomCtrl.room;
     	};
-    }
+    	
+    	this.$showInfo = function(ev){
+    		var opts = {
+				templateUrl: '/tpls/room/room-info-dialog.tpl', 
+				controller: RoomInfoDialogCtrl, 
+				controllerAs: '$ctrl',
+				locals: {
+					room: ctrl.$$room, 
+					localeIso: ctrl.chRoomCtrl.localeIso
+				}, 
+				bindToController: true,
+				targetEvent: ev,
+				fullscreen: !$mdMedia('gt-sm'),
+				clickOutsideToClose: true,
+				escapeToClose: true,
+				onComplete: function(){
+//					location.hash = 'room-info-' + ctrl.chRoomCtrl.$$index + '-' + Date.now();
+//					history.pushState(null, null, location.href + '#room-info-' + ctrl.chRoomCtrl.$$index);
+				}
+			};
+    		
+			
+			$mdDialog.show(opts).finally(function(){
+//				history.replaceState(null, null, location.href.split('#')[0]);
+//				$location.hash(null);
+			});
+    	};
+    }    
     
+    /* @ngInject */
+	function RoomInfoDialogCtrl($scope, $mdDialog){
+		var ctrl = this; 
+		
+		this.$close = function() {
+			$mdDialog.hide();
+		};
+		
+		this.$cancel = function() {
+			$mdDialog.cancel();
+		};
+	}
 })();

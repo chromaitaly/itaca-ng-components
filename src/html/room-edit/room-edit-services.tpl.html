@@ -19,7 +19,7 @@
 					
 					<div class="flex layout-column flex-order-xs-1 flex-order-sm-1" ng-if="!service.$$serviceSold">
 						<strong ng-click="$ctrl.$showServiceInfo($event, service)" aria-label="Show service info" class="clickable">
-							<span ng-if="service.maxCount > 1">{{service.maxCount}}&nbsp;x&nbsp;</span>
+							<span ng-if="service.maxCount > 1"><span ng-bind="service.maxCount"></span>&nbsp;x&nbsp;</span>
 							<span translate="{{service.type.nameKey}}"></span>&nbsp;
 							<md-icon class="mdi mdi-information-outline md-14"></md-icon>
 						</strong>
@@ -29,7 +29,7 @@
 								<span translate="common.free"></span>
 							</span>
 							<span ng-switch-when="SINGLE">
-								<span>{{service.paymentOptions[0].amount.finalAmount|chCurrency}}</span>&nbsp;
+								<span ng-bind="service.paymentOptions[0].amount.finalAmount|chCurrency"></span>&nbsp;
 								<span ng-if="service.frequency == 'DAILY'" class="text-lowercase"><span translate="date.frequency.daily"></span></span>
 	   							<span ng-if="service.frequency == 'MONTHLY'" class="text-lowercase"><span translate="date.frequency.monthly"></span></span>
 	   							<span ng-if="service.frequency == 'YEARLY'" class="text-lowercase"><span translate="date.frequency.yearly"></span></span>
@@ -37,7 +37,7 @@
 							</span>
 							<span ng-switch-when="PER_PERSON">
 								<span translate="reservation.starting.from"></span>&nbsp;
-								<span>{{service.$$bestPrice|chCurrency}}</span>&nbsp;
+								<span ng-bind="service.$$bestPrice|chCurrency"></span>&nbsp;
 								<span ng-if="service.frequency == 'DAILY'" class="text-lowercase"><span translate="date.frequency.daily"></span></span>
    								<span ng-if="service.frequency == 'MONTHLY'" class="text-lowercase"><span translate="date.frequency.monthly"></span></span>
    								<span ng-if="service.frequency == 'YEARLY'" class="text-lowercase"><span translate="date.frequency.yearly"></span></span>
@@ -48,7 +48,7 @@
 					
 					<div class="flex layout-column flex-order-xs-1 flex-order-sm-1" ng-if="service.$$serviceSold">
 						<strong ng-click="$ctrl.$showServiceInfo($event, service)" aria-label="Show service info" class="clickable">
-							<span ng-if="service.$$serviceSold.count > 1">{{service.$$serviceSold.count}}&nbsp;x&nbsp;</span>
+							<span ng-if="service.$$serviceSold.count > 1"><span ng-bind="service.$$serviceSold.count"></span>&nbsp;x&nbsp;</span>
 							<span translate="{{service.type.nameKey}}"></span>
 							<md-icon class="mdi mdi-information-outline md-14"></md-icon>
 						</strong>
@@ -62,7 +62,7 @@
 						</div>					
 						
 						<div ng-if="!service.$$serviceSold.$$removed && service.$$serviceSold.amount" class="md-subhead">
-				        	<span ng-if="service.$$serviceSold.amount.finalAmount > 0">{{service.$$serviceSold.amount.finalAmount|chCurrency}}</span>
+				        	<span ng-if="service.$$serviceSold.amount.finalAmount > 0" ng-bind="service.$$serviceSold.amount.finalAmount|chCurrency"></span>
 				        	<span ng-if="service.$$serviceSold.amount.finalAmount == 0" class="text-success"><span translate="common.free"></span></span>
 					    </div>
 					</div>
@@ -124,19 +124,20 @@
 			<md-button class="button-mini text-small" ng-click="$ctrl.$toggleAllServices()" aria-label="Show other services">
 				<span ng-if="!$ctrl.$$showAllServices">
 					<span ng-if="($ctrl.totalServices.length - $ctrl.previewSize) <= 1">
-						<span translate="common.show.other"></span>
-						<span>{{($ctrl.totalServices.length - $ctrl.previewSize)}}</span>
+						<span translate="common.show.other"></span>&nbsp;
+						<span ng-bind="($ctrl.totalServices.length - $ctrl.previewSize)"></span>&nbsp;
 						<span translate="service.services"></span>
 					</span>
 					<span ng-if="($ctrl.totalServices.length - $ctrl.previewSize) > 1">
-						<span translate="common.show.others"></span>
-						<span>{{($ctrl.totalServices.length - $ctrl.previewSize)}}</span>
+						<span translate="common.show.others"></span>&nbsp;
+						<span ng-bind="($ctrl.totalServices.length - $ctrl.previewSize)"></span>&nbsp;
 						<span translate="service.services"></span>
 					</span>
 				</span>
 				<span ng-if="$ctrl.$$showAllServices">
 					<span translate="reservation.services.hide"></span>
 				</span>
+				&nbsp;
 				<md-icon class="mdi md-18" ng-class="$ctrl.$$showAllServices ? 'mdi-chevron-up' : 'mdi-chevron-down'"></md-icon>
 			</md-button>
 		</div>

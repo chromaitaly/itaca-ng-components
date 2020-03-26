@@ -1,100 +1,121 @@
-<div ng-switch="$ctrl.rate.type">
-	<div class="no-padding" layout-xs="column" layout-sm="column" layout-gt-sm="row" flex>
-		<div flex layout layout-wrap layout-align="center center" ng-class="{'no-padding-bottom': !$ctrl.$mdMedia('gt-sm')}">
+<div>
+	<div class="no-padding" layout-padding layout-xs="column" layout-sm="column" layout-gt-sm="row" flex>
+		<div flex layout layout-wrap layout-align="center center" class="no-padding-y-sides">
 			
-			<div class="no-padding-y-sides" flex layout layout-xs="column" ng-class="::{'layout-padding': $ctrl.$mdMedia('gt-xs')}">
+			<div class="no-padding" flex layout layout-xs="column" layout-padding-sm>
 
 				<div layout="column" flex layout-align="center" class="row-mini">
-					<div layout layout-align="center center" layout-align-gt-sm="start end" class="md-subhead clickable"  ng-click="$ctrl.$showPolicy($event)" aria-label="Rate info policy">
-						<span ng-switch-when="STANDARD" layout>
-    							<span ng-if="$ctrl.rate.cancellationPolicy.flexible" class="row-mini" translate="reservation.rate.flexible"></span>
-    							<span ng-if="!$ctrl.rate.cancellationPolicy.flexible" class="row-mini" translate="reservation.cancellation.free"></span>
-    						</span>
-						<span ng-switch-when="NOT_REFUNDABLE" class="row-mini" translate="ratesheet.rate.type.notRefundable.abbr"></span>
-						&nbsp;<md-icon class="mdi mdi-information-outline md-18 material-icons no-margin"></md-icon>
-						<md-tooltip><span translate="reservation.policies.room"></span></md-tooltip>
-					</div>
-					<div layout layout-align="center center" layout-align-gt-sm="start end" class="text-gray-light clickable" ng-click="$ctrl.$showPolicy($event)" aria-label="Rate info policy">
-						<small ng-switch-when="STANDARD" layout>
-    							<span ng-if="$ctrl.rate.cancellationPolicy.flexible">
-    								<span translate="reservation.rate.flexible.info.label"></span>
-    							</span>
-    							<span ng-if="!$ctrl.rate.cancellationPolicy.flexible">
-    								<span translate="reservation.rate.free.info.label"></span>
-    							</span>
-    						</small>
-						<small ng-switch-when="NOT_REFUNDABLE">
-							<span translate="reservation.rate.not.refundable.info.label"></span>
-						</small>
-					</div>
+				
+					<div class="clickable row-mini" ng-click="$ctrl.$showPolicy($event)" aria-label="Rate info policy" ng-switch="$ctrl.rate.$$type">
+						<div class="text-no-wrap text-bold">
+							<span ng-switch-when="FREE" translate="reservation.cancellation.free"></span>
+							<span ng-switch-when="NOT_REFUNDABLE" translate="policies.policy.cancellation.not.refundable"></span>
+							<span ng-switch-when="PARTIALLY_REFUNDABLE" translate="policies.policy.cancellation.partially.refundable"></span>
+							
+							&nbsp;<md-icon class="mdi mdi-information-outline md-14 material-icons no-margin"></md-icon>
+							<md-tooltip><span translate="reservation.policies"></span></md-tooltip>
+						</div>
 					
-					<div layout layout-wrap layout-align="center center" layout-align-gt-sm="start center" layout-padding class="no-padding">
-						<div ng-if="$ctrl.$$promotion" ng-switch="$ctrl.$$promotion.promotionType" layout-gt-sm="row" layout-wrap class="no-padding-left no-padding-bottom" ng-class="{'text-center': !$ctrl.$mdMedia('gt-sm')}">
-							<span ng-switch-when="STANDARD" class="label flex-xs flex-sm label-inline-block text-wrap bg-info"><ch-truncate text="{{$ctrl.$$promotion.name[$ctrl.chRoomCtrl.localeIso]}}" max-length="20" suffix="..."></ch-truncate>&nbsp;<span ng-if="$ctrl.$$promotion.discount.type=='PERCENTAGE'">-{{$ctrl.$$promotion.discount.finalAmount}}%</span><span ng-if="$ctrl.$$promotion.discount.type=='PRICE'">-{{$ctrl.$$promotion.discount.finalAmount|chCurrency}}</span></span>
-				      		<span ng-switch-when="MINIMUM_STAY" class="label flex-xs flex-sm label-inline-block text-wrap bg-primary-light"><span translate="promotions.promotion.label.minstay.nights" translate-value-count="{{$ctrl.$$promotion.minStay}}"></span>&nbsp;<span ng-if="$ctrl.$$promotion.discount.type=='PERCENTAGE'">-{{$ctrl.$$promotion.discount.finalAmount}}%</span><span ng-if="$ctrl.$$promotion.discount.type=='PRICE'">-{{$ctrl.$$promotion.discount.finalAmount|chCurrency}}</span></span>
-				      		<span ng-switch-when="BOOK_TODAY" class="label flex-xs flex-sm label-inline-block text-wrap bg-primary"><span translate="promotions.promotion.label.only.today"></span>!&nbsp;<span ng-if="$ctrl.$$promotion.discount.type=='PERCENTAGE'">-{{$ctrl.$$promotion.discount.finalAmount}}%</span><span ng-if="$ctrl.$$promotion.discount.type=='PRICE'">-{{$ctrl.$$promotion.discount.finalAmount|chCurrency}}</span></span>
-				      		<span ng-switch-when="EARLY_BOOKING" class="label flex-xs flex-sm label-inline-block text-wrap bg-success"><span translate="promotions.early"></span>&nbsp;<span ng-if="$ctrl.$$promotion.discount.type=='PERCENTAGE'">-{{$ctrl.$$promotion.discount.finalAmount}}%</span><span ng-if="$ctrl.$$promotion.discount.type=='PRICE'">-{{$ctrl.$$promotion.discount.finalAmount|chCurrency}}</span></span>
-				      		<span ng-switch-when="LAST_MINUTE" class="label flex-xs flex-sm label-inline-block text-wrap bg-blue-sea"><span translate="promotions.last.minute"></span>&nbsp;<span ng-if="$ctrl.$$promotion.discount.type=='PERCENTAGE'">-{{$ctrl.$$promotion.discount.finalAmount}}%</span><span ng-if="$ctrl.$$promotion.discount.type=='PRICE'">-{{$ctrl.$$promotion.discount.finalAmount|chCurrency}}</span></span>
-				      		<span ng-switch-when="LAST_SECOND" class="label flex-xs flex-sm label-inline-block text-wrap bg-warn"><span translate="promotions.last.second"></span>&nbsp;<span ng-if="$ctrl.$$promotion.discount.type=='PERCENTAGE'">-{{$ctrl.$$promotion.discount.finalAmount}}%</span><span ng-if="$ctrl.$$promotion.discount.type=='PRICE'">-{{$ctrl.$$promotion.discount.finalAmount|chCurrency}}</span></span>
-						</div>
-						
-						<div ng-if="$ctrl.rate.type == 'STANDARD' && ($ctrl.$$promotion.onArrival || !$ctrl.rate.cancellationPolicy.flexible)" class="no-padding-left no-padding-bottom">
-							<small class="label bg-success">
-								<strong translate="reservation.no.advance.payment"></strong>
+						<div class="text-gray-light row-1">
+							<small>
+								<span ng-switch-when="FREE" translate="reservation.rate.free.info.label"></span>
+								<span ng-switch-when="NOT_REFUNDABLE" translate="reservation.rate.not.refundable.info.label"></span>
+								<span ng-switch-when="PARTIALLY_REFUNDABLE" translate="reservation.rate.partially.refundable.info.label"></span>
 							</small>
 						</div>
 						
-						<div class="no-padding-left no-padding-bottom" ng-if="$ctrl.isBestRate">
-							<small class="label bg-primary-lighter">
-					      		<strong translate="reservation.bestHotelRate.description"></strong>
-							</small>
-						</div>
-						<div class="no-padding-left no-padding-bottom" ng-if="!$ctrl.isBestRate && !$ctrl.$$promotion && $ctrl.rate.type == 'STANDARD' && !$ctrl.rate.cancellationPolicy.flexible">
-							<small class="label bg-primary-lighter">
-								<strong translate="reservation.rate.free.text.description.short"></strong>
-							</small>
-						</div>
-						<div class="no-padding-left no-padding-bottom" ng-if="!$ctrl.isBestRate && !$ctrl.$$promotion && $ctrl.rate.type == 'NOT_REFUNDABLE' && $ctrl.rate.savingAmount.finalAmount">
-							<small  class="label bg-blue-sea">
-								<strong translate="reservation.rate.not.refundable.text.description.short" translate-value-price="{{$ctrl.rate.savingAmount.finalAmount|chCurrency}}"></strong>
-							</small>
+						<div layout layout-wrap layout-align="center center" layout-align-gt-sm="start center" layout-padding-sm>
+							<div class="no-padding-x-sides" ng-if="$ctrl.rate.$$type == 'FREE' && ($ctrl.$$promotion.onArrival || !$ctrl.rate.cancellationPolicy.flexible)">
+								<small class="label label-sm bg-success">
+									<strong translate="reservation.no.advance.payment"></strong>
+								</small>
+							</div>
+							<div class="no-padding-x-sides" ng-if="$ctrl.isBestRate">
+								<small class="label label-sm bg-primary-lighter">
+						      		<strong translate="reservation.bestHotelRate.description"></strong>
+								</small>
+							</div>
+							<div class="no-padding-x-sides" ng-if="!$ctrl.isBestRate && !$ctrl.$$promotion && $ctrl.rate.$$type == 'FREE'">
+								<small class="label label-sm bg-primary-lighter">
+									<strong translate="reservation.rate.free.text.description.short"></strong>
+								</small>
+							</div>
+							<div class="no-padding-x-sides" ng-if="!$ctrl.isBestRate && $ctrl.rate.savingAmount.finalAmount">
+								<small class="label label-sm bg-blue-sea">
+									<strong translate="reservation.rate.not.refundable.text.description.short" translate-value-price="{{$ctrl.rate.savingAmount.finalAmount|chCurrency}}"></strong>
+								</small>
+							</div>
 						</div>
 					</div>
 				</div>
 				
 				<div layout="column" layout-align-gt-sm="center center" ng-class="{'no-padding-y-sides': !$ctrl.$mdMedia('gt-sm')}">
-					<div layout-align="start center" layout="column" layout-padding class="row-mini no-padding">
-						<div layout layout-padding class="no-padding md-button md-square-button row-mini clickable"  ng-click="$ctrl.$showInfo($event)" aria-label="Rate info">
-							<div layout-align="start center" layout="column" flex class="no-padding-top">
-								<small class="no-padding" ng-if="$ctrl.rate.amount.initialAmount > 0 && $ctrl.rate.amount.initialAmount > $ctrl.rate.amount.finalAmount">
-					        		<span class="text-initial" translate="common.from"></span>&nbsp;
-					        		<i><del ng-bind="$ctrl.rate.amount.initialAmount|chCurrency"></del></i>
-					        	</small>
-								<span class="no-padding md-title"><strong ng-bind="$ctrl.rate.amount.finalAmount|chCurrency"></strong></span>
-								<small ng-if="$ctrl.$$extraCost" class="text-lowercase">+&nbsp;{{$ctrl.$$extraCost|chCurrency}}&nbsp;<span translate="common.service.included.paid"></span></small>
-							</div>
-							<div layout-align="start center" layout="column" class="no-padding-top no-padding-left">
-								<md-icon class="mdi mdi-information-outline md-18 material-icons"></md-icon>
+					<div ng-if="$ctrl.$$promotion" layout layout-wrap layout-align="center center" layout-align-gt-sm="start center">
+						<div ng-switch="$ctrl.$$promotion.promotionType">
+							<span ng-switch-when="STANDARD" class="label label-xs bg-info">
+								<ch-truncate text="{{$ctrl.$$promotion.name[$ctrl.localeIso]}}" max-length="20" suffix="..."></ch-truncate>&nbsp;
+				      			<span ng-bind-html="'-' + ($ctrl.$$promotion.discount|chAmount)"></span>
+							</span>
+				      		<span ng-switch-when="MINIMUM_STAY" class="label label-xs bg-primary-light">
+				      			<span translate="promotions.promotion.label.minstay.nights" translate-value-count="{{$ctrl.$$promotion.minStay}}"></span>&nbsp;
+				      			<span ng-bind-html="'-' + ($ctrl.$$promotion.discount|chAmount)"></span>
+				      		</span>
+				      		<span ng-switch-when="BOOK_TODAY" class="label label-xs bg-primary">
+				      			<span translate="promotions.promotion.label.only.today"></span>!&nbsp;
+				      			<span ng-bind-html="'-' + ($ctrl.$$promotion.discount|chAmount)"></span>
+				      		</span>
+				      		<span ng-switch-when="EARLY_BOOKING" class="label label-xs bg-success">
+				      			<span translate="promotions.early"></span>&nbsp;
+				      			<span ng-bind-html="'-' + ($ctrl.$$promotion.discount|chAmount)"></span>
+				      		</span>
+				      		<span ng-switch-when="LAST_MINUTE" class="label label-xs bg-blue-sea">
+				      			<span translate="promotions.last.minute"></span>&nbsp;
+				      			<span ng-bind-html="'-' + ($ctrl.$$promotion.discount|chAmount)"></span>
+				      		</span>
+				      		<span ng-switch-when="LAST_SECOND" class="label label-xs bg-warn">
+				      			<span translate="promotions.last.second"></span>&nbsp;
+				      			<span ng-bind-html="'-' + ($ctrl.$$promotion.discount|chAmount)"></span>
+				      		</span>
+						</div>
+					</div>
+					
+					<div layout-align="start center" layout="column" class="row-mini">
+						<md-button class="md-square-button row-mini clickable" ng-click="$ctrl.$showInfo($event)" aria-label="Rate info">
+							<div layout layout-padding-sm>
+								<div layout-align="start center" layout="column" flex class="no-padding-top">
+									<small class="no-padding" ng-if="$ctrl.rate.amount.initialAmount > 0 && $ctrl.rate.amount.initialAmount > $ctrl.rate.amount.finalAmount">
+						        		<span class="text-initial" translate="common.from"></span>&nbsp;
+						        		<i><del ng-bind="$ctrl.rate.amount.initialAmount|chCurrency"></del></i>
+						        	</small>
+									<span class="no-padding md-title"><strong ng-bind="$ctrl.rate.amount.finalAmount|chCurrency"></strong></span>
+									<small ng-if="$ctrl.$$extraCost" class="text-lowercase">+&nbsp;<span ng-bind="$ctrl.$$extraCost|chCurrency"></span>&nbsp;<span translate="common.service.included.paid"></span></small>
+								</div>
+								<div layout-align="start center" layout="column" class="no-padding-top no-padding-left">
+									<md-icon class="mdi mdi-information-outline md-14 material-icons"></md-icon>
+								</div>
 							</div>
 							<md-tooltip><span translate="common.payment.info"></span></md-tooltip>
-						</div>
+						</md-button>
 					</div>
 				</div>
 																
 			</div>
 		</div>
 
-		<div layout layout-align="end center" layout-padding class="no-padding"  ng-class="{'no-padding-top': !$ctrl.$mdMedia('gt-sm')}">	
+		<div layout layout-align="end center" class="no-padding-y-sides">	
 			<div ng-if="!$ctrl.rate.count || $ctrl.rate.count <= 0" layout="column" flex ng-class="{'no-padding-top': !$ctrl.$mdMedia('gt-sm')}">																							
-				<md-button class="md-square-button" ng-class="$ctrl.$$totalCounter.actual <= 0 || $ctrl.$$counter.actual <= 0? 'text-gray-medium' : 'bg-success-light'" aria-label="Add room" ng-disabled="$ctrl.$$totalCounter.actual <= 0 || $ctrl.$$counter.actual <= 0" ng-click="$ctrl.$selectRate()">
+				<md-button class="md-square-button" ng-class="$ctrl.$$totalCounter.actual <= 0 || $ctrl.$$counter.actual <= 0? 'text-gray-medium' : 'bg-success-light'" 
+					ng-disabled="$ctrl.$$totalCounter.actual <= 0 || $ctrl.$$counter.actual <= 0" ng-click="$ctrl.$selectRate()" aria-label="Add room">
           			<span translate="common.book"></span>
           		</md-button>
 			</div>
-		  	<div ng-if="$ctrl.rate.count && $ctrl.rate.count > 0" flex>
+			
+		  	<div ng-if="$ctrl.rate.count > 0" flex>
 		  		<div layout layout-align="center center" layout-align-gt-sm="end center">
 		  			<small class="text-bold text-gray-light" ng-if="$ctrl.$$totalCounter.actual > 0 && $ctrl.$$counter.actual > 0" translate="room.add.other.one"></small>
 		  			<small class="text-bold text-success text-center" ng-if="$ctrl.$$totalCounter.actual <= 0 || $ctrl.$$counter.actual <= 0" translate="room.last.rate.selected"></small>
 		  		</div>
+		  		
 		  		<div layout layout-align="center center" layout-align-gt-sm="end center">
 		  			<ch-counter ng-model="$ctrl.rate.count" 
 		  				min="0" 

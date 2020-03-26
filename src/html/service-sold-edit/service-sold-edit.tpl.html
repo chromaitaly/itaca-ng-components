@@ -28,9 +28,9 @@
 			   </div>
 			</div>
 		  	
-		  	<div ng-if="$ctrl.serviceSold.service.description[$ctrl.Lang.current.iso]">
+		  	<div ng-if="$ctrl.serviceSold.service.description[$ctrl.Locale.current().iso]">
 		  		<p class="text-gray-light no-margin-bottom">
-		  			<span>{{$ctrl.serviceSold.service.description[$ctrl.Lang.current.iso]}}</span>
+		  			<span ng-bind-html="$ctrl.serviceSold.service.description[$ctrl.Locale.current().iso]"></span>
 		  		</p>
 		  	</div>
 		  		

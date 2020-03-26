@@ -18,12 +18,12 @@
     });
     
     /* @ngInject */
-    function RoomEditServicesCtrl($scope, $translate, $mdMedia, Lang, IconUtils, Dialog, ReservationUtils, DateUtils, NumberUtils){
+    function RoomEditServicesCtrl($scope, $translate, $mdMedia, Locale, IconUtils, Dialog, ReservationUtils, DateUtils, NumberUtils){
     	var ctrl = this;
     	
     	this.$mdMedia = $mdMedia;
     	this.$$servicesIcons = IconUtils.serviceIcons();
-    	this.Lang = Lang;
+    	this.Locale = Locale;
     	
     	this.$onInit = function(){
     		if (_.isEmpty(ctrl.totalServices)) {
@@ -207,8 +207,10 @@
 			$translate([title, desc]).then(function(messages) {
 				var description = messages[desc];
 				
-				if (ctrl.Lang.current && s.description && s.description[ctrl.Lang.current.iso]) {
-					description =  s.description[ctrl.Lang.current.iso];
+				var currentLang = ctrl.Locale.current();
+				
+				if (currentLang && s.description && s.description[currentLang.iso]) {
+					description =  s.description[currentLang.iso];
 				}
 				
 				Dialog.showAlertHtml(ev, messages[title], description);

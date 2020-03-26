@@ -8,11 +8,10 @@
 			</span>
 		</div>
 		<div flex layout="column" ng-class="{'layout-align-center-center': $ctrl.$mdMedia('xs')}">
-			<div>
+			<div class="row-1">
 				<span ng-repeat="room in $ctrl.roomTypeRatesheet.rooms track by room.id" ng-class="{'text-striked text-warn': !room.enabled}">
 					<span class="text-small">
-						<span ng-bind="room.name"></span>
-						<span ng-if="!$last">,&nbsp;</span>
+						<span ng-bind="room.name"></span><span ng-if="!$last">,&nbsp;</span>
 					</span>
 					<md-tooltip ng-if="!room.enabled">
 						<span translate-once="common.disabled.female"></span>

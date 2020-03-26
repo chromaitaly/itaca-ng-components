@@ -147,8 +147,8 @@
 			 
 			 var locals = {
 				showDiff: _.isBoolean(ctrl.showDiffInCalendar) ? ctrl.showDiffInCalendar : true,
-				diffLabelSingular: ctrl.$$diffLabelSingular,
-				diffLabelPlural: ctrl.$$diffLabelPlural,
+				diffLabelSingular: ctrl.diffLabelSingular,
+				diffLabelPlural: ctrl.diffLabelPlural,
 				useUtc: _.isBoolean(ctrl.useUtc) ? ctrl.useUtc : false,
 				startTitle: ctrl.startHintLabel,
 				endTitle: ctrl.endHintLabel,
