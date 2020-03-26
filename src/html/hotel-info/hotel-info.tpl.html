@@ -216,24 +216,17 @@
 			</div>
 			
 			<div ng-if="$ctrl.hotel.addressInfo.geo">
-				<ng-map zoom="15" center="{{$ctrl.hotel.addressInfo.geo.coordinates[1]}},{{$ctrl.hotel.addressInfo.geo.coordinates[0]}}" disable-default-ui="true" scrollwheel="false">
-			    	<marker position="{{$ctrl.hotel.addressInfo.geo.coordinates[1]}},{{$ctrl.hotel.addressInfo.geo.coordinates[0]}}" icon="{{$ctrl.mapMarker}}"></marker>
-				</ng-map>
-			</div>
-			<div ng-if="$ctrl.hotel.addressInfo.lat && $ctrl.hotel.addressInfo.lng">
-				<ng-map zoom="15" center="{{$ctrl.hotel.addressInfo.lat}},{{$ctrl.hotel.addressInfo.lng}}" disable-default-ui="true" scrollwheel="false">
-			    	<marker position="{{$ctrl.hotel.addressInfo.lat}},{{$ctrl.hotel.addressInfo.lng}}" icon="{{$ctrl.mapMarker}}"></marker>
-				</ng-map>
+				<ch-static-map position="[$ctrl.hotel.addressInfo.geo.coordinates[1],$ctrl.hotel.addressInfo.geo.coordinates[0]]" params="{zoom: 14}" map-class="map-static map-big border-radius-6"></ch-static-map>
 			</div>
 			
-			<div class="layout-padding bg-info md-margin no-margin-x-sides border-radius-6 wow slideInUp" ng-if="!$ctrl.isDisabled">
+			<div class="layout-padding bg-info-light md-margin no-margin-x-sides border-radius-6 wow slideInUp" ng-if="!$ctrl.isDisabled">
 				<span class="no-padding" translate="join.quote.hotel.address.label"></span>
 			</div>
 		</div>
 		<div class="layout-column flex-100" ng-if="!$ctrl.isDisabled && (!$ctrl.hotel.addressInfo.lat || !$ctrl.hotel.addressInfo.lng)">
 		
-			<div ng-if="$ctrl.showInfo" class="md-padding bg-info layout-align-start-center layout-row md-margin no-margin-x-sides border-radius-6 wow slideInUp">
-				<span class="flex-xs-100 flex-sm-100"><md-icon class="mdi mdi-map-marker-radius md-48 text-white"></md-icon></span>
+			<div ng-if="$ctrl.showInfo" class="md-padding bg-info-light layout-align-start-center layout-row md-margin no-margin-x-sides border-radius-6 wow slideInUp">
+				<span class="flex-xs-100 flex-sm-100"><md-icon class="mdi mdi-map-marker-radius md-48 text-info"></md-icon></span>
 				<span class="flex-xs-100 flex-sm-100" translate="join.quote.hotel.address.info"></span>
 			</div>
 		
