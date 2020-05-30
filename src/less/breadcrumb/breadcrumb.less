@@ -1,0 +1,36 @@
+ch-breadcrumb {
+	padding: 0 6px;
+}
+
+ch-breadcrumb-item .md-button,
+ch-breadcrumb-item .readonly-breadcrumb-item {
+    margin: 6px 0 !important;
+    padding: 0 6px !important;
+    border-radius: 6px !important;
+    height: 36px !important;
+    min-height: 36px !important;
+    min-width: auto !important;
+}
+
+ch-breadcrumb-item .readonly-breadcrumb-item {
+    vertical-align: middle;
+    -webkit-box-align: center;
+    display: inline-block;
+    position: relative;
+    -webkit-box-align: center;
+    -ms-flex-align: center;
+    align-items: center;
+    -ms-flex-line-pack: center;
+    align-content: center;
+    display: flex;
+}
+
+@media @query-xs {
+	ch-breadcrumb-item .md-button,
+	ch-breadcrumb-item .readonly-breadcrumb-item {
+		margin: 4px 0 !important;
+	   	line-height: 20px !important;
+	   	height: 24px !important;
+	   	min-height: 24px !important;
+	}
+}

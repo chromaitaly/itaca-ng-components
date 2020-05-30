@@ -63,7 +63,7 @@
     		} else {	    		
     	  	  	var fullAddress = ctrl.hotel.addressInfo.address +", "+ ctrl.hotel.addressInfo.city +", "+ ctrl.hotel.addressInfo.zipcode;
 
-    	  	  	geocoder.geocode({"address": fullAddress}, function(results, status) {
+    	  	  ctrl.chHotelMapCtrl.$$geocoder.geocode({"address": fullAddress}, function(results, status) {
     	  	  		if (status == google.maps.GeocoderStatus.OK) {
     	  	  		ctrl.$$position = results[0].geometry.location;
 

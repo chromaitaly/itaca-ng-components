@@ -42,7 +42,19 @@
 			ctrl.hideIconClass = _.isNil(ctrl.hideIconClass) || StringUtils.isBoolean(ctrl.hideIconClass) && StringUtils.toBoolean(ctrl.hideIconClass) ? "mdi mdi-eye-off md-24" : _.isNil(StringUtils.toBoolean(ctrl.hideIconClass)) ? ctrl.hideIconClass : StringUtils.toBoolean(ctrl.hideIconClass);
 			ctrl.mdNoAsterisk = _.isBoolean(ctrl.mdNoAsterisk) ? ctrl.mdNoAsterisk : false;
 			
+			cctrl.$calcLabelStyle();
 			ctrl.$initWatch();
+		};
+		
+		this.$onChanges = function(changesObj) {
+			if (changesObj.iconClass) {
+				ctrl.iconClass = _.isNil(ctrl.iconClass) || StringUtils.isBoolean(ctrl.iconClass) && StringUtils.toBoolean(ctrl.iconClass) ? "mdi mdi-key md-24" : _.isNil(StringUtils.toBoolean(ctrl.iconClass)) ? ctrl.iconClass : StringUtils.toBoolean(ctrl.iconClass);
+				ctrl.$calcLabelStyle();
+			}			
+		};
+		
+		this.$calcLabelStyle = function() {
+			ctrl.$$labelStyle = ctrl.iconClass ? null : {'left': 0};
 		};
 		
 		this.$initWatch =  function(){

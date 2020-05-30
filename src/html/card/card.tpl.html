@@ -25,7 +25,7 @@
 		<div class="layout-padding no-padding-right absolute position-right position-top" style="z-index: 2" ng-if="$ctrl.menuItems.length || $ctrl.disabledMenuItems.length">
 			<md-menu class="md-secondary" ng-if="$ctrl.menuItems && !$ctrl.ngDisabled">
    				<md-button aria-label="Open user interactions menu" class="md-icon-button {{$ctrl.menuClass}}" ng-click="$mdMenu.open($event)">
-     					<md-icon class="mdi mdi-dots-vertical text-white"></md-icon>
+   					<md-icon class="mdi mdi-dots-vertical text-white"></md-icon>
         		</md-button>
 		      	<md-menu-content width="4">
 		      		<div ng-repeat="item in $ctrl.menuItems" ng-if="!item.hide" layout="column">
@@ -40,8 +40,8 @@
 			</md-menu>
 			
 			<md-menu class="md-secondary" ng-if="$ctrl.disabledMenuItems && $ctrl.ngDisabled">
-     				<md-button aria-label="Open user interactions menu" class="md-icon-button {{$ctrl.menuClass}}" ng-click="$mdMenu.open($event)">
-     					<md-icon class="mdi mdi-dots-vertical text-white"></md-icon>
+   				<md-button aria-label="Open user interactions menu" class="md-icon-button {{$ctrl.menuClass}}" ng-click="$mdMenu.open($event)">
+   					<md-icon class="mdi mdi-dots-vertical text-white"></md-icon>
         		</md-button>
 		      	<md-menu-content width="4">
 		      		<div ng-repeat="item in $ctrl.disabledMenuItems" ng-if="!item.hide" layout="column">
@@ -60,7 +60,7 @@
 			<div ng-if="!$ctrl.imgUrl && !$ctrl.bgUrl && $ctrl.iconLabel && $ctrl.iconLabelPosition == 'top'" class="{{$ctrl.iconLabelClass}}" ng-bind-html="$ctrl.iconLabel"></div>
 			<div ng-if="!$ctrl.imgUrl && !$ctrl.bgUrl && $ctrl.iconSecondaryLabel && $ctrl.iconSecondaryLabelPosition == 'top'" class="{{$ctrl.iconSecondaryLabelClass}}" ng-bind-html="$ctrl.iconSecondaryLabel"></div>
 			
-			<div ng-if="!$ctrl.bgUrl" layout="column" layout-fill layout-align="center center" ng-class="{'no-padding': $ctrl.imgUrl}">
+			<div ng-if="!$ctrl.bgUrl" layout="column" layout-align="center center" ng-class="{'no-padding': $ctrl.imgUrl, 'layout-fill': $ctrl.imgUrl}">
 				<span ng-if="!$ctrl.imgUrl && $ctrl.iconLabel && $ctrl.iconLabelPosition == 'left'" class="{{$ctrl.iconLabelClass}}" ng-bind-html="$ctrl.iconLabel"></span>
 				<span ng-if="!$ctrl.imgUrl && $ctrl.iconSecondaryLabel && $ctrl.iconSecondaryLabelPosition == 'left'" class="{{$ctrl.iconSecondaryLabelClass}}" ng-bind-html="$ctrl.iconSecondaryLabel"></span>
 				

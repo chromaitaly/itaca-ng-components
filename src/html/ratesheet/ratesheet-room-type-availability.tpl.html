@@ -1,8 +1,8 @@
 <div flex layout="column">
-	<div ng-if="$ctrl.availability.hotelClosed" layout layout-align="center center" flex>
-		<md-button md-no-ink class="md-icon-button no-margin no-padding auto-height cursor-help" 
-			tabindex="-1" aria-label="Availability">
-			<md-icon class="mdi mdi-lock md-18"></md-icon>
+	<div ng-if="$ctrl.availability.hotelClosed" flex layout="column">
+		<md-button md-no-ink class="md-square-button minimal-button no-margin forced cursor-help bg-gray-medium" 
+			tabindex="-1" aria-label="Hotel closed">
+			<md-icon class="mdi mdi-home-lock md-32"></md-icon>
 			<md-tooltip><span translate="hotel.closed"></span></md-tooltip>
 		</md-button>
 	</div>

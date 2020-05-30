@@ -1,0 +1,12 @@
+<div layout layout-align="center center">
+	<md-button ng-if="!$ctrl.readOnly" ng-click="$ctrl.$goTo()" ng-disabled="$ctrl.$$item.ngDisabled" aria-label="{{::$ctrl.$$item.name}}">
+		<div layout layout-align="center center">	
+			<md-icon ng-if="$ctrl.$$item.showIcon && $ctrl.$$item.iconClass" md-font-set="{{$ctrl.$$item.iconFontSet}}" class="{{$ctrl.$$item.iconClass}}"></md-icon>
+			<span ng-bind="$ctrl.$$item.name"></span>
+		</div>
+	</md-button>
+	<div ng-if="$ctrl.readOnly" class="readonly-breadcrumb-item">
+		<strong class="text-primary text-uppercase" ng-bind="$ctrl.$$item.name"></strong>
+	</div>
+	<span ng-if="$ctrl.$$item.showDivider"><md-icon class="mdi mdi-chevron-right"></md-icon></span>
+</div>

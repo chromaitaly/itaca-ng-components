@@ -153,10 +153,53 @@
 	
 	<div class="layout-row layout-wrap">
 		<div class="layout-column flex-100" ng-if="!$ctrl.isDisabled">
-			<ch-address-autocomplete ng-model="$ctrl.hotel.addressInfo" is-required="true" dropdown-position="BOTTOM" clear-button="true" is-disabled="$ctrl.isDisabled"></ch-address-autocomplete>
+			<ch-address-autocomplete ng-if="!$ctrl.hotel.$$manualAddress" ng-model="$ctrl.hotel.addressInfo" name="hotelAddress" is-required="true" dropdown-position="BOTTOM" clear-button="true" is-disabled="$ctrl.isDisabled"></ch-address-autocomplete>
 			
-			<div class="layout-row layout-wrap" ng-if="$ctrl.hotel.addressInfo.addressComplete">
-				<div class="layout-padding layout-column flex-xs-100 flex-sm-100 flex no-padding-y-sides" ng-if="::(!$ctrl.hotel.addressInfo.district)">
+			<div ng-if="!$ctrl.hotel.addressInfo.formatted_address || $ctrl.hotel.$$manualAddress">
+				<md-button ng-if="!$ctrl.hotel.$$manualAddress" class="md-raised md-primary row-mini auto-height no-margin-top no-margin-x-sides" ng-click="$ctrl.$insertManually()" aria-label="Insert manually">
+					<span translate="common.insert.manually"></span>
+				</md-button>
+				
+				<div ng-if="$ctrl.hotel.$$manualAddress">
+					<div>
+						<md-icon class="mdi mdi-map-marker-distance"></md-icon>&nbsp;
+						<span translate="join.quote.hotel.address.closest.insert"></span>
+					</div>
+				
+					<ch-searchable-map
+						update-address-on-marker-drag="true"
+						on-location-found="$ctrl.$setManualAddress($addressInfo)">
+					</ch-searchable-map>
+					
+					<div ng-if="($ctrl.hotel.addressInfo.formatted_address && !$ctrl.hotel.addressInfo.address) || $ctrl.hotel.addressInfo.$$manualInsert">
+						<div class="text-warn">
+							<md-icon class="mdi mdi-map-marker-remove text-warn"></md-icon>&nbsp;
+							<span translate="join.quote.hotel.address.not.found"></span>
+						</div>
+					
+						<md-input-container class="md-block no-padding">
+							<label class="text-capitalize"><span translate="common.address"></span></label>
+							<input name="address" ng-model="$ctrl.hotel.addressInfo.address" required>
+							<div ng-messages="$ctrl.hotelForm.address.$error">
+				          		<div ng-message="required"><span translate="error.required"></span></div>
+					        </div>
+						</md-input-container>
+					</div>
+					
+					<div layout layout-align="end center">
+						<md-button class="md-raised md-primary row-mini auto-height text-wrap" ng-click="$ctrl.$cancelManualInsert()" aria-label="Cancel manual insert">
+							<span translate="common.insert.manually.cancel"></span>
+						</md-button>
+					</div>
+				</div>
+			</div>
+			
+			<div class="layout-row layout-wrap" ng-if="$ctrl.hotel.addressInfo.address && $ctrl.hotel.addressInfo.formatted_address">
+				<div flex="100">
+					<span translate="join.quote.hotel.address.additional.info.insert"></span>
+				</div>
+			
+				<div class="layout-padding layout-column flex-xs-100 flex-sm-100 flex no-padding-y-sides" ng-if="!$ctrl.hotel.addressInfo.district">
 					<md-input-container class="md-block no-padding">
 						<label class="text-capitalize"><span translate="common.district"></span></label>
 						<input name="district" ng-model="$ctrl.hotel.addressInfo.district">
@@ -166,17 +209,17 @@
 					</md-input-container>
 				</div>
 			
-				<div class="layout-padding layout-column flex-xs-100 flex-sm-100 flex no-padding-y-sides" ng-if="::(!$ctrl.hotel.addressInfo.city) && !$ctrl.isDisabled">
+				<div class="layout-padding layout-column flex-xs-100 flex-sm-100 flex no-padding-y-sides" ng-if="!$ctrl.hotel.addressInfo.city && !$ctrl.isDisabled">
 					<md-input-container class="md-block no-padding">
 						<label class="text-capitalize"><span translate="common.city"></span></label>
-						<input name="city" ng-model="$ctrl.hotel.addressInfo.city">
+						<input name="city" ng-model="$ctrl.hotel.addressInfo.city" required>
 						<div ng-messages="$ctrl.hotelForm.city.$error">
 			          		<div ng-message="required"><span translate="error.required"></span></div>
 				        </div>
 					</md-input-container>
 				</div>
 	
-				<div class="layout-padding layout-column flex-xs-100 flex-sm-100 flex no-padding-y-sides" ng-if="::(!$ctrl.hotel.addressInfo.zipcode) && !$ctrl.isDisabled">
+				<div class="layout-padding layout-column flex-xs-100 flex-sm-100 flex no-padding-y-sides" ng-if="!$ctrl.hotel.addressInfo.zipcode && !$ctrl.isDisabled">
 					<md-input-container class="md-block no-padding">
 						<label class="text-capitalize"><span translate="common.zipcode"></span></label>
 						<input name="zipcode" ng-model="$ctrl.hotel.addressInfo.zipcode">
@@ -186,7 +229,7 @@
 					</md-input-container>
 				</div>
 				
-				<div class="layout-padding layout-column flex-xs-100 flex-sm-100 flex no-padding-y-sides" ng-if="::(!$ctrl.hotel.addressInfo.province) && !$ctrl.isDisabled">
+				<div class="layout-padding layout-column flex-xs-100 flex-sm-100 flex no-padding-y-sides" ng-if="!$ctrl.hotel.addressInfo.province && !$ctrl.isDisabled">
 					<md-input-container class="md-block no-padding">
 						<label class="text-capitalize"><span translate="common.province"></span></label>
 						<input name="province" ng-model="$ctrl.hotel.addressInfo.province">
@@ -196,10 +239,10 @@
 					</md-input-container>
 				</div>
 				
-				<div class="layout-padding layout-column flex-xs-100 flex-sm-100 flex no-padding-y-sides" ng-if="::(!$ctrl.hotel.addressInfo.country) && !$ctrl.isDisabled">
+				<div class="layout-padding layout-column flex-xs-100 flex-sm-100 flex no-padding-y-sides" ng-if="!$ctrl.hotel.addressInfo.country && !$ctrl.isDisabled">
 					<md-input-container class="md-block no-padding">
 						<label class="text-capitalize"><span translate="common.country"></span></label>
-						<input name="country" ng-model="$ctrl.hotel.addressInfo.country">
+						<input name="country" ng-model="$ctrl.hotel.addressInfo.country" required>
 						<div ng-messages="$ctrl.hotelForm.country.$error">
 			          		<div ng-message="required"><span translate="error.required"></span></div>
 				        </div>
@@ -208,23 +251,33 @@
 			</div>
 		</div>
 		
-		<div id="maps" class="layout-column flex-100" ng-if="$ctrl.hotel.addressInfo.lat && $ctrl.hotel.addressInfo.lng || $ctrl.hotel.addressInfo.geo.coordinates">
+		<div id="maps" class="layout-column flex-100" ng-if="$ctrl.hotel.addressInfo.address && ($ctrl.hotel.addressInfo.lat && $ctrl.hotel.addressInfo.lng || $ctrl.hotel.addressInfo.geo.coordinates)">
 		
 			<div class="md-padding text-center no-padding-top wow slideInLeft text-success" ng-if="!$ctrl.isDisabled">
 				<md-icon class="mdi mdi-checkbox-marked-circle-outline text-success"></md-icon>
 				<span translate="join.quote.hotel.address.ok"></span>
 			</div>
 			
-			<div ng-if="$ctrl.hotel.addressInfo.geo">
-				<ch-static-map position="[$ctrl.hotel.addressInfo.geo.coordinates[1],$ctrl.hotel.addressInfo.geo.coordinates[0]]" params="{zoom: 14}" map-class="map-static map-big border-radius-6"></ch-static-map>
+			<div ng-if="$ctrl.hotel.addressInfo.geo && !$ctrl.hotel.$$manualAddress">
+				<ch-static-map position="[$ctrl.hotel.addressInfo.geo.coordinates[1],$ctrl.hotel.addressInfo.geo.coordinates[0]]" params="{zoom: 18}" map-class="map-static map-big border-radius-6"></ch-static-map>
+			</div>
+			
+			<div ng-if="$ctrl.hotel.addressInfo.formatted_address && $ctrl.hotel.addressInfo.address" class="md-padding no-padding-x-sides no-padding-bottom">
+				<md-icon class="mdi mdi-map-marker-check"></md-icon>&nbsp;
+				<span translate="join.quote.hotel.address"></span>:&nbsp;
+				<strong class="text-success">
+					<span ng-if="$ctrl.hotel.addressInfo.$$manualInsert"><span ng-bind="$ctrl.hotel.addressInfo.address"></span>&nbsp;(</span>
+					<span ng-bind="$ctrl.hotel.addressInfo.formatted_address"></span>
+					<span ng-if="$ctrl.hotel.addressInfo.$$manualInsert">)</span>
+				</strong>
 			</div>
 			
 			<div class="layout-padding bg-info-light md-margin no-margin-x-sides border-radius-6 wow slideInUp" ng-if="!$ctrl.isDisabled">
 				<span class="no-padding" translate="join.quote.hotel.address.label"></span>
 			</div>
 		</div>
+
 		<div class="layout-column flex-100" ng-if="!$ctrl.isDisabled && (!$ctrl.hotel.addressInfo.lat || !$ctrl.hotel.addressInfo.lng)">
-		
 			<div ng-if="$ctrl.showInfo" class="md-padding bg-info-light layout-align-start-center layout-row md-margin no-margin-x-sides border-radius-6 wow slideInUp">
 				<span class="flex-xs-100 flex-sm-100"><md-icon class="mdi mdi-map-marker-radius md-48 text-info"></md-icon></span>
 				<span class="flex-xs-100 flex-sm-100" translate="join.quote.hotel.address.info"></span>

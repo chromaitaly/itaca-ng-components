@@ -31,6 +31,14 @@
     	
     	this.$onInit = function() {
     		this.ratesheetCtrl.addRoomTypeRatesheet(this.roomTypeRatesheet);
+    		this.$$checkMainRatePlan();
+    	};
+    	
+    	this.$$checkMainRatePlan = function() {
+    		// verifica che ci sia almeno un piano tariffario principale (non derivato)
+    		this.$$hasMainRatePlan = _.some(this.roomTypeRatesheet.ratePlans, function(ratePlanRow) {
+    			return !ratePlanRow.ratePlan.parentRatePlanDerivation;
+    		});
     	};
     	
     	this.$toggleRoomTypeView = function() {
@@ -47,7 +55,7 @@
     	};
     	
     	this.$onMinLosChange = function(ratePlanId, rate) {
-    		var ngCtrl = this.$getModelCtrl("minLos", ratePlanId, rate.id);
+    		var ngCtrl = this.$getModelCtrl("minLOS", ratePlanId, rate.id);
     		
     		if (ngCtrl && ngCtrl.$valid) {
     			this.onMinLosChange && this.onMinLosChange({$roomTypeId: ctrl.roomTypeRatesheet.roomType.id, $ratePlanId: ratePlanId, $rate: rate});
@@ -55,7 +63,7 @@
     	};
     	
     	this.$onMaxLosChange = function(ratePlanId, rate) {
-    		var ngCtrl = this.$getModelCtrl("maxLos", ratePlanId, rate.id);
+    		var ngCtrl = this.$getModelCtrl("maxLOS", ratePlanId, rate.id);
     		
     		if (ngCtrl && ngCtrl.$valid) {
     			this.onMaxLosChange && this.onMaxLosChange({$roomTypeId: ctrl.roomTypeRatesheet.roomType.id, $ratePlanId: ratePlanId, $rate: rate});
@@ -81,20 +89,20 @@
     	
     	this.$bulkEdit = function(ev, ratePlanRow) {
     		var opts = {
-					templateUrl: "/tpls/ratesheet/ratesheet-room-type-bulk-edit-dialog.tpl", 
-					controller: RatesheetRoomTypeBulkEditDialogCtrl,
-					controllerAs: "$ctrl",
-					bindToController: true,
-					locals: {
-						roomType: ctrl.roomTypeRatesheet.roomType,
-						ratePlan: ratePlanRow.ratePlan,
-						minAmount: ctrl.minAmount,
-						maxAmount: ctrl.maxAmount,
-						onConfirm: ctrl.onBulkEdit
-					},
-					targetEvent: ev, 
-					fullscreen: !$mdMedia("gt-sm"),
-					escapeToClose: false
+				templateUrl: "/tpls/ratesheet/ratesheet-room-type-bulk-edit-dialog.tpl", 
+				controller: RatesheetRoomTypeBulkEditDialogCtrl,
+				controllerAs: "$ctrl",
+				bindToController: true,
+				locals: {
+					roomType: ctrl.roomTypeRatesheet.roomType,
+					ratePlanRow: ratePlanRow,
+					minAmount: ctrl.minAmount,
+					maxAmount: ctrl.maxAmount,
+					onConfirm: ctrl.onBulkEdit
+				},
+				targetEvent: ev, 
+				fullscreen: !$mdMedia("gt-sm"),
+				escapeToClose: false
 			};
 			
     		$mdDialog.show(opts);
@@ -102,16 +110,28 @@
     }
     
     /* @ngInject */
-    function RatesheetRoomTypeBulkEditDialogCtrl($scope, $mdMedia, $mdDialog, $q, FormUtils, DateUtils) {
+    function RatesheetRoomTypeBulkEditDialogCtrl($scope, $mdMedia, $mdDialog, $q, FormUtils, DateUtils, IconUtils, ChannelManager) {
     	var ctrl = this;
     	
     	this.$mdMedia = $mdMedia;
+    	this.$$portalIcons = IconUtils.portalIcons();
     	
     	this.$$config = {
     		minDate: moment().startOf("day").toDate(),
     		maxDate: moment().startOf("day").add(2, "years").toDate(),
     		weekdays: DateUtils.weekdays()
     	};   	
+    	
+    	this.$init = function() {
+    		// carico i canali configurati
+			ChannelManager.all().then(function(data) {
+				ctrl.$$config.channels = data.content;
+
+				_.remove(ctrl.$$config.channels, function(cs) {
+					return !_.includes(ctrl.roomType.linkedChannels, cs.channel) || !_.includes(ctrl.ratePlanRow.linkedChannels, cs.channel);
+				});
+			});
+    	};
     	
     	this.$confirm = function() {
     		var form = $scope.calendarBulkEditForm;
@@ -125,7 +145,7 @@
     		ctrl.$$error = false;
     		
     		this.$$form.roomTypes = [this.roomType];
-    		this.$$form.targetRate.ratePlan = this.ratePlan;
+    		this.$$form.targetRate.ratePlan = this.ratePlanRow.ratePlan;
     		
     		if (this.onConfirm) {
     			$q.when(this.onConfirm({$data: this.$$form})).then(function(data) {
@@ -143,6 +163,8 @@
     	this.$close = function() {
             $mdDialog.cancel();
         };
+        
+        this.$init();
     }
         
 })();

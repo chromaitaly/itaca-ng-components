@@ -21,7 +21,7 @@
 				</span>
 			</small>
 			<small ng-if="$ctrl.bed.people.boys">
-				<span ng-if="$ctrl.bed.people.adults">&nbsp;-</span>
+				<span ng-if="$ctrl.bed.people.adults">&nbsp;-&nbsp;</span>
 				<span><span translate="people.boys"></span>&nbsp;(<span class="text-lowercase" translate="common.max"></span>&nbsp;{{$ctrl.bed.people.boys}})</span>
 				<span ng-if="$ctrl.isBookable">:&nbsp;
 					<span ng-if="$ctrl.bed.boysPrice">{{$ctrl.bed.boysPrice|currency:'€'}}</span>
@@ -29,7 +29,7 @@
 				</span>
 			</small>
 			<small ng-if="$ctrl.bed.people.children">
-				<span ng-if="$ctrl.bed.people.adults || $ctrl.bed.people.boys">&nbsp;-</span>
+				<span ng-if="$ctrl.bed.people.adults || $ctrl.bed.people.boys">&nbsp;-&nbsp;</span>
 				<span><span translate="people.children"></span>&nbsp;(<span class="text-lowercase" translate="common.max"></span>&nbsp;{{$ctrl.bed.people.children}})</span>
 				<span ng-if="$ctrl.isBookable">:&nbsp;
 					<span ng-if="$ctrl.bed.childrenPrice">{{$ctrl.bed.childrenPrice|currency:'€'}}</span>
@@ -37,7 +37,7 @@
 				</span>
 			</small>
 			<small ng-if="$ctrl.bed.people.kids">
-				<span ng-if="$ctrl.bed.people.adults || $ctrl.bed.people.boys || $ctrl.bed.people.children">&nbsp;-</span>
+				<span ng-if="$ctrl.bed.people.adults || $ctrl.bed.people.boys || $ctrl.bed.people.children">&nbsp;-&nbsp;</span>
 				<span><span translate="people.kids"></span>&nbsp;(<span class="text-lowercase" translate="common.max"></span>&nbsp;{{$ctrl.bed.people.kids}})</span>
 				<span ng-if="$ctrl.isBookable">:&nbsp;
 					<span ng-if="$ctrl.bed.kidsPrice">{{$ctrl.bed.kidsPrice|currency:'€'}}</span>
@@ -63,110 +63,110 @@
 		</md-button>
 	</div>
 </div>
-<div class="layout-row layout-padding" ng-class="{'no-padding': !$ctrl.$mdMedia('gt-sm')}">
-	<ng-form name="$ctrl.bedForm" class="no-padding bg-gray-lighter layout-column flex only-border border-radius" ng-if="$ctrl.bed.inEdit && $ctrl.isEditable">
-	
-		<div class="layout-row layout-wrap">
-			<div class="layout-column flex-100 flex-gt-sm-45 layout-padding">
-				<md-input-container class="md-block no-padding">
-					<label translate="bed.type">type</label>
-					<md-select ng-model="$ctrl.bed.type" name="type" aria-label="type" ng-required="true">
-						<md-option ng-repeat="type in $ctrl.$$bedTypes track by $index" ng-value="type">
-							<span translate="bed.{{::type}}"></span>
-						</md-option>
-					</md-select>
-					<div ng-messages="$ctrl.bedForm.type.$error">
-		          		<div ng-message="required"><span translate="error.required"></span></div>
-			        </div>
-				</md-input-container>
+<div ng-class="{'layout-padding': $ctrl.bed.inEdit && $ctrl.isEditable, 'no-padding': !$ctrl.$mdMedia('gt-sm')}">
+	<ng-form name="bedForm">
+		<div ng-if="$ctrl.bed.inEdit && $ctrl.isEditable" class="no-padding bg-gray-lighter layout-column flex only-border border-radius">
+			<div class="layout-row layout-wrap">
+				<div class="layout-column flex-100 flex-gt-sm-45 layout-padding">
+					<md-input-container class="md-block no-padding">
+						<label translate="bed.type">type</label>
+						<md-select ng-model="$ctrl.bed.type" name="type" aria-label="type" ng-required="true">
+							<md-option ng-repeat="type in $ctrl.$$bedTypes track by $index" ng-value="type">
+								<span translate="bed.{{::type}}"></span>
+							</md-option>
+						</md-select>
+						<div ng-messages="bedForm.type.$error">
+			          		<div ng-message="required"><span translate="error.required"></span></div>
+				        </div>
+					</md-input-container>
+				</div>
+				
+				<div class="layout-column flex-100 flex-gt-sm-55 layout-padding">
+					<div class="layout-align-center-center layout-align-gt-sm-start-center layout-row layout-wrap no-padding">
+						<strong class="flex flex-xs-100 flex-sm-100">
+							<span translate="bed.people.sleep.question"></span>
+							<small class="text-lowercase">(<span translate="people.children.included"></span>)</small>
+						</strong>
+						
+						<ch-counter ng-model="$ctrl.bed.maxPerson" min="1" aria-label="Bed max persons" on-minus="$ctrl.$adeguatePeople()" on-plus="$ctrl.$adeguatePeople()"></ch-counter>
+					</div>
+				</div>
 			</div>
 			
-			<div class="layout-column flex-100 flex-gt-sm-55 layout-padding">
-				<div class="layout-align-center-center layout-align-gt-sm-start-center layout-row layout-wrap no-padding">
+			<div class="layout-row layout-wrap layout-align-center-center layout-align-gt-sm-start-center layout-padding" ng-if="$ctrl.showCounter">
+				<div class="layout-column flex flex-xs-100 flex-sm-100 no-padding">
 					<strong class="flex flex-xs-100 flex-sm-100">
-						<span translate="bed.people.sleep.question"></span>
-						<small class="text-lowercase">(<span translate="people.children.included"></span>)</small>
+						<span translate="bed.people.count.text"></span>
 					</strong>
+				</div>
+		   		<div class="no-padding">		
+					<ch-counter label="{{::('bed.count'|translate)}}" ng-model="$ctrl.bed.count" min="1" aria-label="Bed count" on-minus="$ctrl.$adeguatePeople()" on-plus="$ctrl.$adeguatePeople()"></ch-counter>
+				</div>
+			</div>
+			
+			
+			<div class="layout-row layout-wrap layout-align-center-center layout-align-gt-sm-start-center layout-padding">
+				<div class="layout-column flex flex-xs-100 flex-sm-100 no-padding">
+					<strong translate="bed.people.config.question"></strong>
+					<small translate="bed.people.config.text"></small>
+		   		</div>
+		   		<div class="no-padding">
+		   			<md-button ng-click="$ctrl.bed.showPeopleType = false" aria-label="bath not included" ng-class="!$ctrl.bed.showPeopleType ? 'bg-success' : 'only-border'">
+						<md-icon class="mdi mdi-checkbox-marked-circle-outline text-white md-24" ng-if="!$ctrl.bed.showPeopleType"></md-icon>
+						<span translate="common.no"></span>
+					</md-button>
+					<md-button ng-click="$ctrl.bed.showPeopleType = true" aria-label="bath included" ng-class="$ctrl.bed.showPeopleType ? 'bg-success' : 'only-border'">
+						<md-icon class="mdi mdi-checkbox-marked-circle-outline text-white md-24" ng-if="$ctrl.bed.showPeopleType"></md-icon>
+						<span translate="common.yes"></span>
+					</md-button>
+		   		</div>
+			</div>
+			<div ng-if="$ctrl.bed.showPeopleType">
+				<div class="layout-row layout-wrap layout-padding no-padding">
+					<div class="layout-column flex flex-xs-100 flex-sm-100">
+						<strong><span translate="bed.sleep.who.question"></span></strong>
+						<small class="text-gray-light" translate="bed.people.label"></small>
+					</div>
+				</div>
+				<div class="layout-row layout-wrap no-padding" ng-class="{'layout-padding': $ctrl.$mdMedia('gt-sm')}">
+	   				<div class="flex-50 flex-gt-sm-25">
+			   			<ch-counter label="{{::('people.adults'|translate)}}" ng-model="$ctrl.bed.people.adults" min="0" max="$ctrl.bed.maxPerson" 
+			   				ng-disabled="!$ctrl.bed.maxPerson" aria-label="Bed max adults"></ch-counter>
+					</div>
 					
-					<ch-counter ng-model="$ctrl.bed.maxPerson" min="1" aria-label="Bed max persons" on-minus="$ctrl.$adeguatePeople()" on-plus="$ctrl.$adeguatePeople()"></ch-counter>
+					<div class="flex-50 flex-gt-sm-25">
+						<ch-counter label="{{::('people.boys'|translate)}}" ng-model="$ctrl.bed.people.boys" min="0" max="$ctrl.bed.maxPerson" 
+							ng-disabled="!$ctrl.bed.maxPerson" aria-label="Bed max boys"></ch-counter>
+					</div>
+					
+					<div class="flex-50 flex-gt-sm-25">
+						<ch-counter label="{{::('people.children'|translate)}}" ng-model="$ctrl.bed.people.children" min="0" max="$ctrl.bed.maxPerson" 
+							ng-disabled="!$ctrl.bed.maxPerson" aria-label="Bed max children"></ch-counter>
+					</div>
+					
+					<div class="flex-50 flex-gt-sm-25">
+						<ch-counter label="{{::('people.kids'|translate)}}" ng-model="$ctrl.bed.people.kids" min="0" max="$ctrl.bed.maxPerson" ng-disabled="!$ctrl.bed.maxPerson" aria-label="Bed max kids"></ch-counter>
+					</div>
 				</div>
 			</div>
-		</div>
-		
-		<div class="layout-row layout-wrap layout-align-center-center layout-align-gt-sm-start-center layout-padding" ng-if="$ctrl.showCounter">
-			<div class="layout-column flex flex-xs-100 flex-sm-100 no-padding">
-				<strong class="flex flex-xs-100 flex-sm-100">
-					<span translate="bed.people.count.text"></span>
-				</strong>
-			</div>
-	   		<div class="no-padding">		
-				<ch-counter label="{{::('bed.count'|translate)}}" ng-model="$ctrl.bed.count" min="1" aria-label="Bed count" on-minus="$ctrl.$adeguatePeople()" on-plus="$ctrl.$adeguatePeople()"></ch-counter>
-			</div>
-		</div>
-		
-		
-		<div class="layout-row layout-wrap layout-align-center-center layout-align-gt-sm-start-center layout-padding">
-			<div class="layout-column flex flex-xs-100 flex-sm-100 no-padding">
-				<strong translate="bed.people.config.question"></strong>
-				<small translate="bed.people.config.text"></small>
-	   		</div>
-	   		<div class="no-padding">
-	   			<md-button ng-click="$ctrl.bed.showPeopleType = false" aria-label="bath not included" ng-class="!$ctrl.bed.showPeopleType ? 'bg-success' : 'only-border'">
-					<md-icon class="mdi mdi-checkbox-marked-circle-outline text-white md-24" ng-if="!$ctrl.bed.showPeopleType"></md-icon>
-					<span translate="common.no"></span>
-				</md-button>
-				<md-button ng-click="$ctrl.bed.showPeopleType = true" aria-label="bath included" ng-class="$ctrl.bed.showPeopleType ? 'bg-success' : 'only-border'">
-					<md-icon class="mdi mdi-checkbox-marked-circle-outline text-white md-24" ng-if="$ctrl.bed.showPeopleType"></md-icon>
-					<span translate="common.yes"></span>
-				</md-button>
-	   		</div>
-		</div>
-		<div ng-if="$ctrl.bed.showPeopleType">
-			<div class="layout-row layout-wrap layout-padding no-padding">
-				<div class="layout-column flex flex-xs-100 flex-sm-100">
-					<strong><span translate="bed.sleep.who.question"></span></strong>
-					<small class="text-gray-light" translate="bed.people.label"></small>
-				</div>
-			</div>
-			<div class="layout-row layout-wrap no-padding" ng-class="{'layout-padding': $ctrl.$mdMedia('gt-sm')}">
-   				<div class="flex-50 flex-gt-sm-25">
-		   			<ch-counter label="{{::('people.adults'|translate)}}" ng-model="$ctrl.bed.people.adults" min="0" max="$ctrl.bed.maxPerson" 
-		   				ng-disabled="!$ctrl.bed.maxPerson" aria-label="Bed max adults"></ch-counter>
-				</div>
 				
-				<div class="flex-50 flex-gt-sm-25">
-					<ch-counter label="{{::('people.boys'|translate)}}" ng-model="$ctrl.bed.people.boys" min="0" max="$ctrl.bed.maxPerson" 
-						ng-disabled="!$ctrl.bed.maxPerson" aria-label="Bed max boys"></ch-counter>
-				</div>
-				
-				<div class="flex-50 flex-gt-sm-25">
-					<ch-counter label="{{::('people.children'|translate)}}" ng-model="$ctrl.bed.people.children" min="0" max="$ctrl.bed.maxPerson" 
-						ng-disabled="!$ctrl.bed.maxPerson" aria-label="Bed max children"></ch-counter>
-				</div>
-				
-				<div class="flex-50 flex-gt-sm-25">
-					<ch-counter label="{{::('people.kids'|translate)}}" ng-model="$ctrl.bed.people.kids" min="0" max="$ctrl.bed.maxPerson" ng-disabled="!$ctrl.bed.maxPerson" aria-label="Bed max kids"></ch-counter>
-				</div>
+			<div class="layout-row layout-wrap layout-align-center-center layout-align-gt-sm-start-center layout-padding" ng-if="$ctrl.isBookable">
+				<div class="layout-column flex flex-xs-100 flex-sm-100 no-padding">
+					<strong translate="bed.fee.question"></strong>
+		   		</div>
+		   		<div class="no-padding">
+		   			<md-button ng-click="$ctrl.bed.toPay = false" aria-label="bed is to pay" ng-class="!$ctrl.bed.toPay ? 'bg-success' : 'only-border'">
+						<md-icon class="mdi mdi-checkbox-marked-circle-outline text-white md-24" ng-if="!$ctrl.bed.toPay"></md-icon>
+						<span translate="common.no"></span>
+					</md-button>
+					<md-button ng-click="$ctrl.bed.toPay = true" aria-label="bed is to pay" ng-class="$ctrl.bed.toPay ? 'bg-success' : 'only-border'">
+						<md-icon class="mdi mdi-checkbox-marked-circle-outline text-white md-24" ng-if="$ctrl.bed.toPay"></md-icon>
+						<span translate="common.yes"></span>
+					</md-button>
+		   		</div>
 			</div>
-		</div>
-			
-		<div class="layout-row layout-wrap layout-align-center-center layout-align-gt-sm-start-center layout-padding" ng-if="$ctrl.isBookable">
-			<div class="layout-column flex flex-xs-100 flex-sm-100 no-padding">
-				<strong translate="bed.fee.question"></strong>
-	   		</div>
-	   		<div class="no-padding">
-	   			<md-button ng-click="$ctrl.bed.toPay = false" aria-label="bed is to pay" ng-class="!$ctrl.bed.toPay ? 'bg-success' : 'only-border'">
-					<md-icon class="mdi mdi-checkbox-marked-circle-outline text-white md-24" ng-if="!$ctrl.bed.toPay"></md-icon>
-					<span translate="common.no"></span>
-				</md-button>
-				<md-button ng-click="$ctrl.bed.toPay = true" aria-label="bed is to pay" ng-class="$ctrl.bed.toPay ? 'bg-success' : 'only-border'">
-					<md-icon class="mdi mdi-checkbox-marked-circle-outline text-white md-24" ng-if="$ctrl.bed.toPay"></md-icon>
-					<span translate="common.yes"></span>
-				</md-button>
-	   		</div>
-		</div>
-		<div ng-if="$ctrl.isBookable && $ctrl.bed.toPay">	
-			
+		
+			<div ng-if="$ctrl.isBookable && $ctrl.bed.toPay">	
 				<div class="layout-row layout-wrap layout-align-center-center layout-align-gt-sm-start-center layout-padding" ng-if="$ctrl.isBookable">
 					<div class="layout-column flex flex-xs-100 flex-sm-100 no-padding">
 						<strong translate="bed.payment.frequency.question"></strong>
@@ -201,7 +201,7 @@
 							<md-input-container class="md-block">
 								<label><span translate="people.adults"></span>&nbsp;(€)</label>
 								<input type="number" name="adultsPrice" ng-model="$ctrl.bed.adultsPrice" ng-pattern="REGEXP.price" ng-disabled="!$ctrl.bed.people.adults" min="0.00" step="0.01" ng-required="$ctrl.bed.people.adults">
-						        <div ng-messages="$ctrl.bedForm.adultsPrice.$error">
+						        <div ng-messages="bedForm.adultsPrice.$error">
 					          		<div ng-message="required"><span translate="error.required"></span></div>
 					          		<div ng-message="pattern"><span translate="error.field.generic.invalid"></span></div>
 					          		<div ng-message="min"><span translate="error.field.min" translate-values="{min: 0}"></span></div>
@@ -217,7 +217,7 @@
 							<md-input-container class="md-block">
 								<label><span translate="people.boys"></span>&nbsp;(€)</label>
 								<input type="number" name="boysPrice" ng-model="$ctrl.bed.boysPrice" ng-pattern="REGEXP.price" ng-disabled="!$ctrl.bed.people.boys" min="0.00" step="0.01" ng-required="$ctrl.bed.people.boys">
-						        <div ng-messages="$ctrl.bedForm.boysPrice.$error">
+						        <div ng-messages="bedForm.boysPrice.$error">
 					          		<div ng-message="required"><span translate="error.required"></span></div>
 					          		<div ng-message="pattern"><span translate="error.field.generic.invalid"></span></div>
 					          		<div ng-message="min"><span translate="error.field.min" translate-values="{min: 0}"></span></div>
@@ -233,7 +233,7 @@
 							<md-input-container class="md-block">
 								<label><span translate="people.children"></span>&nbsp;(€)</label>
 								<input type="number" name="childrenPrice" ng-model="$ctrl.bed.childrenPrice" ng-pattern="REGEXP.price" ng-disabled="!$ctrl.bed.people.children" min="0.00" step="0.01" ng-required="$ctrl.bed.people.children">
-						        <div ng-messages="$ctrl.bedForm.childrenPrice.$error">
+						        <div ng-messages="bedForm.childrenPrice.$error">
 					          		<div ng-message="required"><span translate="error.required"></span></div>
 					          		<div ng-message="pattern"><span translate="error.field.generic.invalid"></span></div>
 					          		<div ng-message="min"><span translate="error.field.min" translate-values="{min: 0}"></span></div>
@@ -249,7 +249,7 @@
 							<md-input-container class="md-block">
 								<label><span translate="people.kids"></span>&nbsp;(€)</label>
 								<input type="number" name="kidsPrice" ng-model="$ctrl.bed.kidsPrice" ng-pattern="REGEXP.price" ng-disabled="!$ctrl.bed.people.kids" min="0.00" step="0.01" ng-required="$ctrl.bed.people.kids">
-						        <div ng-messages="$ctrl.bedForm.kidsPrice.$error">
+						        <div ng-messages="bedForm.kidsPrice.$error">
 					          		<div ng-message="required"><span translate="error.required"></span></div>
 					          		<div ng-message="pattern"><span translate="error.field.generic.invalid"></span></div>
 					          		<div ng-message="min"><span translate="error.field.min" translate-values="{min: 0}"></span></div>
@@ -274,5 +274,6 @@
 					</md-button>
 				</div>
 			</div>
+		</div>
 	</ng-form>
 </div>

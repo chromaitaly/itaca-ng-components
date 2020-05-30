@@ -1,0 +1,15 @@
+<div layout="column" layout-padding-sm>
+	<div>
+		<ch-address-autocomplete ng-model="$ctrl.$$targetAddressInfo" is-required="true" dropdown-position="BOTTOM" clear-button="true" ng-change="$ctrl.$updateMarker()"></ch-address-autocomplete>
+	</div>
+	
+	<div ng-if="$ctrl.$$center || ($ctrl.$$targetAddressInfo.geo.coordinates[0] && $ctrl.$$targetAddressInfo.geo.coordinates[1])">
+		<ng-map class="{{$ctrl.mapClass}}" ng-style="$ctrl.$$mapStyle" default-style="false" zoom-to-inlude-markers="true" disable-default-ui="{{$ctrl.disableUi}}"  
+			center="{{$ctrl.$$center.lat && $ctrl.$$center.lng ? [$ctrl.$$center.lat, $ctrl.$$center.lng] : $ctrl.$$center}}" map-initialized="$ctrl.$initMap(map)" zoom="{{$ctrl.initialZoom}}" clickable-icons="false" trigger-resize="true" scrollwheel="{{!$ctrl.disableScrollwheel}}">
+			<div ng-if="$ctrl.$$marker">
+				<marker id="map_mk" position="[{{$ctrl.$$marker.position.lat()}}, {{$ctrl.$$marker.position.lng()}}]" centered="true"
+					icon="{{$ctrl.$$markerIcon}}" label="{{$ctrl.markerLabel}}" draggable="true" on-dragend="$ctrl.$onMarkerPositionChanged(ev)"></marker>
+			</div> 
+		</ng-map>
+	</div>
+</div>

@@ -65,6 +65,13 @@
 		
 		<!-- RATES -->
 		<div layout-padding-xs class="no-padding-x-sides">
+			<div ng-if="!$ctrl.$$hasMainRatePlan" class="text-warn" layout-padding>
+				<div>
+					<md-icon md-font-set="fas" class="fas fa-money-check-alt md-24 text-warn"></md-icon>&nbsp;
+					<strong translate="rateplan.rateplans.room.primary.none"></strong>
+				</div>
+			</div>
+			
 			<div ng-repeat="ratePlanRow in $ctrl.roomTypeRatesheet.ratePlans track by ratePlanRow.ratePlan.id" layout-padding-xs class="no-padding-x-sides">
 	          	<div layout-gt-xs="row" layout-xs="column">
 		          	<div flex-xs="100" flex-gt-xs="20" layout layout-padding-sm>
@@ -73,7 +80,7 @@
 								aria-label="Show/Hide rateplan derivation">
 								<md-icon class="mdi mdi-link-plus md-24"></md-icon>
 								
-								<md-tooltip><span translate-once="rateplan.rateplan.derived.details"></span></md-tooltip>
+<!-- 								<md-tooltip><span translate-once="rateplan.rateplan.derived.details"></span></md-tooltip> -->
 							</md-button>
 							
 							<md-button ng-if="!ratePlanRow.ratePlan.parentRatePlanDerivation" class="md-icon-button no-margin" ng-click="$ctrl.$bulkEdit($event, ratePlanRow)" 
@@ -106,34 +113,32 @@
 		          			&nbsp;
 						</div>          		
 		          		<div flex layout="column" layout-align="center start">
-		          			<em translate-once="ratesheet.rate"></em>
+		          			<div>
+		          				<em translate-once="ratesheet.rate"></em>
+		          				<span ng-if="ratePlanRow.ratePlan.pricingModel == 'OCCUPANCY_BASED_PRICING'">
+		          					&nbsp;x&nbsp;
+		          					<em ng-bind="ratePlanRow.ratePlan.occupantsForBaseRate"></em>&nbsp;
+	          						<md-icon class="mdi md-18 text-gray-3" ng-class="{
+		          						'mdi-account': ratePlanRow.ratePlan.occupantsForBaseRate == 1, 
+		          						'mdi-account-multiple': ratePlanRow.ratePlan.occupantsForBaseRate > 1}"></md-icon>		          				
+		          				</span>
+		          			</div>
 		          		</div>
 			        </div>
 			        
 			        <div flex layout>
-		            	<div flex class="border-right-white no-padding overflow-hidden" layout="column"
+		            	<div flex class="ch-ratesheet-cell" layout="column"  layout-align="center"
 		            		ng-repeat="rate in ratePlanRow.content track by rate.id">
-							<ch-amount-input
-								id="amount_{{ratePlanRow.ratePlan.id}}_{{rate.id}}"
-								name="ratePlanAmount"
-								input-container-class="md-block no-margin minimal-input no-padding-left text-center {{rate.$$saving ? 'saving' : ''}}"
-								hide-icon="true"
-								ng-model="rate.amount"
-								update-on="blur"
-								label-no-float="true"
-								label="{{'common.price'|translate}}"
-								amount-type="PRICE"
-								ng-min="($ctrl.minAmount || 0.01)"
-								ng-max="$ctrl.maxAmount" 
-								ng-step="0.01"
-								ng-required="true"
-								ng-disabled="rate.$$saving || ratePlanRow.ratePlan.parentRatePlanDerivation != null || rate.roomClosed || rate.hotelClosed"
-								on-change="$ctrl.$onAmountChange(ratePlanRow.ratePlan.id, rate)"
-								error-messages="[
-									{error: 'required', messageKey: 'error.required'},
-									{error: 'min', messageKey: 'error.field.min.abbr', messageKeyParams: {num: (($ctrl.minAmount || 0.01)|chCurrency)}},
-									{error: 'max', messageKey: 'error.field.max.abbr', messageKeyParams: {num: ($ctrl.maxAmount|chCurrency)}}]">
-							</ch-amount-input>
+							<ch-ratesheet-room-type-rate-amount
+		            			rate="rate"
+		            			rate-plan="ratePlanRow.ratePlan"
+		            			min-amount="$ctrl.minAmount"
+		            			max-amount="$ctrl.maxAmount"
+		            			mode="{{rate.$$saved.amount == false ? 'edit' : 'view'}}"
+		            			ng-disabled="rate.$$saving || ratePlanRow.ratePlan.parentRatePlanDerivation != null || rate.roomClosed || rate.hotelClosed"
+		            			on-change="$ctrl.$onAmountChange($ratePlan.id, $rate)"
+		            			on-open-bulk-edit="$ctrl.$bulkEdit($event, ratePlanRow)">
+		            		</ch-ratesheet-room-type-rate-amount>
 						</div>
 					</div>
 				</div>
@@ -149,18 +154,31 @@
 					</div>
 					
 					<div flex layout>
-		            	<div flex class="border-right-white no-padding overflow-hidden" layout="column"
+		            	<div flex class="ch-ratesheet-cell" layout="column" layout-align="center"
 		            		ng-repeat="rate in ratePlanRow.content track by rate.id">
-							<md-input-container md-no-float class="md-block no-margin minimal-input no-padding-left text-center" ng-class="{'saving': rate.$$saving}">
-								<input id="minLos_{{ratePlanRow.ratePlan.id}}_{{rate.id}}"type="number" name="minLos" placeholder="{{'common.nights.minimum'|translate}}" ng-model="rate.minLOS" ng-model-options="{updateOn: 'blur'}"
-						           	ng-disabled="rate.$$saving || ratePlanRow.ratePlan.parentRatePlanDerivation != null || rate.roomClosed || rate.hotelClosed" 
-						           	min="1" ng-min="1" ng-step="1" max="{{rate.maxLOS}}" ng-max="rate.maxLOS"	ng-change="$ctrl.$onMinLosChange(ratePlanRow.ratePlan.id, rate)">
+							<ch-ratesheet-room-type-rate-los
+								placeholder="{{'common.nights.minimum'|translate}}"
+		            			rate="rate"
+		            			rate-plan="ratePlanRow.ratePlan"
+		            			los-type="minLOS"
+		            			min="1"
+		            			max="rate.maxLOS || 30"
+		            			mode="{{rate.$$saved.minLOS == false ? 'edit' : 'view'}}"
+		            			ng-disabled="rate.$$saving || ratePlanRow.ratePlan.parentRatePlanDerivation != null || rate.roomClosed || rate.hotelClosed"
+		            			on-change="$ctrl.$onMinLosChange($ratePlan.id, $rate)"
+		            			on-open-bulk-edit="$ctrl.$bulkEdit($event, ratePlanRow)">
+		            		</ch-ratesheet-room-type-rate-los>
+							
+<!-- 							<md-input-container md-no-float class="md-block no-margin minimal-input no-padding-left text-center" ng-class="{'saving': rate.$$saving}"> -->
+<!-- 								<input id="minLos_{{ratePlanRow.ratePlan.id}}_{{rate.id}}" type="number" name="minLos" placeholder="{{'common.nights.minimum'|translate}}" ng-model="rate.minLOS" ng-model-options="{updateOn: 'blur'}" -->
+<!-- 						           	ng-disabled="rate.$$saving || ratePlanRow.ratePlan.parentRatePlanDerivation != null || rate.roomClosed || rate.hotelClosed"  -->
+<!-- 						           	min="1" ng-min="1" ng-step="1" max="{{rate.maxLOS}}" ng-max="rate.maxLOS"	ng-change="$ctrl.$onMinLosChange(ratePlanRow.ratePlan.id, rate)"> -->
 						           	
-						      	<div ng-messages="roomTypeRatesheetForm['minLos_'+ratePlanRow.ratePlan.id+'_'+rate.id].$error">
-						       		<div ng-message="min"><span translate="error.field.min.abbr" translate-values="{num: 1}"></span></div>
-						       		<div ng-message="max"><span translate="error.field.max.abbr" translate-values="{num: rate.maxLOS}"></span></div>
-						        </div>
-						  	</md-input-container>
+<!-- 						      	<div ng-messages="roomTypeRatesheetForm['minLos_'+ratePlanRow.ratePlan.id+'_'+rate.id].$error"> -->
+<!-- 						       		<div ng-message="min"><span translate="error.field.min.abbr" translate-values="{num: 1}"></span></div> -->
+<!-- 						       		<div ng-message="max"><span translate="error.field.max.abbr" translate-values="{num: rate.maxLOS}"></span></div> -->
+<!-- 						        </div> -->
+<!-- 						  	</md-input-container> -->
 		           		</div>
 		           	</div>
 				</div>
@@ -176,17 +194,30 @@
 					</div>
 					
 					<div flex layout>
-	            		<div flex class="border-right-white no-padding overflow-hidden" layout="column"
+	            		<div flex class="ch-ratesheet-cell" layout="column" layout-align="center"
 	            			ng-repeat="rate in ratePlanRow.content track by rate.id">
-							<md-input-container md-no-float class="md-block no-margin minimal-input no-padding-left text-center" ng-class="{'saving': rate.$$saving}">
-								<input id="maxLos_{{ratePlanRow.ratePlan.id}}_{{rate.id}}" type="number" name="maxLos" placeholder="{{'common.nights.maximum'|translate}}" ng-model="rate.maxLOS" ng-model-options="{updateOn: 'blur'}"
-						           	ng-disabled="rate.$$saving || ratePlanRow.ratePlan.parentRatePlanDerivation != null || rate.roomClosed || rate.hotelClosed"
-						           	min="{{rate.minLOS || 3}}" ng-min="rate.minLOS || 3" ng-step="1" ng-change="$ctrl.$onMaxLosChange(ratePlanRow.ratePlan.id, rate)">
+            				<ch-ratesheet-room-type-rate-los
+								placeholder="{{'common.nights.maximum'|translate}}"
+		            			rate="rate"
+		            			rate-plan="ratePlanRow.ratePlan"
+		            			los-type="maxLOS"
+		            			min="rate.minLOS || 3"
+		            			max="30"
+		            			mode="{{rate.$$saved.maxLOS == false ? 'edit' : 'view'}}"
+		            			ng-disabled="rate.$$saving || ratePlanRow.ratePlan.parentRatePlanDerivation != null || rate.roomClosed || rate.hotelClosed"
+		            			on-change="$ctrl.$onMaxLosChange($ratePlan.id, $rate)"
+		            			on-open-bulk-edit="$ctrl.$bulkEdit($event, ratePlanRow)">
+		            		</ch-ratesheet-room-type-rate-los>
+	            			
+<!-- 							<md-input-container md-no-float class="md-block no-margin minimal-input no-padding-left text-center" ng-class="{'saving': rate.$$saving}"> -->
+<!-- 								<input id="maxLos_{{ratePlanRow.ratePlan.id}}_{{rate.id}}" type="number" name="maxLos" placeholder="{{'common.nights.maximum'|translate}}" ng-model="rate.maxLOS" ng-model-options="{updateOn: 'blur'}" -->
+<!-- 						           	ng-disabled="rate.$$saving || ratePlanRow.ratePlan.parentRatePlanDerivation != null || rate.roomClosed || rate.hotelClosed" -->
+<!-- 						           	min="{{rate.minLOS || 3}}" ng-min="rate.minLOS || 3" ng-step="1" ng-change="$ctrl.$onMaxLosChange(ratePlanRow.ratePlan.id, rate)"> -->
 						           	
-						      	<div ng-messages="roomTypeRatesheetForm['maxLos_'+ratePlanRow.ratePlan.id+'_'+rate.id].$error">
-						       		<div ng-message="min"><span translate="error.field.min.abbr" translate-values="{num: rate.minLOS || 3}"></span></div>
-						        </div>
-						  	</md-input-container>
+<!-- 						      	<div ng-messages="roomTypeRatesheetForm['maxLos_'+ratePlanRow.ratePlan.id+'_'+rate.id].$error"> -->
+<!-- 						       		<div ng-message="min"><span translate="error.field.min.abbr" translate-values="{num: rate.minLOS || 3}"></span></div> -->
+<!-- 						        </div> -->
+<!-- 						  	</md-input-container> -->
 	            		</div>
 	            	</div>
 	           	</div>

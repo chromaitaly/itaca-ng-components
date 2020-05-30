@@ -1,12 +1,12 @@
 (function() {
 	"use strict";
 	
-	angular.module("itaca.components").component("chMouseScollBtn", {
+	angular.module("itaca.components").component("chMouseScrollBtn", {
 		bindings: {
 			anchor: "@",
 			offset: "@" 
 		},
-		controller: MouseScollBtnCtrl,
+		controller: MouseScrollBtnCtrl,
 		template: 
 			"<div class=\"mouse-scroll-btn\">" +
 				"<button class=\"no-bg no-border\" ng-click=\"$ctrl.navigator.goToAnchor($ctrl.anchor, $ctrl.offset)\">" +
@@ -17,7 +17,7 @@
 	});
 	
 	/* @ngInject */
-	function MouseScollBtnCtrl(Navigator) {
+	function MouseScrollBtnCtrl(Navigator) {
 		var ctrl = this;
 		
 		this.$onInit = function(){

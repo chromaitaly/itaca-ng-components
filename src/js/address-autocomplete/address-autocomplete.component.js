@@ -5,12 +5,13 @@
 		require: {
         	ngModelCtrl: "ngModel" 
         },
-		bindings: {
-			ngModel: "=",
+        bindings: {
+			ngModel: '=',
 			isDisabled: "<?",
 			isRequired: "<?",
 			noCache: "<?",
 			minLength: "<?",
+			label: "@",
 			placeholder: "@",
 			dropdownPosition: "@",
 			clearButton: "<?",
@@ -32,7 +33,7 @@
           			" md-items=\"item in $ctrl.$querySearch($ctrl.searchText)\" "+
           			" md-item-text=\"item.description\"  "+
           			" md-min-length=\"$ctrl.minLength\"  " +
-          			" md-floating-label=\"{{'common.address'|translate}}\" " +
+          			" md-floating-label=\"{{$ctrl.label || ('common.address'|translate)}}\" " +
           			" md-dropdown-position=\"$ctrl.dropdownPosition\" " +
           			" md-clear-button=\"$ctrl.clearButton\" " +
           			" placeholder=\"$ctrl.placeholder\">  "+
@@ -65,15 +66,21 @@
     		
     		ctrl.minLength = ctrl.minLength && Number.isFinite(ctrl.minLength) ? parseInt(ctrl.minLength) : 3;
     		
-    		if(!ctrl.placeholder){
-    			$translate("").then(function(translate){
-    				ctrl.placeholder = translate;
-    			});
-    		}
+//    		if(!ctrl.placeholder){
+//    			$translate("").then(function(translate){
+//    				ctrl.placeholder = translate;
+//    			});
+//    		}
     		
     		ctrl.selectedItem  = null;
     		
-    		ctrl.precopileSearchText();
+//    		ctrl.precopileSearchText();
+    	};
+    	
+    	this.$onChanges = function(changesObj) {
+    		if (changesObj.ngModel) {
+    			ctrl.precopileSearchText();
+    		}
     	};
     	
     	this.precopileSearchText = function(){
@@ -115,45 +122,51 @@
 	    			 var address = data.address_components[i];
 	    			 var type = address.types[0];
 	    			 
-		    		if(type == "route"){
-		    			addressInfo.street = address.long_name;
-		    			continue;
-		    		}
-		    		
-		    		if(type == "street_number"){
-		    			addressInfo.number = address.long_name;
-		    			continue;
-		    		}
-		    		
-		    		if(type == "postal_code"){
-		    			addressInfo.zipcode = address.long_name;
-		    			continue;
-		    		}
-		    		
-		    		if(type == "country"){
-		    			addressInfo.country = address.long_name;
-		    			continue;
-		    		}
-		    		
-		    		if(type == "locality"){
-		    			addressInfo.city = address.long_name;
-		    			continue;
-		    		}
-		    		
-		    		if(type == "administrative_area_level_1"){
-		    			addressInfo.region = address.short_name;
-		    			continue;
-		    		}
-		    		
-		    		if(type == "administrative_area_level_2"){
-		    			addressInfo.province = address.short_name;
-		    			continue;
-		    		}
-		    		
-		    		if(type == "neighborhood"){
-		    			addressInfo.district = address.long_name;
-		    			continue;
-		    		}
+	    			 switch(type){
+		    			case "street_address":
+		    				addressInfo.address = address.long_name;
+		    				break;
+		    				
+						case "route":
+							addressInfo.street = address.long_name;
+							break;
+						
+						case "street_number":
+							addressInfo.number = address.long_name;
+							break;
+							
+						case "postal_code":
+							addressInfo.zipcode = address.long_name;
+							break;
+							
+						case "country":
+							addressInfo.country = address.long_name;
+							break;
+							
+						case "locality":
+						case "administrative_area_level_3":
+						case "postal_town": 
+							addressInfo.city = address.long_name;
+							break;
+							
+						case "administrative_area_level_1":
+							addressInfo.region = address.short_name;
+							break;
+							
+						case "administrative_area_level_2":
+							addressInfo.province = address.short_name;
+							break;
+						
+						case "neighborhood":
+						case "sublocality":
+						case "sublocality_level_1":
+						case "sublocality_level_2":
+						case "sublocality_level_3":
+						case "sublocality_level_4":
+						case "sublocality_level_5":
+							addressInfo.district = address.long_name;
+							break;
+						}
 		    	}
 	    	
 		    	// via e civico
@@ -171,8 +184,9 @@
 		    	addressInfo.addressComplete = ctrl.selectedItem;
 		    	
 		    	ctrl.ngModelCtrl.$setViewValue(addressInfo);
+	    	
 	    	}, function(error){
-	    		if(!deepSearch){
+	    		if(deepSearch){
 		    		GoogleAPI.textSearch(ctrl.searchText).then(function(data){
 		    			ctrl.$selectedItemChange(data[0], true);
 		    		}, function(error){

@@ -24,14 +24,15 @@
 			errorMessages: "<?",
 			ngDisabled: "<?",
 			updateOn: "@",
-			onChange: "&"
+			onChange: "&",
+			autofocus: "<"
 	    },
 	    controller: AmountInputCtrl,
 	    templateUrl: "/tpls/amount-input/amount-input.tpl"
 	});
 
 	/* @ngInject */
-	function AmountInputCtrl($scope, REGEXP) {
+	function AmountInputCtrl($scope, $element, REGEXP) {
 	   var ctrl = this;
 	   
 	   this.REGEXP = REGEXP;
@@ -60,14 +61,28 @@
 		   }
 	   };
 	   
-	   this.$initType = function() {		
+	   this.$postLink = function() {
+		   if (this.autofocus) {
+			   $element[0].querySelector("input").focus();
+		   }
+	   };
+	   
+	   this.$initType = function() {	
+		   if (!this.amountType) {
+			   return;
+		   }
+		   
 		   var amount = this.ngModel || {};
 		   amount.type = this.amountType;
 		   
 		   this.ngModelCtrl.$setViewValue(amount);
 	   };
 	   
-	   this.$initCurrency = function() {		
+	   this.$initCurrency = function() {
+		   if (!this.amountCurrency) {
+			   return;
+		   }
+		   
 		   var amount = this.ngModel || {};
 		   amount.currency = this.amountCurrency;
 		   
@@ -75,7 +90,7 @@
 	   };
 	   
 	   this.$initUpdateMode = function() {
-		   this.updateOn = _.includes(["default", "blur"], this.updateOn) ? this.updateOn : "default";
+		   this.updateOn = this.updateOn || "default";
 	   };
 	   
 	   this.$onChange = function() {

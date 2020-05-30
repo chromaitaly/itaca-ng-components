@@ -12,7 +12,7 @@
     </md-toolbar>
 	
 	<md-dialog-content flex>
-		<form name="calendarBulkEditForm" novalidate>
+		<form flex name="calendarBulkEditForm" novalidate>
 			<div flex layout="column" layout-padding>
 				<h3 class="md-subhead no-margin-top">
 					<strong>
@@ -29,7 +29,7 @@
 	          		</div>
 	          		
 					<div>
-						<strong ng-bind="$ctrl.ratePlan.name"></strong>
+						<strong ng-bind="$ctrl.ratePlanRow.ratePlan.name"></strong>
 					</div>
 				</div>
 				
@@ -81,13 +81,39 @@
 					</div>
 				</div>
 				
+				<div layout layout-padding-sm ng-if="$ctrl.$$config.channels.length">
+					<div flex-xs="50" flex="40" layout="column" layout-align="center start">
+	          			<span translate-once="ratesheet.advanced.edit.question.channels.title"></span>
+	          			<small class="text-gray-light" translate-once="ratesheet.advanced.edit.question.channels.subtitle"></small>
+	          		</div>
+			 	
+					<div flex layout="column" layout-align="center center">
+						<ch-array-input ng-model="$ctrl.$$form.channels">
+							<ch-array-option
+								ng-repeat="channelSettings in $ctrl.$$config.channels track by channelSettings.id"
+								ng-value="channelSettings.channel" 
+								button-class="only-border minimal-button row-mini text-small text-initial"
+								label="{{('channel.source.' + channelSettings.channel)|lowercase|translate}}"
+								ng-disabled="channelSettings.disabled"
+								selected-class="border-primary md-primary"
+								icon-class="{{$ctrl.$$portalIcons[channelSettings.channel]}} channel-icon-small">
+								<div ng-if="channelSettings.disabled">
+									<span class="label label-sm bg-warn">
+										<span translate-once="common.disabled"></span>
+									</span> 
+								</div>
+							</ch-array-option>
+						</ch-array-input>
+					</div>
+				</div>
+				
 				<div layout layout-padding-sm>
 					<div flex-xs="50" flex="40" layout="column" layout-align="center start">
 	          			<span translate-once="ratesheet.rate"></span>
 	          		</div>
 	          		
-	          		<div flex layout>
-						<div flex>
+	          		<div flex layout layout-wrap>
+						<div flex-gt-xs>
 							<ch-amount-input
 								name="amount"
 								input-container-class="md-block no-margin minimal-input no-padding-left"
@@ -105,9 +131,9 @@
 							</ch-amount-input>
 						</div>
 						
-						<div flex>
+						<div flex-gt-xs>
 							<md-button md-no-ink ng-click="$ctrl.$$form.targetRate.amount = null" 
-								class="only-border row-1 no-margin-y-sides text-small" 
+								class="only-border row-1 no-margin-y-sides text-small text-wrap" 
 								ng-class="{'md-primary border-primary': $ctrl.$$form.targetRate.amount == null}"
 								tabindex="-1" aria-label="Keep current value of amount">
 								<md-icon ng-if="$ctrl.$$form.targetRate.amount == null" class="mdi mdi-checkbox-marked-circle-outline md-18"></md-icon>&nbsp;
@@ -122,8 +148,8 @@
 	          			<span translate-once="rateplan.rateplan.los.min"></span>
 	          		</div>
 	          		
-	          		<div flex layout>
-						<div flex>
+	          		<div flex layout layout-wrap>
+						<div flex-gt-xs>
 							<md-input-container md-no-float class="md-block no-margin minimal-input no-padding-left">
 								<input id="minLos" type="number" name="minLos" placeholder="{{'common.nights.minimum'|translate}}" 
 									ng-model="$ctrl.$$form.targetRate.minLOS" min="1" ng-min="1" ng-step="1" 
@@ -136,9 +162,9 @@
 						  	</md-input-container>
 						</div>
 						
-						<div flex>
+						<div flex-gt-xs>
 							<md-button md-no-ink ng-click="$ctrl.$$form.targetRate.minLOS = null" 
-								class="only-border row-1 no-margin-y-sides text-small" 
+								class="only-border row-1 no-margin-y-sides text-small text-wrap" 
 								ng-class="{'md-primary border-primary': $ctrl.$$form.targetRate.minLOS == null}"
 								tabindex="-1" aria-label="Keep current value of Min LOS">
 								<md-icon ng-if="$ctrl.$$form.targetRate.minLOS == null" class="mdi mdi-checkbox-marked-circle-outline md-18"></md-icon>&nbsp;
@@ -153,8 +179,8 @@
 	          			<span translate-once="rateplan.rateplan.los.max"></span>
 	          		</div>
 					
-					<div flex layout>
-						<div flex>
+					<div flex layout layout-wrap>
+						<div flex-gt-xs>
 							<md-input-container md-no-float class="md-block no-margin minimal-input no-padding-left">
 								<input id="maxLos" type="number" name="maxLos" placeholder="{{'common.nights.maximum'|translate}}" 
 									ng-model="$ctrl.$$form.targetRate.maxLOS"
@@ -166,9 +192,9 @@
 						  	</md-input-container>
 						</div>
 						
-						<div flex>
+						<div flex-gt-xs>
 							<md-button md-no-ink ng-click="$ctrl.$$form.targetRate.maxLOS = null" 
-								class="only-border row-1 no-margin-y-sides text-small" 
+								class="only-border row-1 no-margin-y-sides text-small text-wrap" 
 								ng-class="{'md-primary border-primary': $ctrl.$$form.targetRate.maxLOS == null}"
 								tabindex="-1" aria-label="Keep current value of Max LOS">
 								<md-icon ng-if="$ctrl.$$form.targetRate.maxLOS == null" class="mdi mdi-checkbox-marked-circle-outline md-18"></md-icon>&nbsp;
@@ -193,7 +219,7 @@
 						</md-button>
 						
 						<md-button md-no-ink ng-click="$ctrl.$$form.targetRate.closedToArrival = null" 
-							class="only-border row-1 no-margin-y-sides text-small" 
+							class="only-border row-1 no-margin-y-sides text-small text-wrap" 
 							ng-class="{'md-primary border-primary': $ctrl.$$form.targetRate.closedToArrival == null}"
 							tabindex="-1" aria-label="Keep current value of closed to arrival">
 							<md-icon ng-if="$ctrl.$$form.targetRate.closedToArrival == null" class="mdi mdi-checkbox-marked-circle-outline md-18"></md-icon>&nbsp;
@@ -217,7 +243,7 @@
 						</md-button>
 						
 						<md-button md-no-ink ng-click="$ctrl.$$form.targetRate.closedToDeparture = null" 
-							class="only-border row-1 no-margin-y-sides text-small" 
+							class="only-border row-1 no-margin-y-sides text-small text-wrap" 
 							ng-class="{'md-primary border-primary': $ctrl.$$form.targetRate.closedToDeparture == null}"
 							tabindex="-1" aria-label="Keep current value of closed to departure">
 							<md-icon ng-if="$ctrl.$$form.targetRate.closedToDeparture == null" class="mdi mdi-checkbox-marked-circle-outline md-18"></md-icon>&nbsp;

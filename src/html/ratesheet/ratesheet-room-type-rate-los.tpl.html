@@ -1,0 +1,29 @@
+<ng-form name="roomTypeRatesheetFormLos" flex ng-switch="$ctrl.mode">
+	<div ng-switch-when="edit" layout="column">
+		<md-button class="minimal-button no-margin row-1 auto-height text-lowercase text-gray-light" ng-click="$ctrl.mode = 'view'">
+			<small translate="common.cancel"></small>
+		</md-button>
+		
+		<md-input-container md-no-float class="md-block no-margin minimal-input no-padding-left text-center" ng-class="{'saving': $ctrl.rate.$$saving}">
+			<input id="{{$ctrl.losType}}_{{$ctrl.ratePlan.id}}_{{$ctrl.rate.id}}" 
+				type="number" name="los" placeholder="{{$ctrl.placeholder}}" md-autofocus=""
+				ng-model="$ctrl.rate[$ctrl.losType]" ng-model-options="{updateOn: 'blur change'}"
+	           	ng-disabled="$ctrl.ngDisabled" min="{{$ctrl.min}}" ng-min="$ctrl.min" ng-step="1" 
+	           	max="{{$ctrl.max}}" ng-max="$ctrl.max" 
+	           	ng-change="$ctrl.onChange({$ratePlan: $ctrl.ratePlan, $rate: $ctrl.rate})">
+	           	
+	      	<div ng-messages="roomTypeRatesheetFormLos.los.$error">
+	       		<div ng-message="min"><span translate="error.field.min.abbr" translate-values="{num: $ctrl.min}"></span></div>
+	       		<div ng-message="max"><span translate="error.field.max.abbr" translate-values="{num: $ctrl.max}"></span></div>
+	        </div>
+	  	</md-input-container>
+	</div>
+	
+	<div ng-switch-default layout layout-align="center center" ng-class="{'clickable': !$ctrl.ngDisabled}" ng-click="$ctrl.$openMenu($event)">
+		<span ng-if="$ctrl.rate[$ctrl.losType] || ($ctrl.losType == 'minLOS' ? $ctrl.min : $ctrl.max)" ng-bind="$ctrl.rate[$ctrl.losType] || ($ctrl.losType == 'minLOS' ? $ctrl.min : $ctrl.max)"></span>
+		<span ng-if="!$ctrl.rate[$ctrl.losType] && !($ctrl.losType == 'minLOS' ? $ctrl.min : $ctrl.max)">
+			<md-icon class="mdi mdi-pencil-box-outline md-18"></md-icon>
+		</span>
+		<md-tooltip ng-if="!$ctrl.ngDisabled"><span translate="common.click.to.edit"></span></md-tooltip>
+	</div>
+</ng-form>

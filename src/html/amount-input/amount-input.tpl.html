@@ -7,7 +7,8 @@
 					<span ng-bind="$ctrl.label"></span>
 				</label>
 				
-				<input type="number" name="{{$ctrl.inputName}}" placeholder="{{$ctrl.label}}" ng-model="$ctrl.ngModel.finalAmount" ng-model-options="{updateOn: $ctrl.updateOn}" 
+				<input type="number" name="{{$ctrl.inputName}}" placeholder="{{$ctrl.label}}"
+					ng-model="$ctrl.ngModel.finalAmount" ng-model-options="{updateOn: $ctrl.updateOn}" 
 					ng-required="$ctrl.ngRequired" ng-readonly="$ctrl.readonly" ng-change="$ctrl.$onChange()" ng-disabled="$ctrl.ngDisabled"
 					ng-min="($ctrl.ngModel.type == 'PERCENTAGE' && !$ctrl.ngMin ? ($ctrl.allowNegative ? -100 : 0) : $ctrl.ngMin)" 
 					min="{{($ctrl.ngModel.type == 'PERCENTAGE' && !$ctrl.ngMin ? ($ctrl.allowNegative ? -100 : 0) : $ctrl.ngMin)}}" 

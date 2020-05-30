@@ -14,22 +14,7 @@
 			showCheckAll: "<?"
     	},
 		controller: ArrayInputCtrl,
-		template: 
-			"<div>" +
-				"<div ng-if=\"$ctrl.showCheckAll\" layout layout-wrap>" +
-					"<span flex></span>" +
-					"<md-button class=\"only-border border-radius\" ng-click=\"$ctrl.$checkAll(true)\" aria-label=\"check all\">" +
-						"<md-icon class=\"mdi mdi-checkbox-multiple-marked-outline md-18\"></md-icon>" +
-						"<span translate-once=\"common.check.all\"></span>" +
-					"</md-button>" +
-					
-					"<md-button class=\"only-border border-radius\" ng-click=\"$ctrl.$checkAll()\" aria-label=\"uncheck all\">" +
-						"<md-icon class=\"mdi mdi-checkbox-multiple-blank-outline md-18\"></md-icon>" +
-						"<span translate-once=\"common.uncheck.all\"></span>" +
-					"</md-button>" +
-				"</div>" +
-				"<div class=\"layout-row layout-wrap\" ng-transclude></div>" +
-			"</div>",	
+		templateUrl: "/tpls/array-input/array-input.tpl"
     });
     
     /* @ngInject */

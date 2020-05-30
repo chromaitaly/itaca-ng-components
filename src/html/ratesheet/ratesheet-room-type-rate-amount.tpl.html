@@ -1,0 +1,38 @@
+<div flex ng-switch="$ctrl.mode">
+	<div ng-switch-when="edit" layout="column">
+		<md-button class="minimal-button no-margin row-1 auto-height text-lowercase text-gray-light" ng-click="$ctrl.mode = 'view'">
+			<small translate="common.cancel"></small>
+		</md-button>
+		
+		<ch-amount-input
+			id="amount_{{$ctrl.ratePlan.id}}_{{$ctrl.rate.id}}"
+			name="ratePlanAmount"
+			input-container-class="md-block no-margin minimal-input no-padding-left text-center {{$ctrl.rate.$$saving ? 'saving' : ''}}"
+			hide-icon="true"
+			ng-model="$ctrl.rate.amount"
+			update-on="blur change"
+			label-no-float="true"
+			label="{{'common.price'|translate}}"
+			amount-type="PRICE"
+			ng-min="($ctrl.minAmount || 0.01)"
+			ng-max="$ctrl.maxAmount" 
+			ng-step="0.01"
+			ng-required="true"
+			ng-disabled="$ctrl.ngDisabled"
+			on-change="$ctrl.onChange({$ratePlan: $ctrl.ratePlan, $rate: $ctrl.rate})"
+			autofocus="true"
+			error-messages="[
+				{error: 'required', messageKey: 'error.required'},
+				{error: 'min', messageKey: 'error.field.min.abbr', messageKeyParams: {num: (($ctrl.minAmount || 0.01)|chCurrency)}},
+				{error: 'max', messageKey: 'error.field.max.abbr', messageKeyParams: {num: ($ctrl.maxAmount|chCurrency)}}]">
+		</ch-amount-input>
+	</div>
+	
+	<div ng-switch-default layout layout-align="center center" ng-class="{'clickable': !$ctrl.ngDisabled}" ng-click="$ctrl.$openMenu($event)">
+		<span ng-if="$ctrl.rate.amount.finalAmount" ng-bind="$ctrl.rate.amount.finalAmount|chCurrency"></span>
+		<span ng-if="!$ctrl.rate.amount.finalAmount">
+			<md-icon class="mdi mdi-currency-usd-off md-18"></md-icon>
+		</span>
+		<md-tooltip ng-if="!$ctrl.ngDisabled"><span translate="common.click.to.edit"></span></md-tooltip>
+	</div>
+</div>

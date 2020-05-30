@@ -5,6 +5,26 @@
   animation:         blinking 0.8s infinite; /* IE 10+, Fx 29+ */
 }
 
+.ch-ratesheet-cell {
+    border-right: 1px solid #fff;
+    padding: 0 !important;
+    overflow: hidden !important;
+    min-height: 35px;
+}
+
+.ch-ratesheet-cell ch-ratesheet-room-type-rate-amount {
+    font-size: 13px;
+    letter-spacing: -0.4px;
+}
+
+md-list.ch-ratesheet-cell-edit-menu md-list-item .md-list-item-inner>md-icon:first-child:not(.md-avatar-icon), md-list-item>md-icon:first-child:not(.md-avatar-icon) {
+    margin: auto 16px auto 0 !important;
+}
+
+md-list.ch-ratesheet-cell-edit-menu md-list-item, md-list-item .md-list-item-inner {
+	min-height: auto;
+}
+
 @-webkit-keyframes blinking {
 	0%, 49% {
 	    background-color: @color-success;
