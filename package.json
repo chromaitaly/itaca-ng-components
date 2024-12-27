@@ -50,7 +50,7 @@
 		"jshint-stylish": "latest",
 		"material-design-inspired-color-picker": "latest",
 		"pixrem": "^4.0.1",
-		"time-grunt": "^2.0.0"
+		"time-grunt": "latest"
 	},
 	"engines": {
 		"node": ">=4.2.4"

@@ -1,14 +1,14 @@
 (function() {
 	"use strict";
 	
-	angular.module("itaca.components").factory("GuestDetailsAPI", GuestDetailsApi); 
+	angular.module("itaca.components").factory("PersonalDetailsAPI", PersonalDetailsAPI); 
     
     /* @ngInject */
-    function GuestDetailsApi($resource, $q) {	
+    function PersonalDetailsAPI($resource, $q) {	
 		
     	var $$service = {};
 	
-		// Url dei GuestDetailsAPI
+		// Url dei PersonalDetailsAPI
 		$$service.url = "/resources/public/js/data/json";
 		
 		var methods = {

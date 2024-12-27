@@ -57,14 +57,17 @@
 		</div>
 
 	   	<div class="flex-100 flex-gt-sm-50">
-		    <ch-country-autocomplete 
-		    	ng-model="$ctrl.user.countryIso"
-		    	is-required="$ctrl.isRequired"
-		    	dropdown-position="BOTTOM" 
-		    	clear-button="true"
-		    	current-lang="$ctrl.appOptions.currentLang"
-		    	is-disabled="$ctrl.isDisabled">
-		    </ch-country-autocomplete>
+			<ch-personal-details-autocomplete 
+				ng-model="$ctrl.user.countryIso" 
+				label="{{'common.nationality'|translate}}" 
+				list="$ctrl.appOptions.$$countries" 
+				min-length="2" 
+				clear-button="true"
+				current-lang="$ctrl.appOptions.currentLang"
+				dropdown-position="BOTTOM" 
+				is-required="$ctrl.isRequired"
+				is-disabled="$ctrl.isDisabled">
+			</ch-personal-details-autocomplete>
 		</div>
 		
 		 <div class="flex-100 flex-xs-100 layout-column">

@@ -1,13 +1,14 @@
 (function() {
 	"use strict";
 	
-	angular.module("itaca.components").component("guestDetailsAutocomplete", {
+	angular.module("itaca.components").component("chPersonalDetailsAutocomplete", {
 		require: {
         	ngModelCtrl: "ngModel" 
         },
 		bindings: {
 			ngModel:  "<",
 			list: "<",
+			type: "@",
 			isDisabled: "<?",
 			isRequired: "<?",
 			noCache: "<?",
@@ -19,9 +20,9 @@
 			clearButton: "<?",
 			currentLang: "<?",
 		},
-		controller: GuestDetailsAutocompleteCtrl,
+		controller: PersonalDetailsAutocompleteCtrl,
 		template : 
-			"<ng-form class=\"flex\" name=\"autocompleteForm\">" +
+			"<ng-form class=\"flex\" name=\"personalDetailsAutocompleteForm\">" +
 				"<md-autocomplete " +
 					" class=\"ch-json-autocomplete\" " +
 					" md-input-name=\"jsonItem\" " +
@@ -47,7 +48,7 @@
 						"<md-icon class=\"mdi mdi-alert-circle-outline text-gray-light md-14\"></md-icon>&nbsp;" +
 						"<small ng-bind=\"$ctrl.hint\"></small>" +
 					"</div>" +
-					"<div ng-messages=\"autocompleteForm.jsonItem.$error\">" +
+					"<div ng-messages=\"personalDetailsAutocompleteForm.jsonItem.$error\">" +
 						"<div ng-message=\"required\"><span translate=\"error.required\"></span></div>" +
 						"<div ng-message=\"minlength\"><span translate=\"error.field.generic.minlength\" translate-values=\"{count: $ctrl.minLength}\"></span></div>" +
 						"<div ng-message=\"connection\"><span translate=\"error.element.not.found\"></span></div>" +
@@ -58,7 +59,7 @@
 	});
 	
 	 /* @ngInject */
-	function GuestDetailsAutocompleteCtrl($scope, $q, $mdMedia, $timeout, $translate, AppOptions) {
+	function PersonalDetailsAutocompleteCtrl($scope, $q, $mdMedia, $timeout, $translate, AppOptions, PersonalDetailsAPI) {
 		var ctrl = this;
 		
 		this.$onInit = function(){
@@ -67,13 +68,39 @@
     		ctrl.noCache = ctrl.noCache || false;
     		ctrl.clearButton =  _.isBoolean(ctrl.clearButton) ? ctrl.clearButton : false;
     		ctrl.minLength = ctrl.minLength && Number.isFinite(ctrl.minLength) ? parseInt(ctrl.minLength) : 0;
-    		
+    					
+			this.$loadData(ctrl.type);
+
     		ctrl.$$all = ctrl.$querySearch(null);
     		
     		ctrl.selectedItem  = null;
     		
     		ctrl.precopileSearchText();
     	};
+
+		this.$loadData = function(type) {
+			if (!type) return;
+			
+			var apiName = null;
+
+			switch(type) {
+				case "country":
+					apiName = "countries";
+				break;
+				case "document":
+					apiName = "documents";
+				break;
+				case "municipality":
+					apiName = "municipalities";
+				break;
+			}
+
+			if (apiName) {
+				PersonalDetailsAPI[apiName].then(function(data) {
+					ctrl.list = data;
+				});
+			}
+		};
     	
     	this.precopileSearchText = function(){
 			ctrl.searchText = null;
@@ -90,7 +117,6 @@
 		
     	this.$querySearch = function(query){
     		var deferred = $q.defer();
-    		var result = null;
     		
     		if(!query && ctrl.$$all){
     			deferred.resolve(ctrl.$$all);
@@ -122,7 +148,7 @@
 	    };
 	    
 	    this.$setError = function(bool){
-	    	$scope.autocompleteForm.jsonItem.$setValidity("connection", !bool);
+	    	$scope.personalDetailsAutocompleteForm.jsonItem.$setValidity("connection", !bool);
 	    	ctrl.$$error = bool;
 	    	
 	    	if(bool){

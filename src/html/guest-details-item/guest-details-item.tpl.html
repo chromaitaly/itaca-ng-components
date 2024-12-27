@@ -117,30 +117,49 @@
 					    </md-input-container>
 				    </div>
 				    <div layout="column" layout-padding flex="100" flex-gt-sm="33" flex-gt-md="20" ng-class="{'no-padding' : !$ctrl.$mdMedia('gt-sm')}">
-						<guest-details-autocomplete 
+						<ch-personal-details-autocomplete
 							ng-model="$ctrl.document.birthPlace" 
 							label="{{'common.birthplace'|translate}}" 
 							list="$ctrl.appOptions.$$places"
-							 min-length="2" 
+							min-length="2" 
 							is-required="true"
 							hint="{{('publicAdministration.accommodationCards.hint'|translate)}}"
 							style="margin-top: -10px;">
-						</guest-details-autocomplete>
+						</ch-personal-details-autocomplete>
 				    	<div><span></span></div>
 				    </div>
 				</div>
 				<div layout layout-wrap style="margin-top: -24px;">
 					<div layout="column" layout-padding flex="100" flex-gt-sm="50" flex-gt-md="20" class="no-padding">
-						<guest-details-autocomplete ng-model="$ctrl.document.nationality" label="{{'common.nationality'|translate}}" list="$ctrl.appOptions.$$countries"  min-length="2"  is-required="true"></guest-details-autocomplete>
+						<ch-personal-details-autocomplete 
+							ng-model="$ctrl.document.nationality" 
+							label="{{'common.nationality'|translate}}" 
+							list="$ctrl.appOptions.$$countries" 
+							min-length="2" 
+							is-required="true">
+						</ch-personal-details-autocomplete>
 				    </div>
 					<div layout="column" layout-padding flex="100" flex-gt-sm="50" flex-gt-md="20" class="no-padding">
-						<guest-details-autocomplete ng-model="$ctrl.document.citizenship" label="{{'common.citizenship'|translate}}" list="$ctrl.appOptions.$$countries"  min-length="2"   is-required="true"></guest-details-autocomplete>
+						<ch-personal-details-autocomplete 
+							ng-model="$ctrl.document.citizenship" 
+							label="{{'common.citizenship'|translate}}" 
+							list="$ctrl.appOptions.$$countries" 
+							min-length="2" 
+							is-required="true">
+						</ch-personal-details-autocomplete>
 				    </div>
 				    <div layout="column" layout-padding flex="100" flex-gt-sm="33" flex-gt-md="20" class="no-padding" ng-show="$ctrl.document.guestType != 'GROUP_MEMBER' && $ctrl.document.guestType != 'FAMILY_MEMBER'">
-						<guest-details-autocomplete ng-model="$ctrl.document.type" label="{{'common.document'|translate}}" list="$ctrl.appOptions.$$documents"  min-length="2"  is-required="!$ctrl.document.guestType == 'GROUP_MEMBER' && !$ctrl.document.guestType == 'FAMILY_MEMBER'" is-disabled="$ctrl.document.guestType == 'GROUP_MEMBER' || $ctrl.document.guestType == 'FAMILY_MEMBER'"></guest-details-autocomplete>
+						<ch-personal-details-autocomplete 
+							ng-model="$ctrl.document.type" 
+							label="{{'common.document'|translate}}" 
+							list="$ctrl.appOptions.$$documents" 
+							min-length="2" 
+							is-required="!$ctrl.document.guestType == 'GROUP_MEMBER' && !$ctrl.document.guestType == 'FAMILY_MEMBER'" 
+							is-disabled="$ctrl.document.guestType == 'GROUP_MEMBER' || $ctrl.document.guestType == 'FAMILY_MEMBER'">
+						</ch-personal-details-autocomplete>
 				    </div>
 				    <div layout="column" layout-padding flex="100" flex-gt-sm="33" flex-gt-md="20" class="no-padding" ng-show="$ctrl.document.guestType != 'GROUP_MEMBER' && $ctrl.document.guestType != 'FAMILY_MEMBER'">
-						<guest-details-autocomplete 
+						<ch-personal-details-autocomplete 
 							ng-model="$ctrl.document.issuer" 
 							label="{{'common.place.issuer'|translate}}" 
 							list="$ctrl.appOptions.$$places"
@@ -148,7 +167,7 @@
 							is-disabled="$ctrl.document.guestType == 'GROUP_MEMBER' || $ctrl.document.guestType == 'FAMILY_MEMBER'"
 							is-required="$ctrl.document.guestType != 'GROUP_MEMBER' && $ctrl.document.guestType != 'FAMILY_MEMBER'"
 							hint="{{('publicAdministration.accommodationCards.hint'|translate)}}">
-						</guest-details-autocomplete>
+						</ch-personal-details-autocomplete>
 				    </div>
 				    <div layout="column" layout-padding flex="100" flex-gt-sm="33" flex-gt-md="20" style="margin-top:10px;" ng-class="{'no-padding' : $ctrl.$mdMedia('gt-sm')}" ng-show="$ctrl.document.guestType != 'GROUP_MEMBER' && $ctrl.document.guestType != 'FAMILY_MEMBER'">
 						<md-input-container class="md-blocks no-padding">
